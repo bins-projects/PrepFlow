@@ -39,6 +39,15 @@ def extract_rationale(raw_lines: list[str]) -> str | None:
             return match.group(1).strip()
 
     return None
+
+def detect_question_type(raw_lines: list[str]) -> str:
+    answer_count = len(extract_correct_answers(raw_lines))
+
+    if answer_count > 1:
+        return "sata"
+
+    return "multiple_choice"
+
 def parse_questions(tokens_path: str, output_path: str) -> list[dict]:
     """
     Parser v0.2
@@ -73,6 +82,7 @@ def parse_questions(tokens_path: str, output_path: str) -> list[dict]:
                 current_question["choices"] = extract_choices(current_question["raw_lines"])
                 current_question["correct_answers"] = extract_correct_answers(current_question["raw_lines"])
                 current_question["rationale"] = extract_rationale(current_question["raw_lines"])
+                current_question["question_type"] = detect_question_type(current_question["raw_lines"])
                 questions.append(current_question)
 
             question_number = int(match.group(1))
@@ -84,6 +94,7 @@ def parse_questions(tokens_path: str, output_path: str) -> list[dict]:
                 "raw_lines": [text],
                 "choices": [],
                 "correct_answers": [],
+                "question_type": None,
                 "rationale": None,
             }
         else:
@@ -94,6 +105,7 @@ def parse_questions(tokens_path: str, output_path: str) -> list[dict]:
         current_question["choices"] = extract_choices(current_question["raw_lines"])
         current_question["correct_answers"] = extract_correct_answers(current_question["raw_lines"])
         current_question["rationale"] = extract_rationale(current_question["raw_lines"])
+        current_question["question_type"] = detect_question_type(current_question["raw_lines"])
         questions.append(current_question)
 
     output_file.parent.mkdir(parents=True, exist_ok=True)
