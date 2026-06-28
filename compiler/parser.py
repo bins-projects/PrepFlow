@@ -3,16 +3,48 @@ import re
 from pathlib import Path
 
 
-QUESTION_RE = re.compile(r"^\s*\*\*(\d+)\.\s*(.+)")
+QUESTION_RE = re.compile(r"^\s*\*\*(\d+)\.\*\*\s*(.+)")
+CHOICE_RE = re.compile(r"^\s*([a-fA-F])\.\s*(.+)")
+ANSWER_RE = re.compile(r"^\s*\*\*Answer:\s*([A-Fa-f,\s]+)\*\*")
+RATIONALE_RE = re.compile(r"^\s*\*\*Rationale:\*\*\s*(.+)")
+def extract_choices(raw_lines: list[str]) -> list[dict]:
+    choices = []
 
+    for line in raw_lines:
+        match = CHOICE_RE.match(line)
 
+        if match:
+            choices.append({
+                "label": match.group(1).upper(),
+                "text": match.group(2).strip(),
+            })
+
+    return choices
+
+def extract_correct_answers(raw_lines: list[str]) -> list[str]:
+    for line in raw_lines:
+        match = ANSWER_RE.match(line)
+
+        if match:
+            answer_text = match.group(1)
+            return re.findall(r"[A-Fa-f]", answer_text.upper())
+
+    return []
+
+def extract_rationale(raw_lines: list[str]) -> str | None:
+    for line in raw_lines:
+        match = RATIONALE_RE.match(line)
+
+        if match:
+            return match.group(1).strip()
+
+    return None
 def parse_questions(tokens_path: str, output_path: str) -> list[dict]:
     """
-    Parser v0.1
+    Parser v0.2
 
-    Reads tokenized document data and groups it into rough question blocks.
-    This does not fully understand answers/rationales yet.
-    It only detects question boundaries.
+    Reads tokenized document data and groups it into question blocks.
+    Now extracts answer choices from raw lines.
     """
 
     tokens_file = Path(tokens_path)
@@ -38,6 +70,9 @@ def parse_questions(tokens_path: str, output_path: str) -> list[dict]:
 
         if match:
             if current_question:
+                current_question["choices"] = extract_choices(current_question["raw_lines"])
+                current_question["correct_answers"] = extract_correct_answers(current_question["raw_lines"])
+                current_question["rationale"] = extract_rationale(current_question["raw_lines"])
                 questions.append(current_question)
 
             question_number = int(match.group(1))
@@ -48,7 +83,7 @@ def parse_questions(tokens_path: str, output_path: str) -> list[dict]:
                 "stem": stem_start,
                 "raw_lines": [text],
                 "choices": [],
-                "answer": None,
+                "correct_answers": [],
                 "rationale": None,
             }
         else:
@@ -56,6 +91,9 @@ def parse_questions(tokens_path: str, output_path: str) -> list[dict]:
                 current_question["raw_lines"].append(text)
 
     if current_question:
+        current_question["choices"] = extract_choices(current_question["raw_lines"])
+        current_question["correct_answers"] = extract_correct_answers(current_question["raw_lines"])
+        current_question["rationale"] = extract_rationale(current_question["raw_lines"])
         questions.append(current_question)
 
     output_file.parent.mkdir(parents=True, exist_ok=True)
@@ -64,4 +102,3 @@ def parse_questions(tokens_path: str, output_path: str) -> list[dict]:
         json.dump(questions, f, indent=2, ensure_ascii=False)
 
     return questions
-
