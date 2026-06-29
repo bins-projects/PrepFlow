@@ -16,8 +16,13 @@ def main():
         is_correct = ask_question(question)
         score.record_answer(question, is_correct)
 
+        if session.is_block_complete() and session.has_next_question():
+            print("\n" + "=" * 40)
+            print(f"Block {session.current_block_number()} Complete")
+            print("=" * 40)
+            input("Press Enter to begin the next block...")
+
         input("\nPress Enter for next question...")
 
-
 if __name__ == "__main__":
-    main()
+    main()        

@@ -1,5 +1,5 @@
 class SessionManager:
-    def __init__(self, questions, block_size=15):
+    def __init__(self, questions, block_size=3):
         self.questions = questions
         self.current_index = 0
         self.block_size = block_size
@@ -26,3 +26,6 @@ class SessionManager:
             return 1
 
         return ((self.current_index - 1) // self.block_size) + 1
+    
+    def is_block_complete(self):
+        return self.completed_questions() % self.block_size == 0
