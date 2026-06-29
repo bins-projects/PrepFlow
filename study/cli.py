@@ -1,15 +1,18 @@
 from study.loader import load_questions
-from study.session import ask_question
+from study.question import ask_question
+from study.session import SessionManager
 from study.scoring import ScoreTracker
 
 
 def main():
     questions = load_questions()
+    session = SessionManager(questions)
     score = ScoreTracker()
 
     print(f"Loaded {len(questions)} questions.\n")
 
-    for question in questions:
+    while session.has_next_question():
+        question = session.get_next_question()
         is_correct = ask_question(question)
         score.record_answer(question, is_correct)
 

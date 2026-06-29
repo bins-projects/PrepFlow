@@ -1,49 +1,28 @@
-def format_choices(choices):
-    lines = []
+class SessionManager:
+    def __init__(self, questions, block_size=15):
+        self.questions = questions
+        self.current_index = 0
+        self.block_size = block_size
 
-    for choice in choices:
-        label = choice["label"]
-        text = choice["text"]
-        lines.append(f"{label}. {text}")
+    def has_next_question(self):
+        return self.current_index < len(self.questions)
 
-    return "\n".join(lines)
+    def get_next_question(self):
+        if not self.has_next_question():
+            return None
 
+        question = self.questions[self.current_index]
+        self.current_index += 1
+        return question
 
-def normalize_answer(answer):
-    return answer.strip().upper()
+    def total_questions(self):
+        return len(self.questions)
 
+    def completed_questions(self):
+        return self.current_index
+    
+    def current_block_number(self):
+        if self.current_index == 0:
+            return 1
 
-def check_answer(user_answer, correct_answers):
-    user_answer = normalize_answer(user_answer)
-    correct_set = set(correct_answers)
-    user_set = set(user_answer)
-
-    return user_set == correct_set
-
-
-def ask_question(question):
-    print()
-    print(f"Question {question['question_number']}")
-    print()
-    print(question["stem"])
-    print()
-    print(format_choices(question["choices"]))
-    print()
-
-    answer = input("Your answer: ")
-
-    is_correct = check_answer(answer, question["correct_answers"])
-
-    print()
-    if is_correct:
-        print("Correct!")
-    else:
-        correct = ", ".join(question["correct_answers"])
-        print("Incorrect.")
-        print(f"Correct answer: {correct}")
-
-    print()
-    print("Rationale:")
-    print(question["rationale"])
-
-    return is_correct
+        return ((self.current_index - 1) // self.block_size) + 1
