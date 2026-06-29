@@ -33,9 +33,13 @@ def main():
                 if not review_correct:
                     review.add(review_question)
 
-    input("Press Enter to begin the next block...")
+            print("\n" + "=" * 40)
+            print("Review Complete ✓")
+            print("All missed questions corrected.")
+            print("=" * 40)
 
-input("\nPress Enter for next question...")
+            input(f"Press Enter to begin Block {session.current_block_number() + 1}...")
+
 
 if __name__ == "__main__":
     main()
