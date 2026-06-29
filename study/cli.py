@@ -19,14 +19,23 @@ def main():
 
         if not is_correct:
             review.add(question)
-            
+
         if session.is_block_complete() and session.has_next_question():
             print("\n" + "=" * 40)
             print(f"Block {session.current_block_number()} Complete")
             print("=" * 40)
-            input("Press Enter to begin the next block...")
+            print(f"You have {review.count()} review question(s).")
+            while review.has_questions():
+                review_question = review.next_question()
+                print("\n--- Review Question ---")
+                review_correct = ask_question(review_question)
 
-        input("\nPress Enter for next question...")
+                if not review_correct:
+                    review.add(review_question)
+
+    input("Press Enter to begin the next block...")
+
+input("\nPress Enter for next question...")
 
 if __name__ == "__main__":
-    main()        
+    main()
