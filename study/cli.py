@@ -28,6 +28,8 @@ def main():
             print("=" * 40)
             print(f"You have {review.count()} review question(s).")
 
+            review_number = 1
+
             while review.has_questions():
                 review_question = review.next_question()
                 print("\n--- Review Question ---")
