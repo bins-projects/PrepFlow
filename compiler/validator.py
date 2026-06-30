@@ -4,7 +4,8 @@ def validate_questions(questions: list[dict]) -> list[str]:
     """
 
     problems = []
-
+    seen_stems = {}
+    seen_numbers = set()
     for question in questions:
         number = question["question_number"]
 
