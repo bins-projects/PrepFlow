@@ -4,13 +4,19 @@ import re
 from pypdf import PdfReader
 
 SOURCE_FILE = Path("source_banks/medsurg_test_bank.pdf")
-OUTPUT_FILE = Path("output/medsurg_inventory.json")
+OUTPUT_FILE = Path("output/medsurg_questions.json")
 
 CHAPTER_RE = re.compile(r"^Chapter\s+(\d{2}):\s+(.+)$", re.IGNORECASE | re.MULTILINE)
-SECTION_RE = re.compile(r"^(MULTIPLE CHOICE|MULTIPLE RESPONSE|COMPLETION)$", re.IGNORECASE | re.MULTILINE)
-QUESTION_RE = re.compile(r"\n\s*(\d+)\.\s+")
-ANSWER_RE = re.compile(r"\bANS:\s*([A-Z,\s]+|[A-Za-z ]+)")
-CHOICE_RE = re.compile(r"^([a-f])\.\s+(.+)", re.IGNORECASE)
+SECTION_RE = re.compile(
+    r"\b(MULTIPLE CHOICE|MULTIPLE RESPONSE|COMPLETION)\b",
+    re.IGNORECASE,
+)
+QUESTION_START_RE = re.compile(r"\n\s*(\d+)\.\s+")
+CHOICE_RE = re.compile(r"^\s*([a-f])\.\s+(.+)", re.IGNORECASE)
+ANS_RE = re.compile(r"\bANS:\s*(.+)")
+OBJ_RE = re.compile(r"\bOBJ:\s*(.+)")
+NCLEX_RE = re.compile(r"\bNCLEX:\s*(.+)")
+KEY_RE = re.compile(r"\b(KEY|MSC):\s*(.+)")
 
 
 def read_pdf_text(path: Path) -> str:
@@ -44,44 +50,193 @@ def split_chapters(full_text: str) -> list[dict]:
     return chapters
 
 
-def count_question_starts(text: str) -> int:
-    return len(QUESTION_RE.findall(text))
+def detect_question_type(section_name: str, body: str) -> str:
+    section_name = section_name.lower()
+
+    if "multiple response" in section_name:
+        return "sata"
+
+    if "completion" in section_name:
+        return "completion"
+
+    if re.search(
+        r"(place the events|prioritize|appropriate sequence|correct order)",
+        body,
+        re.IGNORECASE,
+    ):
+        return "ordered"
+
+    return "mc"
 
 
-def detect_sections(text: str) -> dict:
-    return {
-        "multiple_choice": bool(re.search(r"\bMULTIPLE CHOICE\b", text, re.IGNORECASE)),
-        "multiple_response": bool(re.search(r"\bMULTIPLE RESPONSE\b", text, re.IGNORECASE)),
-        "completion": bool(re.search(r"\bCOMPLETION\b", text, re.IGNORECASE)),
-        "ordered": bool(re.search(r"(Place the events|Prioritize|appropriate sequence|correct order)", text, re.IGNORECASE)),
-    }
+def split_sections(chapter_text: str) -> list[dict]:
+    matches = list(SECTION_RE.finditer(chapter_text))
+    sections = []
 
+    for index, match in enumerate(matches):
+        start = match.end()
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(chapter_text)
 
-def build_inventory(chapters: list[dict]) -> list[dict]:
-    inventory = []
-
-    for chapter in chapters:
-        text = chapter["text"]
-        sections = detect_sections(text)
-
-        inventory.append(
+        sections.append(
             {
-                "chapter": chapter["chapter"],
-                "title": chapter["title"],
-                "question_starts_found": count_question_starts(text),
-                "has_multiple_choice": sections["multiple_choice"],
-                "has_multiple_response": sections["multiple_response"],
-                "has_completion": sections["completion"],
-                "has_ordered": sections["ordered"],
+                "name": match.group(1).upper(),
+                "text": chapter_text[start:end],
             }
         )
 
-    return inventory
+    return sections
+
+
+def split_question_blocks(section_text: str) -> list[dict]:
+    matches = list(QUESTION_START_RE.finditer(section_text))
+    blocks = []
+
+    for index, match in enumerate(matches):
+        start = match.end()
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(section_text)
+
+        blocks.append(
+            {
+                "number": int(match.group(1)),
+                "text": section_text[start:end].strip(),
+            }
+        )
+
+    return blocks
+
+
+def clean_text(value: str | None) -> str | None:
+    if not value:
+        return None
+
+    return re.sub(r"\s+", " ", value).strip()
+
+
+def extract_field(pattern: re.Pattern, text: str) -> str | None:
+    match = pattern.search(text)
+    if not match:
+        return None
+
+    return clean_text(match.group(1))
+
+
+def strip_answer_metadata(text: str) -> str:
+    markers = ["ANS:", "DIF:", "OBJ:", "TOP:", "KEY:", "MSC:", "NCLEX:"]
+    cut_points = []
+
+    for marker in markers:
+        index = text.find(marker)
+        if index != -1:
+            cut_points.append(index)
+
+    if not cut_points:
+        return text.strip()
+
+    return text[: min(cut_points)].strip()
+
+
+def parse_choices(question_text: str) -> tuple[str, dict]:
+    clean_question_text = strip_answer_metadata(question_text)
+    lines = clean_question_text.splitlines()
+
+    prompt_lines = []
+    choices = {}
+    current_choice = None
+
+    for line in lines:
+        choice_match = CHOICE_RE.match(line)
+
+        if choice_match:
+            current_choice = choice_match.group(1).lower()
+            choices[current_choice] = choice_match.group(2).strip()
+            continue
+
+        if current_choice and line.strip():
+            choices[current_choice] += " " + line.strip()
+        else:
+            prompt_lines.append(line.strip())
+
+    prompt = clean_text(" ".join(prompt_lines))
+
+    choices = {key: clean_text(value) for key, value in choices.items()}
+
+    return prompt, choices
+
+
+def extract_rationale(text: str) -> str | None:
+    ans_match = ANS_RE.search(text)
+    if not ans_match:
+        return None
+
+    after_ans = text[ans_match.end() :]
+
+    stop_markers = ["DIF:", "OBJ:", "TOP:", "KEY:", "MSC:", "NCLEX:"]
+    stop_points = []
+
+    for marker in stop_markers:
+        index = after_ans.find(marker)
+        if index != -1:
+            stop_points.append(index)
+
+    rationale = after_ans[: min(stop_points)].strip() if stop_points else after_ans.strip()
+
+    return clean_text(rationale)
+
+
+def parse_question(chapter: dict, section_name: str, block: dict) -> dict:
+    body = block["text"]
+
+    prompt, choices = parse_choices(body)
+
+    question = {
+    "id": (
+        f"medsurg-ch{chapter['chapter']}-"
+        f"{section_name.lower().replace(' ', '-')}-"
+        f"q{block['number']}"
+    ),    
+        "source": "medsurg_test_bank",
+        "chapter": chapter["chapter"],
+        "chapter_title": chapter["title"],
+        "question_number": block["number"],
+        "question_type": detect_question_type(section_name, body),
+        "prompt": prompt,
+        "choices": choices,
+        "correct_answer": extract_field(ANS_RE, body),
+        "rationale": extract_rationale(body),
+                "is_valid": bool(
+            prompt
+            and extract_field(ANS_RE, body)
+            and extract_rationale(body)
+        ),
+        "objective": extract_field(OBJ_RE, body),
+        "nclex_category": extract_field(NCLEX_RE, body),
+        "metadata": {
+            "section": section_name,
+            "raw_available": True,
+            "raw_text": body,
+        },
+    }
+    return question
+
+
+def build_questions(chapters: list[dict]) -> list[dict]:
+    questions = []
+
+    for chapter in chapters:
+        sections = split_sections(chapter["text"])
+
+        for section in sections:
+            blocks = split_question_blocks(section["text"])
+
+            for block in blocks:
+                questions.append(parse_question(chapter, section["name"], block))
+
+    return questions
 
 
 def main():
-    print("PrepFlow Med-Surg Importer")
-    print("--------------------------")
+    print("PrepFlow Med-Surg Production Importer")
+    print("------------------------------------")
     print()
 
     if not SOURCE_FILE.exists():
@@ -92,26 +247,50 @@ def main():
 
     full_text = read_pdf_text(SOURCE_FILE)
     chapters = split_chapters(full_text)
-    inventory = build_inventory(chapters)
+    questions = build_questions(chapters)
+    type_counts = {}
+    missing_answers = 0
+    missing_rationales = 0
+    seen_ids = set()
+    duplicate_ids = []
+    invalid_questions = 0
+    for question in questions:
+        qtype = question["question_type"]
+        type_counts[qtype] = type_counts.get(qtype, 0) + 1
 
+        if not question["correct_answer"]:
+            missing_answers += 1
+
+        if not question["rationale"]:
+            missing_rationales += 1
+            if not question["is_valid"]:
+                invalid_questions += 1
+            if question["id"] in seen_ids:
+                duplicate_ids.append(question["id"])
+            else:
+                seen_ids.add(question["id"])
     print(f"Source: {SOURCE_FILE}")
     print(f"Characters extracted: {len(full_text):,}")
     print(f"Chapters found: {len(chapters)}")
+    print(f"Questions parsed: {len(questions)}")
+    print(f"Question types: {type_counts}")
+    print(f"Missing answers: {missing_answers}")
+    print(f"Missing rationales: {missing_rationales}")
+    print(f"Duplicate IDs: {len(duplicate_ids)}")
+    print(f"Invalid questions: {invalid_questions}")
     print()
 
-    for item in inventory[:10]:
-        print(f"Chapter {item['chapter']}: {item['title']}")
-        print(f"  Question starts found: {item['question_starts_found']}")
-        print(f"  MC section: {item['has_multiple_choice']}")
-        print(f"  SATA section: {item['has_multiple_response']}")
-        print(f"  Completion section: {item['has_completion']}")
-        print(f"  Ordered detected: {item['has_ordered']}")
+    for question in questions[:5]:
+        print(f"{question['id']}")
+        print(f"  Type: {question['question_type']}")
+        print(f"  Prompt: {question['prompt']}")
+        print(f"  Answer: {question['correct_answer']}")
         print()
 
     with OUTPUT_FILE.open("w", encoding="utf-8") as file:
-        json.dump(inventory, file, indent=2)
+        json.dump(questions, file, indent=2, ensure_ascii=False)
 
-    print(f"Inventory written to: {OUTPUT_FILE}")
+    print(f"Questions written to: {OUTPUT_FILE}")
 
 
 if __name__ == "__main__":
