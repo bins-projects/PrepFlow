@@ -1,164 +1,98 @@
 # PrepFlow Restart Packet
 
-Read these first (source of truth):
+## Read First (Source of Truth)
 
-1. PROJECT_STATE.md
-2. CHANGELOG.md
-3. VISION.md
+Read these project documents first:
 
-----------------------------------------
+1. docs/PROJECT_STATE.md
+2. docs/CHANGELOG.md
+3. docs/VISION.md
+4. docs/RESTART_PACKET.md
 
-Project:
-PrepFlow
+---
 
-Current Version:
-0.6.1
+## Current Project Status
 
-Current Sprint:
-Sprint 6 — Content Import Pipeline
+Project: PrepFlow
+
+Version: 0.6.2
+
+Sprint: 6 — Pack Validation
 
 Status:
-Importer prototype complete.
 
-----------------------------------------
+Both production importers are complete and validated.
 
-Repository Status
+---
 
-- GitHub synced
-- Working tree clean
-- Sprint checkpoint complete
+## Completed
 
-Always verify first:
+### Medical-Surgical Importer
 
-git status
+Status:
+Production Ready
 
-Expected:
-working tree clean
+---
 
-----------------------------------------
+### Pharmacy Importer
 
-Completed This Session
+Status:
+Production Ready
 
-✓ Med-Surg PDF successfully imported with pypdf
-✓ 483 pages verified
-✓ ~1.08 million characters extracted
-✓ Chapter detection working
-✓ 63 chapters detected
-✓ Inventory generated for every chapter
-✓ Counts MC / SATA / Ordered / Completion
-✓ Inventory exported to JSON
-✓ Importer committed to GitHub
-✓ source_banks ignored by Git
-✓ Both Med-Surg and Pharm PDFs stored locally
+Validation:
 
-----------------------------------------
+- Chapters: 24
+- Questions: 1076
 
-Current Source Banks
+Question Types
 
-source_banks/
-
-medsurg_test_bank.pdf
-
-pharm_test_bank.pdf
-
-These stay LOCAL.
-Never commit them to GitHub.
-
-----------------------------------------
-
-Current Objective
-
-Replace the inventory prototype with the production importer.
-
-Goals:
-
-• Parse every question
-• Build Question objects
-• Preserve rationale and metadata
-• Export JSON pack
-• Validate output
-• Feed directly into PrepFlow compiler
-
-----------------------------------------
-
-Next Coding Session
-
-Primary file:
-
-tools/import_medsurg_bank.py
-
-After that:
-
-compiler/
-study/
-validator/
-
-----------------------------------------
-
-Immediate Next Goal
-
-Instead of counting questions, actually create Question objects.
-
-For each question capture:
-
-- chapter
-- question number
-- question type
-- prompt
-- answer choices
-- correct answer
-- rationale
-- objective
-- NCLEX category
-- metadata
-
-Output:
-
-output/medsurg_questions.json
-
-----------------------------------------
-
-Long-Term Pipeline
-
-PDF
-↓
-
-Importer
-
-↓
-
-Question Objects
-
-↓
-
-Pack Compiler
-
-↓
+- MC: 963
+- SATA: 73
+- Completion: 39
+- Ordered: 1
 
 Validation
 
-↓
+- Missing Answers: 0
+- Missing Rationales: 0
+- Duplicate IDs: 0
+- Invalid Questions: 0
 
-PrepFlow Pack
+---
 
-↓
+## Current Architecture
 
-Study Engine
+Importer pipeline now supports:
 
-----------------------------------------
+- Chapter parsing
+- Section parsing
+- Question block parsing
+- Multiple Choice
+- SATA
+- Completion
+- Ordered questions
+- Validation reporting
 
-First commands next session
+---
 
-git status
+## Next Sprint
 
-python tools/import_medsurg_bank.py
+Pack Standardization
 
-----------------------------------------
+Objectives:
 
-Important
+- Remove publisher-specific assumptions.
+- Create a unified internal question schema.
+- Remove raw source text from production packs.
+- Standardize metadata across all importers.
+- Build reusable importer architecture for future textbooks.
 
-The inventory importer is complete.
+---
 
-Do NOT rebuild it.
+## Resume Here
 
-Continue by replacing the inventory logic with the production parser.
+Primary focus:
+
+Begin Pack Standardization.
+
+No importer debugging is currently required.

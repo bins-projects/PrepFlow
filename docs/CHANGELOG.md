@@ -2,6 +2,54 @@
 
 This document records major project milestones. Minor edits and intermediate work are preserved in Git history.
 ## Sprint 6 — Pack Validation
+# Version 0.6.2
+
+Date: 2026-07-03
+
+## Sprint 6 — Pharmacy Production Importer Complete
+
+### Added
+
+- Created `tools/import_pharm_bank.py`
+- Added Pharmacy production importer
+- Added ORDERING section detection
+- Added ordered question type support
+- Improved question boundary detection
+- Added importer validation reporting
+
+### Fixed
+
+- Fixed duplicate completion question generation
+- Fixed Chapter 13 ORDERING parsing
+- Fixed completion answer extraction
+- Fixed completion rationale extraction
+- Eliminated duplicate IDs
+- Eliminated invalid question records
+
+### Validation
+
+Pharmacy Test Bank
+
+- Chapters: 24
+- Questions: 1076
+
+Question Types
+
+- Multiple Choice: 963
+- SATA: 73
+- Completion: 39
+- Ordered: 1
+
+Validation Results
+
+- Missing Answers: 0
+- Missing Rationales: 0
+- Duplicate IDs: 0
+- Invalid Questions: 0
+
+Status
+
+✅ Pharmacy production importer complete.
 v0.6.1
 
 - Added Med-Surg PDF importer
