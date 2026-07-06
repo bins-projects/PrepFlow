@@ -1,9 +1,9 @@
 def validate_questions(questions: list[dict]) -> list[str]:
     """
-    Validate parsed legacy question dictionaries.
+    Validate normalized legacy question dictionaries.
 
-    This validator checks the parser output before the compiler converts
-    questions into canonical PrepFlow Question objects.
+    This validator checks normalized compiler input before the compiler
+    converts questions into canonical PrepFlow Question objects.
     """
 
     problems = []
@@ -12,41 +12,45 @@ def validate_questions(questions: list[dict]) -> list[str]:
 
     for question in questions:
         number = question.get("question_number", "Unknown")
+        chapter = question.get("chapter", "Unknown")
+        label = f"Chapter {chapter}, Question {number}"
+        number_key = (chapter, number)
+
         stem = (question.get("stem") or "").strip()
 
-        if number in seen_numbers:
-            original_number = seen_numbers[number]
+        if number_key in seen_numbers:
+            original_label = seen_numbers[number_key]
             problems.append(
-                f"Question {number}: duplicate question number "
-                f"(original: Question {original_number})"
+                f"{label}: duplicate question number "
+                f"(original: {original_label})"
             )
         else:
-            seen_numbers[number] = number
+            seen_numbers[number_key] = label
 
         if stem:
             if stem in seen_stems:
-                original_number = seen_stems[stem]
+                original_label = seen_stems[stem]
                 preview = stem[:120]
                 problems.append(
-                    f"Question {number}: duplicate question text "
-                    f"(original: Question {original_number}; stem: {preview!r})"
+                    f"{label}: duplicate question text "
+                    f"(original: {original_label}; stem: {preview!r})"
                 )
             else:
-                seen_stems[stem] = number
+                seen_stems[stem] = label
 
         if not stem:
-            problems.append(f"Question {number}: missing stem")
+            problems.append(f"{label}: missing stem")
 
         if not question.get("choices"):
-            problems.append(f"Question {number}: no answer choices")
+            problems.append(f"{label}: no answer choices")
 
         if not question.get("correct_answers"):
-            problems.append(f"Question {number}: missing correct answer")
+            problems.append(f"{label}: missing correct answer")
 
         if not question.get("rationale"):
-            problems.append(f"Question {number}: missing rationale")
+            problems.append(f"{label}: missing rationale")
 
         if not question.get("question_type"):
-            problems.append(f"Question {number}: missing question type")
+            problems.append(f"{label}: missing question type")
 
     return problems

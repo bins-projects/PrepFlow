@@ -6,9 +6,7 @@ from collections import defaultdict
 from compiler.docx_reader import read_docx
 from compiler.tokenizer import tokenize
 from compiler.parser import parse_questions
-from compiler.validator import validate_questions
-from compiler.deduplicator import deduplicate_questions
-from compiler.builder import build_pack, build_questions
+from compiler.pipeline import compile_questions
 
 
 def print_validation_failure(problems: list[str]) -> None:
@@ -36,6 +34,18 @@ def print_validation_failure(problems: list[str]) -> None:
     print("Compilation aborted.")
 
 
+def print_deduplication(removed: list[str]) -> None:
+    if not removed:
+        return
+
+    print()
+    print("Deduplication")
+    print(f"Questions removed: {len(removed)}")
+
+    for removal in removed:
+        print(f"- {removal}")
+
+
 def compile_docx(source_path: str) -> None:
     output_dir = Path("output")
     output_dir.mkdir(exist_ok=True)
@@ -55,29 +65,17 @@ def compile_docx(source_path: str) -> None:
     question_path = output_dir / "03_questions.json"
     questions = parse_questions(str(token_path), str(question_path))
 
-    problems = validate_questions(questions)
-
-    if problems:
-        print_validation_failure(problems)
-        sys.exit(1)
-
-    result = deduplicate_questions(questions)
-
-    canonical_questions = build_questions(result.questions) 
-
-    if result.removed:
-        print()
-        print("Deduplication")
-        print(f"Questions removed: {len(result.removed)}")
-
-        for removal in result.removed:
-            print(f"- {removal}")
-
-    pack = build_pack(
-        canonical_questions,
+    result = compile_questions(
+        questions,
         pack_id="compiled_pack",
         title=Path(source_path).stem,
     )
+
+    if result.problems:
+        print_validation_failure(result.problems)
+        sys.exit(1)
+
+    print_deduplication(result.removed)
 
     print("Loaded document.")
     print(f"Source: {raw_document['source_path']}")
@@ -93,48 +91,37 @@ def compile_docx(source_path: str) -> None:
     print(f"Question artifact: {question_path}")
     print()
     print("Validation.")
-    print(f"Problems found: {len(problems)}")
+    print(f"Problems found: {len(result.problems)}")
     print()
-    print(f"Canonical questions built: {len(canonical_questions)}")
-    print(f"Pack built: {pack.id}")
+    print(f"Canonical questions built: {len(result.questions)}")
+    print(f"Pack built: {result.pack.id}")
 
 
 def compile_json(source_path: str) -> None:
     with open(source_path, "r", encoding="utf-8") as file:
         questions = json.load(file)
 
-    problems = validate_questions(questions)
-
-    if problems:
-        print_validation_failure(problems)
-        sys.exit(1)
-
-    result = deduplicate_questions(questions)
-
-    canonical_questions = build_questions(result.questions)
-
-    if result.removed:
-        print()
-        print("Deduplication")
-        print(f"Questions removed: {len(result.removed)}")
-
-    for removal in result.removed:
-        print(f"- {removal}")
-    pack = build_pack(
-        canonical_questions,
+    result = compile_questions(
+        questions,
         pack_id=Path(source_path).stem,
         title=Path(source_path).stem,
     )
+
+    if result.problems:
+        print_validation_failure(result.problems)
+        sys.exit(1)
+
+    print_deduplication(result.removed)
 
     print("Loaded question JSON.")
     print(f"Source: {source_path}")
     print(f"Question blocks: {len(questions)}")
     print()
     print("Validation.")
-    print(f"Problems found: {len(problems)}")
+    print(f"Problems found: {len(result.problems)}")
     print()
-    print(f"Canonical questions built: {len(canonical_questions)}")
-    print(f"Pack built: {pack.id}")
+    print(f"Canonical questions built: {len(result.questions)}")
+    print(f"Pack built: {result.pack.id}")
 
 
 def main():

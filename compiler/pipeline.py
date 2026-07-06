@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from compiler.models import Pack
+from compiler.normalizer import normalize_questions
 from compiler.validator import validate_questions
 from compiler.deduplicator import deduplicate_questions
 from compiler.builder import build_pack, build_questions
@@ -23,7 +24,9 @@ def compile_questions(
     Compile parsed question dictionaries into a canonical PrepFlow Pack.
     """
 
-    problems = validate_questions(questions)
+    normalized_questions = normalize_questions(questions)
+
+    problems = validate_questions(normalized_questions)
 
     if problems:
         return CompilationResult(
@@ -32,7 +35,7 @@ def compile_questions(
             removed_duplicates=[],
         )
 
-    result = deduplicate_questions(questions)
+    result = deduplicate_questions(normalized_questions)
 
     canonical_questions = build_questions(result.questions)
 
