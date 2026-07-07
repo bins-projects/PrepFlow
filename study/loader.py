@@ -2,15 +2,18 @@ import json
 from pathlib import Path
 
 
-def load_questions(path="output/03_questions.json"):
-    question_path = Path(path)
+def load_questions(path="packs/cardiac questions.prepflow.json"):
+    pack_path = Path(path)
 
-    if not question_path.exists():
+    if not pack_path.exists():
         raise FileNotFoundError(
-            f"Could not find {question_path}. Run the compiler first."
+            f"Could not find {pack_path}. Run the compiler first."
         )
 
-    with question_path.open("r", encoding="utf-8") as file:
-        questions = json.load(file)
+    with pack_path.open("r", encoding="utf-8") as file:
+        pack = json.load(file)
 
-    return questions
+    if pack.get("format") != "prepflow_pack":
+        raise ValueError(f"Invalid PrepFlow pack format: {pack_path}")
+
+    return pack["questions"]

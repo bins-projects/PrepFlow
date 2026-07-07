@@ -64,7 +64,7 @@ def ask_question(question, header=None):
     if header:
         print(header)
     else:
-        print(f"Question {question['question_number']}")
+        print(f"Question {question.get('question_number') or question.get('id')}")
 
     print()
     print(get_prompt(question))

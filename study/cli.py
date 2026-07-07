@@ -1,5 +1,3 @@
-import sys
-
 from study.loader import load_questions
 from study.question import ask_question
 from study.session import SessionManager
@@ -8,19 +6,12 @@ from study.review import ReviewQueue
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python -m study.cli <questions_json>")
-        print("Example: python -m study.cli output/pharm_questions.json")
-        sys.exit(1)
-
-    questions_path = sys.argv[1]
-    questions = load_questions(questions_path)
-
+    questions = load_questions()
     session = SessionManager(questions)
     score = ScoreTracker()
     review = ReviewQueue()
 
-    print(f"Loaded {len(questions)} questions from {questions_path}.\n")
+    print(f"Loaded {len(questions)} questions.\n")
 
     while session.has_next_question():
         question = session.get_next_question()
@@ -36,6 +27,8 @@ def main():
             print(f"Block {session.current_block_number()} Complete")
             print("=" * 40)
             print(f"You have {review.count()} review question(s).")
+
+            review_number = 1
 
             while review.has_questions():
                 review_question = review.next_question()
