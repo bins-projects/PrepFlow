@@ -7,6 +7,7 @@ JUNK_PREFIXES = (
     "Stuvia.com",
     "Downloaded by:",
     "Distribution of this document is illegal",
+    "Powered by TCPDF",
     "Want to earn",
     "extra per year",
 )
@@ -78,7 +79,22 @@ def clean_text(text: str) -> str:
 
     cleaned_lines = normalize_choice_lines(cleaned_lines)
 
-    return "\n".join(cleaned_lines)
+    normalized_headers = []
+    i = 0
+    while i < len(cleaned_lines):
+        if (
+            i + 1 < len(cleaned_lines)
+            and cleaned_lines[i].strip().upper() == "MULTIPLE"
+            and cleaned_lines[i + 1].strip().upper() == "CHOICE"
+        ):
+            normalized_headers.append("MULTIPLE CHOICE")
+            i += 2
+            continue
+
+        normalized_headers.append(cleaned_lines[i])
+        i += 1
+
+    return "\n".join(normalized_headers)
 
 def main() -> None:
     raw = RAW_PATH.read_text(encoding="utf-8")
