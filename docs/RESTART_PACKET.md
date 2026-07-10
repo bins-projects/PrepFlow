@@ -1,740 +1,284 @@
-# 🔥 PREPFLOW RESTART PACKET v4 (COPY/PASTE ONLY)
+# 🔥 PREPFLOW RESTART PACKET
 
-# PROJECT STATUS
+This document is the operational restart guide for PrepFlow.
 
-PrepFlow now has its first complete compiler pipeline.
+It should always reflect the **current** state of the project.
 
-The Pharmacy source can be compiled from the original PDF into a canonical PrepFlow pack using the new architecture.
+Completed history belongs in CHANGELOG.md.
 
-GitHub is the source of truth.
+GitHub is the technical source of truth.
 
-Current baseline includes:
+---
 
-* Reusable Extract stage
-* Reusable Clean stage
-* Reusable Parse stage
-* Reusable Write stage
+# CURRENT PROJECT STATUS
 
-The first end-to-end compiler pipeline is complete.
+PrepFlow is now a functioning terminal study application built around standardized PrepFlow Packs.
+
+Current completed capabilities:
+
+✓ Compiler pipeline
+✓ Standard PrepFlow Pack format
+✓ Pharmacy Pack
+✓ Medical-Surgical Pack
+✓ Dynamic Pack discovery
+✓ Pack selection
+✓ Chapter selection
+✓ Study sessions
+✓ Review queue
+✓ Score tracking
+
+Repository status:
+
+✓ Clean
+✓ Original source PDFs removed from project
+✓ scratch/ ignored by Git
+✓ Both GitHub mirrors synchronized
+
+---
+
+# PROJECT MISSION
+
+PrepFlow is no longer simply a compiler.
+
+PrepFlow is a study platform.
+
+The compiler exists to generate canonical PrepFlow Packs.
+
+The runtime application consumes only canonical Packs.
+
+Private source material remains outside the project repository.
 
 ---
 
 # CURRENT ARCHITECTURE
 
-```text
-Original Source PDF
+Private Source Material
         │
         ▼
-Extract
+Compiler
         │
         ▼
-Clean / Normalize
+Canonical PrepFlow Packs
         │
         ▼
-Parse
+Study Engine
         │
         ▼
-Canonical PrepFlow Pack
+Pack Selection
         │
         ▼
-Quiz Engine
-Study Modes
 Chapter Selection
-Deduplication
-Search
-Future AI Features
-```
-
-PrepFlow is a compiler.
-
-Everything else consumes compiler output.
-
-Do not redesign this architecture unless implementation evidence requires it.
-
----
-
-# CURRENT PIPELINE
-
-## Stage 1 — Extract
-
-**Status:** ✅ COMPLETE
-
-Module:
-
-```
-tools/extract_text.py
-```
-
-Responsibilities:
-
-* Read PDF
-* Preserve source text
-* No cleaning
-* No parsing
-
-Output:
-
-```
-scratch/pharm_raw.txt
-```
-
----
-
-## Stage 2 — Clean
-
-**Status:** ✅ COMPLETE
-
-Module:
-
-```
-tools/clean_pharm_text.py
-```
-
-Responsibilities:
-
-* Remove advertisements
-* Remove page artifacts
-* Remove headers/footers
-* Normalize formatting
-* Preserve educational content
-
-Output:
-
-```
-scratch/pharm_clean.txt
-```
-
----
-
-## Stage 3 — Parse
-
-**Status:** ✅ COMPLETE
-
-Module:
-
-```
-tools/parse_pharm_module.py
-```
-
-Responsibilities:
-
-* Preserve chapter information
-* Preserve section information
-* Preserve source question numbers
-* Capture choices
-* Capture answers
-* Capture rationales
-* Capture metadata
-
-Current validated result:
-
-```
-1084 Pharmacy questions
-```
-
-Parser improvements completed:
-
-* Full module output
-* Multiple Choice tracking
-* Multiple Response tracking
-* Completion tracking
-* Correct completion answer handling
-* False completion question removed
-* Canonical parser fields added
-
-Output:
-
-```
-scratch/pharm_module.json
-```
-
----
-
-## Stage 4 — Write
-
-**Status:** ✅ COMPLETE
-
-Module:
-
-```
-tools/write_source_module.py
-```
-
-Responsibilities:
-
-* Convert parsed questions into canonical PrepFlow format
-* Generate stable unique IDs
-* Preserve source metadata
-* Produce reusable source packs
-
-Output:
-
-```
-packs/pharmacy.prepflow.json
-```
-
-Validated:
-
-* 1084 questions
-* Stable IDs
-* Correct final completion answer
-* Pack format verified
-
----
-
-# VERIFIED END-TO-END PIPELINE
-
-```text
-Original Pharmacy PDF
         │
         ▼
-Extract
-        ▼
-pharm_raw.txt
-        ▼
-Clean
-        ▼
-pharm_clean.txt
-        ▼
-Parse
-        ▼
-pharm_module.json
-        ▼
-Write
-        ▼
-pharmacy.prepflow.json
-```
-
-This pipeline has been committed and pushed.
-
----
-
-# CURRENT MILESTONE
-
-PrepFlow now produces a canonical Pharmacy source pack.
-
-The compiler architecture is operational.
-
-Future features should consume packs rather than source PDFs whenever possible.
-
----
-
-# DO NOT DELETE YET
-
-Keep until validation is complete:
-
-* Legacy importer scripts
-* Prototype implementations
-* Existing compiler components used for comparison
-
-Retire legacy code only after both supported sources compile successfully through the new pipeline.
-
----
-
-# DEVELOPMENT DISCIPLINE
-
-Continue using:
-
-1. Observe
-2. Inspect
-3. One focused change
-4. Compile
-5. Run
-6. Verify
-7. Commit
-8. Push
-9. Top-down review
-
-Avoid speculative redesign.
-
-Generalize only when evidence from multiple sources requires it.
-
----
-
-# CURRENT PRIORITY
-
-The compiler is no longer the primary unknown.
-
-The next objective is validation.
-
-1. Run the same compiler pipeline against the original Medical-Surgical PDF.
-2. Identify where the pipeline is Pharmacy-specific.
-3. Generalize only the stages that require it.
-4. Produce:
-
-```
-packs/medsurg.prepflow.json
-```
-
-without breaking the Pharmacy pipeline.
-
----
-
-# PROJECT FOCUS
-
-Current supported sources:
-
-* Pharmacy
-* Medical-Surgical
-
-Do not add additional sources until both compile successfully through the same architecture.
-
----
-
-# FIRST TASK WHEN RESTARTING
-
-1. Read this packet.
-2. Review the current GitHub repository.
-3. Confirm the architecture still matches this document.
-4. Begin validating the compiler with the original Medical-Surgical source.
-5. Make only evidence-based generalizations.
-6. Verify Pharmacy still compiles successfully after each change.
-7. Commit and push after each milestone.
-I think this deserves to become the **official Restart Packet v2.0**. This version captures not only where we are technically, but also the engineering philosophy we've developed over the past several weeks. It also incorporates the new **Source Consolidation Goal**, which I think is one of the most important architectural decisions we've made.
-
-I'd save it as:
-
-```
-docs/PrepFlow_Restart_Packet_v2.0.md
-```
-
----
-
-# PrepFlow Restart Packet v2.0
-
-## Project Status
-
-### Current Milestone
-
-The second supported source has been successfully validated.
-
-Both supported source banks (Pharmacy and Medical-Surgical) now compile successfully through the complete PrepFlow pipeline.
-
-Current repository:
-
-**GitHub (Architectural Source of Truth)**
-
-`https://github.com/bins-projects/PF-O`
-
-The repository is committed and pushed.
-
-Future work should always begin with a **Top-Down Assessment** of the committed GitHub repository before making architectural decisions.
-
----
-
-# Project Mission
-
-PrepFlow exists to convert trusted nursing question banks into clean, validated, canonical data packs that can power quizzes, study sessions, analytics, adaptive learning, and future educational tools.
-
-Current objective is intentionally narrow.
-
-**Current Goal**
-
-Produce trustworthy canonical PrepFlow packs.
-
-Everything else depends on trustworthy data.
-
----
-
-# Current Architecture
-
-```
-Original PDF
+Study Session
         │
         ▼
-Extract
-        │
-        ▼
-Raw Text
-        │
-        ▼
-Clean
-        │
-        ▼
-Normalized Text
-        │
-        ▼
-Parse
-        │
-        ▼
-Structured Module
-        │
-        ▼
-Write
-        │
-        ▼
-Canonical PrepFlow Pack
-```
+Review Queue
 
-This architecture has now been validated using two independent source books.
+This architecture is considered stable.
 
-Do not redesign it without evidence.
+Do not redesign without implementation evidence.
 
 ---
 
-# Validation Status
+# EVERY DEVELOPMENT SESSION
 
-## Pharmacy
-
-Validated
-
-Pipeline
-
-```
-PDF
-↓
-Extract
-↓
-Clean
-↓
-Parse
-↓
-Write
-↓
-packs/pharmacy.prepflow.json
-```
-
-Results
-
-* 1084 questions
-* Stable IDs
-* Canonical PrepFlow pack generated
+## 1. Read this Restart Packet.
 
 ---
 
-## Medical-Surgical
+## 2. Perform a Top-Down Assessment.
 
-Validated
+Definition:
 
-Pipeline
+Top-Down Assessment means inspecting the committed GitHub mirror.
 
-```
-PDF
-↓
-Extract
-↓
-Clean
-↓
-Parse
-↓
-Write
-↓
-packs/medical_surgical.prepflow.json
-```
+GitHub is the architectural source of truth.
 
-Results
+Do not begin from memory.
 
-* 1435 questions
-* Chapters 1–63
-* Zero duplicate IDs
-* Canonical PrepFlow pack generated
+Do not begin from local files unless debugging uncommitted work.
 
 ---
 
-# Architectural Validation
+## 3. Repository Audit
 
-The second source taught the architecture rather than forcing redesign.
+Walk the project from the top down.
 
-## Extract
+Inspect every major folder.
 
-No changes required.
+Inspect every project document.
 
-Generic.
+Ask:
 
----
+• Does this still serve a purpose?
 
-## Clean
+• Has the project evolved beyond this?
 
-Two evidence-based improvements.
+• Is functionality duplicated elsewhere?
 
-Added removal of:
+• Is this temporary?
 
-* Powered by TCPDF
+Look for:
 
-Added normalization of split section headers:
+• obsolete scripts
 
-```
-MULTIPLE
-CHOICE
-```
+• obsolete documents
 
-↓
+• compatibility code
 
-```
-MULTIPLE CHOICE
-```
+• dead architecture
 
-Cleaner now supports both validated sources.
+• redundant outputs
 
----
+• completed milestones that no longer belong
 
-## Parse
+If something appears obsolete:
 
-Parser algorithm required no structural changes.
+DO NOT DELETE IT.
 
-Temporary validation overrides confirmed the parser itself is already generic.
+Add it to a Cleanup Candidate list.
 
----
+Only remove it after proving nothing depends on it.
 
-## Write
-
-Writer logic proved reusable.
-
-Generalized using configurable:
-
-* input path
-* output path
-* pack id
-* title
-* source
-* id prefix
-
-No algorithm redesign required.
+The project should become simpler over time whenever possible.
 
 ---
 
-# Repository State
+## 4. Verify PROJECT_STATE.md
 
-Current repository status:
+Confirm that PROJECT_STATE matches the committed GitHub repository.
 
-Committed
+If not:
 
-Pushed
-
-GitHub synchronized
-
-Expected untracked directory:
-
-```
-scratch/
-```
-
-Scratch remains intentionally outside version control.
+Update PROJECT_STATE before writing code.
 
 ---
 
-# Canonical Outputs
+## 5. Review V1_RELEASE_CHECKLIST.md
 
-Current canonical generated packs
+Choose exactly ONE unchecked milestone.
 
-```
-packs/pharmacy.prepflow.json
-
-packs/medical_surgical.prepflow.json
-```
-
-These are now considered the canonical outputs of the compiler.
+Ignore future ideas.
 
 ---
 
-# Known Issues
+## 6. Development Workflow
 
-## Pharmacy Duplicate IDs
-
-Validation revealed:
-
-46 duplicate IDs
-
-Investigation showed these originate upstream inside the Pharmacy source/module.
-
-The writer is **not** producing duplicate IDs.
-
-Likely source:
-
-Duplicate Chapter 02 material.
-
-Treat this as a **source validation task**, not a compiler bug.
-
----
-
-# Current Priorities
-
-Current work is now **data validation**, not feature development.
-
-Compiler architecture is no longer the primary concern.
-
-The current objective is verifying the integrity of the generated canonical data.
-
----
-
-# Source Consolidation Goal
-
-One of the major architectural goals of PrepFlow is to separate **source compilation** from **application runtime**.
-
-During development, the project intentionally contains multiple stages:
-
-```
-Original PDF
-↓
-Raw Text
-↓
-Clean Text
-↓
-Parsed Module
-↓
-Canonical PrepFlow Pack
-```
-
-These intermediate artifacts exist only to produce trustworthy canonical packs.
-
-After Pharmacy and Medical-Surgical have been fully validated for question integrity, answer integrity, metadata accuracy, chapter structure, and overall completeness:
-
-* the original PDFs should no longer be required by the runtime application,
-* extracted text files should no longer be required,
-* cleaned text files should no longer be required,
-* parsed module files should no longer be required.
-
-PrepFlow itself should operate exclusively from the validated canonical PrepFlow packs.
-
-The compiler remains in the repository as a **build tool** for regenerating packs when source books change, but the application runtime should consume only canonical packs.
-
-This keeps the deployed application:
-
-* lean,
-* easier to maintain,
-* free of redundant data,
-* clearly separated into **build-time** and **run-time** responsibilities.
-
----
-
-# Next Milestone
-
-Perform complete validation of both canonical packs.
-
-Objectives
-
-* Investigate Pharmacy Chapter 02 duplication.
-* Verify chapter counts.
-* Verify section counts.
-* Verify question counts.
-* Verify answer integrity.
-* Verify rationale integrity.
-* Confirm no missing or duplicated chapters.
-* Confirm metadata consistency.
-
-Only after canonical data is considered trustworthy should new features be developed.
-
----
-
-# Development Workflow
-
-Every engineering task follows the same discipline.
-
-```
 Observe
+
 ↓
+
 Inspect
+
 ↓
+
 One focused change
+
 ↓
+
 Compile
+
 ↓
+
 Run
+
 ↓
+
 Verify
+
 ↓
+
 Commit
+
 ↓
+
 Push
+
 ↓
-Top-Down Assessment
+
+Update PROJECT_STATE
+
 ↓
+
+Update RESTART_PACKET
+
+↓
+
 Repeat
-```
-
-Architecture should be taught by evidence.
-
-Never redesign in anticipation of future problems.
 
 ---
 
-# Top-Down Assessment
+# DEVELOPMENT RULES
 
-Definition
+GitHub is the source of truth.
 
-Review the committed GitHub repository before selecting the next milestone.
+Top-Down Assessment always means inspect the GitHub mirror.
 
-GitHub is treated as the architectural source of truth.
+One milestone at a time.
 
-Inspect local files only when:
-
-* debugging uncommitted work,
-* validating experiments,
-* GitHub and local differ.
-
----
-
-# GitHub Workflow
-
-Every new development session begins with:
-
-1. Refresh GitHub.
-2. Open the repository.
-3. Perform a Top-Down Assessment.
-4. Select exactly one milestone.
-5. Ignore future ideas until the milestone is complete.
-
----
-
-# Scope Discipline
-
-Avoid logic loops.
+Architecture follows evidence.
 
 Avoid speculative redesign.
 
 Avoid feature creep.
 
-Do not begin new functionality simply because the architecture appears capable.
+Avoid logic loops.
 
-Stay focused on the current milestone.
+Future ideas belong in IDEAS.md.
 
-Maintain a separate "Parking Lot" for future ideas so they do not interrupt current engineering work.
+Do not optimize for hypothetical future requirements.
 
----
-
-# Parking Lot
-
-Deferred until canonical packs are validated.
-
-* Duplicate detection enhancements.
-* Pack validator.
-* Validation reports.
-* Topic indexing.
-* Search.
-* Adaptive quizzes.
-* Learning analytics.
-* Flashcards.
-* AI tutoring.
-* Assessment engine integration.
-* Additional source books.
+Prefer a functional product over architectural perfection.
 
 ---
 
-# Success Criteria for Phase One
+# CURRENT VERSION 1 PRIORITIES
 
-Phase One is complete when:
+Current work is focused on completing the terminal version of PrepFlow.
 
-* Pharmacy validated.
-* Medical-Surgical validated.
-* Canonical packs verified.
-* Question and answer integrity confirmed.
-* Source duplication investigated.
-* Runtime successfully operates from canonical packs alone.
+Reference:
 
-Only then does PrepFlow move from **compiler validation** into **application expansion**.
+docs/V1_RELEASE_CHECKLIST.md
+
+Do not begin Version 2 work until Version 1 is complete.
 
 ---
 
-# Appendix A — Assistant Handoff Note (Paste into a New Chat)
+# CURRENT RUNTIME
 
-The committed GitHub repository (`bins-projects/PF-O`) is the source of truth. The Pharmacy and Medical-Surgical pipelines have both been validated end-to-end using the shared Extract → Clean → Parse → Write architecture. Med-Surg validation required only two cleaner improvements (removing `Powered by TCPDF` and normalizing split `MULTIPLE`/`CHOICE` headers) plus writer configuration; the parser algorithm itself required no structural changes.
+Canonical runtime data:
 
-The current engineering objective is **data validation**, not feature development. Investigate the Pharmacy Chapter 02 duplicate source/module issue (46 duplicate IDs), verify chapter, section, question, answer, rationale, and metadata integrity against the original sources, and ensure both canonical packs accurately represent the books. Treat this as a **source validation task**, not a compiler bug, until evidence proves otherwise.
+packs/
 
-Maintain the established workflow:
+    pharmacy.prepflow.json
 
-**Observe → Inspect → One focused change → Compile → Run → Verify → Commit → Push → Top-Down Assessment → Repeat.**
+    medical_surgical.prepflow.json
 
-Use the committed GitHub repository for inspection before asking for local files. Keep a strict Parking Lot for future ideas to avoid logic loops and feature creep.
+The Study Engine should consume only canonical PrepFlow Packs.
 
-**Long-term architectural goal:** once question and answer integrity has been fully verified, transition PrepFlow to operate solely from the canonical PrepFlow packs. The original PDFs and intermediate artifacts become build inputs only. The compiler remains as a build tool, while the runtime application consumes only the validated canonical packs. This separation keeps the project lean, maintainable, and focused on trustworthy data.
+Original source material is intentionally excluded from the project.
+
+---
+
+# CLEANUP PHILOSOPHY
+
+Temporary files should remain temporary.
+
+Generated artifacts should remain reproducible.
+
+The repository should become cleaner as the project matures.
+
+Never keep historical files simply because they once had value.
+
+---
+
+# SUCCESS CRITERIA
+
+Version 1 is complete when every item in:
+
+docs/V1_RELEASE_CHECKLIST.md
+
+has been completed and validated.
+
+Only then should Version 2 planning begin.
