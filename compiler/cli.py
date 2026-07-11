@@ -34,18 +34,6 @@ def print_validation_failure(problems: list[CompilerDiagnostic]) -> None:
     print()
     print("Compilation aborted.")
 
-def print_deduplication(removed: list[str]) -> None:
-    if not removed:
-        return
-
-    print()
-    print("Deduplication")
-    print(f"Questions removed: {len(removed)}")
-
-    for removal in removed:
-        print(f"- {removal}")
-
-
 def compile_docx(source_path: str) -> None:
     output_dir = Path("output")
     output_dir.mkdir(exist_ok=True)
@@ -88,8 +76,6 @@ def compile_docx(source_path: str) -> None:
     if fatal_problems:
         print_validation_failure(fatal_problems)
         sys.exit(1)
-
-    print_deduplication(result.removed_duplicates)
 
     print("Loaded document.")
     print(f"Source: {raw_document['source_path']}")
@@ -157,8 +143,6 @@ def compile_json(source_path: str) -> None:
     if fatal_problems:
         print_validation_failure(fatal_problems)
         sys.exit(1)
-
-    print_deduplication(result.removed_duplicates)
 
     print("Loaded question JSON.")
     print(f"Source: {source_path}")

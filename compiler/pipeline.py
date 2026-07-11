@@ -13,7 +13,6 @@ from compiler.exporter import export_pack
 class CompilationResult:
     pack: Pack | None
     problems: list[CompilerDiagnostic]
-    removed_duplicates: list[str]
     skipped_questions: list[CompilerDiagnostic]
     exported_path: Path | None = None
 
@@ -51,7 +50,6 @@ def compile_questions(
         return CompilationResult(
             pack=None,
             problems=diagnostics,
-            removed_duplicates=[],
             skipped_questions=[],
             exported_path=None,
         )
@@ -90,7 +88,6 @@ def compile_questions(
     return CompilationResult(
         pack=pack,
         problems=diagnostics,
-        removed_duplicates=[],
         skipped_questions=skipped_questions,
         exported_path=exported_path,
     )

@@ -39,4 +39,3 @@ def test_compile_preserves_distinct_questions_with_repeated_numbers() -> None:
 
     assert result.pack is not None
     assert len(result.pack.questions) == 2
-    assert result.removed_duplicates == []
