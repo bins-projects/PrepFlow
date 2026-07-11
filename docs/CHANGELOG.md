@@ -1,6 +1,39 @@
 # PrepFlow Changelog
 
 This document records major project milestones. Minor edits and intermediate work are preserved in Git history.
+
+## Version 0.8.0 — Release Preparation
+
+Date: 2026-07-11
+
+### Packaging
+
+- Proved standalone Linux packaging with PyInstaller.
+- Added packaged-runtime Pack discovery.
+- Excluded generated PyInstaller build artifacts from Git.
+
+### Privacy
+
+- Replaced personal Git author and committer metadata with the PrepFlow identity.
+- Removed personal identifying information from reachable Git history.
+- Removed historical private source and scratch artifacts.
+- Verified sanitized history across the private repository and public mirror.
+
+### Canonical Packs
+
+- Removed residual TCPDF source branding from the Pharmacy Pack.
+- Cleaned 527 malformed Medical-Surgical chapter-title occurrences.
+- Preserved all 1,435 Medical-Surgical questions.
+- Verified zero remaining malformed Medical-Surgical chapter names.
+
+### Validation
+
+- Confirmed both Git remotes match the sanitized local history.
+- Confirmed canonical Pack JSON remains valid.
+- Existing automated tests pass.
+
+---
+
 ## Sprint 6 — Pack Validation
 # Version 0.6.2
 

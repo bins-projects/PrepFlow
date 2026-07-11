@@ -30,37 +30,7 @@ Architecture belongs in the ARCHITECTURE_BIBLE.
 
 ---
 
-# Study Engine
-
-☒ Dynamic Pack discovery
-
-☒ Pack selection
-
-☒ Chapter selection
-
-☒ Block-based study sessions
-
-☒ Randomized question order
-
-☒ Review queue
-
-☒ First-pass scoring
-
-☒ Multiple Choice support
-
-☒ Multiple Response support
-
-☒ Completion support
-
-☒ Ordered Response support
-
----
-
 # Regression Tests
-
-☒ Ordered Response preserves answer order
-
-☒ Multiple Response ignores answer order
 
 ☐ Chapter filtering
 
@@ -78,10 +48,6 @@ Architecture belongs in the ARCHITECTURE_BIBLE.
 
 # Repository
 
-☐ Cleanup committed
-
-☐ Public mirror updated
-
 ☐ Obsolete documentation removed
 
 ☐ Repository structure finalized
@@ -89,14 +55,6 @@ Architecture belongs in the ARCHITECTURE_BIBLE.
 ---
 
 # Documentation
-
-☒ README
-
-☒ ARCHITECTURE_BIBLE
-
-☒ RESTART_PACKET
-
-☒ V1_RELEASE_CHECKLIST
 
 ☐ CHANGELOG reviewed
 
