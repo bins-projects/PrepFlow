@@ -343,3 +343,286 @@ Architecture follows evidence.
 GitHub is the source of truth.
 
 Execution is preferred over discussion once the architectural decision has already been made.
+    
+
+
+
+
+This is a good point to capture the milestone. Since you're ready to stop, I wouldn't spend time editing multiple project documents tonight.
+
+Instead, create one detailed handoff entry. Tomorrow, we can copy the relevant parts into `RESTART_PACKET.md`, `ARCHITECTURE_BIBLE.md`, or any other permanent document where they belong.
+
+# PREPFLOW HANDOFF — STANDALONE PACKAGING MILESTONE
+
+## Milestone Summary
+
+This session successfully proved that PrepFlow can be packaged and launched as a standalone application rather than only as a Python project.
+
+This is a major V1 milestone.
+
+PrepFlow has now transitioned from:
+
+> "Runs from the repository with Python."
+
+to
+
+> "Can be bundled into a distributable application."
+
+No installer has been created yet, but the packaging pipeline has been proven.
+
+---
+
+# Repository State
+
+Current commit:
+
+`5d279b2`
+
+Commit message:
+
+> Support packaged PrepFlow builds and ignore PyInstaller artifacts
+
+Repository was intentionally kept clean.
+
+Only source changes were committed.
+
+Generated build artifacts were excluded from version control.
+
+`.gitignore` now ignores:
+
+* build/
+* dist/
+* *.spec
+
+This keeps future packaging builds from polluting commits.
+
+---
+
+# Packaging Investigation
+
+Packaging approach selected:
+
+PyInstaller (`--onedir`)
+
+Reasoning:
+
+* Smallest proof-of-concept
+* Preserves dynamic Pack discovery
+* Easy debugging
+* Portable folder
+* Future installer can wrap the same output
+
+No GUI work was started.
+
+No installer work was started.
+
+No architecture redesign was performed.
+
+---
+
+# Packaging Bug #1
+
+Initial packaged build launched but immediately failed with:
+
+FileNotFoundError:
+No PrepFlow packs found in packs/
+
+Root cause:
+
+`study/loader.py` assumed:
+
+```python
+PACKS_DIR = Path("packs")
+```
+
+This only works when the repository root is the working directory.
+
+A packaged application does not necessarily execute from that location.
+
+---
+
+# Packaging Fix
+
+Loader now detects whether PrepFlow is running:
+
+* from source
+* from a PyInstaller bundle
+
+Source mode:
+
+Uses repository root.
+
+Packaged mode:
+
+Uses the PyInstaller runtime bundle location (`sys._MEIPASS`) to locate bundled Packs.
+
+This preserves existing development behavior while enabling standalone execution.
+
+---
+
+# Verification
+
+Packaging process completed successfully.
+
+PyInstaller build succeeded.
+
+Application launched successfully.
+
+Pack discovery worked.
+
+Pack selection displayed:
+
+* Medical-Surgical
+* Pharmacy
+
+This confirms:
+
+* executable launches
+* bundled data is located correctly
+* loader fix is functioning
+
+No further runtime issues were investigated this session.
+
+---
+
+# Current Distribution Status
+
+Linux packaging has been proven.
+
+Windows executable has NOT yet been built.
+
+This is expected because PyInstaller is not a cross-compiler.
+
+Windows build will occur from a Windows environment after remaining cleanup work.
+
+---
+
+# New Priority Order
+
+The previous next milestone was:
+
+Standalone executable.
+
+That milestone has now been achieved as a proof-of-concept.
+
+New priority order:
+
+1. Privacy & Release Audit
+2. Chapter display-name cleanup
+3. Windows standalone build
+4. Clean-machine testing
+5. Beta distribution
+6. Installer (optional)
+
+---
+
+# Privacy & Release Audit (Highest Priority)
+
+Before ANY beta release:
+
+Inspect and remove:
+
+* personal names
+* usernames
+* email addresses
+* machine paths
+* repository metadata
+* executable metadata
+* documentation references
+* screenshots
+* generated Pack metadata
+* Git author/history if appropriate
+
+No classmate receives PrepFlow until this audit is complete.
+
+---
+
+# Remaining Cosmetic Cleanup
+
+Observed during packaging verification:
+
+Several Medical-Surgical chapter names still contain source-title remnants such as:
+
+* "Linton:"
+* truncated book titles
+* partial source headers
+
+These do not affect functionality.
+
+They should be cleaned before beta testing because they are visible to users.
+
+Compiler cleanup is expected to be straightforward and should regenerate the canonical Pack afterward.
+
+---
+
+# Development Rules Reaffirmed
+
+Continue following:
+
+Observe
+
+↓
+
+Inspect
+
+↓
+
+One focused change
+
+↓
+
+Build
+
+↓
+
+Run
+
+↓
+
+Verify
+
+↓
+
+Commit
+
+↓
+
+Push
+
+↓
+
+Repeat
+
+Avoid speculative fixes.
+
+Avoid architecture redesign.
+
+Avoid logic loops.
+
+Only fix observed problems.
+
+---
+
+# Current V1 Status
+
+Compiler:
+
+Stable.
+
+Study Engine:
+
+Stable.
+
+Canonical Packs:
+
+Stable.
+
+Standalone packaging:
+
+Proven.
+
+Next milestone:
+
+Privacy & Release Audit.
+
+I think this is the right level of detail for a handoff: it captures **what changed, why it changed, how it was verified, and exactly where to resume** without cluttering the permanent documentation tonight. Tomorrow we can distill this into the Architecture Bible and Restart Packet where appropriate.
