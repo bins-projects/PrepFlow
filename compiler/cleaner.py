@@ -12,6 +12,54 @@ JUNK_PATTERNS = [
 ]
 
 
+CHAPTER_HEADING_RE = re.compile(
+    r"^Chapter\s+(\d{1,3})\s*:\s+.+$",
+    re.IGNORECASE,
+)
+
+
+def remove_leading_chapter_index(lines: list[str]) -> list[str]:
+    """
+    Remove a leading table-of-contents-style chapter list.
+
+    A chapter index is recognized when several sequential chapter headings
+    appear near the beginning and the first chapter appears again later,
+    marking the start of the real content.
+    """
+    matches: list[tuple[int, int]] = []
+
+    for index, line in enumerate(lines):
+        match = CHAPTER_HEADING_RE.match(line.strip())
+        if match:
+            matches.append((index, int(match.group(1))))
+
+    if len(matches) < 4:
+        return lines
+
+    first_line, first_chapter = matches[0]
+
+    for position in range(1, len(matches)):
+        repeated_line, repeated_chapter = matches[position]
+
+        if repeated_chapter != first_chapter:
+            continue
+
+        index_numbers = [
+            chapter
+            for _, chapter in matches[:position]
+        ]
+
+        if len(index_numbers) < 3:
+            continue
+
+        if index_numbers != sorted(set(index_numbers)):
+            continue
+
+        return lines[:first_line] + lines[repeated_line:]
+
+    return lines
+
+
 def clean_text(text: str) -> str:
     """
     Remove generic extraction artifacts.
@@ -36,6 +84,8 @@ def clean_text(text: str) -> str:
         ).rstrip()
 
         lines.append(line)
+
+    lines = remove_leading_chapter_index(lines)
 
     cleaned = "\n".join(lines)
 

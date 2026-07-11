@@ -1,8 +1,10 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
+import json
 import re
 
 from compiler.cleaner import clean_text
+from compiler.detector import DetectionReport, detect_structure
 from compiler.pdf_reader import read_pdf
 
 
@@ -85,6 +87,14 @@ def extract_source(request: ImportRequest) -> ExtractionResult:
         raw_artifact=raw_artifact,
     )
 
+
+@dataclass(frozen=True)
+class DetectionResult:
+    cleaning: CleaningResult
+    report: DetectionReport
+    report_artifact: Path
+
+
 def clean_extraction(extraction: ExtractionResult) -> CleaningResult:
     """Clean extracted source text and preserve an inspectable artifact."""
     cleaned_text = clean_text(extraction.raw_text)
@@ -98,4 +108,23 @@ def clean_extraction(extraction: ExtractionResult) -> CleaningResult:
         extraction=extraction,
         cleaned_text=cleaned_text,
         cleaned_artifact=cleaned_artifact,
+    )
+
+
+def detect_cleaned_source(cleaning: CleaningResult) -> DetectionResult:
+    """Detect document structure and preserve an inspectable report."""
+    report = detect_structure(cleaning.cleaned_text)
+
+    report_artifact = (
+        cleaning.cleaned_artifact.parent / "03_detection.json"
+    )
+    report_artifact.write_text(
+        json.dumps(asdict(report), indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    return DetectionResult(
+        cleaning=cleaning,
+        report=report,
+        report_artifact=report_artifact,
     )

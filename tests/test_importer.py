@@ -96,3 +96,47 @@ def test_clean_extraction_writes_clean_artifact(
     assert result.cleaned_artifact.read_text(
         encoding="utf-8"
     ) == result.cleaned_text
+
+
+def test_detect_cleaned_source_writes_report(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from compiler.importer import (
+        clean_extraction,
+        detect_cleaned_source,
+    )
+
+    source = tmp_path / "book.pdf"
+    source.write_bytes(b"placeholder")
+
+    monkeypatch.setattr(
+        "compiler.importer.read_pdf",
+        lambda path: (
+            "Chapter 01: Test Chapter\n"
+            "MULTIPLE CHOICE\n"
+            "1. Example question\n"
+            "ANS: A\n"
+        ),
+    )
+
+    request = ImportRequest(
+        source_path=source,
+        pack_id="example-book",
+        title="Example Book",
+        workspace_root=tmp_path / "imports",
+    )
+
+    cleaning = clean_extraction(extract_source(request))
+    result = detect_cleaned_source(cleaning)
+
+    assert result.report.chapter_count == 1
+    assert result.report.question_count == 1
+    assert result.report.section_headers == ("MULTIPLE CHOICE",)
+    assert result.report_artifact == (
+        tmp_path
+        / "imports"
+        / "example-book"
+        / "03_detection.json"
+    )
+    assert result.report_artifact.exists()
