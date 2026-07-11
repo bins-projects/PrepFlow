@@ -4,7 +4,7 @@
 
 This document is ChatGPT's operational bootloader.
 
-Charlie pastes this into a new conversation whenever a previous chat has become slow, bloated, or has lost focus.
+The user pastes this into a new conversation whenever a previous chat has become slow, bloated, or has lost focus.
 
 This document is **not** project documentation.
 
@@ -30,7 +30,7 @@ Never begin architectural discussions from memory alone.
 
 # GitHub-First Rule
 
-Before asking Charlie for:
+Before asking the user for:
 
 * terminal output
 * source code
