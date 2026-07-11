@@ -73,6 +73,10 @@ def parse_source_questions(text: str) -> list[dict]:
             )
             continue
 
+        if not question["choices"] and not reading_rationale:
+            question["stem"] += " " + line
+            continue
+
         answer_match = ANSWER_RE.match(line)
         if answer_match:
             question["correct_answers"] = re.findall(

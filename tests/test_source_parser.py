@@ -40,3 +40,28 @@ MSC: Management of Care
     assert question["rationale"] == (
         "Maslow's hierarchy helps prioritize physiological and psychological needs."
     )
+
+
+def test_parse_wrapped_question_stem() -> None:
+    text = """Chapter 1: Nursing Theory
+
+MULTIPLE CHOICE
+
+4. The nursing instructor is researching the five proficiencies regarded as essential for students and
+professionals. Which organization added safety as a sixth competency?
+a. Quality and Safety Education for Nurses
+b. Institute of Medicine
+c. American Association of Colleges of Nursing
+d. National League for Nursing
+ANS: A
+QSEN added safety as a sixth competency.
+DIF: Remembering
+"""
+
+    questions = parse_source_questions(text)
+
+    assert questions[0]["stem"] == (
+        "The nursing instructor is researching the five proficiencies regarded as "
+        "essential for students and professionals. Which organization added safety "
+        "as a sixth competency?"
+    )
