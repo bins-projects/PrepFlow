@@ -50,12 +50,14 @@ def get_correct_answers(question):
     return list(str(answer).upper())
 
 
-def check_answer(user_answer, correct_answers):
+def check_answer(user_answer, correct_answers, question_type=None):
     user_answer = normalize_answer(user_answer)
-    correct_set = set(correct_answers)
-    user_set = set(user_answer)
+    normalized_correct = [normalize_answer(str(answer)) for answer in correct_answers]
 
-    return user_set == correct_set
+    if question_type == "ordered_response":
+        return list(user_answer) == normalized_correct
+
+    return set(user_answer) == set(normalized_correct)
 
 
 def ask_question(question, header=None):
@@ -74,7 +76,7 @@ def ask_question(question, header=None):
 
     answer = input("Your answer: ")
     correct_answers = get_correct_answers(question)
-    is_correct = check_answer(answer, correct_answers)
+    is_correct = check_answer(answer, correct_answers, question.get("type"))
 
     print()
     if is_correct:

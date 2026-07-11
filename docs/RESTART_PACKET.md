@@ -1,169 +1,302 @@
-# 🔥 PREPFLOW RESTART PACKET
+# PREPFLOW RESTART PACKET
 
-This document is the operational restart guide for PrepFlow.
+## Purpose
 
-It should always reflect the **current** state of the project.
+This document is ChatGPT's operational bootloader.
 
-Completed history belongs in CHANGELOG.md.
+Charlie pastes this into a new conversation whenever a previous chat has become slow, bloated, or has lost focus.
 
-GitHub is the technical source of truth.
+This document is **not** project documentation.
 
----
-
-# CURRENT PROJECT STATUS
-
-PrepFlow is now a functioning terminal study application built around standardized PrepFlow Packs.
-
-Current completed capabilities:
-
-✓ Compiler pipeline
-✓ Standard PrepFlow Pack format
-✓ Pharmacy Pack
-✓ Medical-Surgical Pack
-✓ Dynamic Pack discovery
-✓ Pack selection
-✓ Chapter selection
-✓ Study sessions
-✓ Review queue
-✓ Score tracking
-
-Repository status:
-
-✓ Clean
-✓ Original source PDFs removed from project
-✓ scratch/ ignored by Git
-✓ Both GitHub mirrors synchronized
+Its only purpose is to rapidly restore the current project state, operating rules, workflow, and immediate priority so work resumes efficiently.
 
 ---
 
-# PROJECT MISSION
+# Source of Truth
 
-PrepFlow is no longer simply a compiler.
+The committed GitHub repository is the technical source of truth.
 
-PrepFlow is a study platform.
+Memory is secondary.
 
-The compiler exists to generate canonical PrepFlow Packs.
+If memory and GitHub disagree:
 
-The runtime application consumes only canonical Packs.
+1. Inspect the committed repository.
+2. Trust the committed implementation.
+3. Update this Restart Packet if necessary.
 
-Private source material remains outside the project repository.
+Never begin architectural discussions from memory alone.
 
 ---
 
-# CURRENT ARCHITECTURE
+# GitHub-First Rule
+
+Before asking Charlie for:
+
+* terminal output
+* source code
+* file contents
+* directory listings
+* helper scripts
+
+first ask:
+
+> **Can the committed GitHub repository answer this?**
+
+If yes:
+
+Inspect GitHub.
+
+Only request local information when:
+
+* work has not been committed
+* runtime behavior must be observed
+* tests must be executed
+* dependencies must be inspected
+* GitHub genuinely cannot answer the question
+
+GitHub inspection is the default workflow.
+
+---
+
+# Current Architecture
+
+PrepFlow is a terminal-based study platform.
+
+Architecture:
 
 Private Source Material
-        │
-        ▼
-Compiler
-        │
-        ▼
-Canonical PrepFlow Packs
-        │
-        ▼
-Study Engine
-        │
-        ▼
-Pack Selection
-        │
-        ▼
-Chapter Selection
-        │
-        ▼
-Study Session
-        │
-        ▼
-Review Queue
 
-This architecture is considered stable.
+↓
+
+Compiler
+
+↓
+
+Canonical PrepFlow Packs
+
+↓
+
+Study Engine
+
+The compiler exists only to produce canonical PrepFlow Packs.
+
+The Study Engine consumes only canonical Packs.
+
+Private source material intentionally remains outside the repository.
+
+Architecture is considered stable.
 
 Do not redesign without implementation evidence.
 
 ---
 
-# EVERY DEVELOPMENT SESSION
+# Current Repository Goals
 
-## 1. Read this Restart Packet.
+Current work is focused on producing a lean Version 1 repository.
 
----
+The objective is not adding features.
 
-## 2. Perform a Top-Down Assessment.
+The objective is reducing scaffolding until the remaining repository represents only the product.
 
-Definition:
+Every remaining file should justify its existence.
 
-Top-Down Assessment means inspecting the committed GitHub mirror.
-
-GitHub is the architectural source of truth.
-
-Do not begin from memory.
-
-Do not begin from local files unless debugging uncommitted work.
+Temporary build artifacts, obsolete documentation, migration utilities, and one-time tooling should disappear once their purpose has been fulfilled.
 
 ---
 
-## 3. Repository Audit
+# Documentation Philosophy
 
-Walk the project from the top down.
+Documentation should remain intentionally small.
 
-Inspect every major folder.
+Target structure:
 
-Inspect every project document.
+README.md
 
-Ask:
+ARCHITECTURE_BIBLE.md
 
-• Does this still serve a purpose?
+RESTART_PACKET.md
 
-• Has the project evolved beyond this?
+V1_RELEASE_CHECKLIST.md
 
-• Is functionality duplicated elsewhere?
+CHANGELOG.md
 
-• Is this temporary?
+IDEAS.md
 
-Look for:
+Everything else should either:
 
-• obsolete scripts
+* merge into one of these documents
+* or be removed.
 
-• obsolete documents
+Documentation should not duplicate itself.
 
-• compatibility code
-
-• dead architecture
-
-• redundant outputs
-
-• completed milestones that no longer belong
-
-If something appears obsolete:
-
-DO NOT DELETE IT.
-
-Add it to a Cleanup Candidate list.
-
-Only remove it after proving nothing depends on it.
-
-The project should become simpler over time whenever possible.
+Each document should have exactly one responsibility.
 
 ---
 
-## 4. Verify PROJECT_STATE.md
+# Purpose of Each Document
 
-Confirm that PROJECT_STATE matches the committed GitHub repository.
+README
 
-If not:
+Repository front page.
 
-Update PROJECT_STATE before writing code.
-
----
-
-## 5. Review V1_RELEASE_CHECKLIST.md
-
-Choose exactly ONE unchecked milestone.
-
-Ignore future ideas.
+Explain what PrepFlow is, how to run it, and where to find additional information.
 
 ---
 
-## 6. Development Workflow
+ARCHITECTURE_BIBLE
+
+Permanent technical truth.
+
+Contains:
+
+* system architecture
+* canonical data model
+* compiler pipeline
+* study engine
+* repository structure
+* architectural boundaries
+
+Contains no temporary project status.
+
+---
+
+RESTART_PACKET
+
+Operational bootloader for ChatGPT.
+
+Contains:
+
+* current workflow
+* current operating rules
+* current project focus
+* startup procedure
+* failure-mode reminders
+
+Contains no implementation history beyond lessons that improve execution.
+
+---
+
+V1_RELEASE_CHECKLIST
+
+Only unfinished Version 1 work.
+
+No philosophy.
+
+No brainstorming.
+
+No future roadmap.
+
+---
+
+CHANGELOG
+
+Append-only milestone history.
+
+Not project status.
+
+---
+
+IDEAS
+
+Parking lot for Version 2 and beyond.
+
+Ideas never interrupt Version 1 execution.
+
+---
+
+# Startup Procedure
+
+At the beginning of every PrepFlow session:
+
+1. Inspect the committed GitHub repository.
+2. Confirm repository health.
+3. Compare documentation against implementation.
+4. Identify the current Version 1 milestone.
+5. Execute exactly one milestone.
+
+Avoid reopening already-decided architectural discussions.
+
+---
+
+# Top-Down Assessment
+
+A Top-Down Assessment means inspecting the committed GitHub repository.
+
+It is not a file-by-file review.
+
+It should produce:
+
+* Repository Health
+* Architecture
+* Runtime
+* Documentation
+* Cleanup Candidates
+* Exactly one recommended Version 1 milestone
+
+Use GitHub to answer every question possible.
+
+Only request local information when necessary.
+
+---
+
+# Failure Modes
+
+## Logic Loops
+
+Do not replace execution with repetitive inspection.
+
+Examples:
+
+* opening many files without making progress
+* repeated grep searches
+* repeatedly discussing decisions that have already been made
+* expanding plans instead of implementing them
+
+When work becomes repetitive:
+
+Stop.
+
+Return to the architectural question.
+
+Choose the smallest executable action.
+
+Execute.
+
+---
+
+## Feature Creep
+
+Do not redesign working systems during Version 1.
+
+Ideas belong in IDEAS.md.
+
+Execution belongs in the current milestone.
+
+---
+
+## Documentation Growth
+
+Avoid creating documents to explain temporary work.
+
+Prefer improving an existing authoritative document.
+
+Reduce duplication whenever possible.
+
+---
+
+# Current Priority
+
+Finish documentation consolidation.
+
+Verify the repository after cleanup.
+
+Produce a clean, standalone Version 1.
+
+Only after Version 1 is complete should planning and exploratory feature discussions become the primary workflow again.
+
+---
+
+# Operating Rules
 
 Observe
 
@@ -197,88 +330,16 @@ Push
 
 ↓
 
-Update PROJECT_STATE
-
-↓
-
-Update RESTART_PACKET
+Update documentation
 
 ↓
 
 Repeat
 
----
-
-# DEVELOPMENT RULES
-
-GitHub is the source of truth.
-
-Top-Down Assessment always means inspect the GitHub mirror.
-
 One milestone at a time.
 
 Architecture follows evidence.
 
-Avoid speculative redesign.
+GitHub is the source of truth.
 
-Avoid feature creep.
-
-Avoid logic loops.
-
-Future ideas belong in IDEAS.md.
-
-Do not optimize for hypothetical future requirements.
-
-Prefer a functional product over architectural perfection.
-
----
-
-# CURRENT VERSION 1 PRIORITIES
-
-Current work is focused on completing the terminal version of PrepFlow.
-
-Reference:
-
-docs/V1_RELEASE_CHECKLIST.md
-
-Do not begin Version 2 work until Version 1 is complete.
-
----
-
-# CURRENT RUNTIME
-
-Canonical runtime data:
-
-packs/
-
-    pharmacy.prepflow.json
-
-    medical_surgical.prepflow.json
-
-The Study Engine should consume only canonical PrepFlow Packs.
-
-Original source material is intentionally excluded from the project.
-
----
-
-# CLEANUP PHILOSOPHY
-
-Temporary files should remain temporary.
-
-Generated artifacts should remain reproducible.
-
-The repository should become cleaner as the project matures.
-
-Never keep historical files simply because they once had value.
-
----
-
-# SUCCESS CRITERIA
-
-Version 1 is complete when every item in:
-
-docs/V1_RELEASE_CHECKLIST.md
-
-has been completed and validated.
-
-Only then should Version 2 planning begin.
+Execution is preferred over discussion once the architectural decision has already been made.

@@ -1,83 +1,139 @@
 # PrepFlow
 
-PrepFlow is a modular Python application for converting educational source material into validated study packs and delivering them through an interactive study engine.
+PrepFlow helps students study more effectively by transforming educational content into validated, interactive study experiences focused on mastery rather than memorization.
 
----
+PrepFlow is a terminal-based study platform that transforms educational source material into validated study packs and delivers those packs through an interactive study engine.
 
-## Project Structure
+The project is designed around a simple architectural boundary:
 
-```
-prepflow/
-├── compiler/
-├── data/
-├── docs/
-├── output/
-├── study/
-├── tests/
-├── tools/
-├── README.md
-└── requirements.txt
+```text
+Private Source Material
+        ↓
+Compiler
+        ↓
+Canonical PrepFlow Packs
+        ↓
+Study Engine
 ```
 
----
+The compiler produces canonical PrepFlow Packs.
 
-## Components
+The Study Engine consumes only those Packs.
 
-### Compiler
-
-Responsible for:
-
-- Loading source documents
-- Parsing questions
-- Validating study packs
-- Exporting JSON artifacts
-
-### Study Engine
-
-Responsible for:
-
-- Interactive quiz sessions
-- Block mode
-- Progress tracking
-- Review queues
-- Session management
+Private source material intentionally remains outside the repository.
 
 ---
 
-## Documentation
+# Features
 
-Project documentation is located in the `docs/` folder.
+Current capabilities include:
 
-Key documents include:
-
-- PROJECT_STATE.md
-- CHANGELOG.md
-- VISION.md
-- RESTART_PACKET.md
-- SESSION_CHECKLIST.md
-
----
-
-## Current Status
-
-Current Version: **0.6.0**
-
-Current Sprint: **Sprint 6 – Pack Validation**
-
-The current development focus is improving compiler validation before expanding Study Engine features.
+* Canonical compilation pipeline
+* Stable PrepFlow Pack format
+* Dynamic Pack discovery
+* Chapter selection
+* Interactive study sessions
+* Randomized question order
+* Block-based study
+* First-pass score tracking
+* Review queue until mastery
+* Support for multiple question types
 
 ---
 
-## Development Workflow
+# Repository Layout
 
-1. Implement one feature.
-2. Test thoroughly.
-3. Review changes.
-4. Commit to Git.
-5. Push to GitHub.
-6. Update documentation.
-7. Generate a new Restart Packet.
+```text
+compiler/    Reusable compilation pipeline
+
+study/       Interactive terminal Study Engine
+
+packs/       Canonical PrepFlow study packs
+
+docs/        Project documentation
+
+tests/       Automated tests
+```
 
 ---
 
-This repository is under active development.
+# Quick Start
+
+Create and activate a virtual environment.
+
+Install the project requirements.
+
+Run the Study Engine.
+
+Select:
+
+* a study pack
+* one or more chapters
+* begin studying
+
+The Study Engine automatically:
+
+* loads the selected Pack
+* shuffles questions once
+* tracks first-pass performance
+* reviews missed questions until mastered
+
+---
+
+# Documentation
+
+The repository intentionally maintains a small set of authoritative documents.
+
+## README.md
+
+Project overview.
+
+## ARCHITECTURE_BIBLE.md
+
+Permanent technical architecture.
+
+## RESTART_PACKET.md
+
+Operational bootloader for ChatGPT development sessions.
+
+## V1_RELEASE_CHECKLIST.md
+
+Remaining work required before Version 1.
+
+## CHANGELOG.md
+
+Project milestone history.
+
+## IDEAS.md
+
+Future enhancements that should not interrupt Version 1.
+
+---
+
+# Design Principles
+
+PrepFlow is built around several core principles:
+
+* Canonical data
+* Explicit validation
+* Stable question identity
+* Separation of concerns
+* Modular architecture
+* Reusable study content
+* Lean repository design
+
+The repository should become simpler over time as temporary development scaffolding is removed.
+
+---
+
+# Current Status
+
+PrepFlow is in active development toward Version 1.
+
+The current focus is completing a clean, stable, standalone terminal application before expanding the feature set.
+
+Version 1 emphasizes reliability, maintainability, and architectural stability over rapid feature growth.
+
+---
+
+

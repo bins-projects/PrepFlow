@@ -1,105 +1,134 @@
-# PrepFlow Version 1 Release Checklist
+# PREPFLOW VERSION 1 RELEASE CHECKLIST
 
-> Goal: Deliver a polished terminal-based PrepFlow application that is complete, stable, and easy for end users to use. New ideas belong in `IDEAS.md` unless they are required for Version 1.
+## Purpose
 
----
+This document defines the remaining work required before PrepFlow Version 1 can be released.
 
-# Development Rules
+Only unfinished work belongs here.
 
-These rules take precedence during Version 1 development.
+Completed milestones belong in the CHANGELOG.
 
-- Top-down assessment **always** means inspecting the committed GitHub mirror.
-- GitHub is the technical source of truth.
-- Observe → Inspect → One focused change → Compile → Test → Commit → Push.
-- Do not redesign working architecture without evidence.
-- Build a functional product before adding polish.
-- Future ideas go into `IDEAS.md`, not the current milestone.
-- Finish the current milestone before starting another.
+Future ideas belong in IDEAS.
+
+Architecture belongs in the ARCHITECTURE_BIBLE.
 
 ---
 
-# Core Engine
+# Compiler
 
-- [x] Compiler pipeline
-- [x] Standard PrepFlow Pack format
-- [x] Runtime Pack loader
-- [x] Dynamic Pack discovery
-- [x] Pack selection
-- [x] Chapter selection
-- [x] Question session engine
-- [x] Review queue
-- [x] Score tracking
+☐ Canonical compiler pipeline verified
 
----
+☐ Pharmacy Pack compiles successfully
 
-# User Experience
+☐ Medical-Surgical Pack compiles successfully
 
-- [ ] Main menu
-- [ ] Graceful Exit
-- [ ] Restart Session
-- [ ] Return to Pack Selection
-- [ ] Better invalid-input handling
-- [ ] Session summary
-- [ ] Progress display
-- [ ] Startup banner / title screen
+☐ Stable question IDs verified
+
+☐ Final validation reports no known critical parser errors
+
+☐ Final validation reports no known residual source-branding artifacts
 
 ---
 
-# Runtime Reliability
+# Study Engine
 
-- [ ] Pack validation before loading
-- [ ] Friendly error messages
-- [ ] Missing Pack handling
-- [ ] Invalid chapter handling
-- [ ] General robustness testing
+☒ Dynamic Pack discovery
+
+☒ Pack selection
+
+☒ Chapter selection
+
+☒ Block-based study sessions
+
+☒ Randomized question order
+
+☒ Review queue
+
+☒ First-pass scoring
+
+☒ Multiple Choice support
+
+☒ Multiple Response support
+
+☒ Completion support
+
+☒ Ordered Response support
 
 ---
 
-# Packaging
+# Regression Tests
 
-- [ ] Standalone Windows executable
-- [ ] Standalone Linux executable
-- [ ] Packaging instructions
-- [ ] End-user README
+☒ Ordered Response preserves answer order
+
+☒ Multiple Response ignores answer order
+
+☐ Chapter filtering
+
+☐ Pack validation
+
+☐ Stable ID verification
+
+☐ Review queue behavior
+
+☐ First-pass scoring
+
+☐ Shuffle integrity
+
+---
+
+# Repository
+
+☐ Cleanup committed
+
+☐ Public mirror updated
+
+☐ Obsolete documentation removed
+
+☐ Repository structure finalized
 
 ---
 
 # Documentation
 
-- [ ] Architecture Bible current
-- [ ] PROJECT_STATE.md current
-- [ ] RESTART_PACKET.md current
-- [ ] CHANGELOG.md updated
+☒ README
+
+☒ ARCHITECTURE_BIBLE
+
+☒ RESTART_PACKET
+
+☒ V1_RELEASE_CHECKLIST
+
+☐ CHANGELOG reviewed
+
+☐ IDEAS reviewed
 
 ---
 
-# Testing
+# User Experience
 
-## Pharmacy
+☐ Fresh clone installs successfully
 
-- [x] Entire Pack
-- [x] Single Chapter
-- [x] Multiple Chapters
+☐ PrepFlow launches successfully
 
-## Medical-Surgical
+☐ User can select a Pack
 
-- [x] Entire Pack
-- [x] Single Chapter
-- [x] Multiple Chapters
+☐ User can select chapters
+
+☐ User can complete a study session
 
 ---
 
-# Deferred Until Version 2
+# Release
 
-- [ ] Saved progress
-- [ ] Long-term statistics
-- [ ] Search
-- [ ] Favorites
-- [ ] Difficulty modes
-- [ ] Mixed Pack mode
-- [ ] GUI
-- [ ] Mobile version
-- [ ] Cloud sync
+☐ Version 1 committed
+
+☐ Version 1 tagged
+
+☐ Private repository pushed
+
+☐ Public mirror pushed
+
+☐ Ready for beta testing
 
 ---
 
@@ -107,10 +136,9 @@ These rules take precedence during Version 1 development.
 
 PrepFlow Version 1 is complete when:
 
-- A user can launch the program without modifying code.
-- A user can choose a Pack.
-- A user can choose one or more Chapters.
-- The study session runs reliably.
-- Review questions work correctly.
-- The application exits cleanly.
-- The application can be packaged and distributed without source PDFs.
+* The compiler produces valid canonical PrepFlow Packs.
+* The Study Engine successfully delivers those Packs.
+* The repository is clean.
+* The documentation accurately reflects the implementation.
+* Core regression tests pass.
+* A new user can install and study without developer assistance.
