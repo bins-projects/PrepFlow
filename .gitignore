@@ -3,3 +3,6 @@ __pycache__/
 output/
 source_banks/
 scratch/
+build/
+dist/
+*.spec

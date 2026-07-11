@@ -1,8 +1,16 @@
 import json
+import sys
 from pathlib import Path
 
 
-PACKS_DIR = Path("packs")
+def application_dir():
+    if getattr(sys, "frozen", False):
+       return Path(sys._MEIPASS) 
+
+    return Path(__file__).resolve().parent.parent
+
+
+PACKS_DIR = application_dir() / "packs"
 
 
 def list_packs():
