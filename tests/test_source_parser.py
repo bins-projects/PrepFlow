@@ -92,3 +92,40 @@ DIF: Remembering
             "the capacity for health."
         ),
     }
+
+from pathlib import Path
+
+
+def test_parse_real_fundamentals_sample() -> None:
+    sample = Path(
+        "output/imports/fundamentals/02_clean.txt"
+    ).read_text(encoding="utf-8")
+
+    questions = parse_source_questions(sample)
+
+    assert len(questions) > 1000
+
+
+def test_source_metadata_does_not_append_to_last_choice() -> None:
+    text = """Chapter 1: Nursing Theory
+
+MULTIPLE CHOICE
+
+1. Which theory should guide priority care?
+a. Erikson
+b. Paul
+c. Maslow
+d. Rosenstock
+ANS: C
+Maslow helps prioritize patient needs.
+DIF: Remembering OBJ: 1.5 TOP: Planning
+MSC: NCLEX Client Needs Category: Safe and Effective Care Environment
+Concepts: Care Coordination
+"""
+
+    questions = parse_source_questions(text)
+
+    assert questions[0]["choices"][-1] == {
+        "label": "D",
+        "text": "Rosenstock",
+    }

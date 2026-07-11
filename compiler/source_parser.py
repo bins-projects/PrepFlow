@@ -12,7 +12,7 @@ QUESTION_RE = re.compile(r"^(\d+)\.\s+(.+)")
 CHOICE_RE = re.compile(r"^([a-fA-F])\.\s+(.+)")
 ANSWER_RE = re.compile(r"^ANS:\s*(.+)", re.IGNORECASE)
 METADATA_RE = re.compile(
-    r"^(DIF|OBJ|TOP|MSC|KEY|NCLEX|NOT):",
+    r"^(DIF|OBJ|TOP|MSC|KEY|NCLEX|NOT|CONCEPTS):",
     re.IGNORECASE,
 )
 
@@ -25,6 +25,7 @@ def parse_source_questions(text: str) -> list[dict]:
     question = None
     questions: list[dict] = []
     reading_rationale = False
+    metadata_started = False
 
     for line in lines:
         if not line:
@@ -39,7 +40,7 @@ def parse_source_questions(text: str) -> list[dict]:
             continue
 
         question_match = QUESTION_RE.match(line)
-        if question_match:
+        if question_match and not reading_rationale:
             if question is not None:
                 questions.append(question)
 
@@ -58,6 +59,7 @@ def parse_source_questions(text: str) -> list[dict]:
                 "rationale": "",
             }
             reading_rationale = False
+            metadata_started = False
             continue
 
         if question is None:
@@ -88,6 +90,10 @@ def parse_source_questions(text: str) -> list[dict]:
 
         if METADATA_RE.match(line):
             reading_rationale = False
+            metadata_started = True
+            continue
+
+        if metadata_started:
             continue
 
         if question["choices"] and not reading_rationale:
