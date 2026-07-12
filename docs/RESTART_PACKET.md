@@ -1368,6 +1368,36 @@ Rules:
 
 Use top-down assessment before implementation.
 
+## Current State After Pharmacy Pipeline Validation
+
+Completed:
+- Restart Packet was restored after an accidental compression attempt and pushed successfully.
+- Pharmacy was successfully run through the expanded compiler pipeline.
+- Pharmacy is now the first confirmed source proving the universal pipeline works.
+
+Canonical Pharmacy output:
+- packs/pharmacy.prepflow.json
+- 1084 questions
+- multiple_choice: 963
+- multiple_response: 73
+- completion: 39
+- ordering: 9
+
+Important findings:
+- Existing packs are historical outputs and do not prove the new pipeline.
+- Generated IDs are not reliable for comparing packs because they change between builds.
+- Content-level comparison showed strong continuity between the previous Pharmacy output and the new pipeline output.
+- Differences were primarily due to cleanup, formatting normalization, and newly supported question types.
+
+Current local artifact:
+- packs/pharmacy-test.prepflow.json remains untracked.
+- It appears to be an intermediate Pharmacy build and should not be committed or deleted until intentionally classified.
+
+Next milestone:
+- Run Medical-Surgical source material through the same compiler pipeline.
+- Validate the resulting canonical pack.
+- After Pharmacy and Medical-Surgical validation, evaluate retiring older pack versions and moving toward standalone user workflow.
+
 # Final Operating Reminder
 
 One focused change at a time.
