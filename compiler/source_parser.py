@@ -134,7 +134,41 @@ def parse_source_questions(text: str) -> list[dict]:
             continue
 
         if CHAPTER_RE.match(line):
+            # A new chapter is a hard question boundary. Finalize the
+            # previous question before processing any wrapped chapter-title
+            # or publisher-header lines that follow.
+            if question is not None:
+                questions.append(recover_missing_a_choice(question))
+                question = None
+
             chapter = line
+            section = None
+            reading_rationale = False
+            metadata_started = False
+            awaiting_completion_answer = False
+            continue
+
+        # Some PDF chapter headings continue onto the next line before
+        # publisher/source metadata begins, for example:
+        # "Introduction Linton: Medical-Surgical Nursing, 8th Edition".
+        # Preserve only the legitimate title prefix.
+        if (
+            chapter is not None
+            and question is None
+            and "linton:" in line.lower()
+        ):
+            # A line beginning with Linton is publisher metadata only.
+            # A prefix before Linton may be a legitimate wrapped title,
+            # such as "Introduction".
+            continuation = re.split(
+                r"(?i)\s*Linton:",
+                line,
+                maxsplit=1,
+            )[0].strip()
+
+            if continuation:
+                chapter = f"{chapter} {continuation}"
+
             continue
 
         if line.upper() in SECTION_HEADERS:

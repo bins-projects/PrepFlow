@@ -408,3 +408,59 @@ DIF: Cognitive Level: Application
         "Chapter 03: Medical-Surgical Patients: Individuals, Families, "
         "and Communities Linton: Medical-Surgical Nursing, 8th Edition"
     )
+
+
+def test_multiline_source_header_does_not_attach_to_previous_question():
+    text = """
+Chapter 31: Hematologic Disorders
+COMPLETION
+2. Cells capable of developing into RBCs are called ______ cells.
+ANS:
+stem
+Adult stem cells can develop into several blood cell types.
+DIF: Cognitive Level: Comprehension
+Chapter 32: Immunologic Disorders
+Linton: Medical-Surgical Nursing, 8th
+Edition
+MULTIPLE CHOICE
+1. Which population has the greatest incidence?
+a. Group A
+b. Group B
+c. Group C
+d. Group D
+ANS: B
+Group B has the greatest incidence.
+DIF: Cognitive Level: Knowledge
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 2
+    assert questions[0]["rationale"] == (
+        "Adult stem cells can develop into several blood cell types."
+    )
+    assert questions[1]["chapter"] == "Chapter 32: Immunologic Disorders"
+
+
+def test_parser_preserves_real_wrapped_chapter_title_but_removes_source_header():
+    text = """
+Chapter 33: Cardiovascular System
+Introduction Linton: Medical-Surgical Nursing,
+8th Edition
+MULTIPLE CHOICE
+1. What should the nurse assess?
+a. Pulse
+b. Temperature
+c. Weight
+d. Height
+ANS: A
+The pulse should be assessed.
+DIF: Cognitive Level: Knowledge
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["chapter"] == (
+        "Chapter 33: Cardiovascular System Introduction"
+    )

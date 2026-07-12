@@ -121,3 +121,47 @@ def test_removes_inline_stuvia_branding_but_preserves_content() -> None:
     assert "C. albicans infection appears most often in skinfolds." in cleaned
     assert "Stuvia" not in cleaned
     assert "Marketplace to Buy and Sell" not in cleaned
+
+
+def test_removes_trailing_medsurg_source_title_fragments() -> None:
+    source = (
+        "The nurse should assess the patient. "
+        "Linton: Medical-Surgical Nursing, 8th Edition\n"
+        "The next intervention is reassessment. "
+        "Medical-Surgical Nursing, 8th Edition\n"
+        "The expected answer is communication. "
+        "Surgical Nursing, 8th Edition\n"
+    )
+
+    cleaned = clean_text(source)
+
+    assert "The nurse should assess the patient." in cleaned
+    assert "The next intervention is reassessment." in cleaned
+    assert "The expected answer is communication." in cleaned
+    assert "Linton:" not in cleaned
+    assert "Medical-Surgical Nursing, 8th Edition" not in cleaned
+    assert "Surgical Nursing, 8th Edition" not in cleaned
+
+
+def test_removes_trailing_na_extraction_artifact() -> None:
+    source = (
+        "The process is called socialization. N/A\n"
+    )
+
+    cleaned = clean_text(source)
+
+    assert cleaned.strip() == "The process is called socialization."
+
+
+def test_removes_standalone_na_metadata_artifact() -> None:
+    source = (
+        "OBJ: 3 TOP: Enculturation\n"
+        "N/A\n"
+        "MSC: NCLEX:\n"
+    )
+
+    cleaned = clean_text(source)
+
+    assert "\nN/A\n" not in f"\n{cleaned}"
+    assert "OBJ: 3 TOP: Enculturation" in cleaned
+    assert "MSC: NCLEX:" in cleaned

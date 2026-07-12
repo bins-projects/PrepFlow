@@ -10,6 +10,7 @@ JUNK_PATTERNS = [
     r"(?i)^distribution of this document is illegal.*$",
     r"(?i)^want to earn.*$",
     r"(?i)^nursingtb\.com\s*$",
+    r"(?i)^n/a\s*$",
     r"(?i)^fundamentals of nursing\s+\d+(?:st|nd|rd|th)\s+edition\s+yoost test bank\s*$",
     r"(?i)^yoost\s*&\s*crawford:\s*fundamentals of nursing:.*$",
 ]
@@ -90,6 +91,22 @@ def clean_text(text: str) -> str:
         line = re.sub(
             r"(?i)\s*stuvia\.com\s*-\s*"
             r"the marketplace to buy and sell your study material.*$",
+            "",
+            line,
+        ).rstrip()
+
+        # Remove trailing source-title fragments appended to educational text.
+        line = re.sub(
+            r"(?i)\s*(?:Linton:\s*)?"
+            r"(?:Medical-)?Surgical Nursing,\s*\d+"
+            r"(?:st|nd|rd|th)\s+Edition\s*$",
+            "",
+            line,
+        ).rstrip()
+
+        # Remove a trailing standalone N/A extraction artifact.
+        line = re.sub(
+            r"(?i)\s+N/A\s*$",
             "",
             line,
         ).rstrip()
