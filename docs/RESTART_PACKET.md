@@ -1181,3 +1181,67 @@ For routine command sequences, obvious transitions such as stopping a local
 server may be bundled with the following substantive command rather than
 requiring a separate `next` response.
 <!-- HOSTED_PWA_STATE_END -->
+
+---
+
+## Pharmacy Third-Edition Replacement — 2026-07-13
+
+### Completed milestone
+
+The official Pharmacy pack was rebuilt from the complete third-edition source and replaced locally and in the private `origin` repository.
+
+Current official pack:
+
+- File: `packs/pharmacy.prepflow.json`
+- Questions: 1,202
+- Source chapter range: 1–29
+- Chapters represented: 28
+- Question types:
+  - Multiple choice: 1,140
+  - Multiple response: 16
+  - Completion: 45
+  - Ordered response: 1
+- Known source artifacts remaining: 0
+
+The three genuine Chapter 3 questions were excluded because the source supplied correct answers but no rationales. Chapter 29 Question 11 was also excluded because the stable parser configuration did not safely associate its rationale. These four questions may be manually restored later with reviewed rationales.
+
+### Compiler and cleaner work completed
+
+Committed milestones:
+
+- `4a58c15` — compiler support for additional Pharmacy source formats
+- `5a79592` — removal of standalone source artifacts
+- `3914f0f` — removal of the repeated Pharmacy Chapter 2 block
+- `389af06` — replacement of the official Pharmacy pack
+
+The parser now supports the additional inline-answer, labeled-question, split-choice, ordered-answer, and unnumbered-question formats encountered in this source.
+
+The cleaner includes narrowly scoped rules for:
+
+- obsolete embedded Pharmacy Chapter 32 removal
+- condensed Chapter 3 duplicate-summary trimming
+- repeated Chapter 2 multiple-response block removal
+- exact standalone `extra per year?` artifact removal
+
+### Validation status
+
+- Full test suite: 72 passed
+- Candidate parsed: 1,206
+- Candidate exported: 1,202
+- Candidate skipped: 4
+- Duplicate-text advisories: 1 valid Chapter 12/13 look-alike pair
+- Official pack contamination checks: all zero
+
+### Repository synchronization status
+
+Private repository `origin/master` contains the new official Pharmacy pack at:
+
+`389af06155596f37a2780268bbabc4fd95dfd03d`
+
+
+
+### Immediate next steps
+
+1. Verify the desktop or local PrepFlow application loads the new 1,202-question Pharmacy pack.
+
+
