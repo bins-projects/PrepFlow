@@ -4,14 +4,17 @@
 
 This document is ChatGPT’s operational bootloader for resuming PrepFlow development.
 
-It restores:
+It is the sole operational continuity handoff for the project. Before creating, replacing, or shortening this packet, always inspect and compare the currently committed `docs/RESTART_PACKET.md`. Preserve its permanent rules, workflow, architecture, privacy boundaries, verified milestones, and startup procedure. Update stale sections in place rather than substituting a shorter summary.
+
+This document restores:
 
 * the current verified repository state;
 * permanent architectural and privacy rules;
-* completed compiler and Pack milestones;
+* the completed compiler, Pack, desktop, packaging, and release milestones;
 * the three locked starting study categories;
-* established quiz behavior;
-* the next desktop-application milestone;
+* established quiz and mastery behavior;
+* the completed Version 1.0 desktop proof;
+* the new Version 1.1 Progressive Web App direction;
 * the later user-friendly PDF import goal;
 * the exact startup procedure for the next session.
 
@@ -51,7 +54,13 @@ Expected branch:
 master
 ```
 
-Before requesting terminal output, pasted code, local files, or helper scripts, first ask:
+Official Version 1 tag:
+
+```text
+v1.0.0
+```
+
+Before requesting terminal output, pasted code, local files, directory listings, or helper scripts, first ask:
 
 > Can the committed GitHub repository answer this?
 
@@ -64,7 +73,7 @@ Request local inspection only when:
 * tests must run;
 * dependencies must be inspected;
 * private source material must be examined;
-* generated import artifacts are intentionally untracked;
+* generated import or release artifacts are intentionally untracked;
 * GitHub genuinely cannot answer.
 
 ---
@@ -74,12 +83,22 @@ Request local inspection only when:
 Latest confirmed committed milestone:
 
 ```text
-81160bd build: package PrepFlow desktop application
+676f2b6 docs: update README for desktop Version 1
 ```
 
-Immediately preceding compiler milestone:
+Official release tag:
 
 ```text
+v1.0.0
+```
+
+Important preceding milestones:
+
+```text
+7b3ee0a docs: record desktop Version 1 milestone
+81160bd build: package PrepFlow desktop application
+9fc8fdb feat: add desktop study flow and session resume
+30c41e8 Promote validated Medical-Surgical pack
 87a0e81 Harden Med-Surg source cleanup and chapter boundaries
 ```
 
@@ -88,15 +107,20 @@ At the stopping point:
 * local `master` was clean;
 * private `origin/master` was pushed;
 * public `public/master` was pushed;
-* both remotes were synchronized;
-* there were no remaining untracked test Packs;
+* both remotes pointed to `676f2b6`;
+* tag `v1.0.0` was pushed to both remotes;
+* all 53 automated tests passed;
+* there were no untracked release files left in the repository root;
+* the Linux release archive had been built and smoke-tested from a fresh extraction;
+* the packaged app had been launched successfully;
+* a ChromeOS Linux Apps launcher had been created and tested;
 * the working tree reported:
 
 ```text
 nothing to commit, working tree clean
 ```
 
-Before resuming, verify GitHub rather than assuming these commits are still current.
+Before resuming, verify GitHub rather than assuming these values are still current.
 
 ---
 
@@ -111,7 +135,7 @@ Inspect committed code
    ↓
 Identify one real failure or next milestone
    ↓
-Add or update a regression test
+Add or update a regression test when appropriate
    ↓
 Make one focused generic change
    ↓
@@ -119,7 +143,7 @@ Run targeted tests
    ↓
 Run the full test suite
    ↓
-Rebuild the real source
+Build or run the real product
    ↓
 Validate output
    ↓
@@ -128,6 +152,8 @@ Commit
 Push private remote
    ↓
 Push public mirror
+   ↓
+Verify both remote hashes
    ↓
 Repeat
 ```
@@ -139,9 +165,12 @@ Do not:
 * create a separate importer for every book;
 * reopen settled architecture without implementation evidence;
 * collect endless diagnostics without making a decision;
-* rewrite the Study Engine while building the interface;
-* expose Pack filenames, Pack IDs, JSON, or compiler terminology to users;
-* allow later PDF-import ideas to interrupt the desktop-shell milestone.
+* ask Charlie to paste code already available in GitHub;
+* manually edit generated Packs instead of fixing the generic pipeline;
+* rewrite the working desktop app while beginning the PWA;
+* expose Pack filenames, Pack IDs, JSON, compiler, or repository terminology to users;
+* begin hosting, service-worker work, or deployment before the local PWA shell exists;
+* allow the future PDF-import milestone to interrupt the current PWA milestone.
 
 When Charlie says:
 
@@ -156,12 +185,12 @@ provide exactly the next executable step.
 Warning signs of a logic loop include:
 
 * repeatedly inspecting the same files without a new decision;
-* asking Charlie to paste code already available in GitHub;
-* proposing multiple competing interface frameworks before inspecting the existing Study Engine;
+* repeatedly asking for terminal output that GitHub can answer;
+* proposing multiple competing frameworks before inspecting the committed implementation;
+* discussing architecture after the product decision has already been made;
 * trying to make the compiler theoretically perfect instead of responding to real source evidence;
-* manually editing generated Packs instead of fixing the generic pipeline;
-* treating an older Pack as automatically correct when the new source-derived Pack differs;
-* expanding into PDF import before the desktop study interface works.
+* manually editing canonical output rather than fixing the reusable pipeline;
+* expanding into hosting, accounts, cloud synchronization, or PDF import before the current local PWA milestone works.
 
 When work becomes repetitive:
 
@@ -227,7 +256,7 @@ PrepFlow reports warnings
 PrepFlow creates a study category
 ```
 
-The import workflow is a core product requirement, but it is not the immediate next milestone.
+The import workflow remains a core product requirement, but it is not the immediate next milestone.
 
 ---
 
@@ -274,6 +303,8 @@ They are not separate application architectures.
 
 Do not create permanent book-specific importers.
 
+The desktop GUI and the PWA are interface layers over the same settled study behavior and validated content model. Do not create a second educational architecture merely because the interface technology changes.
+
 ---
 
 # Repository Boundaries
@@ -288,7 +319,10 @@ tests/
 docs/
 README.md
 requirements.txt
+PrepFlow.spec
 ```
+
+The Version 1.1 PWA should live in one clearly named web application area chosen after inspecting the repository. Do not scatter HTML, CSS, JavaScript, manifests, or service-worker files across unrelated directories.
 
 Private source files must remain outside the repository.
 
@@ -314,7 +348,9 @@ The repository must not contain:
 * personal identifying information;
 * personal email addresses;
 * personal local machine paths embedded in project files;
-* PyInstaller build output;
+* PyInstaller `build/` output;
+* PyInstaller `dist/` output;
+* release archives;
 * executable artifacts;
 * obsolete temporary test Packs;
 * one-time subject-specific importer scripts.
@@ -365,11 +401,13 @@ is only the Linux username and host name.
 
 It is not the Git identity.
 
+Before any public PWA deployment, repeat a privacy scan of committed web assets and generated output. Do not expose machine paths, personal names, local usernames, private source locations, internal IDs, or implementation details.
+
 ---
 
 # Three Locked Starting Packs
 
-PrepFlow now has exactly three official starting study Packs:
+PrepFlow has exactly three official starting study Packs:
 
 ```text
 packs/fundamentals.prepflow.json
@@ -407,6 +445,7 @@ pack_id
 JSON
 canonical Pack
 compiler pipeline
+repository folder
 ```
 
 Those are implementation details.
@@ -539,7 +578,7 @@ Final compiler diagnostics:
 0 skipped questions
 ```
 
-The three advisory duplicates were:
+The advisory duplicates were:
 
 1. Chapter 3, Question 23 duplicated the text of Chapter 3, Question 2.
 2. Chapter 25, Question 31 duplicated the text of Chapter 25, Question 12.
@@ -547,7 +586,7 @@ The three advisory duplicates were:
 
 These diagnostics are advisory and did not block the Pack.
 
-The new official Medical-Surgical Pack replaced the historical Pack and was committed in:
+The validated Medical-Surgical Pack was committed in:
 
 ```text
 30c41e8 Promote validated Medical-Surgical pack
@@ -557,7 +596,7 @@ The new official Medical-Surgical Pack replaced the historical Pack and was comm
 
 # Important Compiler Improvements Proven by Medical-Surgical
 
-Medical-Surgical exposed several generic source patterns that were fixed in the universal pipeline.
+Medical-Surgical exposed generic source patterns that were fixed in the universal pipeline.
 
 ## Wrapped Stem Beginning With a Time
 
@@ -569,8 +608,6 @@ A stem continuation such as:
 
 must not be mistaken for a new numbered question.
 
-The parser now preserves it as part of the current stem.
-
 ## Rationale Beginning With a Choice-Like Prefix
 
 A rationale such as:
@@ -579,148 +616,49 @@ A rationale such as:
 C. albicans infection appears most often in skinfolds.
 ```
 
-must not be mistaken for answer choice C.
+must remain rationale once the parser is already reading rationale text.
 
-Once the parser is reading rationale text, choice-like prefixes remain rationale.
+## Inline Source Branding
 
-## Inline Stuvia Branding
-
-Branding appended to legitimate text is removed while preserving the educational content.
-
-Example:
-
-```text
-Where should the nurse assess...? Stuvia.com - The Marketplace...
-```
-
-becomes:
-
-```text
-Where should the nurse assess...?
-```
+Branding appended to legitimate educational text is removed while preserving the educational content.
 
 ## Ordered-Response Recognition
 
-Some sequencing questions are stored by the source under:
-
-```text
-COMPLETION
-```
-
-rather than an explicit `ORDERING` section.
-
-The parser now recognizes ordered-response items through generic structural evidence such as:
+Sequencing questions may appear under a Completion section and must be recognized through structural evidence such as:
 
 * existing choices;
-* instructions containing `appropriate sequence`;
-* instructions containing `correct order`;
+* `appropriate sequence`;
+* `correct order`;
 * `prioritize the steps`;
 * `prioritize these`;
 * `place the events`;
 * `place the options`.
 
-Ordered answers may appear:
-
-```text
-ANS: CBDA
-```
-
-or:
-
-```text
-ANS:
-CBDA
-```
-
-The parser converts the answer to an ordered list:
-
-```text
-C, B, D, A
-```
+Ordered answers may appear on the same line or following line and are converted to ordered answer lists.
 
 ## Choice G Support
 
-The parser and split-choice recovery now accept choices through:
-
-```text
-G
-```
-
-This fixed cases where:
-
-```text
-g. Evaluate the plan over time.
-```
-
-had previously merged into choice F.
+The parser and split-choice recovery accept answer choices through G.
 
 ## Wrapped Chapter Headings
 
-Chapter headings split across PDF lines are joined when the first line clearly ends mid-title.
-
-Example:
-
-```text
-Chapter 03: Medical-Surgical Patients: Individuals, Families, and
-Communities Linton: Medical-Surgical Nursing, 8th Edition
-```
-
-becomes the clean chapter title:
-
-```text
-Medical-Surgical Patients: Individuals, Families, and Communities
-```
+Split chapter headings are joined when the first line clearly ends mid-title.
 
 ## Hard Chapter Boundaries
 
-A new `Chapter...` line now finalizes the previous question immediately.
-
-This prevents publisher/source header lines from being appended to the prior question’s stem or rationale.
+A new chapter line finalizes the previous question immediately so source headers cannot attach to the prior question.
 
 ## Wrapped Chapter Subtitle Preservation
 
-When a real chapter subtitle appears before publisher metadata, the legitimate prefix is preserved.
-
-Example:
-
-```text
-Chapter 33: Cardiovascular System
-Introduction Linton: Medical-Surgical Nursing,
-8th Edition
-```
-
-becomes:
-
-```text
-Cardiovascular System Introduction
-```
-
-Publisher text is discarded.
+Legitimate chapter subtitle prefixes are preserved while publisher metadata is removed.
 
 ## Source-Title Cleanup
 
-Trailing source-title fragments are removed from chapter titles and educational fields, including:
-
-```text
-Linton:
-Linton: Medical-
-Linton: Medical-Surgical
-Linton: Medical-Surgical Nursing, 8th Edition
-Medical-Surgical Nursing, 8th Edition
-Surgical Nursing, 8th Edition
-```
+Trailing source-title fragments are removed from chapter titles and educational fields.
 
 ## Standalone N/A Cleanup
 
-A line containing only:
-
-```text
-N/A
-```
-
-inside a metadata boundary is treated as an extraction artifact and removed.
-
-Legitimate educational uses of `N/A` inside normal text should not be removed casually.
+A standalone `N/A` inside a metadata boundary is treated as an extraction artifact. Legitimate educational use of `N/A` in normal text must not be removed casually.
 
 ---
 
@@ -764,7 +702,11 @@ The suite covers at least:
 * wrapped chapter headings;
 * chapter-boundary finalization;
 * wrapped chapter subtitles;
-* validation behavior.
+* validation behavior;
+* single-slot save overwrite;
+* missing-save behavior;
+* save deletion;
+* invalid-save handling.
 
 At startup, trust the current test output over the historical number recorded here.
 
@@ -772,14 +714,14 @@ At startup, trust the current test output over the historical number recorded he
 
 # Study Engine Rules
 
-The desktop interface must preserve the established Study Engine behavior.
+Every interface must preserve the established Study Engine behavior.
 
 ## Source Fidelity
 
 * Preserve questions word-for-word from the canonical Pack.
 * Do not rewrite stems or choices.
 * Do not introduce “hard mode” wording unless explicitly requested.
-* Do not use publisher/source branding in user-facing content.
+* Do not use publisher or source branding in user-facing content.
 
 ## Question Display
 
@@ -800,13 +742,14 @@ After each answer, show:
 ## Session Flow
 
 * Default study blocks contain 15 questions.
+* The final block may contain fewer than 15 questions.
 * Shuffle once per session.
 * Keep the shuffled set stable during the session.
+* Combine multiple selected chapters into one shuffled session.
 * Avoid repeating questions across initial blocks.
 * After each block, review missed questions.
 * Continue missed-question review until mastered.
 * Preserve first-pass performance separately from eventual mastery.
-* Allow the established full-block redo option where already implemented.
 * End with final mastery status.
 
 ## Supported Question Types
@@ -816,217 +759,220 @@ After each answer, show:
 * Completion;
 * Ordered Response.
 
-The desktop shell should reuse this behavior rather than creating a separate quiz system.
+## Save and Resume
+
+* Maintain one overwriteable local save slot.
+* Autosave when a new question opens.
+* Preserve subject, question order, current position, block state, score, missed questions, and review queue.
+* Show a brief `Progress saved` notice.
+* Show `Continue Saved Quiz` when a valid save exists.
+* Delete the save after the session is completed.
+* Do not require a manual Save button.
+
+The PWA should reproduce these rules rather than invent a separate quiz system.
 
 ---
 
-# Next Major Milestone
+# Version 1.0 Desktop Milestone — Complete
 
-The next milestone is:
+PrepFlow Version 1.0 is a working Linux desktop application proof.
 
-> Complete Version 1 release documentation, create and validate the Linux release archive, and prepare the project for a tagged limited beta release.
+Completed desktop capabilities:
 
-The interface should launch like a normal application on Windows or macOS.
+* Tkinter desktop home screen;
+* dynamic discovery of the three official categories;
+* clean user-facing category names;
+* one or more chapter selections;
+* Select All and Clear All;
+* combined multi-chapter sessions;
+* one shuffle per session;
+* 15-question blocks;
+* accurately shortened final blocks;
+* Multiple Choice;
+* Multiple Response;
+* Completion;
+* Ordered Response;
+* drag-and-drop ordering;
+* immediate feedback;
+* correct answers and rationales;
+* first-pass scoring;
+* missed-question review until mastery;
+* scrollable long content;
+* fixed Submit and Continue controls;
+* automatic single-slot save;
+* Continue Saved Quiz;
+* temporary Progress saved notice;
+* save deletion after completion.
 
-The initial user experience should be:
+Do not rewrite or destabilize the working desktop application while beginning Version 1.1.
+
+---
+
+# Version 1.0 Packaging and Release State
+
+The PyInstaller specification is:
 
 ```text
-Launch PrepFlow
-   ↓
-PrepFlow banner/home screen
-   ↓
-Choose Fundamentals, Pharmacy, or Medical-Surgical
-   ↓
-Choose one or more chapters
-   ↓
-Start quiz
-   ↓
-Use the established quiz and mastery flow
+PrepFlow.spec
 ```
 
-The user should not need:
+The Linux x86-64 desktop build was successfully created and tested.
 
-* a terminal;
+The packaged application:
+
+* launches without Python;
+* does not require terminal interaction during normal use;
+* bundles the three official starting categories;
+* preserves autosave and resume;
+* passed a fresh extracted-archive smoke test;
+* passed a privacy scan for Charlie’s identifying information.
+
+Generated packaging directories remain untracked:
+
+```text
+build/
+dist/
+```
+
+Generated release archives must also remain untracked.
+
+A clickable ChromeOS launcher was created under the local Linux desktop-app configuration and tested through the ChromeOS Linux Apps menu.
+
+PyInstaller is not a cross-compiler:
+
+* Windows builds must be produced and tested on Windows.
+* macOS builds must be produced and tested on macOS.
+* A macOS desktop build will not run on iPadOS.
+
+Official Git release marker:
+
+```text
+v1.0.0
+```
+
+Do not move or rewrite the `v1.0.0` tag.
+
+---
+
+# Version 1.1 Direction — Progressive Web App
+
+The next major platform milestone is a Progressive Web App developed entirely on the Chromebook.
+
+The purpose is to let classmates use PrepFlow on iPads without:
+
+* Xcode;
+* a Mac;
+* TestFlight;
+* the App Store;
 * Python;
-* command-line arguments;
-* knowledge of Pack files;
-* knowledge of JSON;
-* knowledge of compiler stages;
-* knowledge of repository folders.
+* terminal commands;
+* a native iPad application.
 
----
-
-# Desktop Interface Requirements
-
-## Home Screen
-
-Show:
+The intended iPad experience is:
 
 ```text
-PrepFlow
+Open PrepFlow in Safari
+   ↓
+Add to Home Screen
+   ↓
+Launch PrepFlow like an app
+   ↓
+Study offline after required files are cached
 ```
 
-with a polished banner or branding element.
-
-Then display three clear subject choices:
+The likely future GitHub Pages address is:
 
 ```text
-Fundamentals
-Pharmacy
-Medical-Surgical
+https://bins-projects.github.io/PF-O/
 ```
 
-The interface should feel like a real study application, not a developer utility.
+That address is not the working PrepFlow site until the PWA exists and GitHub Pages is enabled.
 
-## Chapter Selection
+## PWA Technical Direction
 
-After choosing a subject:
+The first PWA should be static and use:
 
-* display clean chapter titles;
-* allow selecting one chapter;
-* allow selecting multiple chapters;
-* provide Select All and Clear All;
-* show the number of available questions when useful;
-* provide a clear Start Studying button.
+* HTML;
+* CSS;
+* JavaScript;
+* the existing validated study content;
+* browser-local save state;
+* a web app manifest later;
+* a service worker later.
 
-## Quiz Screen
+No backend, login, account system, cloud database, instructor dashboard, or cloud synchronization is required for the first PWA milestone.
 
-The quiz screen should provide:
+The browser interface replaces Tkinter for iPad use. It does not replace the compiler, validated Packs, canonical IDs, or established study rules.
 
-* one question at a time;
-* readable choices;
-* support for Multiple Choice;
-* support for Multiple Response;
-* a text field for Completion;
-* ordering controls for Ordered Response;
-* Submit Answer;
-* feedback;
-* rationale;
-* question position;
-* block progress;
-* first-pass score;
-* mastery-review status.
+## Public Deployment Gate
 
-## Navigation
+Before enabling GitHub Pages or publishing study content publicly:
 
-Provide clear controls for:
+* review whether the bundled educational question content may be publicly distributed;
+* repeat privacy checks;
+* confirm no internal implementation details are exposed;
+* confirm only intended public assets are published.
 
-* Home;
-* Back to subjects;
-* Back to chapters;
-* Exit session;
-* Continue;
-* Review missed questions.
-
-Avoid overwhelming the learner with settings during the first desktop milestone.
-
-## Visual Direction
-
-The first version should prioritize:
-
-* clear typography;
-* large readable controls;
-* straightforward navigation;
-* accessibility;
-* clean spacing;
-* minimal clutter;
-* consistent PrepFlow branding.
-
-Do not spend the first milestone on elaborate animation or cosmetic overengineering.
+Local PWA development may proceed before public deployment is approved.
 
 ---
 
-# Packaging Goal
+# Exact First PWA Milestone
 
-PrepFlow should ultimately be distributed as a standalone desktop application.
+At the beginning of Version 1.1:
 
-Desired experience:
+1. inspect the committed repository;
+2. compare the current Restart Packet against implementation;
+3. choose the cleanest single directory for the web application;
+4. implement only the smallest visible local web milestone.
 
-```text
-Double-click PrepFlow
-→ application opens
-→ choose subject
-→ choose chapters
-→ study
-```
+The first executable milestone is:
 
-The user should not install Python or open a terminal.
+> Open a local PrepFlow web page that displays polished PrepFlow branding and three touch-friendly cards labeled Fundamentals, Pharmacy, and Medical-Surgical.
 
-Linux standalone packaging was previously proven with PyInstaller.
+For this first milestone:
 
-Important:
-
-* PyInstaller is not a cross-compiler.
-* Windows builds should be produced and tested in a Windows environment.
-* macOS builds should be produced and tested in a macOS environment.
-* A Linux machine should not be expected to create fully trustworthy Windows and macOS release binaries directly.
-
-The desktop interface can be developed first in the current Linux environment, then packaged and tested separately on the target operating systems.
+* run locally on the Chromebook;
+* do not enable GitHub Pages;
+* do not add service-worker caching;
+* do not add quiz logic;
+* do not add a backend;
+* do not add accounts;
+* do not redesign the Packs;
+* do not modify the desktop app;
+* load names and counts from existing validated content when practical rather than duplicating educational content manually.
 
 ---
 
-# Desktop Implementation Strategy
+# Recommended PWA Sequence
 
-Do not attempt the entire interface in one speculative rewrite.
+1. Inspect the repository and choose the web-app directory.
+2. Create a local static web shell.
+3. Add PrepFlow branding and the three category cards.
+4. Load the existing Packs in the browser.
+5. Add chapter multi-selection.
+6. Add Multiple Choice.
+7. Port block, score, and mastery behavior.
+8. Add Multiple Response.
+9. Add Completion.
+10. Add touch-friendly Ordered Response.
+11. Add browser-local automatic save and resume.
+12. Add responsive iPad styling.
+13. Add the web app manifest.
+14. Add offline caching with a service worker.
+15. Test locally.
+16. Test on an iPad.
+17. Complete the public-content distribution review.
+18. Enable GitHub Pages.
+19. Test Add to Home Screen and offline use.
 
-Recommended sequence:
-
-1. inspect the committed Study Engine;
-2. identify reusable session and answer-checking functions;
-3. separate any remaining terminal-only input/output from study logic;
-4. create the smallest window that launches;
-5. add the PrepFlow banner;
-6. add the three subject cards;
-7. load the three official Packs dynamically;
-8. add chapter multi-selection;
-9. connect Start Studying to the existing session logic;
-10. add one working Multiple Choice screen;
-11. add feedback and rationale;
-12. preserve block and mastery behavior;
-13. add Multiple Response;
-14. add Completion;
-15. add Ordered Response;
-16. test a complete session;
-17. package a Linux proof build;
-18. prepare Windows packaging;
-19. prepare macOS packaging.
-
-The interface is a thin layer around the proven Study Engine.
-
-Do not rewrite the engine merely because the terminal display must be replaced.
-
----
-
-# Exact Next Top-Down Assessment
-
-At the beginning of the next session, perform a focused top-down inspection of the committed repository.
-
-The assessment should answer:
-
-1. What files currently implement Pack discovery?
-2. What files implement subject selection?
-3. What files implement chapter selection?
-4. What functions implement question presentation?
-5. What functions check each answer type?
-6. What functions implement blocks, missed-question review, and mastery?
-7. Which parts are tightly coupled to terminal `input()` and `print()`?
-8. What is the smallest desktop UI layer that can reuse the current logic?
-9. What existing packaging configuration can be reused?
-10. What is the single best first desktop milestone?
-
-Do not perform another broad architecture debate.
-
-The intended first executable milestone is likely:
-
-> Open a PrepFlow desktop window that displays the PrepFlow banner and the three official subject categories loaded from the committed Packs.
-
-The top-down assessment must inspect the committed GitHub mirror before requesting local files or terminal output.
+Do not attempt this entire sequence in one speculative rewrite.
 
 ---
 
 # Later PDF Import Interface
 
-The PDF import interface is a major future milestone, but it comes after the study desktop shell works.
+The PDF import interface remains a major future milestone, but it comes after the PWA study experience is stable.
 
 Future user flow:
 
@@ -1054,7 +1000,7 @@ PrepFlow creates the category
 Category appears on the home screen
 ```
 
-The interface should show friendly progress wording such as:
+Friendly progress wording may include:
 
 ```text
 Reading PDF
@@ -1086,7 +1032,7 @@ The final import report may show:
 * output category name;
 * option to begin studying.
 
-Do not build this workflow until the desktop study experience is stable.
+Do not build this workflow until the current PWA study milestone is stable.
 
 ---
 
@@ -1098,7 +1044,7 @@ Permanent architecture belongs in:
 docs/ARCHITECTURE_BIBLE.md
 ```
 
-Operational handoff belongs in:
+Operational handoff and sole continuity bootloader belong in:
 
 ```text
 docs/RESTART_PACKET.md
@@ -1122,11 +1068,17 @@ Future ideas belong in:
 docs/IDEAS.md
 ```
 
-Avoid duplicating the same information across all documents.
-
 The README should describe only workflows users can actually perform.
 
-Do not advertise the future PDF import button until it works.
+Do not advertise GitHub Pages, offline PWA installation, or PDF import as completed until those workflows actually work.
+
+Before writing a new Restart Packet:
+
+1. inspect the currently committed Restart Packet;
+2. compare proposed changes against it;
+3. preserve permanent operating rules and continuity details;
+4. update stale sections in place;
+5. never replace it with a short summary that drops safeguards.
 
 ---
 
@@ -1137,23 +1089,30 @@ At the beginning of the next PrepFlow session:
 1. paste this Restart Packet into the fresh chat;
 2. inspect the public GitHub mirror;
 3. verify branch `master`;
-4. verify the latest commit;
-5. confirm the three official Packs exist;
-6. confirm there are no test Packs;
-7. confirm the working tree is expected to be clean;
-8. run the full test suite;
-9. perform the focused Study Engine top-down assessment;
-10. recommend exactly one first desktop-shell milestone;
-11. implement one focused change;
-12. test;
-13. commit;
-14. push both remotes.
+4. verify the latest commit and `v1.0.0` tag;
+5. compare this packet against the committed implementation;
+6. confirm the three official Packs exist;
+7. confirm no test Packs or release artifacts are tracked;
+8. confirm the working tree is expected to be clean;
+9. run the full test suite;
+10. perform a focused top-down inspection for the web-app directory;
+11. recommend exactly one first local PWA milestone;
+12. implement one focused change;
+13. test locally;
+14. commit;
+15. push `origin`;
+16. push `public`;
+17. verify both remote hashes match.
+
+Do not begin with GitHub Pages.
+
+Do not begin with a service worker.
 
 Do not begin with PDF import.
 
-Do not begin by rewriting quiz logic.
+Do not begin by rewriting the desktop app.
 
-Do not begin by choosing several UI frameworks without inspecting the existing code.
+Do not begin by choosing multiple web frameworks without inspecting the committed repository.
 
 ---
 
@@ -1161,7 +1120,7 @@ Do not begin by choosing several UI frameworks without inspecting the existing c
 
 Resume PrepFlow from this statement:
 
-> PrepFlow now has a working standalone desktop application proof. The official library contains Fundamentals with 1,040 questions, Pharmacy with 1,084 questions, and Medical-Surgical with 1,443 questions. The Tkinter desktop interface dynamically loads those categories, supports one or more selected chapters, mixes selected chapters into a single shuffled session, presents questions in blocks of 15 with correctly sized shorter final blocks, and preserves first-pass scoring plus missed-question review until mastery. The desktop interface supports Multiple Choice, Multiple Response, Completion, and Ordered Response, including drag-and-drop ordering. Long question content scrolls while navigation remains visible. PrepFlow now has a single automatic overwriteable save slot, a temporary Progress saved notification, and a Continue Saved Quiz option that restores the shuffled order, question position, score, block state, missed questions, and review queue. The save is deleted when the session is completed. A standalone Linux x86-64 application was successfully built and tested with PyInstaller. The tracked repository, Git history, and packaged release passed privacy scans for Charlie’s identifying information. All 53 automated tests passed. The latest verified commit is `81160bd`, both `origin/master` and `public/master` were synchronized, and the working tree was clean. The next milestone is to finish Version 1 release documentation, create and smoke-test the Linux release archive, and prepare a tagged limited beta release. Separate Windows and macOS desktop builds require their native operating systems. A later iPad-compatible frontend will require a new interface layer but should reuse PrepFlow’s proven Packs, study rules, scoring, mastery flow, and save-state design.
+> PrepFlow Version 1.0 is complete as a working Linux desktop application proof and is permanently marked by Git tag `v1.0.0`. The latest verified commit is `676f2b6`, both `origin/master` and `public/master` are synchronized, the working tree was clean, and all 53 automated tests passed. The official library contains Fundamentals with 1,040 questions, Pharmacy with 1,084 questions, and Medical-Surgical with 1,443 questions. The desktop app supports the three official categories, multi-chapter selection, one shuffled order per session, 15-question blocks, accurately shortened final blocks, Multiple Choice, Multiple Response, Completion, Ordered Response with drag-and-drop, first-pass scoring, missed-question review until mastery, automatic single-slot saving, Continue Saved Quiz, a Progress saved notice, standalone Linux packaging, a smoke-tested release archive, privacy validation, and a clickable ChromeOS launcher. Version 1.1 should begin as a Progressive Web App developed locally on the Chromebook so iPad users can eventually open PrepFlow in Safari, add it to the Home Screen, and study offline after installation. Do not begin with hosting, GitHub Pages, a backend, accounts, native SwiftUI, service-worker complexity, or PDF import. First inspect the committed repository, compare the current Restart Packet against implementation, choose one clean web-app directory, and build a local web shell showing polished PrepFlow branding and the three official study categories. Before public deployment, complete the public-content distribution and privacy review.
 
 ---
 
@@ -1171,9 +1130,15 @@ One focused change at a time.
 
 Use GitHub first.
 
-Reuse the existing Study Engine.
+Treat this Restart Packet as the sole operational continuity provider.
 
-Let real runtime evidence drive interface changes.
+Always compare the committed Restart Packet before creating a replacement.
+
+Preserve the working Version 1.0 desktop release.
+
+Reuse established study behavior.
+
+Let real runtime evidence drive changes.
 
 Do not expose implementation details to users.
 
