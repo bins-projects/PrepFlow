@@ -74,7 +74,7 @@ Request local inspection only when:
 Latest confirmed committed milestone:
 
 ```text
-30c41e8 Promote validated Medical-Surgical pack
+81160bd build: package PrepFlow desktop application
 ```
 
 Immediately preceding compiler milestone:
@@ -729,7 +729,7 @@ Legitimate educational uses of `N/A` inside normal text should not be removed ca
 Latest verified full test run:
 
 ```text
-49 passed
+53 passed
 ```
 
 The suite covers at least:
@@ -824,7 +824,7 @@ The desktop shell should reuse this behavior rather than creating a separate qui
 
 The next milestone is:
 
-> Build a user-friendly standalone desktop application shell around the existing Study Engine.
+> Complete Version 1 release documentation, create and validate the Linux release archive, and prepare the project for a tagged limited beta release.
 
 The interface should launch like a normal application on Windows or macOS.
 
@@ -1161,7 +1161,7 @@ Do not begin by choosing several UI frameworks without inspecting the existing c
 
 Resume PrepFlow from this statement:
 
-> PrepFlow’s generic compiler has now been proven across three starting sources. The official library contains Fundamentals with 1,040 questions, Pharmacy with 1,084 questions, and Medical-Surgical with 1,443 questions. Medical-Surgical was rebuilt from the original private PDF through the improved universal pipeline with 63 chapters, 1,187 Multiple Choice questions, 133 Multiple Response questions, 108 Completion questions, 15 Ordered Response questions, zero skipped questions, zero source-branding remnants, and only three advisory duplicate-text diagnostics. The full automated suite passed 49 tests. The latest verified commit is `30c41e8`, both remotes were synchronized, and the working tree was clean. The next major milestone is a user-friendly standalone desktop PrepFlow application for Windows and macOS that launches with PrepFlow branding, displays Fundamentals, Pharmacy, and Medical-Surgical as normal study categories, allows one or more chapters to be selected, and runs the existing quiz, block, missed-question review, and mastery rules without exposing JSON, Pack IDs, filenames, terminal commands, or compiler internals. The later in-app PDF drop/import workflow remains required but must not begin until the desktop study shell is stable.
+> PrepFlow now has a working standalone desktop application proof. The official library contains Fundamentals with 1,040 questions, Pharmacy with 1,084 questions, and Medical-Surgical with 1,443 questions. The Tkinter desktop interface dynamically loads those categories, supports one or more selected chapters, mixes selected chapters into a single shuffled session, presents questions in blocks of 15 with correctly sized shorter final blocks, and preserves first-pass scoring plus missed-question review until mastery. The desktop interface supports Multiple Choice, Multiple Response, Completion, and Ordered Response, including drag-and-drop ordering. Long question content scrolls while navigation remains visible. PrepFlow now has a single automatic overwriteable save slot, a temporary Progress saved notification, and a Continue Saved Quiz option that restores the shuffled order, question position, score, block state, missed questions, and review queue. The save is deleted when the session is completed. A standalone Linux x86-64 application was successfully built and tested with PyInstaller. The tracked repository, Git history, and packaged release passed privacy scans for Charlie’s identifying information. All 53 automated tests passed. The latest verified commit is `81160bd`, both `origin/master` and `public/master` were synchronized, and the working tree was clean. The next milestone is to finish Version 1 release documentation, create and smoke-test the Linux release archive, and prepare a tagged limited beta release. Separate Windows and macOS desktop builds require their native operating systems. A later iPad-compatible frontend will require a new interface layer but should reuse PrepFlow’s proven Packs, study rules, scoring, mastery flow, and save-state design.
 
 ---
 

@@ -2,6 +2,51 @@
 
 This document records major project milestones. Minor edits and intermediate work are preserved in Git history.
 
+## Version 1.0.0 — Desktop Application Proof
+
+Date: 2026-07-12
+
+### Desktop Application
+
+- Added a standalone Tkinter desktop interface around the existing Study Engine.
+- Added a PrepFlow home screen with Fundamentals, Pharmacy, and Medical-Surgical.
+- Added dynamic Pack discovery and user-facing subject names.
+- Added chapter selection with multi-select, Select All, and Clear All.
+- Added mixed-chapter study sessions with one shuffle per session.
+- Preserved 15-question blocks with correctly sized shorter final blocks.
+- Preserved first-pass scoring and missed-question mastery review.
+- Added support for Multiple Choice, Multiple Response, Completion, and Ordered Response.
+- Added drag-and-drop controls for Ordered Response questions.
+- Added scrollable question content with fixed Submit and Continue controls.
+
+### Session Persistence
+
+- Added a single overwriteable local autosave slot.
+- Added automatic saving whenever a new question opens.
+- Added Continue Saved Quiz to the home screen.
+- Preserved shuffled order, current position, score, block state, missed questions, and review state.
+- Added a temporary Progress saved notification.
+- Added automatic save deletion after session completion.
+
+### Packaging
+
+- Updated the PyInstaller specification to launch the desktop GUI.
+- Bundled the three official PrepFlow Packs.
+- Successfully built and tested a standalone Linux x86-64 application.
+- Verified the packaged application launches without Python or terminal interaction.
+- Verified subject selection, chapter selection, quiz flow, autosave, and resume in the packaged build.
+
+### Privacy and Validation
+
+- Verified no personal names, personal email addresses, personal home paths, or recovery-bundle references remain in tracked project files.
+- Verified all reachable Git commits use the anonymous PrepFlow Git identity.
+- Scanned the packaged Linux release for personal identifying information.
+- Confirmed both Git remotes were synchronized at commit `81160bd`.
+- Confirmed the working tree was clean.
+- Confirmed all 53 automated tests passed.
+
+---
+
 ## Version 0.8.0 — Release Preparation
 
 Date: 2026-07-11

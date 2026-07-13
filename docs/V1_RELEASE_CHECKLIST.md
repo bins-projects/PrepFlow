@@ -2,101 +2,94 @@
 
 ## Purpose
 
-This document defines the remaining work required before PrepFlow Version 1 can be released.
+This document contains only the remaining work required before PrepFlow
+Version 1 is distributed for beta testing.
 
-Only unfinished work belongs here.
+Completed milestones belong in `CHANGELOG.md`.
 
-Completed milestones belong in the CHANGELOG.
+Future platform and interface work belongs in `IDEAS.md`.
 
-Future ideas belong in IDEAS.
-
-Architecture belongs in the ARCHITECTURE_BIBLE.
-
----
-
-# Compiler
-
-☐ Canonical compiler pipeline verified
-
-☐ Pharmacy Pack compiles successfully
-
-☐ Medical-Surgical Pack compiles successfully
-
-☐ Stable question IDs verified
-
-☐ Final validation reports no known critical parser errors
-
-☐ Final validation reports no known residual source-branding artifacts
+Architecture belongs in `ARCHITECTURE_BIBLE.md`.
 
 ---
 
-# Regression Tests
+# Completed Version 1 Foundation
 
-☐ Chapter filtering
+The following Version 1 foundations are complete and recorded in the
+CHANGELOG:
 
-☐ Pack validation
-
-☐ Stable ID verification
-
-☐ Review queue behavior
-
-☐ First-pass scoring
-
-☐ Shuffle integrity
-
----
-
-# Repository
-
-☐ Obsolete documentation removed
-
-☐ Repository structure finalized
+* Generic compiler pipeline proven across three starting sources.
+* Fundamentals, Pharmacy, and Medical-Surgical canonical Packs.
+* Stable desktop study interface.
+* Subject and multi-chapter selection.
+* All four supported question types.
+* Fifteen-question blocks and shorter final blocks.
+* First-pass scoring and missed-question mastery review.
+* Automatic single-slot save and resume.
+* Standalone Linux x86-64 packaging proof.
+* Repository and packaged-release privacy scans.
+* Fifty-three passing automated tests.
 
 ---
 
-# Documentation
+# Remaining Release Work
 
-☐ CHANGELOG reviewed
+## Documentation
 
-☐ IDEAS reviewed
+☐ Review and update the public README for the actual desktop workflow
 
----
+☐ Review `IDEAS.md` and move any completed items to the CHANGELOG
 
-# User Experience
+☐ Confirm the Restart Packet reflects the latest committed milestone
 
-☐ Fresh clone installs successfully
+## Release Validation
 
-☐ PrepFlow launches successfully
+☐ Perform a fresh-clone installation and build test
 
-☐ User can select a Pack
+☐ Perform a clean packaged-application smoke test from the release archive
 
-☐ User can select chapters
+☐ Confirm generated `build/` and `dist/` files remain untracked
 
-☐ User can complete a study session
+☐ Confirm the packaged application contains only the three intended starting categories
 
----
+## Distribution
 
-# Release
+☐ Create the Linux x86-64 release archive
 
-☐ Version 1 committed
+☐ Write short Linux extraction and launch instructions
 
-☐ Version 1 tagged
+☐ Decide whether the Linux proof build is suitable for limited beta distribution
 
-☐ Private repository pushed
+☐ Build and test separate releases on each additional supported desktop operating system
 
-☐ Public mirror pushed
+## Version Control
 
-☐ Ready for beta testing
+☐ Commit final Version 1 release documentation
+
+☐ Push the private repository
+
+☐ Push the public mirror
+
+☐ Confirm both remote branch hashes match
+
+☐ Create the Version 1 release tag
+
+## Future Platform Track
+
+The iPad-compatible frontend is a later platform milestone. A normal
+macOS desktop build will not run on iPadOS. The proven PrepFlow Packs,
+study rules, scoring behavior, mastery flow, and save-state design should
+be reused when that frontend begins.
 
 ---
 
 # Definition of Done
 
-PrepFlow Version 1 is complete when:
+PrepFlow Version 1 is ready for limited beta distribution when:
 
-* The compiler produces valid canonical PrepFlow Packs.
-* The Study Engine successfully delivers those Packs.
-* The repository is clean.
-* The documentation accurately reflects the implementation.
-* Core regression tests pass.
-* A new user can install and study without developer assistance.
+* the repository documentation accurately describes the working product;
+* a fresh environment can build the application;
+* the release archive passes a clean smoke test;
+* privacy validation remains clean;
+* both Git remotes match;
+* and the Version 1 release is tagged.
