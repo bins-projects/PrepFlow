@@ -97,10 +97,18 @@ from pathlib import Path
 
 
 def test_parse_real_fundamentals_sample() -> None:
-    sample = Path(
+    sample_path = Path(
         "output/imports/fundamentals/02_clean.txt"
-    ).read_text(encoding="utf-8")
+    )
 
+    if not sample_path.exists():
+        import pytest
+
+        pytest.skip(
+            "Private generated Fundamentals fixture is not available."
+        )
+
+    sample = sample_path.read_text(encoding="utf-8")
     questions = parse_source_questions(sample)
 
     assert len(questions) > 1000
