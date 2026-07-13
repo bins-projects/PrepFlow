@@ -472,3 +472,343 @@ DIF: Cognitive Level: Knowledge
     assert questions[0]["chapter"] == (
         "Chapter 33: Cardiovascular System Introduction"
     )
+
+def test_parser_normalizes_ans_greater_than_marker() -> None:
+    text = """
+Chapter 3: Mathematics Review
+MULTIPLE CHOICE
+1. What is the safest calculation practice?
+A.
+Estimate the dose.
+B.
+Ensure the numbers are entered correctly. Ans> B
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["choices"] == [
+        {"label": "A", "text": "Estimate the dose."},
+        {
+            "label": "B",
+            "text": "Ensure the numbers are entered correctly.",
+        },
+    ]
+    assert questions[0]["correct_answers"] == ["B"]
+
+
+def test_parser_normalizes_inline_dash_answer_marker() -> None:
+    text = """
+Chapter 28: Drug Therapy For Male Reproductive Problems
+MULTIPLE CHOICE
+1. Which finding is most important?
+A. Mild fatigue
+B. Occasional thirst
+C. Dry skin
+D. Strength of the urinary stream. - ANS: D
+The urinary stream helps assess obstruction severity.
+DIF: Cognitive Level: Applying
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["choices"][-1] == {
+        "label": "D",
+        "text": "Strength of the urinary stream.",
+    }
+    assert questions[0]["correct_answers"] == ["D"]
+    assert questions[0]["rationale"] == (
+        "The urinary stream helps assess obstruction severity."
+    )
+
+def test_parser_handles_unnumbered_ans_greater_than_question() -> None:
+    text = """
+Chapter 3: Mathematics Review and Introduction to Dosage Calculations
+What Is The Most Important Consideration When Using A Calculator?
+A.
+Always estimate the answer.
+B.
+Ensure the numbers are entered in the correct order. Ans> B
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["stem"] == (
+        "What Is The Most Important Consideration When Using A Calculator?"
+    )
+    assert questions[0]["correct_answers"] == ["B"]
+
+
+def test_parser_handles_unnumbered_inline_dash_answer_question() -> None:
+    text = """
+Chapter 28: Drug Therapy For Male Reproductive Problems
+To Determine The Severity Of Symptoms For A Patient With BPH, What Should The Nurse Ask?
+A. Blood in the urine.
+B. Lower back pain.
+C. Erectile dysfunction.
+D. Strength of the urinary stream. - ANS: D
+The urinary stream helps determine obstruction severity.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["correct_answers"] == ["D"]
+    assert questions[0]["choices"][-1] == {
+        "label": "D",
+        "text": "Strength of the urinary stream.",
+    }
+
+def test_parser_handles_multiple_wrapped_unnumbered_questions() -> None:
+    text = """
+Chapter 28: Drug Therapy For Male Reproductive Problems
+What finding helps determine the severity of benign prostatic
+hyperplasia in an older adult?
+A. Blood in the urine
+B. Lower back pain
+C. Erectile dysfunction
+D. Strength of the urinary stream Ans> D
+The urinary stream helps determine obstruction severity.
+A patient taking finasteride asks about expected adverse
+effects. Which response is correct?
+A. Severe hypertension
+B. Decreased libido
+C. Immediate symptom relief
+D. Increased fertility Ans> B
+Decreased libido can occur with androgen suppression.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 2
+    assert questions[0]["correct_answers"] == ["D"]
+    assert questions[1]["correct_answers"] == ["B"]
+    assert questions[1]["stem"] == (
+        "A patient taking finasteride asks about expected adverse "
+        "effects. Which response is correct?"
+    )
+
+def test_parser_classifies_unheaded_blank_as_completion() -> None:
+    text = """
+Chapter 3: Mathematics Review and Introduction to Dosage Calculations
+A patient is prescribed aspirin 650 mg. Tablets contain 325 mg.
+How many tablets should be administered?
+_____ tablet(s) Ans> 2
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["question_type"] == "completion"
+    assert questions[0]["choices"] == []
+    assert questions[0]["correct_answers"] == ["2"]
+
+def test_parser_normalizes_choices_answer_and_rationale_labels() -> None:
+    text = """
+Chapter 11: Immunizations
+MULTIPLE CHOICE
+1. What type of immunity is learned?
+Choices:
+A) Innate immunity
+B) Acquired immunity
+C) Passive immunity
+D) Artificial immunity
+Answer: B) Acquired immunity
+Rationale: Acquired immunity develops after exposure.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["question_type"] == "multiple_choice"
+    assert questions[0]["choices"] == [
+        {"label": "A", "text": "Innate immunity"},
+        {"label": "B", "text": "Acquired immunity"},
+        {"label": "C", "text": "Passive immunity"},
+        {"label": "D", "text": "Artificial immunity"},
+    ]
+    assert questions[0]["correct_answers"] == ["B"]
+    assert (
+        questions[0]["rationale"]
+        == "Acquired immunity develops after exposure."
+    )
+
+
+def test_parser_classifies_numeric_no_choice_answer_as_completion() -> None:
+    text = """
+Chapter 29: Reproductive Problems
+1. The prescribed dose is 2.5 mg and tablets contain 0.625 mg.
+How many tablets should be administered? - ANS: 4
+Want 2.5 mg and have 0.625 mg per tablet.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["question_type"] == "completion"
+    assert questions[0]["choices"] == []
+    assert questions[0]["correct_answers"] == ["4"]
+    assert "0.625 mg per tablet" in questions[0]["rationale"]
+
+def test_labeled_format_preserves_multiple_question_boundaries() -> None:
+    text = """
+Chapter 11: Immunizations
+MULTIPLE CHOICE
+1. First question?
+Choices:
+A) First choice
+B) Second choice
+Answer: B) Second choice
+Rationale: First rationale.
+2. Second question?
+Choices:
+A) Third choice
+B) Fourth choice
+Answer: A) Third choice
+Rationale: Second rationale.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 2
+    assert questions[0]["source_question_number"] == 1
+    assert questions[0]["correct_answers"] == ["B"]
+    assert questions[0]["rationale"] == "First rationale."
+    assert questions[1]["source_question_number"] == 2
+    assert questions[1]["correct_answers"] == ["A"]
+    assert questions[1]["rationale"] == "Second rationale."
+
+
+def test_parser_normalizes_correct_answer_and_explanation() -> None:
+    text = """
+Chapter 26: Insomnia
+1. Which drug can cause amnesia?
+A. Drug one
+B. Drug two
+C. Temazepam
+D. Drug four
+Correct Answer: C. Temazepam
+Explanation: Temazepam can impair memory.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["correct_answers"] == ["C"]
+    assert questions[0]["rationale"] == "Temazepam can impair memory."
+
+
+def test_parser_normalizes_answer_and_feedback() -> None:
+    text = """
+Chapter 27: Eye Problems
+1. Which statement is correct?
+A. First statement
+B. Second statement
+C. Both eyes are usually affected
+D. Fourth statement
+Answer: C. Both eyes are usually affected
+Feedback: This disorder commonly affects both eyes.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["correct_answers"] == ["C"]
+    assert (
+        questions[0]["rationale"]
+        == "This disorder commonly affects both eyes."
+    )
+
+def test_parser_normalizes_plain_inline_ans_marker() -> None:
+    text = """
+Chapter 10: Antiinflammatory Drugs
+MULTIPLE CHOICE
+1. Which substance is inhibited?
+A. Tumor necrosis factor
+B. White blood cells
+C. Cyclo-oxygenase
+D. Interferon
+Instructor note about this topic ANS: A
+The drug inhibits tumor necrosis factor.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["correct_answers"] == ["A"]
+    assert (
+        questions[0]["rationale"]
+        == "The drug inhibits tumor necrosis factor."
+    )
+
+
+def test_parser_normalizes_multiline_ordered_answer_key() -> None:
+    text = """
+Chapter 21: Diabetes
+ORDERING
+1. Place the steps in the correct order.
+A. First option
+B. Second option
+C. Third option
+D. Fourth option
+ANS:
+1. D
+2. C
+3. A
+4. B
+The steps must be completed in the listed sequence.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 1
+    assert questions[0]["question_type"] == "ordered_response"
+    assert questions[0]["correct_answers"] == ["D", "C", "A", "B"]
+    assert (
+        questions[0]["rationale"]
+        == "The steps must be completed in the listed sequence."
+    )
+
+def test_unnumbered_question_does_not_absorb_previous_rationale() -> None:
+    text = """
+Chapter 28: Male Reproductive Problems
+A previous question?
+A. First
+B. Second
+C. Third
+D. Fourth - ANS: C
+Previous rationale ends here.
+A couple is seen because they have not conceived.
+When performing an examination, what should the nurse assess?
+A. Hydrocele
+B. Varicocele
+C. Epididymitis
+D. Paraphimosis - ANS: B
+Persistent varicoceles are associated with infertility.
+Which information should the nurse include in teaching?
+A. Perform the examination in a warm area
+B. Only the testis is normally palpable
+C. Perform it weekly
+D. Both testes must be equal in size - ANS: A
+The testes hang lower when warm.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 3
+
+    assert questions[1]["stem"] == (
+        "A couple is seen because they have not conceived. "
+        "When performing an examination, what should the nurse assess?"
+    )
+    assert questions[1]["correct_answers"] == ["B"]
+    assert questions[1]["rationale"] == (
+        "Persistent varicoceles are associated with infertility."
+    )
+
+    assert questions[2]["stem"] == (
+        "Which information should the nurse include in teaching?"
+    )
+    assert questions[2]["correct_answers"] == ["A"]

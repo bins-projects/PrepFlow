@@ -9,8 +9,26 @@ SECTION_HEADERS = {
     "ORDERING",
 }
 QUESTION_RE = re.compile(r"^(\d+)\.\s+(.+)")
+SYNTHETIC_QUESTION_RE = re.compile(
+    r"^\[PREPFLOW_QUESTION\]\s*(\d+)\.\s+(.+)"
+)
 CHOICE_RE = re.compile(r"^([a-gA-G])\.\s+(.+)")
+PAREN_CHOICE_RE = re.compile(r"^([a-gA-G])\)\s+(.+)")
 ANSWER_RE = re.compile(r"^ANS:\s*(.*)", re.IGNORECASE)
+LONG_ANSWER_RE = re.compile(
+    r"^(?:Correct\s+)?Answer:\s*([a-gA-G])"
+    r"(?:[.)]\s*.*)?$",
+    re.IGNORECASE,
+)
+RATIONALE_PREFIX_RE = re.compile(
+    r"^(?:Rationale|Explanation|Feedback):\s*(.*)$",
+    re.IGNORECASE,
+)
+INLINE_ANSWER_RE = re.compile(
+    r"^(.*?)(?:\s+(?:-\s*)?ANS:\s*|\s+ANS>\s*)(.+?)\s*$",
+    re.IGNORECASE,
+)
+CHOICE_MARKER_ONLY_RE = re.compile(r"^[a-gA-G]\.$")
 METADATA_RE = re.compile(
     r"^(DIF|OBJ|TOP|MSC|KEY|NCLEX|NOT|CONCEPTS):",
     re.IGNORECASE,
@@ -54,17 +72,184 @@ def recover_missing_a_choice(question: dict) -> dict:
     return question
 
 
+def normalize_multiline_ordered_answers(
+    lines: list[str],
+) -> list[str]:
+    """
+    Combine ordered-response keys that appear on numbered lines.
+
+    Example:
+        ANS:
+        1. D
+        2. C
+        3. F
+
+    becomes:
+        ANS: D C F
+    """
+    normalized: list[str] = []
+    index = 0
+
+    while index < len(lines):
+        if not re.fullmatch(
+            r"ANS:\s*",
+            lines[index],
+            re.IGNORECASE,
+        ):
+            normalized.append(lines[index])
+            index += 1
+            continue
+
+        answer_labels: list[str] = []
+        lookahead = index + 1
+
+        while lookahead < len(lines):
+            match = re.fullmatch(
+                r"\d+\.\s*([A-H])",
+                lines[lookahead],
+                re.IGNORECASE,
+            )
+
+            if not match:
+                break
+
+            answer_labels.append(match.group(1).upper())
+            lookahead += 1
+
+        if len(answer_labels) >= 2:
+            normalized.append(
+                "ANS: " + " ".join(answer_labels)
+            )
+            index = lookahead
+            continue
+
+        normalized.append(lines[index])
+        index += 1
+
+    return normalized
+
+
+def normalize_inline_answers(lines: list[str]) -> list[str]:
+    """
+    Split alternate inline answer markers into canonical ANS lines.
+
+    Examples:
+        D. Strength of urinary stream. - ANS: D
+        D. Calculate by hand. Ans> D
+
+    become:
+        D. Strength of urinary stream.
+        ANS: D
+    """
+    normalized: list[str] = []
+
+    for line in lines:
+        match = INLINE_ANSWER_RE.match(line)
+
+        if not match:
+            normalized.append(line)
+            continue
+
+        content = match.group(1).strip()
+        answer = match.group(2).strip()
+
+        if content:
+            normalized.append(content)
+
+        normalized.append(f"ANS: {answer}")
+
+    return normalized
+
+
+def normalize_labeled_question_format(
+    lines: list[str],
+) -> list[str]:
+    """
+    Normalize labeled source question formats.
+
+    Supported labels include:
+        Choices:
+        A) Choice text
+        Answer: A) Choice text
+        Correct Answer: A. Choice text
+        Rationale: Explanation
+        Explanation: Explanation
+        Feedback: Explanation
+
+    Once a labeled format is detected, subsequent numbered questions are
+    marked as explicit question boundaries so they cannot be absorbed into
+    the preceding rationale.
+    """
+    normalized: list[str] = []
+    labeled_format_active = False
+
+    for line in lines:
+        if CHAPTER_RE.match(line):
+            labeled_format_active = False
+            normalized.append(line)
+            continue
+
+        if (
+            labeled_format_active
+            and QUESTION_RE.match(line)
+        ):
+            normalized.append(f"[PREPFLOW_QUESTION] {line}")
+            continue
+
+        if line.strip().lower() == "choices:":
+            labeled_format_active = True
+            continue
+
+        choice_match = PAREN_CHOICE_RE.match(line)
+
+        if choice_match:
+            labeled_format_active = True
+            normalized.append(
+                f"{choice_match.group(1)}. "
+                f"{choice_match.group(2).strip()}"
+            )
+            continue
+
+        answer_match = LONG_ANSWER_RE.match(line)
+
+        if answer_match:
+            labeled_format_active = True
+            normalized.append(
+                f"ANS: {answer_match.group(1).upper()}"
+            )
+            continue
+
+        rationale_match = RATIONALE_PREFIX_RE.match(line)
+
+        if rationale_match:
+            labeled_format_active = True
+            rationale = rationale_match.group(1).strip()
+
+            if rationale:
+                normalized.append(rationale)
+
+            continue
+
+        normalized.append(line)
+
+    return normalized
+
+
 def normalize_split_choices(lines: list[str]) -> list[str]:
     """
     Repair PDF extraction where choice markers are split across lines.
 
-    Example:
+    Examples:
         a
         .
         Answer text
 
-    becomes:
+        A.
+        Answer text
+
+    become:
         a. Answer text
+        A. Answer text
     """
     normalized = []
     index = 0
@@ -81,14 +266,162 @@ def normalize_split_choices(lines: list[str]) -> list[str]:
             index += 3
             continue
 
+        if (
+            index + 1 < len(lines)
+            and CHOICE_MARKER_ONLY_RE.fullmatch(lines[index])
+        ):
+            normalized.append(
+                f"{lines[index]} {lines[index + 1]}"
+            )
+            index += 2
+            continue
+
         normalized.append(lines[index])
         index += 1
 
     return normalized
 
 
+def number_unnumbered_questions(lines: list[str]) -> list[str]:
+    """
+    Add synthetic numbers to alternate-format questions that omit them.
+
+    Each ANS line closes a source-question block. For blocks without an
+    existing numbered question, locate the start of the stem and prefix it
+    with a synthetic number.
+    """
+    normalized = list(lines)
+    chapter_start = None
+    previous_answer = None
+    synthetic_number = 1
+
+    def is_source_header(line: str) -> bool:
+        lowered = line.lower()
+
+        return (
+            "understanding pharmacology:" in lowered
+            or lowered.startswith("linda workman:")
+            or lowered.startswith("workman &")
+            or lowered.startswith("unit ")
+            or lowered == "extra per year?"
+        )
+
+    for index, line in enumerate(lines):
+        if CHAPTER_RE.match(line):
+            chapter_start = index
+            previous_answer = None
+            synthetic_number = 1
+            continue
+
+        if chapter_start is None or not ANSWER_RE.match(line):
+            continue
+
+        block_start = (
+            previous_answer + 1
+            if previous_answer is not None
+            else chapter_start + 1
+        )
+        block = lines[block_start:index]
+
+        previous_answer = index
+
+        if any(
+            QUESTION_RE.match(candidate)
+            or SYNTHETIC_QUESTION_RE.match(candidate)
+            for candidate in block
+        ):
+            continue
+
+        choice_a_offset = next(
+            (
+                offset
+                for offset, candidate in enumerate(block)
+                if re.match(r"^A\.\s+", candidate, re.IGNORECASE)
+            ),
+            None,
+        )
+
+        if choice_a_offset is not None:
+            stem_end = block_start + choice_a_offset - 1
+        else:
+            stem_end = index - 1
+
+        while (
+            stem_end >= block_start
+            and (
+                not lines[stem_end]
+                or is_source_header(lines[stem_end])
+                or lines[stem_end].upper() in SECTION_HEADERS
+            )
+        ):
+            stem_end -= 1
+
+        if stem_end < block_start:
+            continue
+
+        stem_start = block_start
+
+        # The block may begin with the prior question's rationale. The last
+        # complete declarative sentence before the new stem is its boundary.
+        for candidate_index in range(block_start, stem_end):
+            candidate = lines[candidate_index].strip()
+
+            if candidate.endswith((".", "!")):
+                stem_start = candidate_index + 1
+
+        while (
+            stem_start <= stem_end
+            and (
+                not lines[stem_start]
+                or is_source_header(lines[stem_start])
+                or lines[stem_start].upper() in SECTION_HEADERS
+            )
+        ):
+            stem_start += 1
+
+        question_cues = [
+            candidate_index
+            for candidate_index in range(block_start, stem_end + 1)
+            if re.match(
+                r"^(?:what|which|when|where|who|why|how)\b",
+                lines[candidate_index].strip(),
+                re.IGNORECASE,
+            )
+        ]
+
+        if question_cues:
+            stem_start = question_cues[-1]
+
+            if stem_start > block_start:
+                setup_line = lines[stem_start - 1].strip()
+
+                if re.match(
+                    r"^(?:a|an|the)\s+"
+                    r"(?:patient|client|man|woman|child|infant|"
+                    r"couple|nurse)\b",
+                    setup_line,
+                    re.IGNORECASE,
+                ):
+                    stem_start -= 1
+
+        if stem_start > stem_end:
+            continue
+
+        normalized[stem_start] = (
+            f"[PREPFLOW_QUESTION] {synthetic_number}. "
+            f"{normalized[stem_start]}"
+        )
+        synthetic_number += 1
+
+    return normalized
+
 def parse_source_questions(text: str) -> list[dict]:
-    lines = normalize_split_choices([line.strip() for line in text.splitlines()])
+    lines = [line.strip() for line in text.splitlines()]
+    lines = normalize_labeled_question_format(lines)
+    lines = normalize_split_choices(lines)
+    lines = normalize_inline_answers(lines)
+    lines = normalize_multiline_ordered_answers(lines)
+    lines = number_unnumbered_questions(lines)
 
     # Join chapter headings that were wrapped across PDF-extracted lines.
     joined_lines: list[str] = []
@@ -175,7 +508,8 @@ def parse_source_questions(text: str) -> list[dict]:
             section = line.upper()
             continue
 
-        question_match = QUESTION_RE.match(line)
+        synthetic_question_match = SYNTHETIC_QUESTION_RE.match(line)
+        question_match = synthetic_question_match or QUESTION_RE.match(line)
 
         # Wrapped stems can begin with clock times such as "0700.".
         # A leading-zero number inside an unfinished question is content,
@@ -191,7 +525,11 @@ def parse_source_questions(text: str) -> list[dict]:
             question["stem"] = question["stem"].rstrip()
             continue
 
-        if question_match and (not reading_rationale or metadata_started):
+        if question_match and (
+            synthetic_question_match
+            or not reading_rationale
+            or metadata_started
+        ):
             if question is not None:
                 questions.append(recover_missing_a_choice(question))
 
@@ -251,6 +589,23 @@ def parse_source_questions(text: str) -> list[dict]:
         answer_match = ANSWER_RE.match(line)
         if answer_match:
             answer_text = answer_match.group(1).strip()
+
+            if (
+                question["question_type"] == "multiple_choice"
+                and not question["choices"]
+                and (
+                    "_____" in question["stem"]
+                    or (
+                        answer_text
+                        and not re.fullmatch(
+                            r"[A-G](?:\s*,?\s*[A-G])*",
+                            answer_text,
+                            re.IGNORECASE,
+                        )
+                    )
+                )
+            ):
+                question["question_type"] = "completion"
 
             sequence_language = any(
                 phrase in question["stem"].lower()

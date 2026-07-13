@@ -165,3 +165,78 @@ def test_removes_standalone_na_metadata_artifact() -> None:
     assert "\nN/A\n" not in f"\n{cleaned}"
     assert "OBJ: 3 TOP: Enculturation" in cleaned
     assert "MSC: NCLEX:" in cleaned
+
+def test_removes_obsolete_embedded_pharmacy_chapter_32() -> None:
+    source = """Chapter 25: Drug Therapy for Psychiatric Problems
+25. Valid psychiatric question
+ANS: A
+Chapter 32: Drug Therapy For Female Reproductive Issues
+1. Obsolete duplicated question
+ANS: B
+Obsolete rationale.
+Chapter 26: Drug Therapy For Insomnia
+1. Valid insomnia question
+ANS: C
+"""
+
+    cleaned = clean_text(source)
+
+    assert "Chapter 25: Drug Therapy for Psychiatric Problems" in cleaned
+    assert "25. Valid psychiatric question" in cleaned
+    assert "Chapter 32: Drug Therapy For Female Reproductive Issues" not in cleaned
+    assert "Obsolete duplicated question" not in cleaned
+    assert "Obsolete rationale" not in cleaned
+    assert "Chapter 26: Drug Therapy For Insomnia" in cleaned
+    assert "1. Valid insomnia question" in cleaned
+
+
+def test_preserves_unrelated_chapter_32() -> None:
+    source = """Chapter 32: An Unrelated Legitimate Chapter
+1. Keep this question
+ANS: A
+"""
+
+    cleaned = clean_text(source)
+
+    assert "Chapter 32: An Unrelated Legitimate Chapter" in cleaned
+    assert "1. Keep this question" in cleaned
+
+def test_trims_pharmacy_chapter_3_duplicate_summary() -> None:
+    source = """Chapter 3: Mathematics Review and Introduction to Dosage Calculations
+First real question?
+A.
+First choice
+B.
+Second choice Ans> B
+Second real question?
+A.
+First choice
+B.
+Second choice Ans> A
+Third real question?
+A.
+First choice
+B.
+Second choice Ans> B
+Duplicate fourth question?
+A.
+First choice
+B.
+Second choice Ans> A
+Duplicate fifth question?
+_____ mL Ans> 5
+Chapter 04: Medical Systems Of Weights And Measures
+1. Complete Chapter 4 question
+ANS: A
+Complete rationale.
+"""
+
+    cleaned = clean_text(source)
+
+    assert "First real question?" in cleaned
+    assert "Second real question?" in cleaned
+    assert "Third real question?" in cleaned
+    assert "Duplicate fourth question?" not in cleaned
+    assert "Duplicate fifth question?" not in cleaned
+    assert "Chapter 04: Medical Systems Of Weights And Measures" in cleaned
+    assert "Complete Chapter 4 question" in cleaned

@@ -64,6 +64,93 @@ def remove_leading_chapter_index(lines: list[str]) -> list[str]:
     return lines
 
 
+def remove_obsolete_pharmacy_chapter_32(
+    lines: list[str],
+) -> list[str]:
+    """
+    Remove the obsolete Pharmacy chapter appended inside the newer
+    third-edition source.
+
+    The contaminated block begins with the exact legacy heading and ends
+    immediately before the next chapter heading.
+    """
+    obsolete_heading = (
+        "chapter 32: drug therapy for female reproductive issues"
+    )
+
+    cleaned: list[str] = []
+    skipping = False
+
+    for line in lines:
+        normalized = line.strip().lower()
+
+        if normalized == obsolete_heading:
+            skipping = True
+            continue
+
+        if skipping and CHAPTER_HEADING_RE.match(line.strip()):
+            skipping = False
+
+        if not skipping:
+            cleaned.append(line)
+
+    return cleaned
+
+
+def trim_pharmacy_chapter_3_duplicate_summary(
+    lines: list[str],
+) -> list[str]:
+    """
+    Keep the three genuine Chapter 3 questions and remove the condensed
+    duplicate summary that follows them before Chapter 4.
+
+    The complete duplicate questions occur later in Chapter 4 with their
+    rationales, so retaining the summary would create incomplete copies.
+    """
+    target_heading = (
+        "chapter 3: mathematics review and introduction "
+        "to dosage calculations"
+    )
+
+    cleaned: list[str] = []
+    inside_target = False
+    skipping_duplicates = False
+    inline_answer_count = 0
+
+    for line in lines:
+        normalized = line.strip().lower()
+
+        if normalized == target_heading:
+            inside_target = True
+            skipping_duplicates = False
+            inline_answer_count = 0
+            cleaned.append(line)
+            continue
+
+        if inside_target and CHAPTER_HEADING_RE.match(line.strip()):
+            inside_target = False
+            skipping_duplicates = False
+            cleaned.append(line)
+            continue
+
+        if not inside_target:
+            cleaned.append(line)
+            continue
+
+        if skipping_duplicates:
+            continue
+
+        cleaned.append(line)
+
+        if re.search(r"\bAns>\s*", line, re.IGNORECASE):
+            inline_answer_count += 1
+
+            if inline_answer_count == 3:
+                skipping_duplicates = True
+
+    return cleaned
+
+
 def clean_text(text: str) -> str:
     """
     Remove generic extraction artifacts.
@@ -166,6 +253,8 @@ def clean_text(text: str) -> str:
         index += 1
 
     lines = remove_leading_chapter_index(cleaned_lines)
+    lines = remove_obsolete_pharmacy_chapter_32(lines)
+    lines = trim_pharmacy_chapter_3_duplicate_summary(lines)
 
     cleaned = "\n".join(lines)
 
