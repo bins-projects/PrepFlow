@@ -1,4 +1,27 @@
+<!-- PLATFORM_CHOOSER_START -->
 # PrepFlow
+
+## Choose Your Platform
+
+### Chromebook
+
+[**Open and Install PrepFlow for Chromebook**](https://bins-projects.github.io/PF-O/web/)
+
+Open the link in Chrome, then select **Install PrepFlow** in the address bar.
+PrepFlow will appear in the Chromebook Launcher and does not require Linux.
+
+### Windows
+
+[**Download PrepFlow for Windows**](https://github.com/bins-projects/PF-O/releases/latest/download/PrepFlow-Windows-x86_64.zip)
+
+Download the ZIP, select **Extract All**, open the extracted `PrepFlow` folder,
+and double-click `PrepFlow.exe`.
+
+Windows may display a Microsoft Defender SmartScreen warning because PrepFlow
+is not yet code-signed.
+
+---
+<!-- PLATFORM_CHOOSER_END -->
 
 PrepFlow is a desktop study application built around mastery-based review.
 
