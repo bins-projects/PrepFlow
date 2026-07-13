@@ -565,3 +565,11 @@ discardSessionButton.addEventListener("click", () => {
 startButton.addEventListener("click", startQuiz);
 
 showSubjects();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch((error) => {
+      console.error("PrepFlow service worker registration failed:", error);
+    });
+  });
+}
