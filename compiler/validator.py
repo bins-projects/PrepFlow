@@ -93,6 +93,28 @@ def validate_questions(questions: list[dict]) -> list[CompilerDiagnostic]:
                 )
             )
 
+        if (
+            question.get("question_type") in choice_required_types
+            and question.get("choices")
+            and question.get("correct_answers")
+        ):
+            choice_labels = {
+                choice.get("label")
+                for choice in question["choices"]
+            }
+
+            if any(
+                answer not in choice_labels
+                for answer in question["correct_answers"]
+            ):
+                diagnostics.append(
+                    CompilerDiagnostic(
+                        severity=DiagnosticSeverity.RECOVERABLE,
+                        label=label,
+                        message="correct answer references missing choice",
+                    )
+                )
+
         if not question.get("rationale"):
             diagnostics.append(
                 CompilerDiagnostic(

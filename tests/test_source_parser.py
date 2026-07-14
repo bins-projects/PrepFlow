@@ -812,3 +812,117 @@ The testes hang lower when warm.
         "Which information should the nurse include in teaching?"
     )
     assert questions[2]["correct_answers"] == ["A"]
+
+def test_parser_repairs_split_choice_marker_with_text_after_period() -> None:
+    text = """Chapter 9: Antiviral Drugs
+MULTIPLE CHOICE
+2. Why does immunity develop?
+A. First answer.
+B
+. Second answer.
+C. Third answer.
+D
+. Fourth answer.
+ANS: D
+The immune system develops protection.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert questions[0]["choices"] == [
+        {"label": "A", "text": "First answer."},
+        {"label": "B", "text": "Second answer."},
+        {"label": "C", "text": "Third answer."},
+        {"label": "D", "text": "Fourth answer."},
+    ]
+
+def test_parser_repairs_sequential_choice_labels_without_periods() -> None:
+    text = """Chapter 1: Drug Basics
+MULTIPLE CHOICE
+2. Which term describes the intended effect?
+A. Side effect
+B Intended action
+C. Adverse reaction
+D Idiosyncratic response
+ANS: B
+The intended action is the desired therapeutic effect.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert questions[0]["choices"] == [
+        {"label": "A", "text": "Side effect"},
+        {"label": "B", "text": "Intended action"},
+        {"label": "C", "text": "Adverse reaction"},
+        {"label": "D", "text": "Idiosyncratic response"},
+    ]
+
+def test_parser_repairs_missing_period_choice_after_wrapped_choice() -> None:
+    text = """Chapter 1: Drug Basics
+MULTIPLE CHOICE
+20. What is the best response?
+A. Ask the patient to describe the reaction she had
+to this drug.
+B Ask whether the drug was taken by mouth or injection.
+C. Contact the health care provider to request
+another prescription.
+D Tell the patient an antidote will prevent the reaction.
+ANS: A
+Clarifying the previous reaction is the priority.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert questions[0]["choices"] == [
+        {
+            "label": "A",
+            "text": "Ask the patient to describe the reaction she had to this drug.",
+        },
+        {
+            "label": "B",
+            "text": "Ask whether the drug was taken by mouth or injection.",
+        },
+        {
+            "label": "C",
+            "text": "Contact the health care provider to request another prescription.",
+        },
+        {
+            "label": "D",
+            "text": "Tell the patient an antidote will prevent the reaction.",
+        },
+    ]
+
+def test_parser_starts_new_question_after_rationale_with_inline_metadata() -> None:
+    text = """Chapter 23: Drug Therapy for Seizures
+MULTIPLE CHOICE
+2. What is another term for seizure disorder?
+B. Enkephalin
+C. Narcolepsy
+D. Neuropathy
+ANS: A
+An individual with repeated seizures has a seizure disorder, sometimes called epilepsy. DIF: Cognitive Level: Remembering REF: P. 401
+3. Which health problem is the most serious possible side effect for status epilepticus?
+A. Ruptured spinal disks
+B. Brain tumor
+C. Broken bones
+D. Brain damage
+ANS: D
+Status epilepticus can cause brain damage.
+"""
+
+    questions = parse_source_questions(text)
+
+    assert len(questions) == 2
+
+    assert questions[0]["source_question_number"] == 2
+    assert questions[0]["correct_answers"] == ["A"]
+    assert questions[0]["rationale"] == (
+        "An individual with repeated seizures has a seizure disorder, "
+        "sometimes called epilepsy."
+    )
+
+    assert questions[1]["source_question_number"] == 3
+    assert questions[1]["correct_answers"] == ["D"]
+    assert questions[1]["rationale"] == (
+        "Status epilepticus can cause brain damage."
+    )

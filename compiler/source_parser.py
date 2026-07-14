@@ -237,30 +237,48 @@ def normalize_labeled_question_format(
 
 def normalize_split_choices(lines: list[str]) -> list[str]:
     """
-    Repair PDF extraction where choice markers are split across lines.
-
-    Examples:
-        a
-        .
-        Answer text
-
-        A.
-        Answer text
-
-    become:
-        a. Answer text
-        A. Answer text
+    Repair PDF extraction where choice markers are split, incomplete,
+    or followed by wrapped choice text.
     """
-    normalized = []
+    normalized: list[str] = []
     index = 0
+    last_choice_label: str | None = None
+
+    def append_line(line: str) -> None:
+        nonlocal last_choice_label
+
+        normalized.append(line)
+        choice_match = CHOICE_RE.match(line)
+
+        if choice_match:
+            last_choice_label = choice_match.group(1).upper()
+        elif (
+            QUESTION_RE.match(line)
+            or SYNTHETIC_QUESTION_RE.match(line)
+            or ANSWER_RE.match(line)
+            or CHAPTER_RE.match(line)
+            or line.upper() in SECTION_HEADERS
+        ):
+            last_choice_label = None
 
     while index < len(lines):
+        if (
+            index + 1 < len(lines)
+            and re.fullmatch(r"[a-gA-G]", lines[index])
+            and re.match(r"^\.\s+\S", lines[index + 1])
+        ):
+            append_line(
+                f"{lines[index]}. {lines[index + 1][1:].strip()}"
+            )
+            index += 2
+            continue
+
         if (
             index + 2 < len(lines)
             and re.fullmatch(r"[a-gA-G]", lines[index])
             and lines[index + 1] == "."
         ):
-            normalized.append(
+            append_line(
                 f"{lines[index]}. {lines[index + 2]}"
             )
             index += 3
@@ -270,17 +288,32 @@ def normalize_split_choices(lines: list[str]) -> list[str]:
             index + 1 < len(lines)
             and CHOICE_MARKER_ONLY_RE.fullmatch(lines[index])
         ):
-            normalized.append(
+            append_line(
                 f"{lines[index]} {lines[index + 1]}"
             )
             index += 2
             continue
 
-        normalized.append(lines[index])
+        missing_period_match = re.match(
+            r"^([a-gA-G])\s+(.+)$",
+            lines[index],
+        )
+
+        if missing_period_match and last_choice_label:
+            current_label = missing_period_match.group(1).upper()
+
+            if ord(current_label) == ord(last_choice_label) + 1:
+                append_line(
+                    f"{current_label}. "
+                    f"{missing_period_match.group(2).strip()}"
+                )
+                index += 1
+                continue
+
+        append_line(lines[index])
         index += 1
 
     return normalized
-
 
 def number_unnumbered_questions(lines: list[str]) -> list[str]:
     """
@@ -674,10 +707,15 @@ def parse_source_questions(text: str) -> list[dict]:
             continue
 
         if reading_rationale:
+            contained_inline_metadata = bool(INLINE_METADATA_RE.search(line))
+
             if question["rationale"]:
                 question["rationale"] += " "
             question["rationale"] += strip_inline_metadata(line)
             question["rationale"] = question["rationale"].rstrip()
+
+            if contained_inline_metadata:
+                metadata_started = True
 
     if question is not None:
         questions.append(recover_missing_a_choice(question))
