@@ -1245,3 +1245,335 @@ Private repository `origin/master` contains the new official Pharmacy pack at:
 1. Verify the desktop or local PrepFlow application loads the new 1,202-question Pharmacy pack.
 
 
+---
+
+# CURRENT STATE ADDENDUM — 2026-07-14
+
+This addendum preserves the permanent rules and history already recorded above. Where older question counts, milestones, or resume instructions conflict with this section, this newest dated section is the current source of truth.
+
+## Latest Verified Repository State
+
+Latest completed and synchronized commit:
+
+64897f6 feat: add desktop parity and update checks
+
+After pushing, the following all matched commit 64897f6:
+
+- local master
+- origin/master
+- public/master
+
+Latest full automated test result:
+
+81 passed
+
+## Current Official Study Library
+
+Current user-facing categories and question counts:
+
+- Fundamentals — 1,040 questions
+- Pharm — 1,238 questions
+- Medical-Surgical — 1,443 questions
+
+The user-facing Pharmacy category is now named Pharm.
+
+The internal filename remains:
+
+packs/pharmacy.prepflow.json
+
+Do not expose Pack filenames, JSON terminology, Pack IDs, compiler details, or internal implementation language in the user-facing application.
+
+## Pharm Pack Repair and Validation
+
+The Pharmacy source was replaced with the validated third-edition source and rebuilt through the generic PrepFlow compiler.
+
+The final Pharm Pack contains 1,238 questions.
+
+Final validation showed:
+
+- 0 Multiple Choice or Multiple Response questions with too few choices
+- 0 answers referencing missing choices
+- 0 merged-choice entries
+
+Parser and validator improvements included support for:
+
+- split choice markers;
+- choice labels without periods;
+- wrapped choices followed by label-only markers;
+- inline metadata boundaries that previously swallowed the next question;
+- recoverable validation when an answer references a missing source choice.
+
+One malformed source question with a missing choice was safely quarantined rather than forcing a risky parser workaround.
+
+For future imports, prefer quarantining a small number of malformed questions over spending hours building overly broad parser behavior. Clearly recoverable questions may be restored manually later.
+
+## Hosted PWA State
+
+Current hosted PWA:
+
+https://bins-projects.github.io/PF-O/web/
+
+Current PWA behavior includes:
+
+- Fundamentals, Pharm, and Medical-Surgical;
+- one or more chapters from one selected category;
+- configurable block size;
+- Block X of Y display;
+- one question at a time;
+- Multiple Choice;
+- Multiple Response;
+- Completion;
+- Ordered Response;
+- automatic local save and resume;
+- Save & Quit;
+- Resume Saved Session;
+- confirmed Start Over;
+- answer choices removed after submission and replaced by feedback and rationale;
+- missed-question mastery review until corrected;
+- final Quiz Complete screen showing the first-pass percentage;
+- network-first loading with offline cache fallback;
+- inactive screens remaining properly hidden during a quiz.
+
+Recent PWA quality-of-life work completed:
+
+- total blocks are shown;
+- routine refreshes retrieve current hosted files;
+- the saved-session panel no longer appears over an active quiz;
+- rationale replaces the answer area, reducing unnecessary scrolling;
+- Continue remains visible in normal use;
+- final first-pass percentage is displayed only after the quiz is complete;
+- Exit Quiz was renamed Save & Quit;
+- Start Over now requires confirmation.
+
+## Desktop Application Parity
+
+The shared Tkinter desktop application has been brought into practical parity with the PWA.
+
+Current desktop behavior includes:
+
+- Fundamentals, Pharm, and Medical-Surgical;
+- the same current official Pack contents;
+- block sizes of 5, 10, 15, or 20;
+- Block X of Y display;
+- one question at a time;
+- Multiple Choice;
+- Multiple Response;
+- Completion;
+- Ordered Response;
+- automatic session saving;
+- Save & Quit;
+- Resume Saved Session;
+- confirmed Start Over;
+- choices removed after answer submission;
+- correct or incorrect feedback;
+- correct answer display when missed;
+- rationale display;
+- missed-question review until mastery;
+- final Quiz Complete screen with first-pass percentage.
+
+The desktop application currently displays:
+
+Version 1.1.0
+
+The application-version source is:
+
+study/version.py
+
+## Check for Updates Feature
+
+The desktop application now has a non-blocking Check for Updates button.
+
+Relevant files:
+
+- study/version.py
+- study/update_checker.py
+- tests/test_update_checker.py
+
+Current behavior:
+
+- compares the installed APP_VERSION with the latest public GitHub release;
+- reports when PrepFlow is up to date;
+- reports when a newer release is available;
+- offers to open the public release page;
+- does not automatically download or install updates;
+- performs the network request outside the GUI thread;
+- safely ignores the callback if the application closes while checking.
+
+Users who still have Version 1.0.0 must manually replace that copy once because Version 1.0.0 does not contain the update-check button.
+
+After Version 1.1.0 is installed, later public releases can be detected from within PrepFlow.
+
+## Cross-Platform Feature-Parity Rule
+
+All supported PrepFlow clients must remain as close to feature parity as practical.
+
+Supported or planned clients:
+
+- hosted PWA;
+- Windows desktop;
+- macOS desktop.
+
+Whenever a user-facing feature is added or changed in one supported client, review and update the other supported clients before release.
+
+Do not allow the clients to drift into conflicting behavior for:
+
+- category names;
+- Pack contents;
+- block sizes;
+- scoring;
+- save and resume behavior;
+- mastery review;
+- feedback and rationales;
+- final results;
+- update behavior.
+
+macOS should use the same shared Tkinter desktop source and study engine as Windows. Do not create a separate macOS study engine.
+
+## Windows Packaging State
+
+Windows packaging currently uses:
+
+- PrepFlow.spec
+- .github/workflows/build-windows.yml
+
+The GitHub Actions Windows workflow:
+
+1. checks out the repository;
+2. starts a Windows runner;
+3. installs Python 3.13 and dependencies;
+4. runs the full automated test suite;
+5. builds the application with PyInstaller;
+6. creates PrepFlow-Windows-x86_64.zip;
+7. uploads the ZIP as a workflow artifact.
+
+The Version 1.1.0 Windows build workflow was triggered after commit 64897f6 and is expected to complete successfully.
+
+Still requiring confirmation:
+
+- the workflow finished successfully;
+- the artifact was downloaded;
+- PrepFlow.exe launched on a real Windows computer;
+- the current packs and desktop parity features work in the packaged build;
+- Version 1.1.0 was published as the latest public release;
+- the permanent Windows download link resolves to the new ZIP.
+
+Correct this section if the workflow or Windows smoke test fails.
+
+## Current Windows Distribution Method
+
+The current Windows release is a portable ZIP, not a traditional installer.
+
+There is currently no Windows uninstaller.
+
+To replace an older portable copy:
+
+1. close PrepFlow;
+2. delete the entire old extracted PrepFlow folder;
+3. remove any desktop shortcut pointing to the old executable;
+4. download the new PrepFlow-Windows-x86_64.zip;
+5. choose Extract All;
+6. open the newly extracted PrepFlow folder;
+7. launch PrepFlow.exe;
+8. create a new shortcut if desired.
+
+Do not run PrepFlow.exe from inside the ZIP.
+
+Do not copy new files over an old extracted folder. Use a fresh extracted folder to avoid stale bundled files.
+
+Desktop saved-session data is stored separately from the portable application folder.
+
+On Windows, the save location is:
+
+%USERPROFILE%\.prepflow\session.json
+
+Deleting the extracted PrepFlow program folder does not delete saved quiz progress.
+
+Delete the .prepflow folder only when the user intentionally wants to remove saved progress as well.
+
+A proper Windows installer and uninstaller remain future packaging improvements.
+
+## macOS Next Milestone
+
+macOS packaging is the next active platform milestone after the Windows Version 1.1.0 build and release are confirmed.
+
+The first macOS milestone is:
+
+Add a GitHub Actions workflow that builds the current PrepFlow desktop application on a macOS runner and uploads a testable macOS artifact.
+
+Use the existing:
+
+- study/gui.py;
+- shared study engine;
+- PrepFlow Pack library;
+- established parity behavior.
+
+Do not redesign working quiz behavior during the initial macOS packaging milestone.
+
+PyInstaller is not a cross-compiler. A macOS build must be produced on a macOS runner and later tested on a real Mac.
+
+Expected initial macOS workflow:
+
+1. run on a GitHub-hosted macOS runner;
+2. install the supported Python version;
+3. install project dependencies, pytest, and PyInstaller;
+4. run the complete automated test suite;
+5. build PrepFlow from the shared desktop source;
+6. package the resulting macOS application;
+7. upload it as a workflow artifact;
+8. test the artifact on a real Mac before public release.
+
+Code signing, notarization, installer packaging, and Gatekeeper improvements may follow after the first successful testable build.
+
+## Deferred Feature Backlog
+
+### Multi-Source Chapter Selection
+
+Users should eventually be able to select chapters from more than one study category in the same quiz, such as Fundamentals and Pharm together.
+
+This is not a superficial chapter-screen change.
+
+It requires coordinated work across:
+
+- category selection;
+- chapter selection;
+- aggregation of questions from multiple Packs;
+- session subject metadata;
+- multiple Pack paths;
+- save and resume state;
+- restoration of questions from multiple sources;
+- PWA behavior;
+- Windows behavior;
+- macOS behavior;
+- parity testing.
+
+Defer implementation until Windows and macOS packaging are stable.
+
+### Fundamentals Garbled Questions
+
+Known garbled Fundamentals questions involving constipation and diarrhea remain deferred for focused source-level inspection and repair.
+
+Do not apply speculative broad parser changes merely to repair a few isolated questions.
+
+### Motivational Results Messages
+
+Optional final score-band messages remain deferred.
+
+Possible future bands include:
+
+- 70–79 percent;
+- 80–89 percent;
+- 90–99 percent;
+- 100 percent.
+
+For now, the final results screen should prioritize the first-pass percentage without motivational scoring messages.
+
+### Windows Installer and Uninstaller
+
+A proper Windows installer and uninstaller remain deferred until the portable Version 1.1.0 build is confirmed stable.
+
+## Exact Resume Point
+
+Resume from this statement:
+
+PrepFlow is synchronized at commit 64897f6 with 81 automated tests passing. The official library contains Fundamentals with 1,040 questions, Pharm with 1,238 questions, and Medical-Surgical with 1,443 questions. The hosted PWA and shared Tkinter desktop application now have practical feature parity, including configurable blocks, Block X of Y, Save & Quit, confirmed Start Over, feedback and rationale replacing answer choices after submission, mastery review, and a final first-pass percentage. The desktop source is Version 1.1.0 and includes a tested Check for Updates interface. The Windows Version 1.1.0 GitHub Actions build was triggered and is expected to succeed, but the artifact, real-Windows smoke test, and public Version 1.1.0 release still require confirmation. After confirming the Windows build and release, begin the macOS GitHub Actions packaging milestone. Multi-source chapter selection, isolated Fundamentals question repair, motivational results messages, and a proper Windows installer remain deferred.
+
