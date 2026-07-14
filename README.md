@@ -5,14 +5,14 @@
 
 ### Chromebook
 
-[**Open and Install PrepFlow for Chromebook**](https://bins-projects.github.io/PF-O/web/)
+[**Open and Install PrepFlow for Chromebook**](https://bins-projects.github.io/PrepFlow/web/)
 
 Open the link in Chrome, then select **Install PrepFlow** in the address bar.
 PrepFlow will appear in the Chromebook Launcher and does not require Linux.
 
 ### Windows
 
-[**Download PrepFlow for Windows**](https://github.com/bins-projects/PF-O/releases/latest/download/PrepFlow-Windows-x86_64.zip)
+[**Download PrepFlow for Windows**](https://github.com/bins-projects/PrepFlow/releases/latest/download/PrepFlow-Windows-x86_64.zip)
 
 Download the ZIP, select **Extract All**, open the extracted `PrepFlow` folder,
 and double-click `PrepFlow.exe`.
@@ -244,7 +244,7 @@ The remaining Version 1 work is focused on final release validation, documentati
 <!-- CHROMEBOOK_PWA_START -->
 ## Chromebook App
 
-[Open PrepFlow for Chromebook](https://bins-projects.github.io/PF-O/web/)
+[Open PrepFlow for Chromebook](https://bins-projects.github.io/PrepFlow/web/)
 
 PrepFlow can be installed directly from Chrome and launched from the Chromebook
 Launcher. It does not require Linux, Python, a terminal, or `localhost`.
