@@ -34,6 +34,7 @@ const summaryTitle = document.querySelector("#summary-title");
 const summaryScore = document.querySelector("#summary-score");
 const summaryMessage = document.querySelector("#summary-message");
 const summaryAction = document.querySelector("#summary-action");
+const summaryExit = document.querySelector("#summary-exit");
 
 let currentSubject = null;
 let currentPack = null;
@@ -320,7 +321,30 @@ function beginBlock() {
   showQuestion();
 }
 
+function showFinalSummary() {
+  hideAllScreens();
+  blockSummary.hidden = false;
+
+  const totalQuestions = sessionQuestions.length;
+  const percentage = totalQuestions
+    ? Math.round((firstPassCorrect / totalQuestions) * 100)
+    : 0;
+
+  summaryTitle.textContent = "Quiz Complete";
+  summaryScore.textContent =
+    `First-pass score: ${percentage}%`;
+  summaryMessage.textContent =
+    `${firstPassCorrect} of ${totalQuestions} correct on the first attempt.`;
+
+  summaryAction.textContent = "Return Home";
+  summaryAction.dataset.action = "return-home";
+  summaryExit.hidden = true;
+
+  clearSavedSession();
+}
+
 function showBlockSummary(mastered = false) {
+  summaryExit.hidden = false;
   hideAllScreens();
   blockSummary.hidden = false;
 
@@ -529,6 +553,11 @@ summaryAction.addEventListener("click", () => {
     blockStart = blockEnd;
     blockNumber += 1;
     beginBlock();
+    return;
+  }
+
+  if (action === "finish") {
+    showFinalSummary();
     return;
   }
 
