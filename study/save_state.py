@@ -7,13 +7,13 @@ from pathlib import Path
 from typing import Any
 
 
-SAVE_VERSION = 1
+SAVE_VERSION = 2
 SAVE_DIRECTORY = Path.home() / ".prepflow"
 SAVE_PATH = SAVE_DIRECTORY / "session.json"
 
 
 def save_session(state: dict[str, Any]) -> Path:
-    """Overwrite the single PrepFlow session save."""
+    """Overwrite the single PrepFlow session save with a version-2 payload."""
     SAVE_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
     payload = {
@@ -32,7 +32,7 @@ def save_session(state: dict[str, Any]) -> Path:
 
 
 def load_session() -> dict[str, Any] | None:
-    """Load the saved session, or return None when no valid save exists."""
+    """Load the saved session, or return None when no valid version-2 save exists."""
     if not SAVE_PATH.exists():
         return None
 
