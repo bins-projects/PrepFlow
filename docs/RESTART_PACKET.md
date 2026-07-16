@@ -148,14 +148,14 @@ Do not:
 * create a separate importer for every book;
 * reopen settled architecture without implementation evidence;
 * collect endless diagnostics without making a decision;
-* ask Charlie to paste code already available in GitHub;
+* ask the user to paste code already available in GitHub;
 * manually edit generated Packs instead of fixing the generic pipeline;
 * rewrite the working desktop app while beginning the PWA;
 * expose Pack filenames, Pack IDs, JSON, compiler, or repository terminology to users;
 * begin hosting, service-worker work, or deployment before the local PWA shell exists;
 * allow the future PDF-import milestone to interrupt the current PWA milestone.
 
-When Charlie says:
+When the user says:
 
 > next
 
@@ -352,7 +352,7 @@ Source-specific publisher metadata and temporary implementation artifacts should
 
 # Privacy State
 
-Repository history was previously rewritten to remove Charlie’s personal author and email information.
+Repository history was previously rewritten to remove personal author and email information.
 
 Reachable Git history uses:
 
@@ -374,15 +374,6 @@ It must never be:
 * placed inside the repository;
 * packaged with PrepFlow.
 
-The local terminal prompt:
-
-```text
-charliekeila@penguin
-```
-
-is only the Linux username and host name.
-
-It is not the Git identity.
 
 Before any public PWA deployment, repeat a privacy scan of committed web assets and generated output. Do not expose machine paths, personal names, local usernames, private source locations, internal IDs, or implementation details.
 
@@ -808,7 +799,7 @@ The packaged application:
 * bundles the three official starting categories;
 * preserves autosave and resume;
 * passed a fresh extracted-archive smoke test;
-* passed a privacy scan for Charlie’s identifying information.
+* passed a privacy scan for identifying information.
 
 Generated packaging directories remain untracked:
 
@@ -1127,7 +1118,7 @@ Do not expose implementation details to users.
 
 Do not build PDF import yet.
 
-When Charlie says:
+When the user says:
 
 > next
 
