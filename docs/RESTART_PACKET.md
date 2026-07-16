@@ -42,7 +42,7 @@ Primary repositories:
 
 ```text
 Private repository:
-https://github.com/bins-projects/prepflow
+https://github.com/bins-projects/prepflow-dev
 
 Public mirror:
 https://github.com/bins-projects/PF-O
@@ -82,43 +82,26 @@ Request local inspection only when:
 
 Latest confirmed committed milestone:
 
-```text
-676f2b6 docs: update README for desktop Version 1
-```
+2bf54a5 — feat: add desktop multi-pack quiz builder
 
-Official release tag:
+Current active development branch: experiment/custom-quiz-builder
 
-```text
-v1.0.0
-```
+Official release tag: v1.0.0
 
-Important preceding milestones:
+Current verified state:
 
-```text
-7b3ee0a docs: record desktop Version 1 milestone
-81160bd build: package PrepFlow desktop application
-9fc8fdb feat: add desktop study flow and session resume
-30c41e8 Promote validated Medical-Surgical pack
-87a0e81 Harden Med-Surg source cleanup and chapter boundaries
-```
-
-At the stopping point:
-
-* local `master` was clean;
-* private `origin/master` was pushed;
-* public `public/master` was pushed;
-* both remotes pointed to `676f2b6`;
-* tag `v1.0.0` was pushed to both remotes;
-* all 53 automated tests passed;
-* there were no untracked release files left in the repository root;
-* the Linux release archive had been built and smoke-tested from a fresh extraction;
-* the packaged app had been launched successfully;
-* a ChromeOS Linux Apps launcher had been created and tested;
-* the working tree reported:
-
-```text
-nothing to commit, working tree clean
-```
+* The desktop custom quiz builder supports selecting multiple chapters from Fundamentals, Pharm, and Medical-Surgical in one quiz.
+* Selections persist while switching categories.
+* The chapter checklist scrolls correctly.
+* The builder includes a block-size control.
+* New quizzes shuffle once.
+* Mixed-Pack sessions resume at the exact current question.
+* Missed questions and review-queue progress survive save and resume.
+* All 108 automated tests passed.
+* Manual mixed-Pack selection, scrolling, quiz start, save, resume, and review-queue checks passed.
+* Local experiment/custom-quiz-builder was clean.
+* Private origin/experiment/custom-quiz-builder matched commit 2bf54a545eeb15cfc4d59ad8a16458fec3df2235.
+* Private master and the public repository remained unchanged.
 
 Before resuming, verify GitHub rather than assuming these values are still current.
 
