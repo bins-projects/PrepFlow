@@ -40,6 +40,9 @@ let currentSubject = null;
 let currentPack = null;
 let currentPackPath = null;
 
+const loadedPacks = new Map();
+const selectedChapters = new Map();
+
 let sessionQuestions = [];
 let sessionBlockSize = 15;
 
@@ -83,16 +86,15 @@ function clearSavedSession() {
 }
 
 function saveSession(screen) {
-  if (!currentPackPath || sessionQuestions.length === 0) {
+  if (sessionQuestions.length === 0) {
     return;
   }
 
   const state = {
-    version: 1,
+    version: 2,
     savedAt: new Date().toISOString(),
     screen,
     currentSubject,
-    currentPackPath,
     sessionQuestions,
     sessionBlockSize,
     blockStart,
@@ -122,7 +124,7 @@ function refreshResumePanel() {
   const mode = saved.reviewMode ? "reviewing missed questions" : "in progress";
 
   resumeDescription.textContent =
-    `${saved.currentSubject} — Block ${saved.blockNumber}, ${mode}.`;
+    `${saved.currentSubject || "Custom Quiz"} — Block ${saved.blockNumber}, ${mode}.`;
 
   resumePanel.hidden = false;
 }
@@ -138,9 +140,7 @@ function hideAllScreens() {
 }
 
 function updateSelectionStatus() {
-  const selected = chapterList.querySelectorAll(
-    'input[type="checkbox"]:checked'
-  ).length;
+  const selected = selectedChapters.size;
 
   selectionCount.textContent =
     `${selected} ${selected === 1 ? "chapter" : "chapters"} selected`;
@@ -154,19 +154,29 @@ function showSubjects() {
   hero.hidden = false;
   subjects.hidden = false;
   status.hidden = false;
-  status.textContent = "Select a category to continue.";
+
+  const selected = selectedChapters.size;
+  status.textContent = selected
+    ? `${selected} ${selected === 1 ? "chapter" : "chapters"} selected. Choose another category or return to your selected category to start.`
+    : "Select a category to continue.";
 
   refreshResumePanel();
 }
 
 async function loadPack(packPath) {
+  if (loadedPacks.has(packPath)) {
+    return loadedPacks.get(packPath);
+  }
+
   const response = await fetch(packPath);
 
   if (!response.ok) {
     throw new Error(`Could not load study category: ${response.status}`);
   }
 
-  return response.json();
+  const pack = await response.json();
+  loadedPacks.set(packPath, pack);
+  return pack;
 }
 
 async function showChapters(button) {
@@ -203,15 +213,30 @@ async function showChapters(button) {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.value = key;
-      checkbox.addEventListener("change", updateSelectionStatus);
+
+      const selectionKey = `${currentPackPath}|${key}`;
+      checkbox.checked = selectedChapters.has(selectionKey);
+
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+          selectedChapters.set(selectionKey, {
+            packPath: currentPackPath,
+            subject: currentSubject,
+            chapterKey: key,
+          });
+        } else {
+          selectedChapters.delete(selectionKey);
+        }
+
+        updateSelectionStatus();
+      });
 
       const text = document.createElement("span");
       text.className = "chapter-option-text";
 
       const name = document.createElement("span");
       name.className = "chapter-name";
-      name.textContent =
-        `Chapter ${chapter.number}: ${chapter.title}`;
+      name.textContent = `Chapter ${chapter.number}: ${chapter.title}`;
 
       const count = document.createElement("span");
       count.className = "chapter-count";
@@ -233,12 +258,19 @@ async function showChapters(button) {
   }
 }
 
-function currentQuestionNumber() {
+function currentQuestionReference() {
   return reviewMode ? currentReviewQuestion : sessionQuestions[questionIndex];
 }
 
 function currentQuestion() {
-  return currentPack.questions[currentQuestionNumber()];
+  const reference = currentQuestionReference();
+  const pack = loadedPacks.get(reference.packPath);
+
+  if (!pack) {
+    throw new Error(`Study category is not loaded: ${reference.packPath}`);
+  }
+
+  return pack.questions[reference.questionIndex];
 }
 
 function totalBlockCount() {
@@ -331,8 +363,7 @@ function showFinalSummary() {
     : 0;
 
   summaryTitle.textContent = "Quiz Complete";
-  summaryScore.textContent =
-    `First-pass score: ${percentage}%`;
+  summaryScore.textContent = `First-pass score: ${percentage}%`;
   summaryMessage.textContent =
     `${firstPassCorrect} of ${totalQuestions} correct on the first attempt.`;
 
@@ -355,14 +386,12 @@ function showBlockSummary(mastered = false) {
     summaryTitle.textContent = `Block ${blockNumber} Mastered`;
     summaryScore.textContent =
       `First pass: ${blockCorrect} of ${blockLength} correct.`;
-
     summaryMessage.textContent =
       "All missed questions have now been answered correctly.";
   } else {
     summaryTitle.textContent = `Block ${blockNumber} Complete`;
     summaryScore.textContent =
       `First pass: ${blockCorrect} of ${blockLength} correct.`;
-
     summaryMessage.textContent =
       missedCount === 0
         ? "No review is needed."
@@ -390,23 +419,34 @@ function startReview() {
   showQuestion();
 }
 
-function startQuiz() {
-  const selectedChapters = new Set(
-    [...chapterList.querySelectorAll('input[type="checkbox"]:checked')]
-      .map((checkbox) => checkbox.value)
-  );
+async function startQuiz() {
+  const selectedQuestions = [];
 
-  const matchingIndexes = currentPack.questions
-    .map((question, index) => ({ question, index }))
-    .filter(({ question }) => {
-      const key = `${question.chapter}|${question.chapter_title}`;
+  try {
+    for (const selection of selectedChapters.values()) {
+      const pack = await loadPack(selection.packPath);
 
-      return selectedChapters.has(key)
-        && ["mc", "multiple_choice"].includes(question.type);
-    })
-    .map(({ index }) => index);
+      pack.questions.forEach((question, index) => {
+        const key = `${question.chapter}|${question.chapter_title}`;
 
-  sessionQuestions = shuffle(matchingIndexes);
+        if (
+          key === selection.chapterKey
+          && ["mc", "multiple_choice"].includes(question.type)
+        ) {
+          selectedQuestions.push({
+            packPath: selection.packPath,
+            questionIndex: index,
+          });
+        }
+      });
+    }
+  } catch (error) {
+    status.hidden = false;
+    status.textContent = error.message;
+    return;
+  }
+
+  sessionQuestions = shuffle(selectedQuestions);
 
   if (sessionQuestions.length === 0) {
     status.hidden = false;
@@ -415,6 +455,7 @@ function startQuiz() {
     return;
   }
 
+  currentSubject = "Custom Quiz";
   sessionBlockSize = Number(blockSizeSelect.value) || 15;
 
   blockStart = 0;
@@ -434,13 +475,20 @@ async function resumeSavedSession() {
   }
 
   try {
-    currentPackPath = saved.currentPackPath;
-    currentPack = await loadPack(currentPackPath);
-    currentSubject = saved.currentSubject;
+    currentSubject = saved.currentSubject || "Custom Quiz";
+    sessionQuestions = saved.sessionQuestions || [];
 
-    sessionQuestions = saved.sessionQuestions;
+    const packPaths = new Set(
+      sessionQuestions
+        .map((reference) => reference && reference.packPath)
+        .filter(Boolean)
+    );
+
+    for (const packPath of packPaths) {
+      await loadPack(packPath);
+    }
+
     sessionBlockSize = saved.sessionBlockSize;
-
     blockStart = saved.blockStart;
     blockEnd = saved.blockEnd;
     questionIndex = saved.questionIndex;
@@ -562,6 +610,7 @@ summaryAction.addEventListener("click", () => {
   }
 
   clearSavedSession();
+  selectedChapters.clear();
   showSubjects();
 });
 
@@ -576,6 +625,13 @@ document.querySelector("#summary-exit").addEventListener("click", showSubjects);
 document.querySelector("#select-all").addEventListener("click", () => {
   chapterList.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
     checkbox.checked = true;
+
+    const selectionKey = `${currentPackPath}|${checkbox.value}`;
+    selectedChapters.set(selectionKey, {
+      packPath: currentPackPath,
+      subject: currentSubject,
+      chapterKey: checkbox.value,
+    });
   });
 
   updateSelectionStatus();
@@ -584,6 +640,7 @@ document.querySelector("#select-all").addEventListener("click", () => {
 document.querySelector("#clear-all").addEventListener("click", () => {
   chapterList.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
     checkbox.checked = false;
+    selectedChapters.delete(`${currentPackPath}|${checkbox.value}`);
   });
 
   updateSelectionStatus();
@@ -601,6 +658,7 @@ discardSessionButton.addEventListener("click", () => {
   }
 
   clearSavedSession();
+  selectedChapters.clear();
   showSubjects();
 });
 
