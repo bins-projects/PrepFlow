@@ -279,6 +279,8 @@ function totalBlockCount() {
 
 function showQuestion() {
   const question = currentQuestion();
+  const questionType = question.type || question.question_type;
+  const isMultipleResponse = questionType === "multiple_response";
   const blockLength = blockEnd - blockStart;
 
   hideAllScreens();
@@ -310,19 +312,20 @@ function showQuestion() {
     const label = document.createElement("label");
     label.className = "answer-choice";
 
-    const radio = document.createElement("input");
-    radio.type = "radio";
-    radio.name = "answer";
-    radio.value = choice.label;
+    const input = document.createElement("input");
+    input.type = isMultipleResponse ? "checkbox" : "radio";
+    input.name = "answer";
+    input.value = choice.label;
 
-    radio.addEventListener("change", () => {
-      submitAnswer.disabled = false;
+    input.addEventListener("change", () => {
+      submitAnswer.disabled =
+        answerChoices.querySelectorAll('input[name="answer"]:checked').length === 0;
     });
 
     const text = document.createElement("span");
     text.textContent = `${choice.label}. ${choice.text}`;
 
-    label.append(radio, text);
+    label.append(input, text);
     answerChoices.append(label);
   });
 
@@ -431,7 +434,11 @@ async function startQuiz() {
 
         if (
           key === selection.chapterKey
-          && ["mc", "multiple_choice"].includes(question.type)
+          && [
+            "mc",
+            "multiple_choice",
+            "multiple_response",
+          ].includes(question.type || question.question_type)
         ) {
           selectedQuestions.push({
             packPath: selection.packPath,
@@ -451,7 +458,7 @@ async function startQuiz() {
   if (sessionQuestions.length === 0) {
     status.hidden = false;
     status.textContent =
-      "No Multiple Choice questions were found in that selection.";
+      "No Multiple Choice or Multiple Response questions were found in that selection.";
     return;
   }
 
@@ -519,17 +526,36 @@ async function resumeSavedSession() {
 }
 
 submitAnswer.addEventListener("click", () => {
-  const selected = answerChoices.querySelector(
+  const selected = answerChoices.querySelectorAll(
     'input[name="answer"]:checked'
   );
 
-  if (!selected) {
+  if (selected.length === 0) {
     return;
   }
 
   const question = currentQuestion();
-  const correctAnswers = question.correct_answers.map(String);
-  const isCorrect = correctAnswers.includes(selected.value);
+  const rawCorrectAnswers =
+    question.correct_answers ?? question.correct_answer ?? [];
+
+  const correctAnswers = (
+    Array.isArray(rawCorrectAnswers)
+      ? rawCorrectAnswers
+      : [rawCorrectAnswers]
+  )
+    .filter((answer) => answer !== null && answer !== undefined)
+    .map((answer) => String(answer).trim().toUpperCase());
+
+  const selectedAnswers = Array.from(
+    selected,
+    (input) => String(input.value).trim().toUpperCase()
+  );
+
+  const selectedSet = new Set(selectedAnswers);
+  const correctSet = new Set(correctAnswers);
+  const isCorrect =
+    selectedSet.size === correctSet.size
+    && [...selectedSet].every((answer) => correctSet.has(answer));
 
   if (isCorrect) {
     feedbackResult.textContent = "Correct!";
