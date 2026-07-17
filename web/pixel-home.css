@@ -1,0 +1,244 @@
+/* Locked PrepFlow 16-bit home-screen theme. Loaded after arcade-home.css. */
+
+:root {
+  --pixel-bg: #070b24;
+  --pixel-panel: #0b1232;
+  --pixel-panel-deep: #070b1d;
+  --pixel-blue: #28bdf2;
+  --pixel-green: #72d63c;
+  --pixel-purple: #b04cff;
+  --pixel-pink: #ff4b9b;
+  --pixel-gold: #ffc53d;
+  --pixel-white: #f8f5ef;
+  --pixel-muted: #9cb2d7;
+}
+
+body {
+  background:
+    linear-gradient(rgba(7, 11, 36, 0.28), rgba(7, 11, 36, 0.86)),
+    radial-gradient(circle at top, rgba(142, 61, 255, 0.16), transparent 42%),
+    var(--pixel-bg);
+  color: var(--pixel-white);
+}
+
+.app-shell {
+  width: min(1220px, 100%);
+  padding: 28px 24px 44px;
+  justify-content: flex-start;
+}
+
+.hero {
+  margin: 0;
+}
+
+.arcade-poster {
+  min-height: 500px;
+  border: 3px solid #334a96;
+  border-radius: 0;
+  background:
+    linear-gradient(to bottom, transparent 0 78%, rgba(7, 11, 36, 0.92) 100%),
+    url("images/pixel-home-hero.webp") center top / cover no-repeat,
+    var(--pixel-bg);
+  box-shadow:
+    0 0 0 3px #0a102d,
+    0 0 0 6px #14255a,
+    0 22px 52px rgba(0, 0, 0, 0.46);
+  image-rendering: pixelated;
+  animation: none;
+}
+
+.arcade-poster::before,
+.arcade-poster::after,
+.arcade-copy,
+.arcade-orbit,
+.hero-art {
+  display: none;
+}
+
+.hero-instruction {
+  margin: 18px 0 12px !important;
+  color: #8fdcff !important;
+  font-family: "Courier New", monospace;
+  font-size: 0.95rem !important;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.subjects {
+  margin-top: -34px;
+  padding: 0 34px;
+  gap: 14px;
+}
+
+.subject-card {
+  min-height: 210px;
+  padding: 22px;
+  border: 3px solid var(--card-accent);
+  border-radius: 0;
+  background:
+    linear-gradient(rgba(255,255,255,0.025) 50%, transparent 50%) 0 0 / 100% 4px,
+    linear-gradient(180deg, rgba(16, 28, 70, 0.98), rgba(6, 11, 29, 0.99));
+  box-shadow:
+    0 0 0 3px #070b1d,
+    0 0 0 6px color-mix(in srgb, var(--card-accent) 38%, #14214f),
+    0 14px 0 rgba(0, 0, 0, 0.28);
+  color: var(--pixel-white);
+  image-rendering: pixelated;
+  animation: card-step-in 420ms steps(5, end) both;
+}
+
+.subject-card::before {
+  height: 4px;
+}
+
+.subject-card::after {
+  display: none;
+}
+
+.subject-card:hover,
+.subject-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--card-accent);
+  box-shadow:
+    0 0 0 3px #070b1d,
+    0 0 0 6px color-mix(in srgb, var(--card-accent) 58%, #14214f),
+    0 18px 0 rgba(0, 0, 0, 0.28),
+    0 0 24px color-mix(in srgb, var(--card-accent) 34%, transparent);
+}
+
+.subject-card:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 0 0 3px #070b1d,
+    0 0 0 6px color-mix(in srgb, var(--card-accent) 48%, #14214f),
+    0 7px 0 rgba(0, 0, 0, 0.28);
+}
+
+.subject-card.fundamentals { --card-accent: var(--pixel-blue); }
+.subject-card.pharm { --card-accent: var(--pixel-green); }
+.subject-card.med-surg { --card-accent: var(--pixel-purple); }
+
+.subject-card .module-label {
+  color: var(--card-accent);
+  font-family: "Courier New", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+}
+
+.subject-card .subject-icon {
+  top: 20px;
+  right: 22px;
+  width: 54px;
+  height: 54px;
+  border: 3px solid var(--card-accent);
+  border-radius: 0;
+  background: rgba(2, 8, 25, 0.88);
+  filter: none;
+}
+
+.subject-card .subject-name {
+  margin-top: 42px;
+  color: var(--pixel-white);
+  font-family: "Courier New", monospace;
+  font-size: clamp(1.35rem, 2.35vw, 1.9rem);
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  text-shadow: 3px 3px 0 #0a102b;
+}
+
+.subject-card .question-count {
+  color: var(--card-accent);
+  font-family: "Courier New", monospace;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.subject-card .card-action {
+  margin-top: 21px;
+  padding: 12px 13px;
+  border: 3px solid var(--card-accent);
+  background: rgba(5, 12, 31, 0.9);
+  color: var(--card-accent);
+  font-family: "Courier New", monospace;
+  font-size: 0.82rem;
+}
+
+.resume-panel {
+  width: calc(100% - 68px);
+  margin-top: 28px;
+  padding: 18px 22px;
+  border: 3px solid #44569a;
+  border-radius: 0;
+  background:
+    linear-gradient(rgba(255,255,255,0.025) 50%, transparent 50%) 0 0 / 100% 4px,
+    linear-gradient(180deg, #10183b, #080d23);
+  box-shadow:
+    0 0 0 3px #070b1d,
+    0 0 0 6px #202b63;
+  color: var(--pixel-white);
+}
+
+.resume-panel strong,
+.resume-panel p {
+  color: var(--pixel-white);
+  font-family: "Courier New", monospace;
+}
+
+.resume-panel .start-button,
+.resume-panel .secondary-button,
+.start-button,
+.secondary-button {
+  border: 3px solid currentColor;
+  border-radius: 0;
+  font-family: "Courier New", monospace;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.resume-panel .start-button,
+.start-button {
+  background: #0a1837;
+  color: var(--pixel-blue);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.28);
+}
+
+.resume-panel .secondary-button,
+.secondary-button {
+  background: #10152f;
+  color: #9baee2;
+}
+
+.status {
+  color: #78d7ff;
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+@keyframes card-step-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .subject-card {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .arcade-poster {
+    min-height: 410px;
+  }
+
+  .subjects {
+    padding: 0 18px;
+  }
+
+  .resume-panel {
+    width: calc(100% - 36px);
+  }
+}
