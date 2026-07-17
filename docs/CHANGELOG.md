@@ -2,6 +2,31 @@
 
 This document records major project milestones. Minor edits and intermediate work are preserved in Git history.
 
+## 2026-07-17 — PWA Cross-Category Quiz Builder
+
+### Quiz Builder
+
+- Added persistent chapter selection across Fundamentals, Pharm, and Medical-Surgical.
+- Added mixed-Pack question references and Pack caching.
+- Added save format version 2 with mixed-Pack session and review restoration.
+- Updated Select All and Clear All to affect the current category without removing selections from other categories.
+- Added Multiple Response questions to PWA custom quizzes.
+- Added checkbox rendering and exact-set grading for Multiple Response questions.
+- Preserved ordinary Multiple Choice behavior.
+
+### Validation
+
+- Confirmed 108 automated tests pass.
+- Manually verified cross-category chapter selection and mixed-category question delivery.
+- Manually verified Select All and Clear All preserve selections from other categories.
+- Manually exercised block transitions, final first-pass results, and completed-session cleanup without observed errors.
+- Manually verified ordinary Multiple Choice behavior.
+- Manually verified incomplete and extra-answer Multiple Response selections are graded incorrect.
+- Manually verified exact Multiple Response answer sets are graded correctly.
+- Manually verified missed-question review and save/resume during review mode.
+
+---
+
 ## Version 1.0.0 — Desktop Application Proof
 
 Date: 2026-07-12

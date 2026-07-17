@@ -1491,28 +1491,6 @@ Code signing, notarization, installer packaging, and Gatekeeper improvements may
 
 ## Deferred Feature Backlog
 
-### Multi-Source Chapter Selection
-
-Users should eventually be able to select chapters from more than one study category in the same quiz, such as Fundamentals and Pharm together.
-
-This is not a superficial chapter-screen change.
-
-It requires coordinated work across:
-
-- category selection;
-- chapter selection;
-- aggregation of questions from multiple Packs;
-- session subject metadata;
-- multiple Pack paths;
-- save and resume state;
-- restoration of questions from multiple sources;
-- PWA behavior;
-- Windows behavior;
-- macOS behavior;
-- parity testing.
-
-Defer implementation until Windows and macOS packaging are stable.
-
 ### Fundamentals Garbled Questions
 
 Known garbled Fundamentals questions involving constipation and diarrhea remain deferred for focused source-level inspection and repair.
@@ -1540,54 +1518,4 @@ A proper Windows installer and uninstaller remain deferred until the portable Ve
 
 Resume from this statement:
 
-PrepFlow is synchronized at commit 64897f6 with 81 automated tests passing. The official library contains Fundamentals with 1,040 questions, Pharm with 1,238 questions, and Medical-Surgical with 1,443 questions. The hosted PWA and shared Tkinter desktop application now have practical feature parity, including configurable blocks, Block X of Y, Save & Quit, confirmed Start Over, feedback and rationale replacing answer choices after submission, mastery review, and a final first-pass percentage. The desktop source is Version 1.1.0 and includes a tested Check for Updates interface. The Windows Version 1.1.0 GitHub Actions build was triggered and is expected to succeed, but the artifact, real-Windows smoke test, and public Version 1.1.0 release still require confirmation. After confirming the Windows build and release, begin the macOS GitHub Actions packaging milestone. Multi-source chapter selection, isolated Fundamentals question repair, motivational results messages, and a proper Windows installer remain deferred.
-
-
-
----
-
-# Work in Progress — 2026-07-16 PWA Multi-Pack Builder
-
-Current branch: feat/pwa-multi-pack-builder
-
-## Work completed today
-
-The PWA web/app.js was updated to support building a custom quiz from chapters across multiple study categories.
-
-Manually verified:
-
-- A chapter can be selected from one category.
-- The user can return to the category screen and select a chapter from another category.
-- The selection count persists across categories.
-- A mixed-category quiz starts successfully.
-- Questions from both selected categories appear in the quiz.
-- Exiting and resuming returns to the saved question without an error.
-
-Additional implementation work includes:
-
-- Caching loaded Packs.
-- Storing selected chapters across category navigation.
-- Representing session questions with both Pack path and question index.
-- Loading all required Packs during resume.
-- Preserving mixed-Pack references in missed-question and review queues.
-- Updating Select All and Clear All to modify the persistent chapter-selection map.
-- Saving mixed-Pack session state with save format version 2.
-
-## Important status
-
-This work is not complete or release-ready.
-
-Charlie found additional errors during manual testing immediately before stopping. The exact symptoms have not yet been documented or diagnosed.
-
-Do not assume the PWA feature is finished merely because basic mixed-Pack selection and resume worked.
-
-## Exact restart point
-
-1. Inspect the current feature-branch diff for web/app.js.
-2. Ask Charlie to describe or reproduce each error he found.
-3. Record the failures before changing code.
-4. Test missed-question review behavior, Select All, Clear All, block transitions, final summary, and save/resume from review mode.
-5. Inspect the service worker cache version before concluding that browser tests are using the latest JavaScript.
-6. Make focused fixes only after reproducing the errors.
-7. Run the full automated test suite and complete manual browser validation before merging.
-8. Do not merge this branch into master until the errors are resolved.
+PrepFlow's PWA cross-category quiz builder is complete on code commit `a91f244` with 108 automated tests passing. Users can select chapters across Fundamentals, Pharm, and Medical-Surgical within one quiz. Mixed-Pack question references, block flow, missed-question review, and save/resume—including resume during review mode—were manually validated. Multiple Response questions now use checkboxes and exact-set grading; incomplete selections and selections containing extra answers are graded incorrect, while exact answer sets are graded correctly. Ordinary Multiple Choice behavior remains intact. Select All and Clear All affect only the currently displayed category while preserving selections from other categories. The feature branch is ready for its documentation commit and merge into `master`. After merging, rerun the complete test suite on `master`, synchronize the private and public repositories, verify their hashes, and update this resume point around the final merged state. Windows Version 1.1.0 release confirmation and the macOS GitHub Actions packaging milestone remain the next platform work.

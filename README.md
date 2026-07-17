@@ -59,17 +59,18 @@ Choose **More info**, then **Run anyway**, only when the file was downloaded fro
 
 # How to Use PrepFlow
 
-1. Choose a subject.
-2. Select the chapters you want to study.
-3. Choose your block size.
-4. Begin the quiz.
-5. Select an answer and submit it.
-6. Read the correct answer and rationale.
-7. Continue through the block.
-8. Missed questions return for review until they are mastered.
-9. Your session saves automatically so you can leave and resume later.
+1. Choose a study category.
+2. Select one or more chapters.
+3. Return to the category screen to add chapters from another category, or start from the current chapter screen.
+4. Choose your block size.
+5. Begin the quiz.
+6. Select the answer or answers and submit them.
+7. Read the correct answer and rationale.
+8. Continue through the block.
+9. Missed questions return for review until they are mastered.
+10. Your session saves automatically so you can leave and resume later.
 
-Selected chapters are combined and shuffled once at the beginning of each session.
+Selected chapters from one or more study categories are combined and shuffled once at the beginning of each session.
 
 The final block is shortened automatically when fewer questions remain than the selected block size.
 
