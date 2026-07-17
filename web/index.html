@@ -8,30 +8,76 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/prepflow-192.png">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="arcade-home.css">
 </head>
 <body>
   <main class="app-shell">
     <header class="hero">
-      <div class="logo" aria-label="PrepFlow">
-        <span class="prep">Prep</span><span class="flow">Flow</span>
+      <div class="arcade-poster">
+        <div class="arcade-copy">
+          <p class="arcade-kicker">Nursing knowledge system</p>
+          <div class="logo" aria-label="PrepFlow">
+            <span class="prep">Prep</span><span class="flow">Flow</span>
+          </div>
+          <p class="arcade-tagline">
+            Build your quiz. Challenge your recall. <span>Master the material.</span>
+          </p>
+          <div class="arcade-badges" aria-label="PrepFlow features">
+            <span class="arcade-badge">Custom Chapters</span>
+            <span class="arcade-badge">Mastery Review</span>
+            <span class="arcade-badge">Automatic Save</span>
+          </div>
+        </div>
+
+        <div class="arcade-orbit" aria-hidden="true"></div>
+        <img
+          class="hero-art"
+          src="images/arcade-hero.svg"
+          alt="Stylized nursing student holding a glowing study tablet"
+        >
       </div>
-      <p>Choose a study category</p>
+      <p class="hero-instruction">Choose a study category to begin building your quiz.</p>
     </header>
 
     <section class="subjects" aria-label="Study categories">
-      <button class="subject-card" data-subject="Fundamentals" data-pack="../packs/fundamentals.prepflow.json">
+      <button class="subject-card fundamentals" data-subject="Fundamentals" data-pack="../packs/fundamentals.prepflow.json">
+        <span class="module-label">Training Module 01</span>
+        <span class="subject-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 5h6M10 3h4a1 1 0 0 1 1 1v2H9V4a1 1 0 0 1 1-1Z"/>
+            <path d="M7 5H5a1 1 0 0 0-1 1v15h16V6a1 1 0 0 0-1-1h-2"/>
+            <path d="M8 11h8M8 15h5"/>
+          </svg>
+        </span>
         <span class="subject-name">Fundamentals</span>
         <span class="question-count">1,040 questions</span>
+        <span class="card-action">Choose chapters <span class="card-arrow">→</span></span>
       </button>
 
-      <button class="subject-card" data-subject="Pharm" data-pack="../packs/pharmacy.prepflow.json">
+      <button class="subject-card pharm" data-subject="Pharm" data-pack="../packs/pharmacy.prepflow.json">
+        <span class="module-label">Training Module 02</span>
+        <span class="subject-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.4 5.4 18.6 15.6a4.24 4.24 0 0 1-6 6L2.4 11.4a4.24 4.24 0 0 1 6-6Z"/>
+            <path d="m7.5 16.5 9-9"/>
+          </svg>
+        </span>
         <span class="subject-name">Pharm</span>
         <span class="question-count">1,238 questions</span>
+        <span class="card-action">Choose chapters <span class="card-arrow">→</span></span>
       </button>
 
-      <button class="subject-card" data-subject="Medical-Surgical" data-pack="../packs/medical_surgical.prepflow.json">
+      <button class="subject-card med-surg" data-subject="Medical-Surgical" data-pack="../packs/medical_surgical.prepflow.json">
+        <span class="module-label">Training Module 03</span>
+        <span class="subject-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 21s-8-4.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.5-8 11-8 11Z"/>
+            <path d="M4.8 13h4l1.4-3 2.2 6 1.5-3H19"/>
+          </svg>
+        </span>
         <span class="subject-name">Medical-Surgical</span>
         <span class="question-count">1,443 questions</span>
+        <span class="card-action">Choose chapters <span class="card-arrow">→</span></span>
       </button>
     </section>
 
@@ -90,7 +136,7 @@
 
     <section id="quiz-screen" class="quiz-screen" hidden>
       <header class="quiz-header">
-        <button id="exit-quiz" class="secondary-button">Save & Quit</button>
+        <button id="exit-quiz" class="secondary-button">Save &amp; Quit</button>
         <strong id="quiz-subject"></strong>
         <span id="quiz-position"></span>
       </header>
