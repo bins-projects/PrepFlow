@@ -158,7 +158,6 @@
         ${section("Labs and monitoring", card.monitoring)}
         ${section("Patient teaching", card.patientTeaching)}
         ${section("Nutrition and food considerations", card.nutrition)}
-        ${section("Source", card.source)}
       </div>
     `;
   }
