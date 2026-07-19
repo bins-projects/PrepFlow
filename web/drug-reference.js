@@ -197,9 +197,10 @@
   async function loadReference() {
     if (entries.length) return;
 
+    const cacheVersion = "20260719-warfarin-1";
     const [registryResponse, cardsResponse] = await Promise.all([
-      fetch("./data/drug-reference.json"),
-      fetch("./data/drug-reference-cards.json"),
+      fetch(`./data/drug-reference.json?v=${cacheVersion}`, { cache: "no-store" }),
+      fetch(`./data/drug-reference-cards.json?v=${cacheVersion}`, { cache: "no-store" }),
     ]);
 
     if (!registryResponse.ok) throw new Error(`Could not load drug reference: ${registryResponse.status}`);
