@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="arcade-home.css">
   <link rel="stylesheet" href="pixel-home.css">
   <link rel="stylesheet" href="arcade-quiz.css">
+  <link rel="stylesheet" href="drug-reference.css">
 </head>
 <body>
   <main class="app-shell">
@@ -59,6 +60,17 @@
           <span class="question-count">1,443 questions</span>
         </span>
         <span class="card-action">Choose Chapters <span aria-hidden="true">▶</span></span>
+      </button>
+    </section>
+
+    <section class="reference-launch" aria-label="Medication reference">
+      <button id="open-drug-reference" class="reference-card">
+        <span class="reference-icon" aria-hidden="true">Rx</span>
+        <span>
+          <strong>Drug Reference</strong>
+          <small>237 Pharm medications • Search by name, class, system, or route</small>
+        </span>
+        <span aria-hidden="true">▶</span>
       </button>
     </section>
 
@@ -144,6 +156,41 @@
       </button>
     </section>
 
+    <section id="drug-reference-screen" class="drug-reference-screen" hidden>
+      <header class="drug-reference-header">
+        <button id="close-drug-reference" class="secondary-button">← Home</button>
+        <div>
+          <h2>Drug Reference</h2>
+          <p>One master entry per medication, with routes and dosage forms grouped together.</p>
+        </div>
+      </header>
+
+      <nav class="drug-reference-tabs" aria-label="Drug reference views">
+        <button data-reference-tab="search" class="active">Search</button>
+        <button data-reference-tab="az">A–Z</button>
+        <button data-reference-tab="class">Drug Class</button>
+        <button data-reference-tab="system">Body System</button>
+        <button data-reference-tab="route">Route</button>
+      </nav>
+
+      <div class="drug-reference-tools">
+        <label>
+          <span class="sr-only">Search medications</span>
+          <input id="drug-reference-search" type="search" placeholder="Search drug, brand, IV, cream, pill, inhaler…">
+        </label>
+        <select id="drug-reference-filter" aria-label="Filter medication reference">
+          <option value="">All medications</option>
+        </select>
+      </div>
+
+      <div class="drug-reference-layout">
+        <aside id="drug-reference-results" class="drug-reference-results" aria-label="Medication results"></aside>
+        <article id="drug-reference-detail" class="drug-reference-detail">
+          <p class="drug-reference-empty">Choose a medication to open its master drug card.</p>
+        </article>
+      </div>
+    </section>
+
     <section id="quiz-screen" class="quiz-screen" hidden>
       <header class="quiz-header">
         <button id="exit-quiz" class="secondary-button">Save &amp; Quit</button>
@@ -204,5 +251,6 @@
   </main>
 
   <script src="app.js"></script>
+  <script src="drug-reference.js"></script>
 </body>
 </html>
