@@ -28,6 +28,8 @@
     "./data/drug-reference-cards-batch-04b.json?v=20260720-batch-04b",
     "./data/drug-reference-cards-batch-04c.json?v=20260720-batch-04c",
     "./data/drug-reference-cards-batch-04d.json?v=20260720-batch-04d",
+    "./data/drug-reference-cards-batch-04e.json?v=20260720-batch-04e",
+    "./data/drug-reference-cards-batch-04f.json?v=20260720-batch-04f",
   ];
 
   window.fetch = async function prepFlowBatchAwareFetch(input, init) {
@@ -37,7 +39,7 @@
     const responses = await Promise.all([
       originalFetch(input, init),
       ...batchPaths.map((path) => originalFetch(path, { cache: "no-store" })),
-      originalFetch("./data/drug-reference.json?v=20260720-batch-04d", { cache: "no-store" }),
+      originalFetch("./data/drug-reference.json?v=20260720-batch-04f", { cache: "no-store" }),
     ]);
 
     const baseResponse = responses[0];
