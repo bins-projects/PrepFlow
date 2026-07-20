@@ -36,7 +36,7 @@
       batchTwoBResponse.json(),
       batchTwoCResponse.json(),
       batchTwoDResponse.json(),
-      batchTwoEPayload = batchTwoEResponse.json(),
+      batchTwoEResponse.json(),
       batchTwoFResponse.json(),
       batchTwoGResponse.json(),
       registryResponse.json(),
