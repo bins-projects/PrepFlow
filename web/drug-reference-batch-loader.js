@@ -1,5 +1,26 @@
 (() => {
   const originalFetch = window.fetch.bind(window);
+  const batchPaths = [
+    "./data/drug-reference-cards-batch-01.json?v=20260719-batch-01",
+    "./data/drug-reference-cards-batch-01b.json?v=20260719-batch-01b",
+    "./data/drug-reference-cards-batch-01c.json?v=20260719-batch-01c",
+    "./data/drug-reference-cards-batch-02a.json?v=20260719-batch-02a",
+    "./data/drug-reference-cards-batch-02b.json?v=20260719-batch-02b",
+    "./data/drug-reference-cards-batch-02c.json?v=20260719-batch-02c",
+    "./data/drug-reference-cards-batch-02d.json?v=20260719-batch-02d",
+    "./data/drug-reference-cards-batch-02e.json?v=20260719-batch-02e",
+    "./data/drug-reference-cards-batch-02f.json?v=20260719-batch-02f",
+    "./data/drug-reference-cards-batch-02g.json?v=20260719-batch-02g",
+    "./data/drug-reference-cards-batch-02h.json?v=20260719-batch-02h",
+    "./data/drug-reference-cards-batch-02i.json?v=20260719-batch-02i",
+    "./data/drug-reference-cards-batch-02j.json?v=20260719-batch-02j",
+    "./data/drug-reference-cards-batch-02k.json?v=20260719-batch-02k",
+    "./data/drug-reference-cards-batch-02l.json?v=20260719-batch-02l",
+    "./data/drug-reference-cards-batch-02m.json?v=20260719-batch-02m",
+    "./data/drug-reference-cards-batch-02n.json?v=20260719-batch-02n",
+    "./data/drug-reference-cards-batch-02o.json?v=20260719-batch-02o",
+    "./data/drug-reference-cards-batch-02p.json?v=20260719-batch-02p",
+  ];
 
   window.fetch = async function prepFlowBatchAwareFetch(input, init) {
     const url = typeof input === "string" ? input : input?.url || "";
@@ -8,41 +29,23 @@
       return originalFetch(input, init);
     }
 
-    const [baseResponse, batchOneResponse, batchOneBResponse, batchOneCResponse, batchTwoAResponse, batchTwoBResponse, batchTwoCResponse, batchTwoDResponse, batchTwoEResponse, batchTwoFResponse, batchTwoGResponse, batchTwoHResponse, registryResponse] = await Promise.all([
+    const responses = await Promise.all([
       originalFetch(input, init),
-      originalFetch("./data/drug-reference-cards-batch-01.json?v=20260719-batch-01", { cache: "no-store" }),
-      originalFetch("./data/drug-reference-cards-batch-01b.json?v=20260719-batch-01b", { cache: "no-store" }),
-      originalFetch("./data/drug-reference-cards-batch-01c.json?v=20260719-batch-01c", { cache: "no-store" }),
-      originalFetch("./data/drug-reference-cards-batch-02a.json?v=20260719-batch-02a", { cache: "no-store" }),
-      originalFetch("./data/drug-reference-cards-batch-02b.json?v=20260719-batch-02b", { cache: "no-store" }),
-      originalFetch("./data/drug-reference-cards-batch-02c.json?v=20260719-batch-02c", { cache: "no-store" }),
-      originalFetch("./data/drug-reference-cards-batch-02d.json?v=20260719-batch-02d", { cache: "no-store" }),
-      originalFetch("./data/drug-reference-cards-batch-02e.json?v=20260719-batch-02e", { cache: "no-store" }),
-      originalFetch("./data/drug-reference-cards-batch-02f.json?v=20260719-batch-02f", { cache: "no-store" }),
-      originalFetch("./data/drug-reference-cards-batch-02g.json?v=20260719-batch-02g", { cache: "no-store" }),
-      originalFetch("./data/drug-reference-cards-batch-02h.json?v=20260719-batch-02h", { cache: "no-store" }),
-      originalFetch("./data/drug-reference.json?v=20260719-batch-02h", { cache: "no-store" }),
+      ...batchPaths.map((path) => originalFetch(path, { cache: "no-store" })),
+      originalFetch("./data/drug-reference.json?v=20260719-batch-02p", { cache: "no-store" }),
     ]);
 
-    if (!baseResponse.ok || !batchOneResponse.ok || !batchOneBResponse.ok || !batchOneCResponse.ok || !batchTwoAResponse.ok || !batchTwoBResponse.ok || !batchTwoCResponse.ok || !batchTwoDResponse.ok || !batchTwoEResponse.ok || !batchTwoFResponse.ok || !batchTwoGResponse.ok || !batchTwoHResponse.ok || !registryResponse.ok) {
+    const baseResponse = responses[0];
+    const batchResponses = responses.slice(1, -1);
+    const registryResponse = responses[responses.length - 1];
+
+    if (!baseResponse.ok || !registryResponse.ok || batchResponses.some((response) => !response.ok)) {
       return baseResponse;
     }
 
-    const [basePayload, batchOnePayload, batchOneBPayload, batchOneCPayload, batchTwoAPayload, batchTwoBPayload, batchTwoCPayload, batchTwoDPayload, batchTwoEPayload, batchTwoFPayload, batchTwoGPayload, batchTwoHPayload, registryPayload] = await Promise.all([
-      baseResponse.json(),
-      batchOneResponse.json(),
-      batchOneBResponse.json(),
-      batchOneCResponse.json(),
-      batchTwoAResponse.json(),
-      batchTwoBResponse.json(),
-      batchTwoCResponse.json(),
-      batchTwoDResponse.json(),
-      batchTwoEResponse.json(),
-      batchTwoFResponse.json(),
-      batchTwoGResponse.json(),
-      batchTwoHResponse.json(),
-      registryResponse.json(),
-    ]);
+    const basePayload = await baseResponse.json();
+    const batchPayloads = await Promise.all(batchResponses.map((response) => response.json()));
+    const registryPayload = await registryResponse.json();
 
     const cards = { ...(basePayload.cards || {}) };
     const registryByName = new Map(
@@ -52,20 +55,7 @@
       ])
     );
 
-    const batchCards = [
-      ...(batchOnePayload.cards || []),
-      ...(batchOneBPayload.cards || []),
-      ...(batchOneCPayload.cards || []),
-      ...(batchTwoAPayload.cards || []),
-      ...(batchTwoBPayload.cards || []),
-      ...(batchTwoCPayload.cards || []),
-      ...(batchTwoDPayload.cards || []),
-      ...(batchTwoEPayload.cards || []),
-      ...(batchTwoFPayload.cards || []),
-      ...(batchTwoGPayload.cards || []),
-      ...(batchTwoHPayload.cards || []),
-    ];
-
+    const batchCards = batchPayloads.flatMap((payload) => payload.cards || []);
     const seenNames = new Set();
 
     for (const batchCard of batchCards) {
