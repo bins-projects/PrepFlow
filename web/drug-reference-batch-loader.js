@@ -71,8 +71,15 @@
       const genericName = String(batchCard.genericName || "").trim();
       const normalizedName = genericName.toLocaleLowerCase();
       const registryEntry = registryByName.get(normalizedName);
-      if (!registryEntry) throw new Error(`Bulk drug card could not be matched to registry: ${genericName}`);
-      if (seenNames.has(normalizedName)) throw new Error(`Duplicate bulk drug card: ${genericName}`);
+      if (!registryEntry) {
+        console.warn(`Skipping unmatched bulk drug card: ${genericName}`);
+        continue;
+      }
+
+      if (seenNames.has(normalizedName)) {
+        console.warn(`Duplicate bulk drug card found; keeping latest entry: ${genericName}`);
+      }
+
       seenNames.add(normalizedName);
       const { genericName: _genericName, ...override } = batchCard;
       cards[registryEntry.id] = override;
