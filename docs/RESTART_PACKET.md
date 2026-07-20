@@ -1,385 +1,343 @@
 # PREPFLOW RESTART PACKET
 
+> **Continuity note:** This Restart Packet was rebuilt after the July 2026 forensic architecture review. Earlier versions are preserved in Git history and in the frozen tag `before-continuity-rebuild-2026-07-20`. If a decision or omitted pathway seems unclear, inspect that preserved baseline before assuming information was accidentally lost. Historical documents explain how PrepFlow arrived here; this packet records the approved operating state from this point forward.
+>
+> Do not restore legacy behavior merely because it appears in an older document. The current Architecture Bible and this Restart Packet are the active authorities unless Charlie deliberately changes a decision.
+
 ## Purpose
 
-This document is ChatGPT’s operational bootloader for resuming PrepFlow development.
+This document is the operational handoff for resuming PrepFlow development.
 
-It is the sole operational continuity handoff for the project. Before creating, replacing, or shortening this packet, always inspect and compare the currently committed `docs/RESTART_PACKET.md`. Preserve its permanent rules, workflow, architecture, privacy boundaries, verified milestones, and startup procedure. Update stale sections in place rather than substituting a shorter summary.
+It must answer:
 
-This document restores:
+1. What is PrepFlow?
+2. What currently exists?
+3. What architecture has been approved?
+4. What is being kept, replaced, or removed?
+5. What is the migration order?
+6. What has already been completed?
+7. What is the next safe step?
+8. How is each step verified?
+9. What is deferred?
+10. How can work stop safely and resume later?
 
-* the current verified repository state;
-* permanent architectural and privacy rules;
-* the completed compiler, Pack, desktop, packaging, and release milestones;
-* the three locked starting study categories;
-* established quiz and mastery behavior;
-* the completed Version 1.0 desktop proof;
-* the new Version 1.1 Progressive Web App direction;
-* the later user-friendly PDF import goal;
-* the exact startup procedure for the next session.
-
-This is not the permanent architecture document.
-
-Permanent technical truth belongs in:
+Permanent architectural truth belongs in:
 
 ```text
 docs/ARCHITECTURE_BIBLE.md
 ```
 
-The committed GitHub repository is the technical source of truth.
+The full forensic findings, file classifications, and migration reasoning belong in:
 
-If this packet conflicts with the committed implementation:
+```text
+docs/CONTINUITY_REBUILD_DECISION_MAP.md
+```
 
-1. inspect the committed repository;
-2. trust the committed implementation;
-3. correct this packet.
+This packet should remain current and operational. It must not grow into another chronological diary of every completed session.
 
 ---
 
-# Source of Truth
+# 1. Source of Truth
 
-Primary repositories:
-
-```text
-Private repository:
-https://github.com/bins-projects/prepflow-dev
-
-Public mirror:
-https://github.com/bins-projects/PF-O
-```
-
-Expected branch:
+## Repositories
 
 ```text
-master
+Private development repository:
+bins-projects/prepflow-dev
+
+Public repository:
+bins-projects/PrepFlow
 ```
 
-Official Version 1 tag:
+The private repository is the working source of truth during the continuity rebuild.
+
+## Current development branch
 
 ```text
-v1.0.0
+docs/continuity-rebuild
 ```
 
-Before requesting terminal output, pasted code, local files, directory listings, or helper scripts, first ask:
+The branch was created from:
 
-> Can the committed GitHub repository answer this?
+```text
+8987fdf
+```
 
-Use GitHub first whenever the required information is committed.
+Frozen pre-rebuild reference:
 
-Request local inspection only when:
+```text
+before-continuity-rebuild-2026-07-20
+```
 
-* work is uncommitted;
-* runtime behavior must be observed;
-* tests must run;
-* dependencies must be inspected;
-* private source material must be examined;
-* generated import or release artifacts are intentionally untracked;
-* GitHub genuinely cannot answer.
+That tag preserves the complete repository state before the continuity documentation rewrite.
+
+## Documentation commits completed on this branch
+
+```text
+97b5fbb  docs: add continuity rebuild decision map
+a49ea78  docs: rebuild architecture bible
+```
+
+The commit that replaces this Restart Packet follows those commits.
+
+## GitHub-first rule
+
+Before asking Charlie to paste committed code, repository trees, documentation, branches, or file contents, inspect GitHub first.
+
+Request local terminal output only when it is needed for:
+
+- uncommitted work;
+- runtime behavior;
+- local test execution;
+- ignored/generated artifacts;
+- private source material;
+- environment-specific behavior;
+- exact local and remote synchronization checks.
 
 ---
 
-# Latest Verified Repository State
+# 2. Current Product Definition
 
+PrepFlow takes deliberately selected educational material, cleans and structures it, turns it into an authoritative independent Pack, and provides study tools that use that Pack.
 
-Latest confirmed implementation milestone:
+The core flow is:
 
-eb78c29 — docs: finalize PWA multi-pack milestone
+```text
+Chosen source material
+        ↓
+Source adapter / extraction
+        ↓
+Cleaning and sanitization
+        ↓
+Structure detection and parsing
+        ↓
+Normalization and validation
+        ↓
+Permanent PrepFlow question identity
+        ↓
+Independent authoritative Pack
+        ↓
+Browser study application
+```
 
-Current active development branch: master
-
-Current verified state:
-
-* The desktop custom quiz builder supports selecting chapters from Fundamentals, Pharm, and Medical-Surgical in one quiz.
-* The hosted PWA supports persistent chapter selection across multiple study categories.
-* Mixed-Pack sessions preserve question order, the current question, missed questions, and review queues during save and resume.
-* Select All and Clear All affect only the currently displayed category.
-* Multiple Response questions use checkboxes and exact-set grading in the PWA.
-* Ordinary Multiple Choice behavior remains intact.
-* Block transitions and the final first-pass results screen were manually exercised without observed errors.
-* Save and resume during mastery review were manually verified.
-* All 108 automated tests passed on merged master.
-* The cross-category quiz-builder milestone was merged into master at eb78c29.
-* Private origin/master and public/master were verified identical at full commit eb78c29f842d7e9faec91e3b3ceb3adff91f856d.
-
-Before resuming, verify GitHub rather than assuming these values are still current.
+The browser quiz, open-book interface, medication reference, characters, animations, and future coaching are ways of using the library. They are not separate educational architectures.
 
 ---
 
-# Working Discipline
+# 3. Authority and Content Rules
 
-PrepFlow development follows:
+## Pack authority
+
+A deliberately selected source becomes authoritative study material inside its own Pack after cleaning, structural validation, and review.
+
+PrepFlow does not independently fact-check an entire nursing curriculum before content enters a Pack.
+
+Each Pack is an independent authority boundary:
+
+- sources are not silently reconciled into one universal truth database;
+- one Pack can be removed or rebuilt without changing another;
+- the original source is temporary import material;
+- the finished Pack is the durable study product.
+
+## Required Pack structure
 
 ```text
-Observe
-   ↓
-Inspect committed code
-   ↓
-Identify one real failure or next milestone
-   ↓
-Add or update a regression test when appropriate
-   ↓
-Make one focused generic change
-   ↓
-Run targeted tests
-   ↓
-Run the full test suite
-   ↓
-Build or run the real product
-   ↓
-Validate output
-   ↓
-Commit
-   ↓
-Push private remote
-   ↓
-Push public mirror
-   ↓
-Verify both remote hashes
-   ↓
-Repeat
+Pack
+└── Chapter
+    └── Question
 ```
 
-Do not:
+Required question content:
 
-* make several speculative changes at once;
-* redesign working architecture during debugging;
-* create a separate importer for every book;
-* reopen settled architecture without implementation evidence;
-* collect endless diagnostics without making a decision;
-* ask the user to paste code already available in GitHub;
-* manually edit generated Packs instead of fixing the generic pipeline;
-* rewrite the working desktop app while beginning the PWA;
-* expose Pack filenames, Pack IDs, JSON, compiler, or repository terminology to users;
-* begin hosting, service-worker work, or deployment before the local PWA shell exists;
-* allow the future PDF-import milestone to interrupt the current PWA milestone.
+- permanent PrepFlow question ID;
+- chapter;
+- chapter title when useful;
+- question type;
+- stem;
+- choices when applicable;
+- correct answer or ordered answers;
+- rationale.
 
-When the user says:
+Publisher, edition, page, Bloom level, difficulty, and detailed source-provenance fields are not required merely because older models supported them.
 
-> next
+Optional future tags may support concepts, medications, body systems, relationships, or coaching. They must not block ordinary imports.
 
-provide exactly the next executable step.
+## Source fidelity
+
+- Preserve admitted educational content faithfully.
+- Do not casually rewrite stems, choices, answers, or rationales.
+- Remove contamination, branding, headers, footers, and extraction artifacts through the cleaner.
+- Do not expose internal Pack filenames, IDs, JSON, compiler terms, or repository terminology in the user interface.
 
 ---
 
-# Focus and Loop Prevention
+# 4. Approved Responsibility Map
 
-Warning signs of a logic loop include:
+## Source adapters
 
-* repeatedly inspecting the same files without a new decision;
-* repeatedly asking for terminal output that GitHub can answer;
-* proposing multiple competing frameworks before inspecting the committed implementation;
-* discussing architecture after the product decision has already been made;
-* trying to make the compiler theoretically perfect instead of responding to real source evidence;
-* manually editing canonical output rather than fixing the reusable pipeline;
-* expanding into hosting, accounts, cloud synchronization, or PDF import before the current local PWA milestone works.
+Open supported file formats and return usable text or a neutral extraction structure.
 
-When work becomes repetitive:
+Current authoritative adapter:
 
-1. stop;
-2. return to the active milestone;
-3. inspect the committed implementation;
-4. identify the smallest executable action;
-5. test and verify before continuing.
+- text-based PDF.
 
----
+Future adapters:
 
-# Permanent Product Goal
+- DOCX;
+- TXT;
+- possible HTML;
+- OCR only as a separate later project.
 
-PrepFlow’s core purpose is:
+All adapters must feed the same shared pipeline. Do not build separate question-processing systems for each file type.
 
-> Give PrepFlow educational source material and make it study-able.
+## Extraction
 
-The product has two major user-facing workflows.
+Retrieves source content while preserving enough structure for later stages. It does not decide what is a question, answer, rationale, or contamination.
 
-## Study Workflow
+## Cleaner
 
-```text
-Launch PrepFlow
-   ↓
-See PrepFlow branding
-   ↓
-Choose Fundamentals, Pharmacy, or Medical-Surgical
-   ↓
-Choose one or more chapters
-   ↓
-Begin studying
-   ↓
-Complete blocks
-   ↓
-Review missed questions
-   ↓
-Continue until mastery
-```
+Removes source noise and extraction artifacts while preserving educational meaning.
 
-## Future Import Workflow
+## Detector
 
-```text
-Import PDF
-   ↓
-Choose or drop source file
-   ↓
-Enter or confirm subject title
-   ↓
-PrepFlow extracts
-   ↓
-PrepFlow cleans
-   ↓
-PrepFlow detects structure
-   ↓
-PrepFlow parses
-   ↓
-PrepFlow normalizes
-   ↓
-PrepFlow validates
-   ↓
-PrepFlow reports warnings
-   ↓
-PrepFlow creates a study category
-```
+Measures source structure and exposes uncertainty before parsing.
 
-The import workflow remains a core product requirement, but it is not the immediate next milestone.
+## Parser
 
----
+Converts cleaned text into candidate question records and handles structures proven through real imports.
 
-# Permanent Architecture
+## Normalizer
 
-PrepFlow’s stable compiler architecture is:
+Converts parser output into one consistent compiler input shape.
 
-```text
-Private Source Material
-        ↓
-Source Adapter
-        ↓
-Extract
-        ↓
-Clean
-        ↓
-Detect Structure
-        ↓
-Parse
-        ↓
-Normalize
-        ↓
-Validate
-        ↓
-Recover usable questions
-        ↓
-Assign canonical IDs
-        ↓
-Build canonical Pack
-        ↓
-Export
-        ↓
-PrepFlow Study Engine
-```
+## Validator
 
-The importer is:
+Classifies problems as:
 
-* format-aware;
-* subject-agnostic.
+- fatal;
+- recoverable;
+- advisory.
 
-Subjects such as Fundamentals, Pharmacy, Medical-Surgical, Maternity, Pediatrics, Mental Health, and non-nursing educational material are content.
+The validator checks structural safety. It does not certify medical truth.
 
-They are not separate application architectures.
+## Deduplication
 
-Do not create permanent book-specific importers.
+Automatically remove only genuine exact duplicates. Keep near-duplicates because they may test different judgments or provide useful context-specific repetition.
 
-The desktop GUI and the PWA are interface layers over the same settled study behavior and validated content model. Do not create a second educational architecture merely because the interface technology changes.
+## Pack compiler
+
+Preserves or assigns permanent question identities, builds the Pack, and exports only intentionally retained fields.
+
+## Pack library
+
+Stores approved study content and is the permanent output of ingestion.
+
+## Browser quiz behavior layer
+
+Owns:
+
+- selected question pool;
+- cross-Pack chapter selection;
+- Shuffle or Keep Source Order;
+- stable session order;
+- block size;
+- grading;
+- first-pass tracking;
+- missed-question review until mastered;
+- block transitions;
+- final first-pass result;
+- save/resume state meaning.
+
+## Browser GUI
+
+Owns display, controls, layout, animation, responsive behavior, and accessibility presentation. It must not independently invent scoring or session rules.
+
+## Offline layer
+
+Defines the actual offline promise and caches the files required to satisfy it.
+
+## Future downloadable clients
+
+Future Windows or macOS downloads should most likely package the cleaned browser-centered application. There is no requirement to preserve unreleased Tkinter compatibility.
 
 ---
 
-# Repository Boundaries
+# 5. Confirmed Current Implementation
 
-Permanent product areas include:
+## Active compiler pipeline
 
-```text
-compiler/
-study/
-packs/
-tests/
-docs/
-README.md
-requirements.txt
-PrepFlow.spec
-```
-
-The Version 1.1 PWA should live in one clearly named web application area chosen after inspecting the repository. Do not scatter HTML, CSS, JavaScript, manifests, or service-worker files across unrelated directories.
-
-Private source files must remain outside the repository.
-
-Current source-storage convention:
+Core files include:
 
 ```text
-~/projects/prepflow-sources/
+compiler/importer.py
+compiler/pdf_reader.py
+compiler/cleaner.py
+compiler/detector.py
+compiler/source_parser.py
+compiler/normalizer.py
+compiler/validator.py
+compiler/builder.py
+compiler/exporter.py
+compiler/pipeline.py
+compiler/models.py
+compiler/ids.py
+compiler/diagnostics.py
 ```
 
-Working import artifacts may exist under:
+Current authoritative flow:
 
 ```text
-output/imports/<pack-id>/
+PDF
+→ extraction
+→ cleaner
+→ detector
+→ source parser
+→ normalizer
+→ validator
+→ builder
+→ exporter
+→ Pack JSON
 ```
 
-These are generated diagnostic artifacts and should not automatically be committed.
+## Active browser product
 
-The repository must not contain:
-
-* copyrighted private source PDFs;
-* private source DOCX files;
-* scratch extraction text;
-* personal identifying information;
-* personal email addresses;
-* personal local machine paths embedded in project files;
-* PyInstaller `build/` output;
-* PyInstaller `dist/` output;
-* release archives;
-* executable artifacts;
-* obsolete temporary test Packs;
-* one-time subject-specific importer scripts.
-
-After a source has been successfully imported and validated into a canonical PrepFlow Pack, the original source material should not be retained inside the application or repository.
-
-PrepFlow should preserve only:
-
-* cleaned educational content needed for study;
-* canonical PrepFlow identifiers;
-* necessary subject, chapter, question, answer, rationale, and study metadata.
-
-Source-specific publisher metadata and temporary implementation artifacts should be discarded after validation unless temporarily required for diagnostics.
-
----
-
-# Privacy State
-
-Repository history was previously rewritten to remove personal author and email information.
-
-Reachable Git history uses:
+The active user-facing product is under:
 
 ```text
-PrepFlow <bins-projects@users.noreply.github.com>
+web/
 ```
 
-The private pre-anonymization recovery bundle remains outside the repository:
+Confirmed browser capabilities include:
 
-```text
-~/projects/prepflow-before-anonymization.bundle
-```
+- Pack loading;
+- chapter selection across Packs;
+- full selected question pool;
+- one-time shuffle;
+- configurable blocks;
+- one question at a time;
+- Multiple Choice grading;
+- Multiple Response exact-set grading;
+- first-pass score tracking;
+- missed-question review until mastered;
+- final first-pass result;
+- local save/resume;
+- hosted/PWA use;
+- layered arcade/open-book presentation;
+- medication reference features.
 
-It must never be:
+Confirmed browser gaps from the audit:
 
-* uploaded;
-* shared;
-* included in a release;
-* placed inside the repository;
-* packaged with PrepFlow.
+- Completion and Ordered Response are not reliably part of the active browser quiz path inspected during the audit;
+- shuffle cannot be disabled;
+- quiz rules and DOM manipulation are mixed in `web/app.js`;
+- strong browser-level automated coverage is missing;
+- complete first-install offline support is not clearly guaranteed.
 
+When later code or runtime evidence conflicts with this section, inspect the current implementation and update this packet rather than guessing.
 
-Before any public PWA deployment, repeat a privacy scan of committed web assets and generated output. Do not expose machine paths, personal names, local usernames, private source locations, internal IDs, or implementation details.
+## Official starting Packs
 
----
-
-# Three Locked Starting Packs
-
-PrepFlow has exactly three official starting study Packs:
+The permanent tracked library contains:
 
 ```text
 packs/fundamentals.prepflow.json
@@ -387,1314 +345,477 @@ packs/pharmacy.prepflow.json
 packs/medical_surgical.prepflow.json
 ```
 
-Verified user-facing categories and counts:
-
-```text
-Fundamentals of Nursing — 1,040 questions
-Pharmacy — 1,084 questions
-Medical-Surgical — 1,443 questions
-```
-
-These three categories form the starting PrepFlow library.
-
-The user-facing interface should display:
+User-facing names:
 
 ```text
 Fundamentals
-Pharmacy
+Pharm
 Medical-Surgical
 ```
 
-Where space is limited, `Med-Surg` is acceptable.
+Read exact current counts directly from the Pack files. Do not copy counts from historical documentation without verification.
 
-Do not display:
+## Medication reference
 
-```text
-fundamentals.prepflow.json
-pharmacy.prepflow.json
-medical_surgical.prepflow.json
-pack_id
-JSON
-canonical Pack
-compiler pipeline
-repository folder
-```
+The current medication registry is derived primarily from Pharm appearances and gatekeeps which card records load.
 
-Those are implementation details.
+Approved later direction:
 
----
+- independent master medication records;
+- source mappings to Pharm, Med-Surg, Fundamentals, and future Packs;
+- a valid medication must not require presence in the Pharm Pack.
 
-# Fundamentals Milestone
+This is deferred unless a current defect makes it urgent.
 
-Fundamentals was the first unseen source used to prove the generic importer.
+## Visual identity
 
-The cold import began with the original PDF and successfully proved:
+Preserve the established visual language:
 
-```text
-PDF
-→ Extract
-→ Clean
-→ Detect
-→ Parse
-→ Normalize
-→ Validate
-→ Build Pack
-```
+- dark navy foundation;
+- bright blue, green, purple, pink, and gold accents;
+- 16-bit/pixel styling;
+- layered book presentation;
+- category accents;
+- reusable committed artwork;
+- deliberate open-book quiz presentation.
 
-The final committed starting Pack contains:
-
-```text
-1,040 questions
-```
-
-Fundamentals established the first complete generic-import proof.
+Do not freeze creativity. New work should fit the established product and reuse approved assets where practical.
 
 ---
 
-# Pharmacy Milestone
+# 6. Permanent Question Identity
 
-The official Pharmacy Pack is:
+Current sequential IDs are formatted consistently but depend on export position. They are not stable enough for the long-term library.
 
-```text
-packs/pharmacy.prepflow.json
-```
+Approved requirement:
 
-Verified count:
+> A question's PrepFlow ID must not change merely because questions before it are deleted, inserted, or reordered.
 
-```text
-1,084 questions
-```
+The design must support:
 
-Verified types:
+- assigning an identity once;
+- recognizing the same question during a rebuild;
+- preserving an identity through minor corrections;
+- assigning a new identity only to genuinely new content;
+- avoiding array-position dependence;
+- detecting identity conflicts.
 
-```text
-Multiple Choice: 963
-Multiple Response: 73
-Completion: 39
-Ordering: 9
-```
+The exact algorithm remains an implementation decision and should be designed before changing Pack IDs.
 
-The official Pharmacy Pack is the retained validated Pack.
-
-A later temporary file named:
-
-```text
-packs/pharmacy-test.prepflow.json
-```
-
-was inspected and identified as a stale, dirty intermediate artifact.
-
-It had:
-
-* only 1,073 questions;
-* 271 Stuvia remnants;
-* incomplete question-type support;
-* a test Pack ID and title.
-
-It was deleted and must not be restored or promoted.
-
-Do not assume a `-test` file is newer or better than the official Pack.
+Do not silently regenerate all IDs without a migration and verification plan.
 
 ---
 
-# Medical-Surgical Milestone
+# 7. Verified Legacy and Removal Candidates
 
-The original private source was:
+Git history and the frozen tag preserve removed work.
+
+## Old DOCX prototype route
+
+Verified candidates:
 
 ```text
-~/projects/prepflow-sources/medsurg.pdf
+compiler/docx_reader.py
+compiler/tokenizer.py
+compiler/parser.py
+DOCX-specific route inside compiler/cli.py
+tests/test_parser.py
+tests/test_ids.py
 ```
 
-The source was rerun through the improved universal pipeline.
+Reason:
 
-Final official Pack:
+- rigid source assumptions;
+- separate obsolete path;
+- little useful behavior not easily recreated;
+- no proper shared cleaner/detector path;
+- future DOCX should be an adapter feeding the authoritative pipeline.
 
-```text
-packs/medical_surgical.prepflow.json
-```
+## Old Python desktop and terminal study stack
 
-Final verified results:
-
-```text
-Detected chapters: 63
-Parsed questions: 1,443
-Canonical questions: 1,443
-Skipped questions: 0
-```
-
-Final question types:
+Verified candidates after active browser behavior is protected:
 
 ```text
-Multiple Choice: 1,187
-Multiple Response: 133
-Completion: 108
-Ordered Response: 15
-```
-
-Final contamination scan:
-
-```text
-Stuvia remaining: 0
-Marketplace remaining: 0
-Linton remaining: 0
-Medical-Surgical Nursing source-title fragments remaining: 0
-Trailing standalone N/A artifacts remaining: 0
-```
-
-Final compiler diagnostics:
-
-```text
-3 advisory duplicate-text warnings
-0 fatal diagnostics
-0 recoverable diagnostics
-0 skipped questions
-```
-
-The advisory duplicates were:
-
-1. Chapter 3, Question 23 duplicated the text of Chapter 3, Question 2.
-2. Chapter 25, Question 31 duplicated the text of Chapter 25, Question 12.
-3. Chapter 42, Question 12 duplicated the text of Chapter 41, Question 9.
-
-These diagnostics are advisory and did not block the Pack.
-
-The validated Medical-Surgical Pack was committed in:
-
-```text
-30c41e8 Promote validated Medical-Surgical pack
-```
-
----
-
-# Important Compiler Improvements Proven by Medical-Surgical
-
-Medical-Surgical exposed generic source patterns that were fixed in the universal pipeline.
-
-## Wrapped Stem Beginning With a Time
-
-A stem continuation such as:
-
-```text
-0700. The patient...
-```
-
-must not be mistaken for a new numbered question.
-
-## Rationale Beginning With a Choice-Like Prefix
-
-A rationale such as:
-
-```text
-C. albicans infection appears most often in skinfolds.
-```
-
-must remain rationale once the parser is already reading rationale text.
-
-## Inline Source Branding
-
-Branding appended to legitimate educational text is removed while preserving the educational content.
-
-## Ordered-Response Recognition
-
-Sequencing questions may appear under a Completion section and must be recognized through structural evidence such as:
-
-* existing choices;
-* `appropriate sequence`;
-* `correct order`;
-* `prioritize the steps`;
-* `prioritize these`;
-* `place the events`;
-* `place the options`.
-
-Ordered answers may appear on the same line or following line and are converted to ordered answer lists.
-
-## Choice G Support
-
-The parser and split-choice recovery accept answer choices through G.
-
-## Wrapped Chapter Headings
-
-Split chapter headings are joined when the first line clearly ends mid-title.
-
-## Hard Chapter Boundaries
-
-A new chapter line finalizes the previous question immediately so source headers cannot attach to the prior question.
-
-## Wrapped Chapter Subtitle Preservation
-
-Legitimate chapter subtitle prefixes are preserved while publisher metadata is removed.
-
-## Source-Title Cleanup
-
-Trailing source-title fragments are removed from chapter titles and educational fields.
-
-## Standalone N/A Cleanup
-
-A standalone `N/A` inside a metadata boundary is treated as an extraction artifact. Legitimate educational use of `N/A` in normal text must not be removed casually.
-
----
-
-# Automated Test State
-
-Latest verified full test run:
-
-```text
-108 passed
-```
-
-The suite covers at least:
-
-* Pack building;
-* chapter title export;
-* Docsity cleanup;
-* Stuvia cleanup;
-* inline branding cleanup;
-* source-title cleanup;
-* standalone N/A cleanup;
-* chapter-index removal;
-* PDF adapter validation;
-* importer request validation;
-* raw artifact writing;
-* clean artifact writing;
-* detection report writing;
-* question-type behavior;
-* completion behavior;
-* multiple-response answer handling;
-* ordered-response answer order;
-* source normalization;
-* wrapped stems;
-* wrapped choices;
-* split choices;
-* missing-A-choice recovery;
-* time-like numbered stem continuations;
-* rationale lines beginning with choice-like prefixes;
-* ordered-response recognition inside Completion sections;
-* multiline ordered answers;
-* choice G support;
-* wrapped chapter headings;
-* chapter-boundary finalization;
-* wrapped chapter subtitles;
-* validation behavior;
-* single-slot save overwrite;
-* missing-save behavior;
-* save deletion;
-* invalid-save handling.
-
-At startup, trust the current test output over the historical number recorded here.
-
----
-
-# Study Engine Rules
-
-Every interface must preserve the established Study Engine behavior.
-
-## Source Fidelity
-
-* Preserve questions word-for-word from the canonical Pack.
-* Do not rewrite stems or choices.
-* Do not introduce “hard mode” wording unless explicitly requested.
-* Do not use publisher or source branding in user-facing content.
-
-## Question Display
-
-* One question at a time.
-* No bolding or highlighting inside stems or choices.
-* No hints before the learner answers.
-* Do not expose internal question IDs unless needed for diagnostics.
-
-## Feedback
-
-After each answer, show:
-
-* Correct or Incorrect;
-* the correct answer;
-* a concise rationale;
-* running counters.
-
-## Session Flow
-
-* Default study blocks contain 15 questions.
-* The final block may contain fewer than 15 questions.
-* Shuffle once per session.
-* Keep the shuffled set stable during the session.
-* Combine multiple selected chapters into one shuffled session.
-* Avoid repeating questions across initial blocks.
-* After each block, review missed questions.
-* Continue missed-question review until mastered.
-* Preserve first-pass performance separately from eventual mastery.
-* End with final mastery status.
-
-## Supported Question Types
-
-* Multiple Choice;
-* Multiple Response;
-* Completion;
-* Ordered Response.
-
-## Save and Resume
-
-* Maintain one overwriteable local save slot.
-* Autosave when a new question opens.
-* Preserve subject, question order, current position, block state, score, missed questions, and review queue.
-* Show a brief `Progress saved` notice.
-* Show `Continue Saved Quiz` when a valid save exists.
-* Delete the save after the session is completed.
-* Do not require a manual Save button.
-
-The PWA should reproduce these rules rather than invent a separate quiz system.
-
----
-
-# Version 1.0 Desktop Milestone — Complete
-
-PrepFlow Version 1.0 is a working Linux desktop application proof.
-
-Completed desktop capabilities:
-
-* Tkinter desktop home screen;
-* dynamic discovery of the three official categories;
-* clean user-facing category names;
-* one or more chapter selections;
-* Select All and Clear All;
-* combined multi-chapter sessions;
-* one shuffle per session;
-* 15-question blocks;
-* accurately shortened final blocks;
-* Multiple Choice;
-* Multiple Response;
-* Completion;
-* Ordered Response;
-* drag-and-drop ordering;
-* immediate feedback;
-* correct answers and rationales;
-* first-pass scoring;
-* missed-question review until mastery;
-* scrollable long content;
-* fixed Submit and Continue controls;
-* automatic single-slot save;
-* Continue Saved Quiz;
-* temporary Progress saved notice;
-* save deletion after completion.
-
-Do not rewrite or destabilize the working desktop application while beginning Version 1.1.
-
----
-
-# Version 1.0 Packaging and Release State
-
-The PyInstaller specification is:
-
-```text
+study/cli.py
+study/gui.py
+study/loader.py
+study/question.py
+study/review.py
+study/save_state.py
+study/scoring.py
+study/selection.py
+study/session.py
+study/update_checker.py
+study/version.py
 PrepFlow.spec
+.github/workflows/build-windows.yml
 ```
 
-The Linux x86-64 desktop build was successfully created and tested.
+Related desktop-only tests may be removed only after retained behavior has equivalent active-product coverage or has been explicitly recorded as no longer required.
 
-The packaged application:
+Reason:
 
-* launches without Python;
-* does not require terminal interaction during normal use;
-* bundles the three official starting categories;
-* preserves autosave and resume;
-* passed a fresh extracted-archive smoke test;
-* passed a privacy scan for identifying information.
+- the browser is the active compatibility target;
+- the browser does not consume this Python study stack;
+- no released legacy installation requires preservation;
+- future desktop packaging can wrap the browser product;
+- preserving capabilities matters more than preserving obsolete implementations.
 
-Generated packaging directories remain untracked:
+## Old visual experiment branch
 
 ```text
-build/
-dist/
+origin/feat/home-quiz-panel-clean
 ```
 
-Generated release archives must also remain untracked.
+This branch contains old cover/stethoscope experiments and should not be merged wholesale. Git history preserves it as reference.
 
-A clickable ChromeOS launcher was created under the local Linux desktop-app configuration and tested through the ChromeOS Linux Apps menu.
-
-PyInstaller is not a cross-compiler:
-
-* Windows builds must be produced and tested on Windows.
-* macOS builds must be produced and tested on macOS.
-* A macOS desktop build will not run on iPadOS.
-
-Official Git release marker:
-
-```text
-v1.0.0
-```
-
-Do not move or rewrite the `v1.0.0` tag.
+No other unmerged remote branch was found to contain hidden compiler, quiz-engine, medication, or architecture work.
 
 ---
 
-# Version 1.1 Direction — Progressive Web App
+# 8. Test and Verification State
 
-The next major platform milestone is a Progressive Web App developed entirely on the Chromebook.
+The forensic inventory found:
 
-The purpose is to let classmates use PrepFlow on iPads without:
+- 18 test files;
+- 108 standard function-style tests;
+- strong compiler/import coverage;
+- useful desktop behavior tests;
+- empty `tests/test_ids.py`;
+- empty `tests/test_parser.py`;
+- no strong visible browser automation suite.
 
-* Xcode;
-* a Mac;
-* TestFlight;
-* the App Store;
-* Python;
-* terminal commands;
-* a native iPad application.
+Historical test counts in old documents are not authoritative. Run the current suite and record the result whenever work resumes.
 
-The intended iPad experience is:
+## Important warning
 
-```text
-Open PrepFlow in Safari
-   ↓
-Add to Home Screen
-   ↓
-Launch PrepFlow like an app
-   ↓
-Study offline after required files are cached
-```
+Deleting old tests can reduce the test count while still producing a green result.
 
-The likely future GitHub Pages address is:
+Example:
 
 ```text
-https://bins-projects.github.io/PF-O/
+108 passed before deletion
+65 passed after deletion
 ```
 
-That address is not the working PrepFlow site until the PWA exists and GitHub Pages is enabled.
+That does not prove the product is equally protected. It may mean safeguards disappeared.
 
-## PWA Technical Direction
+Before removing a legacy implementation and its tests:
 
-The first PWA should be static and use:
+1. identify the behavior worth retaining;
+2. protect it in the active browser or compiler layer where practical;
+3. run targeted tests;
+4. run the full suite;
+5. perform the real browser smoke check;
+6. inspect remaining references and imports.
 
-* HTML;
-* CSS;
-* JavaScript;
-* the existing validated study content;
-* browser-local save state;
-* a web app manifest later;
-* a service worker later.
+## Planned CI direction
 
-No backend, login, account system, cloud database, instructor dashboard, or cloud synchronization is required for the first PWA milestone.
+Replace the old manual Windows-build workflow with automatic verification on pushes and pull requests.
 
-The browser interface replaces Tkinter for iPad use. It does not replace the compiler, validated Packs, canonical IDs, or established study rules.
+Initial CI should:
 
-## Public Deployment Gate
+- install the supported Python environment;
+- run the existing compiler tests;
+- validate Pack files;
+- fail on real structural regressions.
 
-Before enabling GitHub Pages or publishing study content publicly:
-
-* review whether the bundled educational question content may be publicly distributed;
-* repeat privacy checks;
-* confirm no internal implementation details are exposed;
-* confirm only intended public assets are published.
-
-Local PWA development may proceed before public deployment is approved.
+Later add browser checks as the browser behavior layer becomes testable.
 
 ---
 
-# Exact First PWA Milestone
+# 9. Approved Migration Sequence
 
-At the beginning of Version 1.1:
+This is the default sequence. Change it only when implementation evidence shows a safer order.
 
-1. inspect the committed repository;
-2. compare the current Restart Packet against implementation;
-3. choose the cleanest single directory for the web application;
-4. implement only the smallest visible local web milestone.
+## Phase A — Documentation foundation
 
-The first executable milestone is:
+Status: **Active and nearly complete**
 
-> Open a local PrepFlow web page that displays polished PrepFlow branding and three touch-friendly cards labeled Fundamentals, Pharmacy, and Medical-Surgical.
+1. Complete forensic audit. — Done.
+2. Record decision map. — Done at `97b5fbb`.
+3. Rebuild Architecture Bible. — Done at `a49ea78`.
+4. Rebuild Restart Packet. — This commit.
+5. Align README with real browser product.
+6. Decide whether `QUESTION_LIFECYCLE.md` has any unique material; absorb useful content and remove the redundant file if appropriate.
+7. Review the documentation diff as a unit.
 
-For this first milestone:
+No implementation deletion occurs during Phase A.
 
-* run locally on the Chromebook;
-* do not enable GitHub Pages;
-* do not add service-worker caching;
-* do not add quiz logic;
-* do not add a backend;
-* do not add accounts;
-* do not redesign the Packs;
-* do not modify the desktop app;
-* load names and counts from existing validated content when practical rather than duplicating educational content manually.
+## Phase B — Verification foundation
 
----
+1. Run the full existing test suite and record the current result.
+2. Inspect Packs programmatically for schema validity, counts, IDs, types, and duplicate identities.
+3. Add automatic push/PR verification using the existing tests.
+4. Add the smallest practical browser behavior checks before deleting desktop behavior tests.
+5. Write a repeatable browser smoke checklist.
 
-# Recommended PWA Sequence
+## Phase C — Permanent identity design
 
-1. Inspect the repository and choose the web-app directory.
-2. Create a local static web shell.
-3. Add PrepFlow branding and the three category cards.
-4. Load the existing Packs in the browser.
-5. Add chapter multi-selection.
-6. Add Multiple Choice.
-7. Port block, score, and mastery behavior.
-8. Add Multiple Response.
-9. Add Completion.
-10. Add touch-friendly Ordered Response.
-11. Add browser-local automatic save and resume.
-12. Add responsive iPad styling.
-13. Add the web app manifest.
-14. Add offline caching with a service worker.
-15. Test locally.
-16. Test on an iPad.
-17. Complete the public-content distribution review.
-18. Enable GitHub Pages.
-19. Test Add to Home Screen and offline use.
+1. Inventory current question IDs and references.
+2. Choose the permanent identity strategy.
+3. Define rebuild matching and conflict behavior.
+4. Add tests before migration.
+5. Migrate Packs in a controlled commit.
+6. Verify save/resume and any reference mappings affected by IDs.
 
-Do not attempt this entire sequence in one speculative rewrite.
+## Phase D — Browser behavior boundary
 
----
+1. Identify pure quiz/session rules inside `web/app.js`.
+2. Extract small testable behavior units without redesigning the GUI.
+3. Preserve current working flow after each change.
+4. Add the Shuffle versus Keep Source Order option.
+5. Preserve source order when shuffle is disabled.
 
-# Later PDF Import Interface
+The shuffle setting is the first approved user-facing tweak after stable ground is established.
 
-The PDF import interface remains a major future milestone, but it comes after the PWA study experience is stable.
+## Phase E — Browser question-type parity
 
-Future user flow:
+1. Add Completion grading and controls to the active browser path.
+2. Add Ordered Response grading and controls.
+3. Preserve first-pass scoring, review behavior, save/resume, and source fidelity.
+4. Add browser tests for all supported types.
 
-```text
-Import and Create Study Category
-   ↓
-Choose or drop a PDF
-   ↓
-Enter or confirm category title
-   ↓
-PrepFlow extracts text
-   ↓
-PrepFlow cleans source artifacts
-   ↓
-PrepFlow detects chapters and question structures
-   ↓
-PrepFlow parses questions
-   ↓
-PrepFlow normalizes and validates
-   ↓
-PrepFlow reports warnings and skipped items
-   ↓
-PrepFlow creates the category
-   ↓
-Category appears on the home screen
-```
+## Phase F — Legacy removal
 
-Friendly progress wording may include:
+After browser behavior protections are adequate:
 
-```text
-Reading PDF
-Cleaning source
-Finding chapters
-Finding questions
-Checking answers and rationales
-Building study category
-```
+1. remove the unused Python study/desktop stack;
+2. remove `PrepFlow.spec`;
+3. remove the old Windows-build workflow;
+4. remove obsolete desktop-only tests after retained rules are protected elsewhere;
+5. run all tests and browser smoke checks;
+6. search for dangling imports and references;
+7. commit removal as a focused reversible milestone.
 
-Do not expose:
+Then remove the rigid DOCX prototype path and its empty tests in a separate focused milestone.
 
-```text
-02_clean.txt
-03_detection.json
-04_questions.json
-pack_id
-canonical JSON
-compiler diagnostic enum
-```
+## Phase G — Unified source adapters
 
-The final import report may show:
+1. preserve PDF as the first authoritative adapter;
+2. rebuild DOCX as a real extraction adapter;
+3. add TXT through the same boundary;
+4. route all supported formats through the shared cleaner/detector/parser/compiler;
+5. do not create book-specific permanent import architectures.
 
-* chapters found;
-* questions created;
-* question types;
-* warnings;
-* skipped questions;
-* output category name;
-* option to begin studying.
+## Phase H — Offline and visual consolidation
 
-Do not build this workflow until the current PWA study milestone is stable.
+1. define the offline promise;
+2. inventory every required shell, Pack, visual, medication, and data asset;
+3. update service-worker behavior and tests;
+4. consolidate CSS only in visually safe increments;
+5. preserve the approved visual identity and reusable art.
+
+## Phase I — Deferred enrichment
+
+Only after the foundation is stable:
+
+- independent medication master library;
+- optional topic/system/medication relationship tags;
+- analytics and coaching;
+- character animation and cut scenes;
+- future Windows/macOS browser wrappers;
+- user-facing import interface.
 
 ---
 
-# Documentation Rules
+# 10. Verification and Rollback Rules
 
-Permanent architecture belongs in:
+Every implementation milestone must answer:
 
-```text
-docs/ARCHITECTURE_BIBLE.md
-```
+1. What exact behavior is changing?
+2. What must remain unchanged?
+3. Which tests protect it?
+4. What manual browser check is required?
+5. What commit is the rollback point?
+6. Are private and public remotes synchronized when the milestone is complete?
 
-Operational handoff and sole continuity bootloader belong in:
-
-```text
-docs/RESTART_PACKET.md
-```
-
-Completed milestones belong in:
+## Standard work loop
 
 ```text
-docs/CHANGELOG.md
+Observe
+→ Inspect GitHub
+→ Define one focused change
+→ Add or update tests when appropriate
+→ Implement
+→ Run targeted tests
+→ Run full tests
+→ Run the real browser product
+→ Inspect output
+→ Commit
+→ Push private remote
+→ Push public remote when appropriate
+→ Verify remote hashes
+→ Repeat
 ```
 
-Current unfinished work and active priorities belong in this Restart Packet.
+## Safe stopping rule
 
-Deferred feature ideas that remain relevant belong in the Deferred Feature Backlog section of this Restart Packet.
+Do not stop in the middle of a destructive multi-file transition when practical.
 
-The README should describe only workflows users can actually perform.
+A safe stopping point has:
 
-Do not advertise GitHub Pages, offline PWA installation, or PDF import as completed until those workflows actually work.
+- a coherent commit;
+- passing applicable tests;
+- known browser status;
+- updated Restart Packet current-focus section when the active plan changed;
+- no unexplained uncommitted files;
+- exact next action recorded.
 
-Before writing a new Restart Packet:
+## Rollback references
 
-1. inspect the currently committed Restart Packet;
-2. compare proposed changes against it;
-3. preserve permanent operating rules and continuity details;
-4. update stale sections in place;
-5. never replace it with a short summary that drops safeguards.
+Pre-documentation baseline:
+
+```text
+before-continuity-rebuild-2026-07-20
+```
+
+Documentation branch start:
+
+```text
+8987fdf
+```
+
+Never force-reset or rewrite shared history casually. Prefer a normal revert or a new corrective commit unless history rewriting is deliberately required.
 
 ---
 
-# Startup Procedure for the Next Session
+# 11. Working Discipline
 
-At the beginning of the next PrepFlow session:
-
-1. paste this Restart Packet into the fresh chat;
-2. inspect the public GitHub mirror;
-3. verify branch `master`;
-4. verify the latest commit and `v1.0.0` tag;
-5. compare this packet against the committed implementation;
-6. confirm the three official Packs exist;
-7. confirm no test Packs or release artifacts are tracked;
-8. confirm the working tree is expected to be clean;
-9. run the full test suite;
-10. perform a focused top-down inspection for the web-app directory;
-11. recommend exactly one first local PWA milestone;
-12. implement one focused change;
-13. test locally;
-14. commit;
-15. push `origin`;
-16. push `public`;
-17. verify both remote hashes match.
-
-Do not begin with GitHub Pages.
-
-Do not begin with a service worker.
-
-Do not begin with PDF import.
-
-Do not begin by rewriting the desktop app.
-
-Do not begin by choosing multiple web frameworks without inspecting the committed repository.
-
----
-
-# Current Exact Resume Statement
-
-Resume PrepFlow from this statement:
-
-> PrepFlow Version 1.0 is complete as a working Linux desktop application proof and is permanently marked by Git tag `v1.0.0`. The latest verified commit is `676f2b6`, both `origin/master` and `public/master` are synchronized, the working tree was clean, and all 53 automated tests passed. The official library contains Fundamentals with 1,040 questions, Pharmacy with 1,084 questions, and Medical-Surgical with 1,443 questions. The desktop app supports the three official categories, multi-chapter selection, one shuffled order per session, 15-question blocks, accurately shortened final blocks, Multiple Choice, Multiple Response, Completion, Ordered Response with drag-and-drop, first-pass scoring, missed-question review until mastery, automatic single-slot saving, Continue Saved Quiz, a Progress saved notice, standalone Linux packaging, a smoke-tested release archive, privacy validation, and a clickable ChromeOS launcher. Version 1.1 should begin as a Progressive Web App developed locally on the Chromebook so iPad users can eventually open PrepFlow in Safari, add it to the Home Screen, and study offline after installation. Do not begin with hosting, GitHub Pages, a backend, accounts, native SwiftUI, service-worker complexity, or PDF import. First inspect the committed repository, compare the current Restart Packet against implementation, choose one clean web-app directory, and build a local web shell showing polished PrepFlow branding and the three official study categories. Before public deployment, complete the public-content distribution and privacy review.
-
----
-
-# Final Operating Reminder
-
-One focused change at a time.
-
-Use GitHub first.
-
-Treat this Restart Packet as the sole operational continuity provider.
-
-Always compare the committed Restart Packet before creating a replacement.
-
-Preserve the working Version 1.0 desktop release.
-
-Reuse established study behavior.
-
-Let real runtime evidence drive changes.
-
-Do not expose implementation details to users.
-
-Do not build PDF import yet.
-
-When the user says:
+When Charlie says:
 
 > next
 
-provide the next executable step.
+provide the next executable step, not a menu of unrelated possibilities.
 
-<!-- HOSTED_PWA_STATE_START -->
-## Hosted Chromebook PWA — Verified Milestone
+Other permanent working rules:
 
-PrepFlow is hosted at:
+- one focused change at a time;
+- inspect committed code before speculating;
+- do not ask for code already available through GitHub;
+- do not manually repair generated Packs when the generic pipeline should be fixed;
+- quarantine a small number of malformed questions rather than broadening the parser recklessly;
+- do not preserve ghost code merely because it once worked;
+- do not delete working protections before replacing or consciously retiring them;
+- use evidence from real imports and runtime behavior;
+- protect privacy before public release or sharing;
+- keep both intended Git remotes synchronized at completed milestones;
+- do not claim a push, test, merge, or runtime result that has not been verified.
 
-`https://bins-projects.github.io/PF-O/web/`
+## Loop-prevention rule
 
-Verified behavior:
+When work becomes repetitive:
 
-- installs directly through Chrome;
-- launches from the Chromebook Launcher;
-- does not require Linux, Python, a terminal, or `localhost`;
-- loads Fundamentals, Pharmacy, and Medical-Surgical;
-- supports chapter multi-selection;
-- supports configurable block sizes, with 15 as the default;
-- presents Multiple Choice questions with feedback and rationales;
-- pauses at block boundaries;
-- reviews missed questions until mastered;
-- automatically saves unfinished sessions;
-- restores an unfinished session through Continue Session.
-
-The hosted PWA and desktop application support Multiple Choice and Multiple
-Response questions. Multiple Response questions in the PWA use checkboxes and
-require the exact correct answer set. The desktop application additionally
-supports Completion and Ordered Response questions.
-
-The next active platform work is confirming the Windows Version 1.1.0 release
-state and then beginning the macOS GitHub Actions packaging milestone.
-
-For routine command sequences, obvious transitions such as stopping a local
-server may be bundled with the following substantive command rather than
-requiring a separate `next` response.
-<!-- HOSTED_PWA_STATE_END -->
+1. stop;
+2. return to the active phase;
+3. identify what decision is actually missing;
+4. inspect the smallest relevant files;
+5. choose one executable action;
+6. test before expanding scope.
 
 ---
 
-## Pharmacy Third-Edition Replacement — 2026-07-13
+# 12. Deferred Ideas
 
-### Completed milestone
+These are preserved but are not active commitments:
 
-The official Pharmacy pack was rebuilt from the complete third-edition source and replaced locally and in the private `origin` repository.
+- optional detailed topic tags;
+- coaching based on missed concept clusters;
+- independent medication master library and Pack mappings;
+- animated character guidance;
+- book-opening sequences and cut scenes;
+- Windows and macOS packaged browser wrappers;
+- user-facing PDF/DOCX/TXT import interface;
+- OCR ingestion;
+- additional Packs beyond the starting library;
+- deeper analytics and adaptive recommendations.
 
-Current official pack:
-
-- File: `packs/pharmacy.prepflow.json`
-- Questions: 1,202
-- Source chapter range: 1–29
-- Chapters represented: 28
-- Question types:
-  - Multiple choice: 1,140
-  - Multiple response: 16
-  - Completion: 45
-  - Ordered response: 1
-- Known source artifacts remaining: 0
-
-The three genuine Chapter 3 questions were excluded because the source supplied correct answers but no rationales. Chapter 29 Question 11 was also excluded because the stable parser configuration did not safely associate its rationale. These four questions may be manually restored later with reviewed rationales.
-
-### Compiler and cleaner work completed
-
-Committed milestones:
-
-- `4a58c15` — compiler support for additional Pharmacy source formats
-- `5a79592` — removal of standalone source artifacts
-- `3914f0f` — removal of the repeated Pharmacy Chapter 2 block
-- `389af06` — replacement of the official Pharmacy pack
-
-The parser now supports the additional inline-answer, labeled-question, split-choice, ordered-answer, and unnumbered-question formats encountered in this source.
-
-The cleaner includes narrowly scoped rules for:
-
-- obsolete embedded Pharmacy Chapter 32 removal
-- condensed Chapter 3 duplicate-summary trimming
-- repeated Chapter 2 multiple-response block removal
-- exact standalone `extra per year?` artifact removal
-
-### Validation status
-
-- Full test suite: 72 passed
-- Candidate parsed: 1,206
-- Candidate exported: 1,202
-- Candidate skipped: 4
-- Duplicate-text advisories: 1 valid Chapter 12/13 look-alike pair
-- Official pack contamination checks: all zero
-
-### Repository synchronization status
-
-Private repository `origin/master` contains the new official Pharmacy pack at:
-
-`389af06155596f37a2780268bbabc4fd95dfd03d`
-
-
-
-### Immediate next steps
-
-1. Verify the desktop or local PrepFlow application loads the new 1,202-question Pharmacy pack.
-
+Deferred does not mean rejected. It means do not interrupt the active architectural cleanup unless Charlie deliberately reprioritizes it.
 
 ---
 
-# CURRENT STATE ADDENDUM — 2026-07-14
-
-This addendum preserves the permanent rules and history already recorded above. Where older question counts, milestones, or resume instructions conflict with this section, this newest dated section is the current source of truth.
-
-## Latest Verified Repository State
-
-Latest completed and synchronized commit:
-
-64897f6 feat: add desktop parity and update checks
-
-After pushing, the following all matched commit 64897f6:
-
-- local master
-- origin/master
-- public/master
-
-Latest full automated test result:
-
-81 passed
-
-## Current Official Study Library
-
-Current user-facing categories and question counts:
-
-- Fundamentals — 1,040 questions
-- Pharm — 1,238 questions
-- Medical-Surgical — 1,443 questions
-
-The user-facing Pharmacy category is now named Pharm.
-
-The internal filename remains:
-
-packs/pharmacy.prepflow.json
-
-Do not expose Pack filenames, JSON terminology, Pack IDs, compiler details, or internal implementation language in the user-facing application.
-
-## Pharm Pack Repair and Validation
-
-The Pharmacy source was replaced with the validated third-edition source and rebuilt through the generic PrepFlow compiler.
-
-The final Pharm Pack contains 1,238 questions.
-
-Final validation showed:
-
-- 0 Multiple Choice or Multiple Response questions with too few choices
-- 0 answers referencing missing choices
-- 0 merged-choice entries
-
-Parser and validator improvements included support for:
-
-- split choice markers;
-- choice labels without periods;
-- wrapped choices followed by label-only markers;
-- inline metadata boundaries that previously swallowed the next question;
-- recoverable validation when an answer references a missing source choice.
-
-One malformed source question with a missing choice was safely quarantined rather than forcing a risky parser workaround.
-
-For future imports, prefer quarantining a small number of malformed questions over spending hours building overly broad parser behavior. Clearly recoverable questions may be restored manually later.
-
-## Hosted PWA State
-
-Current hosted PWA:
-
-https://bins-projects.github.io/PF-O/web/
-
-Current PWA behavior includes:
-
-- Fundamentals, Pharm, and Medical-Surgical;
-- chapters selected across one or more study categories;
-- configurable block size;
-- Block X of Y display;
-- one question at a time;
-- Multiple Choice;
-- Multiple Response;
-- Completion;
-- Ordered Response;
-- automatic local save and resume;
-- Save & Quit;
-- Resume Saved Session;
-- confirmed Start Over;
-- answer choices removed after submission and replaced by feedback and rationale;
-- missed-question mastery review until corrected;
-- final Quiz Complete screen showing the first-pass percentage;
-- network-first loading with offline cache fallback;
-- inactive screens remaining properly hidden during a quiz.
-
-Recent PWA quality-of-life work completed:
-
-- total blocks are shown;
-- routine refreshes retrieve current hosted files;
-- the saved-session panel no longer appears over an active quiz;
-- rationale replaces the answer area, reducing unnecessary scrolling;
-- Continue remains visible in normal use;
-- final first-pass percentage is displayed only after the quiz is complete;
-- Exit Quiz was renamed Save & Quit;
-- Start Over now requires confirmation.
-
-## Desktop Application Parity
-
-The shared Tkinter desktop application has been brought into practical parity with the PWA.
-
-Current desktop behavior includes:
-
-- Fundamentals, Pharm, and Medical-Surgical;
-- the same current official Pack contents;
-- block sizes of 5, 10, 15, or 20;
-- Block X of Y display;
-- one question at a time;
-- Multiple Choice;
-- Multiple Response;
-- Completion;
-- Ordered Response;
-- automatic session saving;
-- Save & Quit;
-- Resume Saved Session;
-- confirmed Start Over;
-- choices removed after answer submission;
-- correct or incorrect feedback;
-- correct answer display when missed;
-- rationale display;
-- missed-question review until mastery;
-- final Quiz Complete screen with first-pass percentage.
-
-The desktop application currently displays:
-
-Version 1.1.0
-
-The application-version source is:
-
-study/version.py
-
-## Check for Updates Feature
-
-The desktop application now has a non-blocking Check for Updates button.
-
-Relevant files:
-
-- study/version.py
-- study/update_checker.py
-- tests/test_update_checker.py
-
-Current behavior:
-
-- compares the installed APP_VERSION with the latest public GitHub release;
-- reports when PrepFlow is up to date;
-- reports when a newer release is available;
-- offers to open the public release page;
-- does not automatically download or install updates;
-- performs the network request outside the GUI thread;
-- safely ignores the callback if the application closes while checking.
-
-Users who still have Version 1.0.0 must manually replace that copy once because Version 1.0.0 does not contain the update-check button.
-
-After Version 1.1.0 is installed, later public releases can be detected from within PrepFlow.
-
-## Cross-Platform Feature-Parity Rule
-
-All supported PrepFlow clients must remain as close to feature parity as practical.
-
-Supported or planned clients:
-
-- hosted PWA;
-- Windows desktop;
-- macOS desktop.
-
-Whenever a user-facing feature is added or changed in one supported client, review and update the other supported clients before release.
-
-Do not allow the clients to drift into conflicting behavior for:
-
-- category names;
-- Pack contents;
-- block sizes;
-- scoring;
-- save and resume behavior;
-- mastery review;
-- feedback and rationales;
-- final results;
-- update behavior.
-
-macOS should use the same shared Tkinter desktop source and study engine as Windows. Do not create a separate macOS study engine.
-
-## Windows Packaging State
-
-Windows packaging currently uses:
-
-- PrepFlow.spec
-- .github/workflows/build-windows.yml
-
-The GitHub Actions Windows workflow:
-
-1. checks out the repository;
-2. starts a Windows runner;
-3. installs Python 3.13 and dependencies;
-4. runs the full automated test suite;
-5. builds the application with PyInstaller;
-6. creates PrepFlow-Windows-x86_64.zip;
-7. uploads the ZIP as a workflow artifact.
-
-The Version 1.1.0 Windows build workflow was triggered after commit 64897f6 and is expected to complete successfully.
-
-Still requiring confirmation:
-
-- the workflow finished successfully;
-- the artifact was downloaded;
-- PrepFlow.exe launched on a real Windows computer;
-- the current packs and desktop parity features work in the packaged build;
-- Version 1.1.0 was published as the latest public release;
-- the permanent Windows download link resolves to the new ZIP.
-
-Correct this section if the workflow or Windows smoke test fails.
-
-## Current Windows Distribution Method
-
-The current Windows release is a portable ZIP, not a traditional installer.
-
-There is currently no Windows uninstaller.
-
-To replace an older portable copy:
-
-1. close PrepFlow;
-2. delete the entire old extracted PrepFlow folder;
-3. remove any desktop shortcut pointing to the old executable;
-4. download the new PrepFlow-Windows-x86_64.zip;
-5. choose Extract All;
-6. open the newly extracted PrepFlow folder;
-7. launch PrepFlow.exe;
-8. create a new shortcut if desired.
-
-Do not run PrepFlow.exe from inside the ZIP.
-
-Do not copy new files over an old extracted folder. Use a fresh extracted folder to avoid stale bundled files.
-
-Desktop saved-session data is stored separately from the portable application folder.
-
-On Windows, the save location is:
-
-%USERPROFILE%\.prepflow\session.json
-
-Deleting the extracted PrepFlow program folder does not delete saved quiz progress.
-
-Delete the .prepflow folder only when the user intentionally wants to remove saved progress as well.
-
-A proper Windows installer and uninstaller remain future packaging improvements.
-
-## macOS Next Milestone
-
-macOS packaging is the next active platform milestone after the Windows Version 1.1.0 build and release are confirmed.
-
-The first macOS milestone is:
-
-Add a GitHub Actions workflow that builds the current PrepFlow desktop application on a macOS runner and uploads a testable macOS artifact.
-
-Use the existing:
-
-- study/gui.py;
-- shared study engine;
-- PrepFlow Pack library;
-- established parity behavior.
-
-Do not redesign working quiz behavior during the initial macOS packaging milestone.
-
-PyInstaller is not a cross-compiler. A macOS build must be produced on a macOS runner and later tested on a real Mac.
-
-Expected initial macOS workflow:
-
-1. run on a GitHub-hosted macOS runner;
-2. install the supported Python version;
-3. install project dependencies, pytest, and PyInstaller;
-4. run the complete automated test suite;
-5. build PrepFlow from the shared desktop source;
-6. package the resulting macOS application;
-7. upload it as a workflow artifact;
-8. test the artifact on a real Mac before public release.
-
-Code signing, notarization, installer packaging, and Gatekeeper improvements may follow after the first successful testable build.
-
-## Deferred Feature Backlog
-
-### Fundamentals Garbled Questions
-
-Known garbled Fundamentals questions involving constipation and diarrhea remain deferred for focused source-level inspection and repair.
-
-Do not apply speculative broad parser changes merely to repair a few isolated questions.
-
-### Motivational Results Messages
-
-Optional final score-band messages remain deferred.
-
-Possible future bands include:
-
-- 70–79 percent;
-- 80–89 percent;
-- 90–99 percent;
-- 100 percent.
-
-For now, the final results screen should prioritize the first-pass percentage without motivational scoring messages.
-
-### Windows Installer and Uninstaller
-
-A proper Windows installer and uninstaller remain deferred until the portable Version 1.1.0 build is confirmed stable.
+# 13. Rejected or Superseded Directions
+
+The following are not active requirements:
+
+- preserving the Tkinter application for compatibility;
+- rebuilding desktop parity before improving the browser;
+- maintaining separate study engines for each platform;
+- keeping the rigid old DOCX parser because it already exists;
+- treating publisher/page provenance as required finished-Pack data;
+- automatically deleting near-duplicate questions;
+- making every optional future tag mandatory for import;
+- keeping stale files in active directories merely as historical reference;
+- merging `feat/home-quiz-panel-clean` wholesale;
+- using test count alone as proof that protections were preserved.
 
 ---
 
-## Current Working Note — 2026-07-17
+# 14. Current Documentation Status
 
-This is the rolling disposable continuity note. Replace this section during the next major work session instead of stacking additional temporary handoffs beneath it.
+Completed on `docs/continuity-rebuild`:
 
-### Active branch and files
+- forensic audit;
+- remote branch audit;
+- approved responsibility map;
+- approved browser-centered direction;
+- approved Pack authority model;
+- approved permanent question identity requirement;
+- `docs/CONTINUITY_REBUILD_DECISION_MAP.md`;
+- rebuilt `docs/ARCHITECTURE_BIBLE.md`;
+- rebuilt `docs/RESTART_PACKET.md`.
 
-Active branch: feat/arcade-home-screen
+Still required before implementation cleanup:
 
-Starting commit for this session:
-72f5428 docs: update arcade redesign restart handoff
+1. rewrite `README.md` so it describes the actual browser-centered product without obsolete Windows-release instructions;
+2. review `docs/QUESTION_LIFECYCLE.md`, absorb any unique durable rule, and likely remove it as redundant;
+3. compare the documentation set for contradictions;
+4. inspect the branch diff;
+5. run local tests after Charlie pulls the documentation commits;
+6. commit any final documentation corrections;
+7. merge the continuity documentation only after review.
 
-Files intentionally changed:
-- docs/RESTART_PACKET.md
-- web/app.js
-- web/arcade-quiz.css
-- web/images/pixel-home-stage.webp
-- web/index.html
-
-### Approved home artwork
-
-The approved home scene shows two nurses standing back-to-back against the sunset skyline.
-
-Path:
-web/images/pixel-home-stage.webp
-
-Verified local SHA-256:
-3ed57829e3ab3ea524e3bc363ddf7f69322d300b05030987c57daa4fa47912a8
-
-Do not regenerate, crop, substitute, or replace this artwork. Do not restore the earlier single-nurse version.
-
-Before future visual changes:
-1. verify the artwork hash;
-2. run the app unchanged;
-3. visually confirm the full-width two-nurse home;
-4. capture a baseline screenshot.
-
-### Open-book question experience
-
-The PWA question screen now uses a two-page pixel-art book.
-
-Current approved behavior:
-- question stem appears on the left page;
-- answer choices appear on the right page;
-- after submission, choices disappear and feedback plus rationale replace them;
-- Submit Answer and Continue stay at the bottom of the right page;
-- browser-page scrolling is minimized;
-- page-local overflow remains available for unusually long content;
-- body text remains clean and legible;
-- arcade styling is concentrated in borders, labels, controls, binding, page edges, and glow;
-- the live first-pass score was removed from the question page;
-- the shared progress bar was removed;
-- subject, block number, and question position appear on the left page;
-- Save & Quit is a plain rectangular cyan tab attached to the left cover;
-- page corners use cyan and purple bracket ornaments;
-- the book has cream pages, visible page stacks, center binding, dark cover edges, and arcade glow.
-
-This layout is considered good for now.
-
-Do not begin a future session by consolidating or rewriting the layered quiz CSS. It was created through visual iteration and requires full visual regression testing before cleanup.
-
-### Question-type instructions
-
-Multiple Choice displays:
-CHOOSE YOUR ANSWER
-
-Multiple Response or SATA displays:
-SELECT ALL THAT APPLY
-
-The implementation reuses the existing isMultipleResponse value inside showQuestion().
-
-### SATA grading verification
-
-Multiple Response continues to use exact-set grading.
-
-Manual verification completed:
-- selecting only part of the correct SATA set was graded incorrect;
-- no partial first-pass credit was awarded;
-- correcting the missed SATA during mastery review completed the session;
-- a deliberately missed one-question SATA session produced a final first-pass score of 0%.
-
-A temporary 300% result occurred because a browser-console shortcut reduced the session to one question without resetting existing score counters. It was not a normal scoring failure and did not mean SATA choices were counted separately.
-
-### Block and final summaries
-
-The block-complete and final-complete screens were restyled as dark, high-contrast arcade panels.
-
-Current styling includes:
-- dark navy background;
-- cyan and purple frame;
-- readable white and pale-blue text;
-- visible first-pass score;
-- clear primary action;
-- secondary Exit Session action when applicable.
-
-These screens are considered good enough for the current study-group test release.
-
-### Verification completed
-
-Local development server:
-python3 -m http.server 8004
-
-Local address:
-http://localhost:8004/web/
-
-Manual verification completed:
-- approved two-nurse home renders;
-- all three book buttons remain functional;
-- multi-book chapter selections remain functional;
-- Multiple Choice open-book screen works;
-- SATA open-book screen works;
-- SATA displays Select All That Apply;
-- answers are replaced by rationale after submission;
-- Save & Quit tab renders and works;
-- block summary is readable;
-- final Quiz Complete screen is readable;
-- SATA exact-set grading awards no partial credit.
-
-Automated verification:
-108 passed
-
-git diff --check completed without errors.
-
-### Confirmed follow-up bug: completed-session home state
-
-After a quiz is fully completed and the user returns home, the previous chapter selections and builder state remain active.
-
-Observed symptoms:
-- selected chapter counts remain visible;
-- Build Quiz may remain enabled;
-- the completed quiz can appear unfinished;
-- the user may feel required to press Start Over merely to clear stale state.
-
-Required future behavior should be one of:
-1. automatically clear completed-quiz selections and return to a clean home screen; or
-2. deliberately offer Take Same Quiz Again while also providing a clean reset.
-
-A completed quiz must not leave ambiguous stale selection state.
-
-This is the next focused product bug. It does not block publishing the current visual build for study-group testing.
-
-### Release sequence still required
-
-1. run git diff --check;
-2. run the complete automated test suite;
-3. commit the feature-branch changes;
-4. push feat/arcade-home-screen to private origin;
-5. verify local and private feature-branch hashes match;
-6. merge the feature branch into master;
-7. run the complete test suite on merged master;
-8. push master to private origin;
-9. push master to public mirror public;
-10. verify both remote master hashes match;
-11. verify GitHub Pages deployment;
-12. hard-refresh the hosted PWA;
-13. confirm the home, quiz book, SATA instruction, rationale replacement, and summary screens.
-
-Hosted PWA:
-https://bins-projects.github.io/PF-O/web/
-
-Because the PWA uses caching, a hard refresh or service-worker refresh may be required before the new version appears.
-
-### Startup procedure for the next session
-
-Before new visual work:
-1. inspect the committed repository and active branch;
-2. inspect local git status;
-3. run the app unchanged;
-4. visually confirm the approved home;
-5. visually confirm question and rationale states;
-6. verify the home-art hash;
-7. capture baseline screenshots;
-8. make one isolated change;
-9. refresh and confirm the home did not regress.
-
-GitHub top-down inspection is necessary but not sufficient for visual continuity. Local files, browser caching, the local Python server, and rendered screenshots must also be checked.
+No implementation files have been intentionally deleted or refactored during the documentation pass.
 
 ---
 
-## Temporary New-Chat Handoff
+# 15. Exact Next Step
 
-Read the current docs/RESTART_PACKET.md and inspect the committed PrepFlow repository before requesting pasted source code. Verify both Git state and the locally rendered baseline before visual work. The approved home uses the two-nurse sunset artwork at web/images/pixel-home-stage.webp; do not regenerate or replace it. The PWA question experience is an open two-page pixel-art book: question on the left, answers replaced by rationale on the right, a plain Save & Quit tab on the left cover, no live first-pass counter, and no shared progress bar. Multiple Choice says Choose Your Answer; SATA says Select All That Apply and uses exact-set grading. Block and final summary panels are dark high-contrast arcade cards. The next confirmed product bug is stale chapter-selection state after a completed quiz; implement either a clean reset or an explicit Take Same Quiz Again flow. Run the app unchanged and capture baseline screenshots before editing.
+The next documentation action is:
+
+> Rewrite `README.md` as a concise user-facing description of the browser application that only promises workflows currently supported and does not preserve obsolete desktop-download instructions.
+
+After the README, review `QUESTION_LIFECYCLE.md` for absorption/removal.
+
+Do not begin legacy-code deletion before the documentation set is reviewed and the verification foundation is started.
+
+---
+
+# 16. Startup Procedure for a New Session
+
+At the start of the next PrepFlow session:
+
+1. inspect `docs/RESTART_PACKET.md` in the private GitHub repository;
+2. inspect the current branch and latest commit;
+3. inspect `docs/ARCHITECTURE_BIBLE.md` and `docs/CONTINUITY_REBUILD_DECISION_MAP.md` only as needed;
+4. verify whether the working branch is still `docs/continuity-rebuild` or whether the docs were merged;
+5. inspect `git status` before giving commands that modify local files;
+6. compare local, origin, and public hashes when relevant;
+7. run the current test suite before destructive cleanup begins;
+8. resume from the Exact Next Step or the newest explicitly recorded active milestone;
+9. make one focused change;
+10. test and commit before expanding scope.
+
+If the current documents appear incomplete or a decision seems inexplicable, consult:
+
+```text
+before-continuity-rebuild-2026-07-20
+```
+
+Use that baseline for historical reasoning, not as permission to restore superseded behavior.
+
+---
+
+# 17. Current Resume Statement
+
+> PrepFlow's July 2026 forensic audit is complete. The browser is the only active compatibility target. The authoritative core is the shared ingestion/compiler pipeline, independent Pack library, and browser study application. Packs are separate study-authority boundaries. Permanent question identity is a core requirement and must not depend on array order. The old Tkinter/terminal/PyInstaller stack and rigid DOCX prototype are verified removal candidates after active behavior is protected. The continuity rebuild is occurring on `docs/continuity-rebuild`, created from `8987fdf`, with the full pre-rebuild state preserved by tag `before-continuity-rebuild-2026-07-20`. The detailed decision map and Architecture Bible have been rebuilt. This Restart Packet now replaces the layered legacy handoff. No application code has been removed. The next action is to rewrite the README for the real browser-centered product, then absorb and likely remove the redundant Question Lifecycle document before reviewing the complete documentation diff.
