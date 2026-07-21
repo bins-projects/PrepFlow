@@ -275,10 +275,34 @@ Verification completed:
 - local, private, and public branch heads all matched `4b479433066dd7744925f751eca78d331d346ff1`;
 - working tree was clean.
 
+### Sixth Phase D extraction completed
+
+Completed at:
+
+```text
+64a7e78  refactor: extract browser review queue rules
+```
+
+Implemented:
+
+- added `web/review-rules.js` with pure review-queue update and next-step decisions;
+- added `web/review-rules.test.html` covering correct answers, repeated misses, advancing to the next review question, and finishing review;
+- loaded the review rules before `web/app.js`;
+- updated the live review flow to use the tested queue transition helpers;
+- removed the temporary integration helper after use.
+
+Verification completed:
+
+- all four review-rule browser tests passed;
+- all 72 Python tests passed;
+- `git diff --check` passed;
+- local, private, and public branch heads all matched `64a7e786a37c48ec7372238935c872003659c2a2`;
+- working tree was clean.
+
 ### Backlog addition
 
 Add a small, unobtrusive visible question reference to the quiz or rationale view so screenshots can identify the exact permanent question ID. Keep it visually secondary and do not expose internal filenames or developer terminology.
 
 ### Exact next milestone
 
-Continue Phase D with another read-only inspection of `web/app.js`. Extract only the next smallest pure behavior unit that can be tested without changing visible browser flow. Prefer a narrowly scoped review-queue or session-transition helper. Do not begin a broad rewrite. The visible question-reference item remains a separate small UI backlog change.
+Continue Phase D with another read-only inspection of `web/app.js`. Extract only the next smallest pure behavior unit that can be tested without changing visible browser flow. Prefer a narrowly scoped selection-status, display-text, or session-transition helper. Do not begin a broad rewrite. The visible question-reference item remains a separate small UI backlog change.
