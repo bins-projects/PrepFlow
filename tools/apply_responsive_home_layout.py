@@ -1,0 +1,123 @@
+from pathlib import Path
+
+css_path = Path("web/home-responsive.css")
+index_path = Path("web/index.html")
+
+css_path.write_text(r'''/* PrepFlow responsive home layout pass. */
+
+/* Keep the desktop composition, but allow the interface to scale before it collides. */
+#home-launcher {
+  width: clamp(300px, 29vw, 430px) !important;
+}
+
+#home-launcher .launcher-view {
+  padding: clamp(14px, 1.5vw, 22px) !important;
+  gap: clamp(9px, 1vw, 14px) !important;
+}
+
+.subjects {
+  max-width: calc(100vw - 48px) !important;
+}
+
+@media (max-width: 1180px) {
+  .pixel-stage {
+    min-height: 980px !important;
+  }
+
+  #home-launcher {
+    position: relative !important;
+    inset: auto !important;
+    width: min(390px, calc(100% - 32px)) !important;
+    margin: 18px 0 24px 18px !important;
+    z-index: 20 !important;
+  }
+
+  .subjects {
+    position: relative !important;
+    width: min(760px, calc(100% - 32px)) !important;
+    margin: 28px auto 0 !important;
+    grid-template-columns: repeat(3, minmax(140px, 1fr)) !important;
+    gap: clamp(18px, 4vw, 48px) !important;
+    justify-items: center !important;
+  }
+
+  .subject-card {
+    transform-origin: center bottom !important;
+    scale: .86;
+  }
+
+  .subject-card:hover,
+  .subject-card:focus-visible {
+    scale: .86;
+  }
+}
+
+@media (max-width: 820px) {
+  .pixel-stage {
+    min-height: 1240px !important;
+    overflow-x: hidden !important;
+  }
+
+  #home-launcher {
+    width: min(520px, calc(100% - 28px)) !important;
+    margin: 16px auto 24px !important;
+  }
+
+  .subjects {
+    width: min(560px, calc(100% - 24px)) !important;
+    grid-template-columns: repeat(2, minmax(150px, 1fr)) !important;
+    gap: 34px 24px !important;
+  }
+
+  .subject-card {
+    scale: .9;
+  }
+
+  .subject-card:hover,
+  .subject-card:focus-visible {
+    scale: .9;
+  }
+}
+
+@media (max-width: 520px) {
+  .pixel-stage {
+    min-height: 1580px !important;
+  }
+
+  #home-launcher .launcher-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .subjects {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  .subject-card {
+    scale: .94;
+  }
+
+  .subject-card:hover,
+  .subject-card:focus-visible {
+    scale: .94;
+  }
+}
+''')
+
+index = index_path.read_text()
+link = '  <link rel="stylesheet" href="home-responsive.css?v=20260722-1">\n'
+anchor_candidates = [
+    '  <link rel="stylesheet" href="book-shelf.css?v=20260721-1">\n',
+    '  <link rel="stylesheet" href="home-launcher.css?v=20260721-1">\n',
+]
+if link not in index:
+    for anchor in anchor_candidates:
+        if anchor in index:
+            index = index.replace(anchor, anchor + link, 1)
+            break
+    else:
+        raise SystemExit("Could not find the home stylesheet link anchor")
+    index_path.write_text(index)
+
+Path(__file__).unlink()
+print("Responsive home layout applied; helper removed.")
