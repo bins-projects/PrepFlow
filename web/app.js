@@ -524,16 +524,14 @@ function showBlockSummary(mastered = false) {
         : `${missedCount} ${missedCount === 1 ? "question needs" : "questions need"} review.`;
   }
 
-  if (!mastered && missedCount > 0) {
-    summaryAction.textContent = "Review Missed Questions";
-    summaryAction.dataset.action = "review";
-  } else if (blockEnd < sessionQuestions.length) {
-    summaryAction.textContent = "Start Next Block";
-    summaryAction.dataset.action = "next-block";
-  } else {
-    summaryAction.textContent = "Finish Session";
-    summaryAction.dataset.action = "finish";
-  }
+  const nextAction = PrepFlowSummaryRules.summaryAction({
+    mastered,
+    missedCount,
+    hasMoreQuestions: blockEnd < sessionQuestions.length,
+  });
+
+  summaryAction.textContent = nextAction.label;
+  summaryAction.dataset.action = nextAction.action;
 
   saveSession(mastered ? "mastered-summary" : "block-summary");
 }
