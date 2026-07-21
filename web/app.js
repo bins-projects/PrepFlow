@@ -375,7 +375,10 @@ function currentQuestion() {
 }
 
 function totalBlockCount() {
-  return Math.max(1, Math.ceil(sessionQuestions.length / sessionBlockSize));
+  return PrepFlowSessionRules.totalBlockCount(
+    sessionQuestions.length,
+    sessionBlockSize
+  );
 }
 
 function isMultipleResponseQuestion(question) {
@@ -407,7 +410,10 @@ function showQuestion() {
     quizProgress.max = Math.max(reviewQueue.length + 1, 1);
     quizProgress.value = 1;
   } else {
-    const questionInBlock = questionIndex - blockStart + 1;
+    const questionInBlock = PrepFlowSessionRules.questionPosition(
+      questionIndex,
+      blockStart
+    );
 
     quizPosition.textContent =
       `Block ${blockNumber} of ${totalBlockCount()} • Question ${questionInBlock} of ${blockLength}`;
@@ -456,8 +462,9 @@ function showQuestion() {
 }
 
 function beginBlock() {
-  blockEnd = Math.min(
-    blockStart + sessionBlockSize,
+  blockEnd = PrepFlowSessionRules.blockEnd(
+    blockStart,
+    sessionBlockSize,
     sessionQuestions.length
   );
 
@@ -476,9 +483,10 @@ function showFinalSummary() {
   blockSummary.hidden = false;
 
   const totalQuestions = sessionQuestions.length;
-  const percentage = totalQuestions
-    ? Math.round((firstPassCorrect / totalQuestions) * 100)
-    : 0;
+  const percentage = PrepFlowSessionRules.firstPassPercentage(
+    firstPassCorrect,
+    totalQuestions
+  );
 
   summaryTitle.textContent = "Quiz Complete";
   summaryScore.textContent = `First-pass score: ${percentage}%`;
