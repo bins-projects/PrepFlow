@@ -681,8 +681,10 @@ submitAnswer.addEventListener("click", () => {
     input.disabled = true;
   });
 
-  quizScore.textContent =
-    `First pass: ${firstPassCorrect} correct, ${firstPassMissed} missed`;
+  quizScore.textContent = PrepFlowDisplayRules.runningScoreText(
+    firstPassCorrect,
+    firstPassMissed
+  );
 
   submitAnswer.hidden = true;
   continueButton.hidden = false;
