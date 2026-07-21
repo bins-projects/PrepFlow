@@ -188,15 +188,13 @@ function updateSelectionStatus() {
   );
   const selectedBooks = selectedPackPaths.size;
 
-  selectionCount.textContent =
-    `${selected} ${selected === 1 ? "chapter" : "chapters"} selected`;
+  const chapterSelectionText =
+    PrepFlowSelectionRules.chapterSelectionText(selected);
 
-  builderSelectionCount.textContent =
-    `${selected} ${selected === 1 ? "chapter" : "chapters"} selected`;
-
-  builderBookCount.textContent = selected
-    ? `From ${selectedBooks} ${selectedBooks === 1 ? "book" : "books"}`
-    : "Open a book to choose chapters";
+  selectionCount.textContent = chapterSelectionText;
+  builderSelectionCount.textContent = chapterSelectionText;
+  builderBookCount.textContent =
+    PrepFlowSelectionRules.bookSelectionText(selected, selectedBooks);
 
   startButton.disabled = selected === 0;
   buildQuizButton.disabled = selected === 0;
@@ -216,9 +214,7 @@ function updateSelectionStatus() {
       book.append(badge);
     }
 
-    badge.textContent = count
-      ? `${count} ${count === 1 ? "chapter" : "chapters"} selected`
-      : "Open book";
+    badge.textContent = PrepFlowSelectionRules.bookBadgeText(count);
 
     book.classList.toggle("has-selections", count > 0);
   });
@@ -234,9 +230,7 @@ function showSubjects() {
   status.hidden = true;
 
   const selected = selectedChapters.size;
-  status.textContent = selected
-    ? `${selected} ${selected === 1 ? "chapter" : "chapters"} selected. Choose another category or return to your selected category to start.`
-    : "Select a category to continue.";
+  status.textContent = PrepFlowSelectionRules.homeStatusText(selected);
 
   refreshResumePanel();
 }
