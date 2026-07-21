@@ -176,6 +176,35 @@ Verification completed:
 - local, private, and public branch heads all matched `56827713cd64e1bf6940aab7bd64711c54c2bdfe`;
 - working tree was clean.
 
+### Second Phase D extraction completed
+
+Completed at:
+
+```text
+dd5e0a2  refactor: extract browser session calculations
+```
+
+Implemented:
+
+- added `web/session-rules.js` with pure block-count, block-end, question-position, and first-pass percentage calculations;
+- added `web/session-rules.test.html` covering empty, complete, partial, capped, and rounded cases;
+- loaded the session rules before `web/app.js`;
+- updated the live quiz to use the extracted calculations;
+- removed the temporary integration helper after use.
+
+Verification completed:
+
+- all session-rule browser tests passed;
+- all 72 Python tests passed;
+- `git diff --check` passed;
+- live browser smoke test passed for block count, question numbering, final percentage, and Restart Quiz;
+- local, private, and public branch heads all matched `dd5e0a2e603bb90d66aff0c946b5fd05f935a800`;
+- working tree was clean.
+
+### Backlog addition
+
+Add a small, unobtrusive visible question reference to the quiz or rationale view so screenshots can identify the exact permanent question ID. Keep it visually secondary and do not expose internal filenames or developer terminology.
+
 ### Exact next milestone
 
-Continue Phase D with another read-only inspection of `web/app.js` and extract only the next smallest pure behavior unit that can be tested without changing visible browser flow. Prefer a narrowly scoped session calculation or transition helper. Do not begin a broad rewrite.
+Continue Phase D with another read-only inspection of `web/app.js`. Extract only the next smallest pure behavior unit that can be tested without changing visible browser flow. Prefer a narrowly scoped session transition or summary-decision helper. Do not begin a broad rewrite.
