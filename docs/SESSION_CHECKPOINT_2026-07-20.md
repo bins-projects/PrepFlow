@@ -201,10 +201,36 @@ Verification completed:
 - local, private, and public branch heads all matched `dd5e0a2e603bb90d66aff0c946b5fd05f935a800`;
 - working tree was clean.
 
+### Third Phase D extraction completed
+
+Completed at:
+
+```text
+02f3bb4  refactor: extract browser summary decisions
+```
+
+Implemented:
+
+- added `web/summary-rules.js` with the pure decision for review, next block, or finish;
+- added `web/summary-rules.test.html` covering misses, mastery, remaining blocks, and final-block completion;
+- loaded the summary rules before `web/app.js`;
+- updated the live block-summary button to use the extracted action and label;
+- removed the temporary integration helper after use.
+
+Verification completed:
+
+- all eight summary-rule browser tests passed;
+- all 72 Python tests passed;
+- `git diff --check` passed;
+- integration was verified directly against the live `showBlockSummary()` path;
+- a manual click-through smoke test was deferred because the user was unavailable;
+- local, private, and public branch heads all matched `02f3bb4fcf0553c83aa158ea41d29b48a5a0e16e`;
+- working tree was clean.
+
 ### Backlog addition
 
 Add a small, unobtrusive visible question reference to the quiz or rationale view so screenshots can identify the exact permanent question ID. Keep it visually secondary and do not expose internal filenames or developer terminology.
 
 ### Exact next milestone
 
-Continue Phase D with another read-only inspection of `web/app.js`. Extract only the next smallest pure behavior unit that can be tested without changing visible browser flow. Prefer a narrowly scoped session transition or summary-decision helper. Do not begin a broad rewrite.
+Continue Phase D with another read-only inspection of `web/app.js`. Extract only the next smallest pure behavior unit that can be tested without changing visible browser flow. Prefer a narrowly scoped review-queue transition, saved-session validation, or display-state helper. Do not begin a broad rewrite. The visible question-reference item remains a separate small UI backlog change.
