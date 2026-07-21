@@ -141,8 +141,41 @@ Verification completed:
 - real browser smoke test passed for quiz start, incorrect answer, review, save/quit, and resume;
 - commit was pushed to and verified on `origin/docs/continuity-rebuild`.
 
+### Phase D inventory completed
+
+Completed at:
+
+```text
+dc7afdf  docs: add Phase D browser behavior inventory
+```
+
+The inventory identified answer normalization and exact-set grading as the smallest safe pure behavior unit to extract from `web/app.js`.
+
+### First Phase D extraction completed
+
+Completed at:
+
+```text
+5682771  refactor: extract browser quiz grading rules
+```
+
+Implemented:
+
+- added `web/quiz-rules.js` with pure answer normalization, correct-answer resolution, and exact-set grading;
+- added `web/quiz-rules.test.html` with MC and SATA grading checks;
+- loaded the rules before `web/app.js`;
+- updated live quiz grading to use the extracted rules;
+- removed the temporary integration helper after use.
+
+Verification completed:
+
+- all browser rules tests passed;
+- all 72 Python tests passed;
+- `git diff --check` passed;
+- real browser smoke test passed, including answer flow and Restart Quiz;
+- local, private, and public branch heads all matched `56827713cd64e1bf6940aab7bd64711c54c2bdfe`;
+- working tree was clean.
+
 ### Exact next milestone
 
-Begin Phase D with a read-only inventory of `web/app.js`.
-
-Identify the smallest pure quiz/session behavior unit that can be extracted and tested without changing the visible browser flow. Do not begin a broad rewrite.
+Continue Phase D with another read-only inspection of `web/app.js` and extract only the next smallest pure behavior unit that can be tested without changing visible browser flow. Prefer a narrowly scoped session calculation or transition helper. Do not begin a broad rewrite.
