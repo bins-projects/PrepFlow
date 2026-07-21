@@ -14,6 +14,18 @@
     );
   }
 
+  function isMultipleResponseQuestion(question) {
+    const questionType = question.type || question.question_type;
+    const correctAnswers = correctAnswersFor(question);
+    const stem = String(question.stem || "");
+
+    return (
+      questionType === "multiple_response"
+      || correctAnswers.length > 1
+      || /select all that apply/i.test(stem)
+    );
+  }
+
   function evaluateAnswer(question, selectedAnswers) {
     const correctAnswers = correctAnswersFor(question);
     const normalizedSelectedAnswers = normalizeAnswers(selectedAnswers);
@@ -31,6 +43,7 @@
   window.PrepFlowQuizRules = {
     normalizeAnswers,
     correctAnswersFor,
+    isMultipleResponseQuestion,
     evaluateAnswer,
   };
 }());
