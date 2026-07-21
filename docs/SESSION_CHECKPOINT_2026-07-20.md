@@ -299,10 +299,35 @@ Verification completed:
 - local, private, and public branch heads all matched `64a7e786a37c48ec7372238935c872003659c2a2`;
 - working tree was clean.
 
+### Seventh Phase D extraction completed
+
+Completed at:
+
+```text
+8c245b9  refactor: extract browser navigation rules
+```
+
+Implemented:
+
+- added `web/navigation-rules.js` with the pure normal-question transition decision;
+- added `web/navigation-rules.test.html` covering advancement, final-question block completion, and a one-question block;
+- loaded the navigation rules before `web/app.js`;
+- updated the live Continue-button path to use the tested transition helper;
+- removed the temporary integration helper after use.
+
+Verification completed:
+
+- all three navigation-rule browser tests passed;
+- all 72 Python tests passed;
+- `git diff --check` passed;
+- a live quiz click-through was not performed for this extraction;
+- local, private, and public branch heads all matched `8c245b9413e1f771d8bd6e89c59bb76f1c93661c`;
+- working tree was clean.
+
 ### Backlog addition
 
 Add a small, unobtrusive visible question reference to the quiz or rationale view so screenshots can identify the exact permanent question ID. Keep it visually secondary and do not expose internal filenames or developer terminology.
 
 ### Exact next milestone
 
-Continue Phase D with another read-only inspection of `web/app.js`. Extract only the next smallest pure behavior unit that can be tested without changing visible browser flow. Prefer a narrowly scoped selection-status, display-text, or session-transition helper. Do not begin a broad rewrite. The visible question-reference item remains a separate small UI backlog change.
+Continue Phase D with another read-only inspection of `web/app.js`. Extract only the next smallest pure behavior unit that can be tested without changing visible browser flow. Prefer a narrowly scoped selection-status or display-text helper. Do not begin a broad rewrite. The visible question-reference item remains a separate small UI backlog change.
