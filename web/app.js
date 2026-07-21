@@ -381,8 +381,14 @@ function showQuestion() {
   quizSubject.textContent = currentSubject;
 
   if (reviewMode) {
-    quizPosition.textContent =
-      `Block ${blockNumber} of ${totalBlockCount()} • Review • ${reviewQueue.length + 1} remaining`;
+    quizPosition.textContent = PrepFlowDisplayRules.quizPositionText({
+      blockNumber,
+      totalBlocks: totalBlockCount(),
+      reviewMode: true,
+      reviewRemaining: reviewQueue.length + 1,
+      questionInBlock: null,
+      blockLength,
+    });
 
     quizProgress.max = Math.max(reviewQueue.length + 1, 1);
     quizProgress.value = 1;
@@ -392,8 +398,14 @@ function showQuestion() {
       blockStart
     );
 
-    quizPosition.textContent =
-      `Block ${blockNumber} of ${totalBlockCount()} • Question ${questionInBlock} of ${blockLength}`;
+    quizPosition.textContent = PrepFlowDisplayRules.quizPositionText({
+      blockNumber,
+      totalBlocks: totalBlockCount(),
+      reviewMode: false,
+      reviewRemaining: null,
+      questionInBlock,
+      blockLength,
+    });
 
     quizProgress.max = blockLength;
     quizProgress.value = questionInBlock;
@@ -432,8 +444,10 @@ function showQuestion() {
   submitAnswer.disabled = true;
   continueButton.hidden = true;
 
-  quizScore.textContent =
-    `First pass: ${firstPassCorrect} correct, ${firstPassMissed} missed`;
+  quizScore.textContent = PrepFlowDisplayRules.runningScoreText(
+    firstPassCorrect,
+    firstPassMissed
+  );
 
   saveSession("question");
 }
@@ -466,9 +480,11 @@ function showFinalSummary() {
   );
 
   summaryTitle.textContent = "Quiz Complete";
-  summaryScore.textContent = `First-pass score: ${percentage}%`;
-  summaryMessage.textContent =
-    `${firstPassCorrect} of ${totalQuestions} correct on the first attempt.`;
+  summaryScore.textContent = PrepFlowDisplayRules.finalScoreText(percentage);
+  summaryMessage.textContent = PrepFlowDisplayRules.finalMessage(
+    firstPassCorrect,
+    totalQuestions
+  );
 
   summaryAction.textContent = "Return Home";
   summaryAction.dataset.action = "return-home";
@@ -485,21 +501,18 @@ function showBlockSummary(mastered = false) {
   const blockLength = blockEnd - blockStart;
   const missedCount = blockMissed.length;
 
-  if (mastered) {
-    summaryTitle.textContent = `Block ${blockNumber} Mastered`;
-    summaryScore.textContent =
-      `First pass: ${blockCorrect} of ${blockLength} correct.`;
-    summaryMessage.textContent =
-      "All missed questions have now been answered correctly.";
-  } else {
-    summaryTitle.textContent = `Block ${blockNumber} Complete`;
-    summaryScore.textContent =
-      `First pass: ${blockCorrect} of ${blockLength} correct.`;
-    summaryMessage.textContent =
-      missedCount === 0
-        ? "No review is needed."
-        : `${missedCount} ${missedCount === 1 ? "question needs" : "questions need"} review.`;
-  }
+  summaryTitle.textContent = PrepFlowDisplayRules.blockTitle(
+    blockNumber,
+    mastered
+  );
+  summaryScore.textContent = PrepFlowDisplayRules.firstPassBlockScoreText(
+    blockCorrect,
+    blockLength
+  );
+  summaryMessage.textContent = PrepFlowDisplayRules.blockMessage(
+    missedCount,
+    mastered
+  );
 
   const nextAction = PrepFlowSummaryRules.summaryAction({
     mastered,
