@@ -378,23 +378,9 @@ function totalBlockCount() {
   return Math.max(1, Math.ceil(sessionQuestions.length / sessionBlockSize));
 }
 
-function normalizedCorrectAnswers(question) {
-  const rawAnswers =
-    question.correct_answers ?? question.correct_answer ?? [];
-
-  return (
-    Array.isArray(rawAnswers)
-      ? rawAnswers
-      : [rawAnswers]
-  )
-    .filter((answer) => answer !== null && answer !== undefined)
-    .map((answer) => String(answer).trim().toUpperCase())
-    .filter(Boolean);
-}
-
 function isMultipleResponseQuestion(question) {
   const questionType = question.type || question.question_type;
-  const correctAnswers = normalizedCorrectAnswers(question);
+  const correctAnswers = PrepFlowQuizRules.correctAnswersFor(question);
   const stem = String(question.stem || "");
 
   return (
@@ -664,18 +650,9 @@ submitAnswer.addEventListener("click", () => {
   }
 
   const question = currentQuestion();
-  const correctAnswers = normalizedCorrectAnswers(question);
-
-  const selectedAnswers = Array.from(
-    selected,
-    (input) => String(input.value).trim().toUpperCase()
-  );
-
-  const selectedSet = new Set(selectedAnswers);
-  const correctSet = new Set(correctAnswers);
-  const isCorrect =
-    selectedSet.size === correctSet.size
-    && [...selectedSet].every((answer) => correctSet.has(answer));
+  const selectedAnswers = Array.from(selected, (input) => input.value);
+  const { isCorrect, correctAnswers } =
+    PrepFlowQuizRules.evaluateAnswer(question, selectedAnswers);
 
   if (isCorrect) {
     feedbackResult.textContent = "Correct!";
