@@ -46,6 +46,20 @@ The temporary book titles remain imperfect. Do not spend more time polishing tho
 - Establish one consistent book silhouette, spine, cover, page depth, emblem area, hover state, and selected state before producing all three variants.
 - Establish reusable button styling with consistent normal, hover, pressed, disabled, and selected states.
 
+## Graphics production and file-format rule
+
+Use transparent raster sprite assets for the principal illustrated pixel-art objects and characters.
+
+Approved workflow:
+
+1. Create and refine illustrated books, nurses, props, and similarly textured pixel-art assets as transparent PNG files during design and iteration.
+2. After an asset is visually approved, an optimized transparent WebP version may be used in the shipped browser product when it preserves transparency, pixel fidelity, and intended appearance.
+3. Reserve SVG for genuinely vector-like interface symbols, simple emblems, and clean scalable icons. Do not use SVG as the default format for textured illustrated books, nurses, or environment artwork.
+4. Keep changing text and application state—titles, counts, chapter-selection status, button labels, and accessibility text—as live HTML.
+5. Use CSS for positioning, sizing, responsive composition, hover/pressed/selected movement, glows, and state presentation. Do not use CSS gradients, pseudo-elements, or inline SVG to draw the principal final book or character artwork.
+6. The current CSS-built books and inline SVG cover emblems are exploratory mockups only. They are not the intended final asset system.
+7. Pharm is the proof-of-concept sprite. Preview the real transparent raster book asset first, adjust its crop/scale/placement, and do not treat that temporary artwork as the final approved Pharm design.
+
 ## Background and nurse assets
 
 The currently approved home image contains both nurses and the sunset background in one static asset:
@@ -103,12 +117,13 @@ Required sequence:
 2. verify whether the previously approved transparent Pharm sprite asset is available;
 3. if it is unavailable, ask Charlie to reattach that exact approved asset rather than regenerating it automatically;
 4. place the sprite under a clear reusable asset path;
-5. replace only the temporary Pharm book artwork with the real sprite;
+5. replace only the temporary Pharm book artwork with the real transparent raster sprite;
 6. keep title, question count, chapter-selection status, data attributes, and click behavior as live application elements;
-7. run the real browser at full and reduced width;
-8. obtain Charlie's visual approval before applying the pattern to the other books.
+7. use CSS only for sprite placement, scale, interaction, and responsive behavior;
+8. run the real browser at full and reduced width;
+9. obtain Charlie's visual approval before applying the pattern to the other books.
 
-Do not begin by polishing the temporary vertical title CSS, redesigning all three books, consolidating the visual stylesheets, or separating the nurses from the background.
+Do not begin by polishing the temporary vertical title CSS, redrawing the book with CSS, redesigning all three books, consolidating the visual stylesheets, or separating the nurses from the background.
 
 ## Recommended continuation order
 
