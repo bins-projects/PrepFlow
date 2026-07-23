@@ -1,5 +1,7 @@
 # PrepFlow Visual Redesign Continuity — 2026-07-23
 
+> **CURRENT LOCAL AUTHORITY:** The three approved transparent PNG books are installed and working in the local repository. This is newer than the last committed GitHub state. Do not resume from the older Pharm-only proof milestone.
+
 This document is the authoritative detailed handoff for the unfinished PrepFlow visual redesign. The current home screen is a working visual-development canvas, not a completed design and not technical debt to remove casually.
 
 ## Protected working canvas
@@ -12,32 +14,41 @@ Continue redesign work only on `docs/continuity-rebuild` until the new visual sy
 
 ## Latest completed visual milestone
 
+On 2026-07-23, all three Charlie-approved transparent PNG book assets were installed into the real local application and verified in the browser.
+
+Approved assets:
+
 ```text
-e5ed054  fix: stabilize half-width home composition
+web/images/book-sprite-preview/prepflow-fundamentals-book.png
+web/images/book-sprite-preview/prepflow-pharm-book.png
+web/images/book-sprite-preview/prepflow-medsurg-book.png
 ```
 
-Verified behavior after this milestone:
+Implementation files:
 
-- the reduced-width launcher and reference panel no longer collide;
-- the PrepFlow logo and tagline remain separated and readable;
-- the background reaches the bottom of the reduced-height viewport without dead space;
-- all three books remain inside the visible composition;
-- full-width rendering was checked after the change and was not regressed;
-- `git diff --check` passed;
-- local and private branch hashes matched after push.
+```text
+web/index.html
+web/approved-book-buttons.css
+```
 
-The temporary CSS-built book titles remain imperfect. Do not spend more time polishing those titles because the books are scheduled for raster-sprite replacement.
+Verified result:
+
+- the three approved PNG books render on the home screen;
+- the old CSS-drawn book bodies and inline SVG cover emblems are no longer visible;
+- the existing `.subject-card` JavaScript hook remains intact;
+- all three books open their chapter-selection screens;
+- the layout shown in the 2026-07-23 local browser verification is visually approved by Charlie.
+
+This milestone is local and uncommitted at the time of this documentation pass.
 
 ## Current redesign state
 
-- The home terminal/launcher is dependable enough to use as the redesign canvas at full and reduced width.
-- The first focused responsive-composition milestone is complete.
-- The current CSS-built books and inline SVG emblems are exploratory placeholders, not the final asset system.
-- The layered CSS files represent unfinished visual iterations. Do not remove them merely because they overlap.
-- The current background and nurses still exist as one combined static image.
-- A real transparent-raster Pharm book proof was successfully rendered inside the live app on 2026-07-23.
-- The proof demonstrated that the CSS-built Pharm cover can be replaced by a real raster sprite while preserving live application elements.
-- All temporary Pharm preview files were removed afterward. The last verified local status was clean and matched `origin/docs/continuity-rebuild`.
+- The approved sunset-city background and nurses remain one combined static image.
+- The closed-book artwork is now real transparent raster artwork for all three subjects, not a Pharm-only proof.
+- Live application behavior remains in HTML and JavaScript.
+- The new presentation layer is `web/approved-book-buttons.css`, loaded after the existing home-layout styles.
+- Do not remove the `.subject-card` class; JavaScript uses it to disable books during saved sessions, update selection badges, and open chapter screens.
+- Do not infer that every historical `.subject-card` rule is active or requires an architecture rebuild merely because `grep` finds it. Inspect the actual local markup, load order, final rendered result, and behavior.
 
 ## Authoritative visual direction
 
@@ -59,8 +70,8 @@ Approved workflow:
 2. After an asset is visually approved, an optimized transparent WebP version may be used in the shipped browser product when it preserves transparency, pixel fidelity, and intended appearance.
 3. Reserve SVG for genuinely vector-like interface symbols, simple emblems, and clean scalable icons. Do not use SVG as the default format for textured illustrated books, nurses, or environment artwork.
 4. Use CSS for positioning, sizing, responsive composition, hover/pressed/selected movement, glows, and state presentation. Do not use CSS gradients, pseudo-elements, or inline SVG to draw the principal final book or character artwork.
-5. The current CSS-built books and inline SVG cover emblems are exploratory mockups only.
-6. Pharm is the proof-of-concept sprite. Preview the real transparent raster book asset first, adjust crop/scale/placement, and do not treat temporary proof artwork as the final approved design.
+5. The approved home-screen book artwork is now the three transparent PNG assets named above. Do not restore the previous CSS-built books or inline SVG cover emblems.
+6. Keep live selection status, accessibility text, Pack paths, and click behavior outside the artwork.
 7. Never substitute a generated full-screen screenshot or flattened scene for a transparent isolated sprite.
 
 ## Permanent artwork versus live application data
@@ -93,19 +104,11 @@ Show relevant totals inside the opened book/chapter-selection experience instead
 
 The temporary Pharm proof recovered during the 2026-07-23 session had `1,238 QUESTIONS` baked into the image. That proof is useful only for layout testing. The next Pharm asset must remove that baked-in count.
 
-## Pharm proof result and asset warning
+## Superseded Pharm-proof warning
 
-The raster proof was successfully displayed in the real app. It confirmed the intended technical approach, but it is **not** the final-quality source sprite.
+The earlier Pharm-only proof and its baked-in `1,238 QUESTIONS` limitation are historical context only. It is no longer the active milestone. The current approved Pharm PNG installed with the other two books does not display the closed-book total.
 
-Important limitations of that proof:
-
-- it was recovered from a prior visual preview rather than from the original transparent source artwork;
-- its first recovery crop was incomplete and was replaced by a more complete crop;
-- it still contains a baked-in question count that must be removed;
-- its crop, transparency edges, scale, placement, and final art treatment still require refinement;
-- it must not be treated as the final approved Pharm asset.
-
-Do not ask Charlie to recreate this technical distinction manually. Prepare and verify the complete asset package before requesting a local placement step.
+Do not instruct Charlie to recreate, crop, or recover the old proof. Use the current local approved assets.
 
 ## Background and nurse assets
 
@@ -164,6 +167,21 @@ Use `Ctrl+Shift+R` for a hard refresh after visual changes.
 
 Before diagnosing CSS, image, or cache behavior, verify the server is actually running and serving the current project. Do not assume the service worker is responsible. The current `web/sw.js` uses a network-first fetch strategy.
 
+## Proven multi-file local workflow
+
+The successful 2026-07-23 repair used the actual local `web/` working copy rather than repeated terminal snippets or GitHub-only inspection. Preserve this workflow for future multi-file visual work:
+
+1. treat `~/projects/prepflow` as the active working source;
+2. when direct local access is unavailable, package the smallest relevant local folder or file set;
+3. inspect the uploaded local snapshot directly;
+4. make one focused change and return only modified files with project-relative paths;
+5. apply the package locally;
+6. run the real local application and verify the rendered result and behavior;
+7. document the proven result;
+8. commit and push only afterward.
+
+Do not reconstruct a multi-file visual feature from repeated `grep`, `sed`, and pasted excerpts when one local archive can expose the actual working copy. Do not switch the editing target to GitHub during local iteration.
+
 ## Command-flow preference
 
 - When Charlie says `next`, treat the previous paste command as completed and continue to the next executable step.
@@ -186,32 +204,30 @@ Before diagnosing CSS, image, or cache behavior, verify the server is actually r
 
 ## Exact next visual milestone
 
-Create or recover a proper transparent Pharm book sprite derived from the approved proof direction, but without the baked-in question count, then preview only that isolated asset in the live app.
+Finish verification and commit the already-approved three-book replacement.
 
 Required sequence:
 
-1. begin from the clean `docs/continuity-rebuild` branch;
-2. verify `git status --short --branch` and current remote synchronization;
-3. read this document in full before giving a visual command;
-4. start and verify the local server from `~/projects/prepflow` on port `8004`;
-5. prepare the complete isolated transparent Pharm sprite outside the app first;
-6. verify that the sprite is complete, has usable transparency, contains no question total, and does not include any flattened scene/background;
-7. inspect the committed Pharm card HTML and click behavior through GitHub;
-8. place only the Pharm raster sprite under a clear reusable asset path;
-9. preserve live chapter-selection status, accessibility, data attributes, and click behavior;
-10. use CSS only for scale, placement, hover/selected motion, and responsive behavior;
-11. preview at full and reduced width;
-12. obtain Charlie's visual approval before committing the asset or applying the pattern to Fundamentals and Med-Surg.
+1. begin from the current local `docs/continuity-rebuild` working copy;
+2. verify `git status --short --branch`;
+3. run the server from `~/projects/prepflow`, not from `web/`;
+4. verify the approved books at full width and reduced width;
+5. select chapters from each book and verify live selection badges;
+6. run the existing automated tests;
+7. inspect the focused diff;
+8. keep transfer archives and backups out of the commit;
+9. commit the book replacement;
+10. push and verify the intended private remote.
 
-Do not begin by regenerating the whole scene, polishing temporary vertical title CSS, redrawing the book with CSS, redesigning all three books, consolidating visual stylesheets, or separating the nurses from the background.
+Do not begin another book redesign, return to a Pharm-only prototype, rebuild the stylesheet architecture, polish obsolete CSS-drawn covers, or replace the approved PNGs without Charlie's explicit request.
 
 ## Recommended continuation order
 
-1. Finalize the Pharm book sprite as the reusable book pattern.
-2. Apply the approved pattern to Fundamentals and Med-Surg.
-3. Finalize reusable pixel-art button styling.
+1. Complete responsive and behavior verification for the approved three-book replacement.
+2. Commit and synchronize the verified local milestone.
+3. Finalize reusable pixel-art button styling only if Charlie wants further button changes.
 4. Reassess the background-extension and environment-layer strategy using the stable canvas.
 5. Separate the background and nurses into reusable assets while preserving the approved character designs.
 6. Create pose variants for other screens.
 7. Test desktop, reduced-width, reduced-height, and narrow layouts.
-8. Consolidate obsolete experimental CSS only after visual approval.
+8. Consolidate obsolete experimental CSS only after visual approval and only with a focused evidence-based plan.

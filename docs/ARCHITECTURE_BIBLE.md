@@ -504,4 +504,4 @@ Do not place temporary milestones, current branch state, dated addenda, or the n
 
 Those belong in `docs/RESTART_PACKET.md`.
 
-For the detailed reasoning and migration classification behind the July 2026 rebuild, consult `docs/CONTINUITY_REBUILD_DECISION_MAP.md` and the frozen tag `before-continuity-rebuild-2026-07-20`.
+For the detailed reasoning and migration classification behind the July 2026 rebuild, consult `docs/CONTINUITY_REBUILD_PLAN.md` and the frozen tag `before-continuity-rebuild-2026-07-20`.

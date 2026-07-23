@@ -4,9 +4,11 @@
 
 This file is the single primary handoff for every new PrepFlow development session.
 
+> **MANDATORY FIRST ACTION:** Read this entire file before inspecting GitHub, proposing a command, or changing any PrepFlow file. For the current visual milestone, then read `docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md` in full.
+
 A new chat must begin here. Supporting documents may contain detailed architecture, history, or visual decisions, but they do not replace this packet. This packet identifies which supporting documents apply to the current milestone and what authority each one has.
 
-The committed private repository is the technical source of truth. Local Git state and the rendered application must also be checked whenever work may be uncommitted, environment-specific, or visual.
+The local repository at `~/projects/prepflow` is the active working source during development. The private GitHub repository is the authority for the last committed state and later synchronization, but it must not be treated as the current working copy when local commits, uncommitted files, generated assets, or visual changes may exist. The rendered local application is also part of the source of truth for visual work.
 
 ---
 
@@ -15,10 +17,10 @@ The committed private repository is the technical source of truth. Local Git sta
 Use this order:
 
 1. `docs/RESTART_PACKET.md` — primary session handoff and authority index.
-2. Current private-repository branch and latest commit — committed implementation truth.
-3. Local branch, working-tree status, and local-only files — required when work may be uncommitted.
+2. Local branch, working-tree status, local-only files, and the current local working copy — active development truth.
+3. Current private-repository branch and latest commit — last committed implementation truth and synchronization target.
 4. Supporting documents named by this packet for the active milestone.
-5. The real rendered application and baseline screenshots for visual work.
+5. The real rendered local application and baseline screenshots for visual work.
 6. Charlie's explicit approval or correction of design intent.
 7. Historical documents and tags for context only.
 
@@ -118,13 +120,14 @@ This document must be read in full before any visual, responsive, sprite, home-s
 It now records:
 
 - the completed half-width composition milestone;
+- the approved three-book transparent PNG replacement completed locally on 2026-07-23;
+- the proven local-snapshot collaboration workflow for multi-file work;
 - the approved pixel-art background direction;
 - the transparent-raster sprite production workflow;
 - the PNG/WebP/SVG division of responsibility;
-- the Pharm-first reusable book-sprite plan;
-- the successful real raster-sprite proof inside the live app;
+- the completed three-book sprite implementation and preserved JavaScript behavior;
 - the decision to remove question totals from closed book covers;
-- the warning that the temporary Pharm proof was recovered from a preview and is not final-quality source art;
+- the warning that the older Pharm-only proof is superseded and must not be restored;
 - the rule against generating or flattening the full PrepFlow scene when working on one isolated asset;
 - the dedicated local-server workflow and command-flow preferences;
 - the exact next visual milestone.
@@ -213,9 +216,28 @@ web/images/pixel-home-stage.webp
 
 The background and two nurses are presently baked into that one static image. Do not crop, regenerate, substitute, or replace it casually.
 
-The current CSS-built books and inline SVG emblems are exploratory placeholders. Their temporary vertical titles remain imperfect and should not receive more polish before sprite replacement.
+The three closed home-screen books have now been replaced locally with Charlie-approved transparent PNG artwork:
 
-A real transparent-raster Pharm book proof was successfully rendered inside the app. It proved the intended technical approach, but it was recovered from a prior preview, still contained a baked-in `1,238 QUESTIONS`, and is not the final source sprite. Temporary preview files were removed afterward. The last verified local state was clean and synchronized.
+```text
+web/images/book-sprite-preview/prepflow-fundamentals-book.png
+web/images/book-sprite-preview/prepflow-pharm-book.png
+web/images/book-sprite-preview/prepflow-medsurg-book.png
+```
+
+The replacement preserves the existing `.subject-card` JavaScript hook, Pack data attributes, chapter-opening behavior, and live selection-badge behavior. The visual layer is isolated in:
+
+```text
+web/approved-book-buttons.css
+```
+
+Verified on 2026-07-23:
+
+- all three approved books render in the live local application;
+- the prior CSS-drawn books and inline cover emblems are no longer visible;
+- Fundamentals, Pharm, and Med-Surg each open their chapter-selection screen;
+- the local server must run from `~/projects/prepflow`, not from `~/projects/prepflow/web`, so the sibling `packs/` directory is served.
+
+This work is currently local and uncommitted. Do not replace it with the older committed CSS-built placeholder state.
 
 ---
 
@@ -223,30 +245,44 @@ A real transparent-raster Pharm book proof was successfully rendered inside the 
 
 Before giving Charlie any modifying command in a new PrepFlow session:
 
-1. Read this entire `docs/RESTART_PACKET.md` from the private repository.
+1. Read this entire `docs/RESTART_PACKET.md` from the current local snapshot when available.
 2. Read `docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md` in full for the current milestone.
-3. Identify the stable public repository and active private repository named here.
-4. Inspect the active private branch and latest commit.
-5. Inspect local `git status --short --branch` before assuming local matches GitHub.
-6. Determine whether local commits or uncommitted files exist.
-7. Inspect committed files through GitHub before asking Charlie to paste their contents.
-8. For visual work, run the actual local application unchanged and inspect a fresh baseline screenshot.
-9. Compare the packet, Git state, visual document, rendered result, and Charlie's approval history.
-10. State clearly before changing anything:
+3. Treat `~/projects/prepflow` as the active working copy. Do not begin by editing GitHub or assuming GitHub contains the newest local work.
+4. Inspect local `git status --short --branch` and determine whether local commits, uncommitted files, generated assets, backups, or archives exist.
+5. Inspect the private GitHub branch only to establish the last committed baseline and eventual synchronization target.
+6. When several related local files must be inspected and no direct local-filesystem tool is available, ask for one archive of the smallest relevant local folder or file set. Do not reconstruct a multi-file feature from repeated `grep`, `sed`, or copied snippets.
+7. Inspect that uploaded local snapshot directly, prepare the complete focused change against it, and return only the modified files in an archive that preserves project-relative paths.
+8. Apply the returned archive to the local repository, test the real local application, and review the actual rendered result before documenting, committing, or pushing.
+9. For visual work, run the local application unchanged first and capture or inspect a fresh baseline screenshot.
+10. Compare this packet, local Git state, the last committed state, the visual authority document, the rendered result, and Charlie's approval history.
+11. State clearly before changing anything:
    - where the stable version lives;
-   - where active work lives;
+   - where active local work lives;
    - the current branch;
-   - the protected checkpoint;
    - what is approved;
    - what is unfinished;
    - the single next focused action.
-11. Resolve contradictions before recommending a modifying command.
+12. Resolve contradictions before recommending a modifying command.
 
-GitHub-first rule:
+## Local-first collaboration rule
 
-Before asking Charlie to paste committed code, inspect the connected private repository. Request terminal output only for local state, runtime behavior, tests, ignored/generated artifacts, environment-specific behavior, or exact synchronization checks.
+During active development, the local repository is the working source of truth. GitHub is not the editing target and must not be used as a substitute for uncommitted local files.
 
-For visual work, GitHub inspection is necessary but not sufficient. The real browser rendering and baseline screenshot are part of the source of truth.
+Use GitHub to:
+
+- inspect the last committed baseline;
+- review history when needed;
+- commit and push only after the local change works;
+- verify intended remotes after a milestone.
+
+Use a packaged local snapshot when:
+
+- the task spans several HTML, CSS, JavaScript, image, or documentation files;
+- local uncommitted changes matter;
+- the exact cascade, file relationships, or assets cannot be reliably reconstructed from snippets;
+- direct local repository access is unavailable.
+
+Do not ask Charlie to act as a repeated file viewer when one relevant local archive will provide the actual working copy.
 
 ---
 
@@ -279,18 +315,18 @@ Before blaming the service worker or CSS cascade, verify that port `8004` is act
 Standard loop:
 
 ```text
-Observe
-→ inspect committed code
-→ inspect local status
-→ run the real product unchanged when relevant
+Read restart authority
+→ inspect local working copy and status
+→ inspect committed baseline only as needed
+→ observe the rendered local application
 → identify one focused change
-→ implement
+→ implement against the local working copy
 → run targeted verification
 → inspect the real output
+→ document the verified state
 → commit
 → push the intended private branch
-→ verify hashes
-→ update continuity documents
+→ verify synchronization
 → repeat
 ```
 
@@ -371,10 +407,10 @@ bins-projects/PrepFlow
 master
 ```
 
-Active redesign work remains on:
+Active redesign work remains on the local branch:
 
 ```text
-bins-projects/prepflow-dev
+~/projects/prepflow
 docs/continuity-rebuild
 ```
 
@@ -384,31 +420,35 @@ Required detailed supporting document:
 docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md
 ```
 
-Current unfinished milestone:
+Current verified local milestone:
 
-> Create or recover a proper transparent Pharm book sprite based on the approved proof direction, remove the baked-in question total, verify the isolated asset before app insertion, then preview only Pharm while preserving live chapter-selection status and click behavior.
+> The three Charlie-approved transparent PNG book covers are installed and render correctly. Fundamentals, Pharm, and Med-Surg each open their chapter-selection screen. The implementation is local and uncommitted.
 
-Do not begin by regenerating the whole scene, polishing temporary vertical title CSS, redrawing the book with CSS, redesigning all three books, consolidating visual stylesheets, separating the nurses from the background, or merging unfinished redesign work into public `master`.
+Do not restore the older CSS-built books, return to the superseded Pharm-only proof, rebuild the styling architecture, or treat GitHub as newer than the current local working copy.
 
 ---
 
 # 12. Exact Next Step
 
-1. Synchronize the local `docs/continuity-rebuild` branch with the latest private documentation commits.
-2. Verify local and remote hashes and confirm the working tree is clean.
-3. Read this packet and `docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md` in full.
-4. Start the local server in its own terminal and verify `http://localhost:8004/web/` serves the current project.
-5. Capture a clean full-width baseline.
-6. Prepare the isolated transparent Pharm sprite outside the app first.
-7. Verify that it is complete, has usable transparency, contains `PHARM` and the permanent emblem/branding as intended, contains no question total, and includes no background or full-scene content.
-8. Inspect the committed Pharm card HTML and click behavior through GitHub.
-9. Insert only the Pharm sprite and preserve live selection status, accessibility, data attributes, and click behavior.
-10. Use CSS only for scale, placement, interaction, and responsive behavior.
-11. Preview at full and reduced width.
-12. Obtain Charlie's approval before committing the sprite or applying the pattern to Fundamentals and Med-Surg.
+The approved three-book PNG replacement is working locally but has not yet been committed.
+
+Required sequence:
+
+1. keep the Python server rooted at `~/projects/prepflow`;
+2. verify the home screen at full width and at the reduced-width layout normally used during development;
+3. verify chapter-selection badges still appear after selecting chapters from each book;
+4. run the existing automated test suite;
+5. inspect the focused local diff for `web/index.html`, `web/approved-book-buttons.css`, and the three PNG assets;
+6. remove or relocate temporary transfer archives and the temporary `web/index.html.before-book-repair` backup so they are not accidentally committed;
+7. update this packet only if testing changes the verified state;
+8. commit the approved book replacement locally;
+9. push and verify the intended private remote;
+10. do not publish or merge to the stable public version until Charlie explicitly approves that release step.
+
+Do not restart the book design, restore the older CSS-drawn books, rebuild the styling architecture, or treat GitHub as newer than the current local working copy.
 
 ## What Charlie should say in a fresh chat
 
 Use this exact instruction:
 
-> Open the private PrepFlow repo `bins-projects/prepflow-dev` on branch `docs/continuity-rebuild`. Read `docs/RESTART_PACKET.md` first, then read `docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md` in full. Follow their exact resume state before giving me any command.
+> Continue PrepFlow from my local repository at `~/projects/prepflow` on branch `docs/continuity-rebuild`. Read the current local `docs/RESTART_PACKET.md` first, then read `docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md` in full. Treat local uncommitted work as newer than GitHub, inspect `git status` before giving me any command, and follow the exact resume state in the packet.
