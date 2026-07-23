@@ -4,7 +4,7 @@
 
 This file is the single primary handoff for every new PrepFlow development session.
 
-A new chat must begin here. Supporting documents may contain detailed architecture, history, or visual decisions, but they do not replace this packet. This packet must identify which supporting documents apply to the current milestone and what authority each one has.
+A new chat must begin here. Supporting documents may contain detailed architecture, history, or visual decisions, but they do not replace this packet. This packet identifies which supporting documents apply to the current milestone and what authority each one has.
 
 The committed private repository is the technical source of truth. Local Git state and the rendered application must also be checked whenever work may be uncommitted, environment-specific, or visual.
 
@@ -38,38 +38,19 @@ Do not reinterpret, remove, or restore work merely because an older document dif
 
 ## Stable public version
 
-Repository:
-
 ```text
-bins-projects/PrepFlow
-```
-
-Branch:
-
-```text
-master
-```
-
-Latest verified public commit when this packet was updated:
-
-```text
-8987fdf  feat: load the 15 missing Pharm drug cards
+Repository: bins-projects/PrepFlow
+Branch: master
+Latest verified public commit: 8987fdf  feat: load the 15 missing Pharm drug cards
 ```
 
 The public version is the stable fallback. Do not modify or publish it during unfinished redesign work unless Charlie explicitly approves a release or merge.
 
 ## Active private development work
 
-Repository:
-
 ```text
-bins-projects/prepflow-dev
-```
-
-Branch:
-
-```text
-docs/continuity-rebuild
+Repository: bins-projects/prepflow-dev
+Branch: docs/continuity-rebuild
 ```
 
 Protected redesign-canvas checkpoint:
@@ -78,7 +59,17 @@ Protected redesign-canvas checkpoint:
 f393626  wip: checkpoint responsive home and sprite redesign
 ```
 
-The current private branch also contains the dedicated visual continuity document added after that checkpoint.
+Latest completed responsive milestone:
+
+```text
+e5ed054  fix: stabilize half-width home composition
+```
+
+Latest visual-continuity update before this packet refresh:
+
+```text
+0624d32  docs: preserve Pharm sprite proof decisions
+```
 
 Frozen pre-rebuild reference:
 
@@ -114,7 +105,7 @@ Contains the phased reconstruction plan and forensic reasoning. It is not the cu
 docs/SESSION_CHECKPOINT_2026-07-20.md
 ```
 
-Contains detailed completed work through the browser behavior extractions and later local notes. Treat it as a historical work log. Do not use an older “Exact next milestone” from that document when this packet names a newer active milestone.
+Contains detailed completed work through the browser behavior extractions and later historical notes. Do not use an older “Exact next milestone” from that document when this packet names a newer active milestone.
 
 ## Current visual redesign authority
 
@@ -122,18 +113,21 @@ Contains detailed completed work through the browser behavior extractions and la
 docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md
 ```
 
-Must be read in full before any visual, responsive, sprite, home-screen, book, button, background, or nurse-character work.
+This document must be read in full before any visual, responsive, sprite, home-screen, book, button, background, or nurse-character work.
 
-It records:
+It now records:
 
-- the unfinished home terminal/launcher canvas;
-- responsive scaling and dead-space work still in progress;
-- the pixel-art background direction;
+- the completed half-width composition milestone;
+- the approved pixel-art background direction;
+- the transparent-raster sprite production workflow;
+- the PNG/WebP/SVG division of responsibility;
 - the Pharm-first reusable book-sprite plan;
-- reusable pixel-art button direction;
-- the current combined nurse/background reference asset;
-- the future separation of background and reusable nurse sprites;
-- change-control rules for overlapping visual CSS.
+- the successful real raster-sprite proof inside the live app;
+- the decision to remove question totals from closed book covers;
+- the warning that the temporary Pharm proof was recovered from a preview and is not final-quality source art;
+- the rule against generating or flattening the full PrepFlow scene when working on one isolated asset;
+- the dedicated local-server workflow and command-flow preferences;
+- the exact next visual milestone.
 
 ---
 
@@ -190,25 +184,26 @@ The browser behavior boundary work and permanent browser question-reference migr
 
 The current home screen is an unfinished visual-development canvas. It is not a completed design and not technical debt to remove casually.
 
-Protected canvas commit:
-
-```text
-f393626
-```
-
-Current approved direction:
+Approved and verified:
 
 - preserve the pixel-art sunset-city background style;
-- extend the environment to the bottom of normal viewports to eliminate dead space;
-- finish responsive scaling without distorting live text;
 - use the home terminal/launcher as the working canvas;
-- rebuild books and buttons into a coherent reusable pixel-art sprite system;
+- the reduced-width launcher and reference panel no longer collide;
+- the logo and tagline remain separated at reduced width;
+- the environment reaches the bottom of the tested reduced-height viewport;
+- full-width rendering was checked after the half-width change and was not regressed;
+- use transparent raster sprites for principal illustrated books and characters;
+- use PNG during design and iteration;
+- optimized transparent WebP may be used after approval when fidelity is preserved;
+- reserve SVG for clean vector-like symbols and interface icons;
+- use CSS for placement, responsive behavior, movement, glow, and state—not for drawing the principal final book or character artwork;
 - use Pharm as the first book-sprite prototype;
-- apply the approved pattern to Fundamentals and Med-Surg only after Pharm is approved;
-- keep changing titles, counts, selection status, and button labels as live HTML where practical;
-- preserve the current combined two-nurse sunset asset as the approved visual reference;
-- later separate the environment and nurses into reusable assets;
-- create consistent nurse pose variants for different screens only after the home composition and asset system are stable.
+- apply the final approved pattern to Fundamentals and Med-Surg only afterward;
+- keep changing application data as live HTML;
+- do not display total question counts on closed home-screen books;
+- show totals inside the opened book/chapter-selection experience instead;
+- preserve live chapter-selection status, accessibility, data attributes, and click behavior;
+- do not generate, redraw, or flatten the complete PrepFlow scene when working on one isolated asset.
 
 Current approved reference asset:
 
@@ -218,7 +213,9 @@ web/images/pixel-home-stage.webp
 
 The background and two nurses are presently baked into that one static image. Do not crop, regenerate, substitute, or replace it casually.
 
-The current layered CSS files are unfinished visual iterations. Do not disable, delete, consolidate, or reinterpret a layer solely because rules overlap. First determine which visual decision it represents and compare the real rendered page.
+The current CSS-built books and inline SVG emblems are exploratory placeholders. Their temporary vertical titles remain imperfect and should not receive more polish before sprite replacement.
+
+A real transparent-raster Pharm book proof was successfully rendered inside the app. It proved the intended technical approach, but it was recovered from a prior preview, still contained a baked-in `1,238 QUESTIONS`, and is not the final source sprite. Temporary preview files were removed afterward. The last verified local state was clean and synchronized.
 
 ---
 
@@ -227,32 +224,57 @@ The current layered CSS files are unfinished visual iterations. Do not disable, 
 Before giving Charlie any modifying command in a new PrepFlow session:
 
 1. Read this entire `docs/RESTART_PACKET.md` from the private repository.
-2. Identify the stable public repository and the active private repository named here.
-3. Inspect the active private branch and latest commit.
-4. Inspect local `git status --short --branch` before assuming the local branch matches GitHub.
-5. Determine whether local commits or uncommitted files exist.
-6. Read every supporting document this packet names for the current milestone.
-7. For visual work, run the actual local application unchanged and inspect a fresh baseline screenshot.
-8. Compare the packet, current Git state, supporting documents, rendered result, and Charlie's recalled approvals.
-9. State clearly before changing anything:
+2. Read `docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md` in full for the current milestone.
+3. Identify the stable public repository and active private repository named here.
+4. Inspect the active private branch and latest commit.
+5. Inspect local `git status --short --branch` before assuming local matches GitHub.
+6. Determine whether local commits or uncommitted files exist.
+7. Inspect committed files through GitHub before asking Charlie to paste their contents.
+8. For visual work, run the actual local application unchanged and inspect a fresh baseline screenshot.
+9. Compare the packet, Git state, visual document, rendered result, and Charlie's approval history.
+10. State clearly before changing anything:
    - where the stable version lives;
    - where active work lives;
    - the current branch;
-   - the protected rollback/checkpoint commit;
+   - the protected checkpoint;
    - what is approved;
    - what is unfinished;
    - the single next focused action.
-10. Resolve contradictions before recommending a modifying command.
+11. Resolve contradictions before recommending a modifying command.
 
 GitHub-first rule:
 
-Before asking Charlie to paste committed files, inspect the connected private repository. Request terminal output only for local state, runtime behavior, tests, ignored/generated artifacts, environment-specific behavior, or exact synchronization checks.
+Before asking Charlie to paste committed code, inspect the connected private repository. Request terminal output only for local state, runtime behavior, tests, ignored/generated artifacts, environment-specific behavior, or exact synchronization checks.
 
 For visual work, GitHub inspection is necessary but not sufficient. The real browser rendering and baseline screenshot are part of the source of truth.
 
 ---
 
-# 7. Required Working Discipline
+# 7. Local Browser Preview Workflow
+
+Use a dedicated terminal for the Python server:
+
+```bash
+cd ~/projects/prepflow && python3 -m http.server 8004
+```
+
+Leave that terminal running during previews.
+
+Open:
+
+```text
+http://localhost:8004/web/
+```
+
+Use `Ctrl+Shift+R` for a hard refresh after visual changes.
+
+The Python-server terminal printing request logs during refresh is normal.
+
+Before blaming the service worker or CSS cascade, verify that port `8004` is actually running and serving the current `~/projects/prepflow` files. The current service worker uses a network-first fetch strategy.
+
+---
+
+# 8. Required Working Discipline
 
 Standard loop:
 
@@ -262,10 +284,8 @@ Observe
 → inspect local status
 → run the real product unchanged when relevant
 → identify one focused change
-→ preserve or add tests where appropriate
 → implement
 → run targeted verification
-→ run full applicable verification
 → inspect the real output
 → commit
 → push the intended private branch
@@ -281,10 +301,15 @@ Permanent rules:
 - do not make broad cleanup changes during visual iteration;
 - do not manually repair generated Packs when the generic pipeline should be fixed;
 - quarantine a small number of malformed source questions rather than broadening parser behavior recklessly;
-- never claim a test, push, merge, runtime result, or visual approval that was not verified;
+- never claim a test, push, merge, runtime result, preview, cleanup, server state, or visual approval that was not verified;
 - protect privacy before public release or sharing;
-- when Charlie says `next`, provide the next executable step rather than a menu;
-- for ordinary Bash commands, say only “paste this”; identify the terminal only when the command must run in the Python-server terminal.
+- when Charlie says `next`, treat the previous paste command as completed and provide the next executable step;
+- do not repeat the previous command after `next`;
+- when output is required, say clearly: `Paste the output here before continuing.`;
+- for ordinary Bash commands, say only `Paste this`;
+- identify the Python-server terminal only when the command must run there;
+- stop and reassess when troubleshooting becomes repetitive rather than stacking additional guesses;
+- do not generate the complete scene when the task concerns one isolated sprite or graphic element.
 
 When work becomes repetitive, uncertain, or context-heavy:
 
@@ -296,9 +321,9 @@ When work becomes repetitive, uncertain, or context-heavy:
 
 ---
 
-# 8. Required End-of-Session Procedure
+# 9. Required End-of-Session Procedure
 
-Before ending a substantial PrepFlow work session:
+Before ending a substantial PrepFlow session:
 
 1. Inspect `git status` and identify every changed or untracked file.
 2. Ensure intended work is committed, or explicitly document why it remains uncommitted.
@@ -306,23 +331,14 @@ Before ending a substantial PrepFlow work session:
 4. Push the active private branch when the milestone or checkpoint should be backed up.
 5. Verify local and private remote hashes match.
 6. Update the detailed supporting document for the active milestone.
-7. Update this Restart Packet with:
-   - current branch;
-   - latest verified commit or protected checkpoint;
-   - stable-versus-active work locations;
-   - completed work;
-   - unfinished work;
-   - exact next step;
-   - supporting documents the next chat must read.
+7. Update this Restart Packet with current branch, latest commit, completed work, unfinished work, exact next step, and required supporting documents.
 8. Replace stale current-state wording rather than stacking contradictory temporary handoffs.
 9. Confirm that a fresh chat can orient itself from this packet without relying on conversational memory.
 10. Push the documentation update and verify the private remote hash.
 
-A temporary checkpoint is allowed only when work is unfinished and detailed context will not fit cleanly here. This packet must point to it and explain its authority. A checkpoint never silently becomes an alternate primary handoff.
-
 ---
 
-# 9. Verification and Rollback Rules
+# 10. Verification and Rollback Rules
 
 Every milestone must answer:
 
@@ -341,11 +357,12 @@ Important rollback references:
 before-continuity-rebuild-2026-07-20
 8987fdf
 f393626
+e5ed054
 ```
 
 ---
 
-# 10. Current Exact Resume State
+# 11. Current Exact Resume State
 
 Stable public work remains on:
 
@@ -361,13 +378,7 @@ bins-projects/prepflow-dev
 docs/continuity-rebuild
 ```
 
-Protected working-canvas checkpoint:
-
-```text
-f393626  wip: checkpoint responsive home and sprite redesign
-```
-
-Required supporting document:
+Required detailed supporting document:
 
 ```text
 docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md
@@ -375,18 +386,29 @@ docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md
 
 Current unfinished milestone:
 
-> Establish the real home terminal as a dependable visual canvas, finish the reduced-window scaling and bottom dead-space investigation without redesigning unrelated elements, then establish the background-extension strategy before finalizing Pharm as the first reusable book sprite.
+> Create or recover a proper transparent Pharm book sprite based on the approved proof direction, remove the baked-in question total, verify the isolated asset before app insertion, then preview only Pharm while preserving live chapter-selection status and click behavior.
 
-Do not begin by removing layered CSS, disabling the emblem preview, redesigning all three books at once, regenerating the approved home scene, or merging the unfinished redesign into public `master`.
+Do not begin by regenerating the whole scene, polishing temporary vertical title CSS, redrawing the book with CSS, redesigning all three books, consolidating visual stylesheets, separating the nurses from the background, or merging unfinished redesign work into public `master`.
 
 ---
 
-# 11. Exact Next Step
+# 12. Exact Next Step
 
-1. Synchronize the local `docs/continuity-rebuild` branch with the latest private remote documentation commits.
+1. Synchronize the local `docs/continuity-rebuild` branch with the latest private documentation commits.
 2. Verify local and remote hashes and confirm the working tree is clean.
-3. Read this packet and `docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md` locally.
-4. Run the current home page unchanged.
-5. Capture and inspect a baseline at full width and reduced width/height.
-6. Identify one scaling or dead-space failure without changing the book design.
-7. Make one isolated responsive-composition change and verify both baselines before continuing.
+3. Read this packet and `docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md` in full.
+4. Start the local server in its own terminal and verify `http://localhost:8004/web/` serves the current project.
+5. Capture a clean full-width baseline.
+6. Prepare the isolated transparent Pharm sprite outside the app first.
+7. Verify that it is complete, has usable transparency, contains `PHARM` and the permanent emblem/branding as intended, contains no question total, and includes no background or full-scene content.
+8. Inspect the committed Pharm card HTML and click behavior through GitHub.
+9. Insert only the Pharm sprite and preserve live selection status, accessibility, data attributes, and click behavior.
+10. Use CSS only for scale, placement, interaction, and responsive behavior.
+11. Preview at full and reduced width.
+12. Obtain Charlie's approval before committing the sprite or applying the pattern to Fundamentals and Med-Surg.
+
+## What Charlie should say in a fresh chat
+
+Use this exact instruction:
+
+> Open the private PrepFlow repo `bins-projects/prepflow-dev` on branch `docs/continuity-rebuild`. Read `docs/RESTART_PACKET.md` first, then read `docs/VISUAL_REDESIGN_CONTINUITY_2026-07-23.md` in full. Follow their exact resume state before giving me any command.
