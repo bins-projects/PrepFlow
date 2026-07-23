@@ -1,9 +1,4 @@
-from pathlib import Path
-
-css_path = Path("web/home-responsive.css")
-index_path = Path("web/index.html")
-
-css_path.write_text(r'''/* PrepFlow responsive home layout pass. */
+/* PrepFlow responsive home layout pass. */
 
 /* Keep the desktop composition, but allow the interface to scale before it collides. */
 #home-launcher {
@@ -102,22 +97,3 @@ css_path.write_text(r'''/* PrepFlow responsive home layout pass. */
     scale: .94;
   }
 }
-''')
-
-index = index_path.read_text()
-link = '  <link rel="stylesheet" href="home-responsive.css?v=20260722-1">\n'
-anchor_candidates = [
-    '  <link rel="stylesheet" href="book-shelf.css?v=20260721-1">\n',
-    '  <link rel="stylesheet" href="home-launcher.css?v=20260721-1">\n',
-]
-if link not in index:
-    for anchor in anchor_candidates:
-        if anchor in index:
-            index = index.replace(anchor, anchor + link, 1)
-            break
-    else:
-        raise SystemExit("Could not find the home stylesheet link anchor")
-    index_path.write_text(index)
-
-Path(__file__).unlink()
-print("Responsive home layout applied; helper removed.")

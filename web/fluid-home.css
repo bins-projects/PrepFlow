@@ -1,13 +1,4 @@
-from pathlib import Path
-
-index_path = Path("web/index.html")
-index = index_path.read_text()
-link = '  <link rel="stylesheet" href="fluid-home.css?v=20260721-1">\n'
-if link not in index:
-    index = index.replace("</head>", link + "</head>", 1)
-    index_path.write_text(index)
-
-Path("web/fluid-home.css").write_text(r'''/* Fluid PrepFlow home composition: scales continuously through realistic desktop widths. */
+/* Fluid PrepFlow home composition: scales continuously through realistic desktop widths. */
 :root {
   --home-scale: clamp(.68, calc(100vw / 1180), 1);
 }
@@ -162,7 +153,3 @@ body {
     min-width: 0;
   }
 }
-''')
-
-Path(__file__).unlink()
-print("Fluid home composition applied; helper removed.")

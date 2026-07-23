@@ -3,6 +3,7 @@ const SAVE_KEY = "prepflow.savedSession.v1";
 const hero = document.querySelector(".hero");
 const subjects = document.querySelector(".subjects");
 const status = document.querySelector("#status");
+const homeLauncher = document.querySelector("#home-launcher");
 
 const resumePanel = document.querySelector("#resume-panel");
 const resumeDescription = document.querySelector("#resume-description");
@@ -23,33 +24,6 @@ const globalBlockSizeSelect = document.querySelector("#global-block-size");
 const shuffleQuestionsToggle = document.querySelector("#shuffle-questions");
 const clearSelectionsButton = document.querySelector("#clear-selections");
 const buildQuizButton = document.querySelector("#build-quiz");
-
-const pixelStage = document.querySelector(".pixel-stage");
-
-const leftHomeControls = document.createElement("div");
-leftHomeControls.className = "home-control-stack home-control-stack-left";
-
-const rightHomeControls = document.createElement("div");
-rightHomeControls.className = "home-control-stack home-control-stack-right";
-
-pixelStage.append(leftHomeControls, rightHomeControls);
-
-leftHomeControls.append(
-  document.querySelector(".builder-summary"),
-  clearSelectionsButton,
-  discardSessionButton
-);
-
-rightHomeControls.append(
-  document.querySelector(".builder-block-size"),
-  document.querySelector(".order-mode-toggle"),
-  buildQuizButton,
-  resumeSessionButton
-);
-
-/* The original containers remain only as hidden structural shells. */
-quizBuilder.hidden = true;
-resumePanel.hidden = true;
 
 const quizScreen = document.querySelector("#quiz-screen");
 const quizSubject = document.querySelector("#quiz-subject");
@@ -146,8 +120,13 @@ function refreshResumePanel() {
   const saved = readSavedSession();
   const hasSavedSession = Boolean(saved);
 
-  resumeSessionButton.hidden = !hasSavedSession;
-  discardSessionButton.hidden = !hasSavedSession;
+  quizBuilder.hidden = hasSavedSession;
+  resumePanel.hidden = !hasSavedSession;
+  subjects.classList.toggle("saved-session-active", hasSavedSession);
+
+  document.querySelectorAll(".subject-card").forEach((book) => {
+    book.disabled = hasSavedSession;
+  });
 
   if (!saved) {
     resumeDescription.textContent = "";
@@ -167,6 +146,7 @@ function refreshResumePanel() {
 function hideAllScreens() {
   hero.hidden = true;
   subjects.hidden = true;
+  homeLauncher.hidden = true;
   quizBuilder.hidden = true;
   resumePanel.hidden = true;
   chapterScreen.hidden = true;
@@ -210,6 +190,13 @@ function updateSelectionStatus() {
 
     badge.textContent = PrepFlowSelectionRules.bookBadgeText(count);
 
+    const action = book.querySelector(".card-action");
+    if (action) {
+      action.textContent = count === 1
+        ? "1 chapter selected"
+        : `${count} chapters selected`;
+    }
+
     book.classList.toggle("has-selections", count > 0);
   });
 }
@@ -220,7 +207,7 @@ function showSubjects() {
 
   hero.hidden = false;
   subjects.hidden = false;
-  quizBuilder.hidden = false;
+  homeLauncher.hidden = false;
   status.hidden = true;
 
   const selected = selectedChapters.size;

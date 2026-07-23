@@ -1,16 +1,4 @@
-from pathlib import Path
 
-index_path = Path("web/index.html")
-index = index_path.read_text()
-link = '  <link rel="stylesheet" href="responsive-home.css?v=20260721-2">\n'
-if "responsive-home.css" not in index:
-    index = index.replace("</head>", link + "</head>", 1)
-    index_path.write_text(index)
-
-css_path = Path("web/responsive-home.css")
-css = css_path.read_text() if css_path.exists() else ""
-marker = "/* Half-screen composition refinement */"
-block = r'''
 
 /* Half-screen composition refinement */
 @media (min-width: 760px) and (max-width: 1280px) {
@@ -100,9 +88,3 @@ block = r'''
     transform: scale(.78) !important;
   }
 }
-'''
-if marker not in css:
-    css_path.write_text(css + block)
-
-Path(__file__).unlink()
-print("Half-screen composition tightened; helper removed.")

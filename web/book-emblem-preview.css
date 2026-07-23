@@ -1,16 +1,4 @@
-from pathlib import Path
-
-index_path = Path('web/index.html')
-index = index_path.read_text()
-link = '  <link rel="stylesheet" href="book-emblem-preview.css?v=20260721-1">\n'
-anchor = '  <link rel="stylesheet" href="book-shelf.css?v=20260721-1">\n'
-if link not in index:
-    if anchor not in index:
-        raise SystemExit('book shelf stylesheet link not found')
-    index = index.replace(anchor, anchor + link, 1)
-    index_path.write_text(index)
-
-Path('web/book-emblem-preview.css').write_text(r'''/* Preview: balanced vertical titles and large boxed emblems. */
+/* Preview: balanced vertical titles and large boxed emblems. */
 .subject-card .subject-name {
   position: absolute !important;
   left: 34px !important;
@@ -104,7 +92,3 @@ Path('web/book-emblem-preview.css').write_text(r'''/* Preview: balanced vertical
 .subject-card .question-count {
   margin-top: 4px !important;
 }
-''')
-
-Path(__file__).unlink()
-print('Boxed emblem and balanced-title preview applied; helper removed.')
