@@ -1,5 +1,5 @@
 (function () {
-  function blockSummaryAction({ mastered, missedCount, blockEnd, totalQuestions }) {
+  function chooseSummaryAction({ mastered, missedCount, hasMoreQuestions }) {
     if (!mastered && missedCount > 0) {
       return {
         action: "review",
@@ -7,7 +7,7 @@
       };
     }
 
-    if (blockEnd < totalQuestions) {
+    if (hasMoreQuestions) {
       return {
         action: "next-block",
         label: "Start Next Block",
@@ -20,7 +20,24 @@
     };
   }
 
+  function blockSummaryAction({ mastered, missedCount, blockEnd, totalQuestions }) {
+    return chooseSummaryAction({
+      mastered,
+      missedCount,
+      hasMoreQuestions: blockEnd < totalQuestions,
+    });
+  }
+
+  function summaryAction({ mastered, missedCount, hasMoreQuestions }) {
+    return chooseSummaryAction({
+      mastered,
+      missedCount,
+      hasMoreQuestions: Boolean(hasMoreQuestions),
+    });
+  }
+
   window.PrepFlowSummaryRules = {
     blockSummaryAction,
+    summaryAction,
   };
 }());
