@@ -64,6 +64,30 @@
     });
     check("finishes after final-block mastery", masteredFinish.action === "finish");
 
+    const liveReview = PrepFlowSummaryRules.summaryAction({
+      mastered: false,
+      missedCount: 1,
+      hasMoreQuestions: false,
+    });
+    check("live app chooses review", liveReview.action === "review");
+    check("live app shows review label", liveReview.label === "Review Missed Questions");
+
+    const liveNextBlock = PrepFlowSummaryRules.summaryAction({
+      mastered: false,
+      missedCount: 0,
+      hasMoreQuestions: true,
+    });
+    check("live app chooses next block", liveNextBlock.action === "next-block");
+    check("live app shows next-block label", liveNextBlock.label === "Start Next Block");
+
+    const liveFinish = PrepFlowSummaryRules.summaryAction({
+      mastered: false,
+      missedCount: 0,
+      hasMoreQuestions: false,
+    });
+    check("live app chooses finish", liveFinish.action === "finish");
+    check("live app shows finish label", liveFinish.label === "Finish Session");
+
     lines.push("", "All tests passed.");
     results.textContent = lines.join("\n");
   </script>
