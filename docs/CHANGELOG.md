@@ -2,6 +2,42 @@
 
 This document records major project milestones. Minor edits and intermediate work are preserved in Git history.
 
+## 2026-07-26 — Teaching Hospital Homepage and Continuity Rebuild
+
+### Hospital Homepage
+
+- Replaced the older three-book landing composition on the development branch with the PrepFlow Teaching Hospital exterior scene.
+- Added a dedicated quiz-builder screen containing the three approved transparent subject books.
+- Added the live left-sign launcher for Start Here, Continue Quiz, and Build a New Quiz states.
+- Added the live right-sign Drug Library control.
+- Added saved-session display using `Block X of Y`.
+- Added shared text-only command pulsing and temporary live PrepFlow title/tagline branding.
+- Preserved quiz setup, chapter selection, save/resume, rationale, block-summary, and return-home behavior.
+
+### Visual Ownership
+
+- Locked `web/images/home-hospital/prepflow-home-background-final.png` as the tracked runtime hospital composite.
+- Defined architectural sign housings as static artwork while live labels, hit areas, state, progress, and actions remain browser-owned.
+- Kept the three subject books as separate transparent clickable assets inside the quiz builder.
+- Recorded that no nurse separation, nurse sprites, or nurse animation were implemented for this milestone.
+
+### Verification
+
+- Confirmed all 72 automated tests pass.
+- Verified the full local browser workflow in saved and unsaved states.
+- Verified CSS brace and comment balance and found no terminal-paste artifacts.
+- Confirmed the active hospital stylesheet is functional but contains a large layered override stack requiring protected consolidation.
+
+### Continuity and Release Safety
+
+- Added `docs/RELEASE_PRESERVATION_POLICY.md`.
+- Rebuilt `docs/RESTART_PACKET.md`, `docs/ART_SYSTEM.md`, `docs/ARCHITECTURE_BIBLE.md`, and `docs/CONTINUITY_REBUILD_PLAN.md` around the current hospital implementation.
+- Marked the July 23 city-and-nurses visual plan as historical and superseded.
+- Established frozen release branches and tags as permanent rollback points.
+- Established CSS consolidation as an integral, separately tested milestone rather than optional polish.
+
+---
+
 ## 2026-07-17 — PWA Cross-Category Quiz Builder
 
 ### Quiz Builder
@@ -162,7 +198,6 @@ v0.6.1
 - Added JSON inventory export
 - Added source_banks ignore rules
 - Verified 63 chapters from Med-Surg bank
-
 - Fixed validator crash caused by duplicate stem tracking.
 - Improved compiler validation output with grouped problem reporting.
 - Added clearer duplicate question number reporting.
