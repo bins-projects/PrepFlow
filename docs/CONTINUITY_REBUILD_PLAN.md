@@ -1,32 +1,28 @@
 # PREPFLOW CONTINUITY REBUILD DECISION MAP
 
-> **Continuity note:** This document was created after the July 2026 forensic review of PrepFlow. Earlier documentation, implementation history, and abandoned pathways are preserved in Git history and in the frozen tag `before-continuity-rebuild-2026-07-20`. If a decision below seems unclear, inspect that baseline before assuming information was accidentally lost. Historical material explains how PrepFlow arrived here; this document records the approved direction from this point forward.
+> Historical migration map rebuilt after the July 2026 forensic review. The active session state belongs in `docs/RESTART_PACKET.md`; durable architecture belongs in `docs/ARCHITECTURE_BIBLE.md`; visual rules belong in `docs/ART_SYSTEM.md`; release protection belongs in `docs/RELEASE_PRESERVATION_POLICY.md`.
 
 ## Purpose
 
-This document connects three things:
+This document connects:
 
-1. what the repository actually contains;
-2. what Charlie has decided PrepFlow is;
-3. how to move from the current implementation to the approved architecture without losing working behavior.
+1. what the repository contains;
+2. what PrepFlow is intended to become;
+3. how to move from the current implementation toward the approved architecture without losing working behavior.
 
-It is intentionally detailed. It is not the long-term Architecture Bible and it is not the everyday Restart Packet. It is the migration decision map used to rebuild both documents and then guide the cleanup.
-
-No implementation should be deleted or substantially reorganized until the relevant behavior and verification gate in this plan are understood.
+It is a migration map, not a daily task list. No implementation should be deleted or substantially reorganized until its behavior, verification gate, and rollback path are understood.
 
 ---
 
 # 1. Product Definition
 
-PrepFlow is primarily a document-ingestion, sanitization, structuring, and library-building system.
+PrepFlow is primarily a document-ingestion, sanitization, structuring, and study-library system.
 
 Its defining purpose is:
 
 > Take deliberately chosen educational material, clean and organize it, turn it into an authoritative independent PrepFlow Pack, and provide study tools that use that Pack.
 
-The visible quiz, open-book interface, characters, medication reference, and future coaching features are ways of using the structured library. They are important product experiences, but they are not the underlying core.
-
-The core flow is:
+The permanent flow is:
 
 ```text
 Chosen educational source
@@ -46,890 +42,476 @@ Independent authoritative Pack
 Browser study application
 ```
 
+The visible quiz, hospital homepage, book interface, Drug Library, and future coaching features are ways of using the structured library. They are important product experiences, but they are not the underlying core.
+
 ---
 
 # 2. Authority Model
 
-PrepFlow does not independently fact-check an entire nursing curriculum before allowing content into a Pack.
+PrepFlow does not independently fact-check an entire nursing curriculum before admitting material.
 
-The authority rule is:
+Approved rule:
 
 > Material deliberately selected for import becomes authoritative study material inside its own Pack after it passes PrepFlow's cleaning, structural validation, and review process.
 
-This is appropriate because the material is generally selected to match the class, instructor, course resources, or testing environment being studied.
+Each Pack remains its own authority boundary.
 
-PrepFlow accepts the practical risk that a chosen source may contain inaccurate or outdated material. The Pack boundary limits that risk:
+This means:
 
-- each source collection remains its own book/Pack;
 - sources are not silently blended into one universal truth database;
-- a contaminated, poisoned, or unwanted Pack can be deleted or rebuilt as a unit;
-- the validity of one Pack does not depend on preserving publisher or page-level provenance for every question.
-
-The finished Pack is the study authority. The original source is temporary import material.
+- chapter organization may follow the selected source;
+- a contaminated, obsolete, or unwanted Pack can be deleted or rebuilt as a unit;
+- the finished Pack is the study authority;
+- the original source is temporary import material.
 
 ---
 
-# 3. Minimum Canonical Study Record
+# 3. Canonical Study Record
 
-The finished library does not need speculative publisher, edition, page, Bloom level, difficulty, or detailed source-provenance fields merely because an earlier model allowed them.
-
-The required Pack-level fields are:
+A finished Pack requires:
 
 - permanent Pack ID;
-- user-facing Pack title;
-- format/schema version as needed for compatibility;
+- user-facing title;
+- format or schema version as needed;
 - questions.
 
-The required question-level fields are:
+A finished question requires:
 
 - permanent PrepFlow question ID;
 - chapter;
-- chapter title when useful for display;
+- chapter title when useful;
 - question type;
 - stem;
 - choices where applicable;
 - correct answer or ordered answers;
 - rationale.
 
-Optional future enrichment may include:
+Optional future enrichment may include concepts, medication classes, body systems, clinical relationships, and study tags. Optional enrichment must not block ordinary import.
 
-- concepts;
-- medication classes;
-- body systems;
-- clinical relationships;
-- study tags used for coaching or cross-reference features.
-
-Optional enrichment must not become a requirement for ordinary import unless a future product decision changes this rule.
+Publisher, edition, page, Bloom level, difficulty, and detailed source provenance are not required in the finished study record.
 
 ---
 
 # 4. Permanent Question Identity
 
-The current ID generator assigns IDs by export position. That means deleting or inserting an earlier question can renumber later questions.
+Question identity must not depend on array position, display order, or neighboring questions.
 
-That is not acceptable as the long-term identity model.
+Approved rule:
 
-Approved requirement:
+> A question receives a permanent PrepFlow identity that does not change merely because its display order, chapter position, or surrounding questions change.
 
-> A question receives a permanent PrepFlow identity that does not change merely because its display order, chapter position, or neighboring questions change.
+Permanent identity supports:
 
-A permanent identity supports:
-
+- Pack rebuilds;
 - saved sessions;
 - corrections;
 - duplicate detection;
 - future analytics;
 - medication or concept relationships;
-- Pack rebuilds;
-- consistent references across versions.
+- stable references across versions.
 
-The source question number and chapter remain organizational fields, not the true identity.
-
-The exact ID algorithm is not yet selected. The implementation design must address:
-
-- assigning an ID once;
-- recognizing the same question during a rebuild;
-- preserving an existing ID through minor corrections;
-- creating a new ID only for genuinely new content;
-- avoiding dependence on array position.
-
-This is a core library requirement, not optional metadata.
+The implementation must eventually preserve existing IDs for unchanged questions and create new IDs only for genuinely new content.
 
 ---
 
-# 5. Approved Responsibility Map
+# 5. Responsibility Map
 
-## 5.1 Source Adapters
+## 5.1 Source adapters
 
-Source adapters open a particular file format and return usable source text or a simple neutral extraction structure.
+Source adapters open a file format and return usable text or a neutral extraction structure.
 
-Examples:
+Different source formats must feed one shared cleaning, detection, parsing, normalization, validation, and Pack-building pipeline.
 
-- PDF adapter;
-- future DOCX adapter;
-- future TXT adapter;
-- possible future HTML adapter;
-- OCR only as a separate later project.
+Future DOCX, TXT, HTML, or OCR work must not create separate competing question engines.
 
-Adapters may understand file-format structure such as pages, paragraphs, headings, or tables. They must not contain a separate question engine for each format.
+## 5.2 Cleaner
 
-Approved rule:
+The cleaner removes non-educational noise while preserving educational meaning.
 
-> Different source formats feed one shared cleaning, detection, parsing, normalization, validation, and Pack-building pipeline.
-
-## 5.2 Extraction
-
-Extraction retrieves content while preserving enough structure for later processing.
-
-It does not decide whether text is a question, answer, rationale, or contamination.
-
-## 5.3 Cleaner
-
-The cleaner removes non-educational noise while preserving the selected educational material.
-
-Typical responsibilities:
+It may remove:
 
 - download-site contamination;
-- branding and repeated source fragments;
+- repeated branding;
 - page headers and footers;
-- broken extraction artifacts;
-- repeated indexes or known duplicated source blocks;
-- narrowly evidenced source-specific contamination rules.
+- extraction artifacts;
+- duplicated source blocks;
+- narrowly evidenced source-specific noise.
 
-The cleaner should not casually rewrite stems, choices, answers, or rationales.
+It must not casually rewrite stems, choices, answers, or rationales.
 
-## 5.4 Detector
+## 5.3 Detector
 
-Detection measures and reports source structure before parsing.
+Detection measures and reports source structure before parsing. It exposes uncertainty rather than hiding it.
 
-It identifies evidence such as:
+## 5.4 Parser
 
-- chapters;
-- section headings;
-- answer markers;
-- question-like blocks;
-- unknown or unsupported patterns.
+The parser turns cleaned text into candidate question records. It owns recognition of chapter, question type, wrapped stems, choices, answers, rationales, and supported source structures.
 
-Detection exposes uncertainty rather than hiding it.
+It does not assign final permanent identity and does not control the GUI.
 
-## 5.5 Parser
+## 5.5 Normalizer
 
-The parser turns cleaned source text into candidate question records.
+The normalizer converts supported parser output into one consistent compiler input shape. It must not become a second parser or invent educational content.
 
-It owns recognition and recovery of:
+## 5.6 Validator
 
-- chapter and chapter title;
-- source question number;
-- question type;
-- wrapped stems;
-- split or wrapped choices;
-- inline and multiline answers;
-- rationales;
-- Completion questions;
-- Multiple Response questions;
-- Ordered Response questions;
-- source structures proven through real imports.
+Validation decides whether candidate records are structurally safe to admit.
 
-The parser does not create final permanent identity or decide user-interface behavior.
-
-## 5.6 Normalizer
-
-The normalizer converts supported parser output into one consistent compiler input shape.
-
-It may resolve compatible field names and safe structural differences. It should not become a second parser or silently invent educational content.
-
-## 5.7 Validator
-
-The validator decides whether candidate records are structurally safe to admit.
-
-Approved severity model:
+Severity model:
 
 - **Fatal:** the Pack cannot safely be built.
-- **Recoverable:** the affected question is quarantined/skipped while valid questions may proceed.
+- **Recoverable:** the affected question is quarantined or skipped while valid questions may proceed.
 - **Advisory:** a concern is recorded but the question remains eligible.
 
-Validation concerns include:
+Validation protects structural usability, not universal medical truth.
 
-- missing stem;
-- missing answer;
-- missing rationale;
-- required choices missing;
-- answer references missing choice;
-- unsupported type;
-- remaining contamination;
-- genuine exact duplicates;
-- identity conflicts.
+## 5.7 Deduplication
 
-Validation does not independently certify medical truth.
+Only genuine exact duplicates should be removed automatically. Near-duplicates remain unless deliberately reviewed.
 
-## 5.8 Deduplication
+## 5.8 Pack compiler and library
 
-Only genuine exact duplicates should be removed automatically.
+The compiler receives normalized validated records, preserves or assigns permanent IDs, and builds the finished Pack.
 
-Near-duplicates stay because similar questions may test different judgments, appear in different chapters, or provide valuable repetition in different contexts.
+The browser consumes finished Packs only. It does not parse private source files or repair malformed Pack content during a quiz.
 
-Safe duplicate decisions should compare more than the raw stem. At minimum consider:
+## 5.9 Browser quiz behavior
 
-- stem;
-- choices;
-- correct answer;
-- rationale;
-- Pack/chapter context.
+The quiz behavior layer owns rules that must remain stable regardless of visual redesign:
 
-Every automatic removal should be explainable and reportable.
-
-## 5.9 Pack Compiler
-
-The compiler:
-
-- receives normalized validated candidate records;
-- preserves or assigns permanent PrepFlow IDs;
-- builds the finished Pack;
-- exports only the fields PrepFlow intentionally needs.
-
-Publisher and page-level provenance are not required in the finished Pack.
-
-## 5.10 Pack Library
-
-The Pack library is the permanent product output of ingestion.
-
-The organizational hierarchy is:
-
-```text
-Pack
-└── Chapter
-    └── Question
-```
-
-Each Pack is an independent authority boundary and can be removed or rebuilt independently.
-
-## 5.11 Browser Quiz Behavior Layer
-
-The browser is the only active client that matters for compatibility decisions today.
-
-The quiz behavior layer should own rules that must remain consistent regardless of visual redesign:
-
-- collect the full selected question pool;
-- support selected chapters across Packs;
-- optional Shuffle or Keep Source Order setting;
-- stable question order after session start;
-- configurable block size;
+- selected question pool;
+- selected chapters across Packs;
+- question order;
+- block size;
 - one question at a time;
-- answer grading by question type;
+- grading by question type;
 - first-pass correct and missed tracking;
-- missed-question review until mastered;
+- review until mastered;
 - block transitions;
 - final first-pass result;
-- save/resume state meaning.
+- save and resume meaning.
 
-The current browser implements much of this directly inside `web/app.js`. The approved future direction is to separate quiz/session rules from DOM manipulation enough that behavior can be tested without depending on screen layout.
+Behavior should become testable without depending on a specific screen layout or DOM structure.
 
-This does not require a grand rewrite or a server. It requires a clearer internal boundary inside the browser code.
+## 5.10 Browser GUI
 
-## 5.12 Browser GUI
+The GUI displays state and collects input. It owns the hospital homepage, quiz builder, books, chapter controls, answer controls, rationale presentation, results screens, responsive layout, and accessibility presentation.
 
-The GUI displays state and collects user input.
-
-It owns:
-
-- home screen;
-- book interface;
-- buttons;
-- chapter checkboxes;
-- answer controls;
-- progress display;
-- rationale presentation;
-- result screens;
-- visual themes;
-- characters and animation;
-- responsive layout;
-- accessibility presentation.
-
-The GUI should not independently invent scoring, review, or session rules.
-
-## 5.13 Optional Analytics and Enrichment
-
-Future analytics may interpret results using optional tags.
-
-Example:
-
-```text
-Missed questions tagged with:
-- ARBs
-- diuretics
-- calcium monitoring
-
-Future result:
-- recommend reviewing those topics
-```
-
-This is deferred enrichment. It should not block the current cleanup.
-
-## 5.14 Offline Layer
-
-The service worker controls the browser application's offline promise.
-
-The current worker explicitly precaches the shell and three Packs, while many layered visual and medication-reference assets depend on having been loaded before going offline.
-
-The future offline contract must be explicit:
-
-- either complete first-install offline support;
-- or a narrower documented promise.
-
-## 5.15 Future Downloadable Applications
-
-There is no obligation to preserve unreleased desktop compatibility.
-
-A future Windows or macOS download should most likely package the cleaned browser-centered application rather than revive the Tkinter application merely because it exists.
-
-Platform packaging may differ, but question meaning, Pack structure, quiz rules, scoring, and saves should not be redefined separately for each platform.
+The GUI must not independently invent scoring, review, or session rules.
 
 ---
 
 # 6. Confirmed Current Implementation
 
-## 6.1 Active Core
+## 6.1 Active compiler core
 
-The active and valuable Python side is the ingestion/compiler pipeline:
+The active Python value remains the shared ingestion and compiler pipeline under `compiler/`.
 
-- `compiler/importer.py`
-- `compiler/pdf_reader.py`
-- `compiler/cleaner.py`
-- `compiler/detector.py`
-- `compiler/source_parser.py`
-- `compiler/normalizer.py`
-- `compiler/validator.py`
-- `compiler/builder.py`
-- `compiler/exporter.py`
-- `compiler/pipeline.py`
-- `compiler/models.py`
-- `compiler/ids.py`
-- `compiler/diagnostics.py`
+Core responsibilities include importing, extracting, cleaning, detecting, parsing, normalizing, validating, building, exporting, identity, and diagnostics.
 
-These files are core PrepFlow, although identity, validation references, and model simplicity need redesign.
+## 6.2 Active browser product
 
-## 6.2 Active Browser Product
+The active user-facing product is under:
 
-The active user-facing product is under `web/`.
+```text
+web/
+```
 
-The browser currently provides:
+The current browser provides:
 
 - Pack loading;
-- multi-Pack chapter selection;
-- full-pool question aggregation for supported types;
-- one-time shuffle;
+- chapter selection across the three official Packs;
+- question aggregation;
 - block sessions;
 - Multiple Choice and Multiple Response grading;
 - first-pass tracking;
-- review-until-mastered behavior;
-- final first-pass score;
-- local save/resume;
-- hosted/PWA experience;
-- layered arcade/open-book visual system;
-- medication reference features.
+- review until mastered;
+- save and resume;
+- block summaries;
+- hosted/PWA use;
+- Drug Library access;
+- the PrepFlow Teaching Hospital homepage;
+- a dedicated quiz-builder flow.
 
-Confirmed current browser gaps:
+Current hospital runtime files include:
 
-- Completion excluded from quiz selection;
-- Ordered Response excluded from quiz selection;
-- shuffle cannot be disabled;
-- quiz rules and GUI/DOM control are mixed together;
-- no strong browser-level automated test suite;
-- offline precache does not clearly cover the complete product.
+```text
+web/index.html
+web/app.js
+web/hospital-home.css
+web/quiz-builder-screen.css
+web/resume-rules.js
+web/images/home-hospital/prepflow-home-background-final.png
+```
 
-## 6.3 Pack Library
+The current homepage composition includes:
 
-The permanent tracked library contains three official Packs:
+- a locked 16:9 hospital exterior;
+- static architectural quiz and reference sign housings in the composite artwork;
+- live browser-owned launcher text, state, hit areas, and actions;
+- the three approved subject books inside the quiz builder;
+- temporary live branding: `PrepFlow` and `Prepare. Practice. Progress.`;
+- saved-session text using `Block X of Y`;
+- Continue Quiz, Build a New Quiz, Build Your Quiz, and Drug Library controls.
+
+No nurse sprites, nurse animation, or nurse-separation milestone has been implemented in the hospital homepage.
+
+## 6.3 Current browser gaps
+
+Known architectural or product gaps include:
+
+- Completion and Ordered Response are not yet fully supported in the active quiz flow;
+- shuffle behavior is not yet an explicit user choice;
+- quiz rules and DOM control remain mixed in `web/app.js`;
+- browser-level automated coverage remains limited;
+- the offline contract is not yet fully explicit;
+- the inner quiz-builder visual system still needs later refinement;
+- permanent logo treatment remains deferred.
+
+## 6.4 Pack library
+
+The permanent tracked library contains:
 
 - Fundamentals;
 - Pharm;
 - Medical-Surgical.
 
-Exact current counts must be read from the Packs rather than copied from stale documentation.
+Exact counts must be read from the Pack files rather than copied from stale documentation.
 
-## 6.4 Medication Reference
+## 6.5 Medication reference
 
-The medication reference currently uses a Pharm-derived registry as the gatekeeper for loaded cards.
+The medication reference remains a separate browser feature. Long-term work may decouple master medication records from the Pharm-derived registry, but that is not part of the hospital-homepage release milestone.
 
-This works for the existing feature but is not the ideal long-term master-library architecture.
+## 6.6 Visual system
 
-Future direction:
+The active visual language is **PrepFlow Illustrated Pixel**.
 
-- independent stable medication records;
-- source mappings to Pharm, Med-Surg, Fundamentals, and future Packs;
-- no requirement that a valid medication exist in the Pharm Pack before it can exist in the reference library.
+The current hospital scene uses:
 
-This is deferred until after the architectural cleanup unless a current defect requires earlier work.
+- cinematic modern illustrated pixel art;
+- readable broad light and shadow masses;
+- warm amber highlights;
+- cool blue-purple dusk shadows;
+- dark palette-related outlines;
+- controlled architectural texture;
+- static environment artwork separated from live application state.
 
-## 6.5 Visual System
-
-The current visual identity is intentional and should be preserved:
-
-- dark navy background/panels;
-- bright blue, green, purple, pink, and gold accents;
-- 16-bit/pixel visual language;
-- layered book presentation;
-- scan lines and stepped animations;
-- category-specific accents;
-- reusable committed artwork.
-
-The goal is not to freeze creativity. The goal is to prevent future controls from looking unrelated to PrepFlow and to reuse approved assets rather than redrawing them unnecessarily.
-
-The visual system is currently spread across layered CSS files with overrides and duplication. Consolidation must be staged and visually conservative.
+The complete durable visual rules are in `docs/ART_SYSTEM.md`.
 
 ---
 
-# 7. Verified Legacy and Ghost Pathways
+# 7. Current Cleanup Requirement
 
-Git history and the frozen tag preserve all removed work. The following code has no compatibility authority merely because it once supported a desktop or terminal client.
+`web/hospital-home.css` contains a large layered override stack accumulated during iterative visual work.
 
-## 7.1 Old DOCX Prototype Route
+Verified current state:
 
-Verified removal candidates:
+- 1,860 lines;
+- balanced braces;
+- balanced comments;
+- no terminal-paste artifacts found;
+- all 72 automated tests passed;
+- real-browser interaction and visual checks passed.
 
-- `compiler/docx_reader.py`
-- `compiler/tokenizer.py`
-- `compiler/parser.py`
-- DOCX-specific route inside `compiler/cli.py`
-- empty `tests/test_parser.py`
-- empty `tests/test_ids.py`
+Cleanup is integral to the process, not optional polish.
 
-Reason:
+A protected consolidation milestone must:
 
-- rigid Markdown-like source expectations;
-- no shared cleaner/detector;
-- only MC/SATA inference;
-- no robust varied-source handling;
-- trivial useful capability to recreate;
-- proper future DOCX support should be a source adapter feeding the main pipeline.
+1. begin from an external backup;
+2. preserve the approved visual result;
+3. consolidate duplicate and competing rules carefully;
+4. verify unsaved and saved launcher states;
+5. verify Drug Library placement and hit area;
+6. verify command pulsing and temporary branding;
+7. verify normal and fullscreen display;
+8. run automated tests;
+9. inspect the focused diff;
+10. commit cleanup separately from feature work.
 
-Preserved future requirement:
-
-> Add DOCX as a first-class extraction adapter through the authoritative pipeline when effort and use justify it.
-
-## 7.2 Old Python Study/Desktop Stack
-
-Verified removal candidates after browser behavior protections are in place:
-
-- `study/cli.py`
-- `study/gui.py`
-- `study/loader.py`
-- `study/question.py`
-- `study/review.py`
-- `study/save_state.py`
-- `study/scoring.py`
-- `study/selection.py`
-- `study/session.py`
-- `study/update_checker.py`
-- `study/version.py`
-- `PrepFlow.spec`
-- `.github/workflows/build-windows.yml`
-- desktop-only tests after equivalent active-product coverage exists.
-
-Reason:
-
-- browser does not import these modules;
-- browser independently performs the meaningful quiz work;
-- old implementations are small and reproducible;
-- unreleased desktop compatibility has no value in current decisions;
-- future downloads can be built from the cleaned browser-centered application.
-
-The old Python tests may still be useful as temporary behavioral references. Passing fewer tests after deleting test files is not proof that behavior remained correct. Equivalent browser-centered protection should exist before the bulk removal commit.
-
-## 7.3 Old Visual Branch
-
-`origin/feat/home-quiz-panel-clean` is the only unmerged remote branch.
-
-Classification:
-
-- preserve as historical visual reference;
-- do not merge wholesale;
-- selectively reuse an asset only if later visual review proves it valuable.
-
-No hidden unfinished compiler or quiz-engine work exists on other remote branches.
+Do not perform a broad redesign while consolidating the stylesheet.
 
 ---
 
 # 8. Repository and Artifact Boundaries
-
-Tracked permanent areas are currently clean:
-
-- compiler code;
-- Packs;
-- browser application;
-- tests;
-- documentation;
-- build configuration still retained from the legacy desktop route.
-
-Ignored temporary areas:
-
-- `.venv/`
-- caches;
-- `build/`
-- `dist/`
-- `output/`
-- `scratch/`
 
 Approved boundary:
 
 ```text
 Private chosen sources      → outside repository
 Temporary import artifacts  → output/
-Experiments                  → scratch/
+Experiments                  → scratch/ or external backup
+Approved source/review art   → art/source/ or art/review/
 Finished authoritative data → packs/
-Product code and assets      → tracked
+Runtime browser assets       → web/images/
+Product code and docs        → tracked
 ```
+
+Before release, classify all untracked hospital artwork deliberately. Do not use `git add .`.
+
+The tracked runtime hospital composite is:
+
+```text
+web/images/home-hospital/prepflow-home-background-final.png
+```
+
+Duplicate runtime copies, screenshots, transfer files, temporary proofs, and backup archives must not enter production commits.
 
 ---
 
 # 9. Testing and Verification Strategy
 
-## 9.1 Existing Tests
-
-The repository contains over one hundred Python tests, with strongest coverage around:
-
-- cleaner;
-- source parser;
-- importer;
-- compiler pipeline;
-- validator;
-- desktop selection/custom builder.
-
-Weak or missing coverage includes:
-
-- complete browser quiz flow;
-- browser save/resume behavior;
-- browser question-type parity;
-- medication reference behavior;
-- service-worker/offline behavior;
-- visual regressions.
-
-## 9.2 Automated Execution
-
-The existing GitHub workflow runs Python tests only as part of a manually triggered Windows desktop build.
-
-Approved replacement requirement:
-
-> Add automatic verification on pushes and pull requests, independent of desktop packaging.
-
-The future workflow should eventually:
-
-- install declared compiler/test dependencies;
-- run Python compiler tests;
-- validate Pack structure;
-- run browser behavior tests;
-- report failures from a clean environment.
-
-Local tests remain part of the workflow before commit and push.
-
-## 9.3 Migration Gates
-
-Every structural cleanup step must define:
+Every structural or release step must define:
 
 - behavior being protected;
 - targeted tests;
 - full test-suite result;
 - browser smoke checks;
-- Pack validation checks;
-- rollback commit/tag;
+- visual-state checks when applicable;
+- Pack validation checks when applicable;
+- rollback commit or release boundary;
 - remote synchronization status.
 
-A smaller test count after deletion is not success unless deleted coverage has been intentionally replaced or declared obsolete.
+A smaller test count after deleting tests is not success unless the removed coverage has been replaced or deliberately declared obsolete.
+
+The long-term direction is automatic verification on pushes and pull requests, independent of legacy desktop packaging.
 
 ---
 
-# 10. Approved First User-Facing Tweak After Stabilization
+# 10. Current Finishing and Release Sequence
 
-Add a quiz setup choice:
+The immediate migration priority is no longer the old city-and-nurse plan.
 
-- **Shuffle Questions**
-- **Keep Source Order**
+Current sequence:
 
-Responsibility split:
+## Stage A — Documentation baseline
 
-- GUI presents the setting;
-- quiz behavior layer applies it;
-- save state preserves it;
-- tests prove source order remains unchanged when shuffle is off;
-- default behavior should be explicitly chosen during implementation.
+- keep `RESTART_PACKET.md`, `ART_SYSTEM.md`, and `ARCHITECTURE_BIBLE.md` aligned with the hospital implementation;
+- update this decision map;
+- update README and changelog;
+- mark dated city-and-nurse continuity as historical;
+- review the hospital layered-workflow brief;
+- document release preservation and rollback.
 
-This is the first intended user-facing tweak after the architecture and continuity foundation is stable.
+## Stage B — Asset classification
 
----
+- inspect all untracked hospital artwork;
+- retain only useful source or review assets;
+- exclude duplicate runtime copies and temporary proofs;
+- stage files intentionally.
 
-# 11. Proposed Migration Sequence
+## Stage C — Protected CSS consolidation
 
-The exact implementation commits may be adjusted as evidence appears, but the sequence should preserve a working browser product throughout.
+- create or verify the external backup;
+- consolidate `web/hospital-home.css` without changing approved behavior;
+- test all launcher states and browser modes;
+- run the full automated suite;
+- commit cleanup independently.
 
-## Stage 0 — Documentation Baseline
+## Stage D — Final milestone verification
 
-- create this decision map;
-- rewrite Architecture Bible;
-- replace Restart Packet;
-- correct README to describe only active browser behavior;
-- identify redundant documentation;
-- commit and push the documentation baseline before code cleanup.
+- run automated tests;
+- perform the complete browser smoke test;
+- verify no private or temporary artifacts are tracked;
+- inspect the exact release diff;
+- synchronize both development remotes and compare hashes.
 
-## Stage 1 — Protect Active Browser Behavior
+## Stage E — Frozen hospital release
 
-- define a testable browser quiz/session contract;
-- add focused tests for existing MC/MR behavior;
-- add tests for full-pool selection;
-- add tests for block boundaries;
-- add tests for first-pass counting;
-- add tests for review requeue-until-mastered;
-- add tests for save/resume state;
-- add automatic push/PR test workflow.
-
-## Stage 2 — Permanent Question Identity Design
-
-- choose ID preservation/matching strategy;
-- add tests proving reorder/delete/insert does not renumber unchanged questions;
-- migrate Packs safely;
-- verify browser saves and references use stable IDs rather than fragile indexes where practical.
-
-## Stage 3 — Separate Browser Quiz Rules From GUI
-
-- extract session/order/scoring/review behavior from direct DOM operations;
-- keep user-visible behavior unchanged;
-- verify existing PWA manually and automatically;
-- avoid framework migration unless a concrete need proves it worthwhile.
-
-## Stage 4 — Shuffle Toggle
-
-- add Shuffle/Source Order setting;
-- preserve setting in saves;
-- test both modes;
-- verify full selected pool remains included.
-
-## Stage 5 — Browser Question-Type Completion
-
-- add Completion;
-- add Ordered Response;
-- verify exact grading rules;
-- confirm Pack types display and save correctly.
-
-## Stage 6 — Remove Verified Legacy Study/Desktop Code
-
-- delete old Python study stack;
-- delete PyInstaller spec;
-- delete desktop update/version logic;
-- delete old Windows-build workflow;
-- remove obsolete desktop-only tests only after active coverage exists;
-- clean imports and dependencies;
-- run all gates.
-
-## Stage 7 — Remove Old DOCX Prototype
-
-- delete tokenizer/parser/docx prototype route;
-- simplify compiler entry point around the authoritative pipeline;
-- remove unused dependencies;
-- retain DOCX adapter as a documented future feature, not ghost code.
-
-## Stage 8 — Compiler Reliability Improvements
-
-- implement permanent identity;
-- use internal candidate identity instead of human-readable labels for skip decisions;
-- implement conservative exact-duplicate handling;
-- improve quarantine reporting;
-- keep near-duplicates.
-
-## Stage 9 — Offline Contract
-
-- define what must work on first offline launch;
-- explicitly cache required CSS, JS, data, medication assets, images, and Packs;
-- add service-worker tests or deterministic verification.
-
-## Stage 10 — Visual-System Consolidation
-
-- inventory approved assets;
-- document core palette and reusable patterns;
-- centralize low-risk variables/components;
-- preserve current appearance;
-- do not perform a broad aesthetic redesign during structural cleanup.
-
-## Stage 11 — Source Adapter Expansion
-
-- add DOCX through shared pipeline when needed;
-- add TXT if useful;
-- add other formats only from real use cases;
-- treat OCR as a separate high-risk feature.
-
-## Stage 12 — Medication and Analytics Enrichment
-
-- decouple medication master records from the Pharm-derived registry;
-- add source mappings;
-- preserve optional concepts/tags for coaching;
-- avoid forcing deep classification on every imported question.
-
-## Stage 13 — Optional Downloadable Distribution
-
-- evaluate a desktop wrapper around the browser-centered application;
-- build separately for Windows/macOS as required;
-- preserve one product behavior contract;
-- do not restore old Tkinter merely because it is available in history.
+- create a uniquely named fixed release branch from the approved commit;
+- create a release tag only after the release identity is deliberately chosen;
+- open a pull request into public `master`;
+- inspect the exact release scope;
+- merge without rewriting prior release history;
+- verify GitHub Pages;
+- preserve the previous release until the new deployment is confirmed;
+- record the final release boundary.
 
 ---
 
-# 12. File Classification Summary
+# 11. Later Architectural Sequence
 
-## Keep and evolve
+After the hospital milestone is safely released, later work may proceed in focused stages:
 
-- active compiler pipeline files;
-- official Packs;
-- browser application;
-- medication data/cards/assets;
-- core compiler tests;
-- approved visual assets;
-- README and docs after replacement.
+1. strengthen browser behavior tests;
+2. design and migrate permanent question identity;
+3. separate quiz rules from DOM operations;
+4. add Shuffle Questions and Keep Source Order choice;
+5. add Completion and Ordered Response support;
+6. remove verified legacy desktop and terminal pathways after equivalent behavior is protected;
+7. remove the obsolete DOCX prototype route;
+8. improve compiler quarantine and exact-duplicate handling;
+9. define and test the offline contract;
+10. refine the inner quiz-builder visual system;
+11. add source adapters only from real use cases;
+12. enrich medication and analytics features later;
+13. evaluate browser-centered Windows and macOS wrappers later.
 
-## Keep temporarily as behavioral reference, then remove
-
-- old Python study modules;
-- desktop-related tests that describe still-approved behavior;
-- old desktop packaging configuration;
-- old Windows workflow.
-
-## Verified removal candidates
-
-- empty tests;
-- old DOCX tokenizer/parser route;
-- abandoned terminal/Tkinter client after browser protections exist;
-- desktop updater/version code;
-- PyInstaller build spec;
-- Windows build workflow.
-
-## Historical reference only
-
-- `origin/feat/home-quiz-panel-clean`;
-- frozen tag `before-continuity-rebuild-2026-07-20`;
-- prior Architecture Bible and Restart Packet versions in Git history.
+This sequence may change when evidence changes, but broad rewrites remain prohibited.
 
 ---
 
-# 13. Deferred Feature Backlog
+# 12. Deferred Feature Backlog
 
-These are not current implementation commitments:
+Deferred items include:
 
-- DOCX/TXT source adapters;
-- richer topic and medication tags;
-- character-led result coaching;
-- animated home characters;
-- cut scenes or clipboard result screens;
+- permanent logo and branding treatment;
+- inner quiz-builder visual rebuild;
+- nurse characters or nurse animation;
+- character-led coaching;
+- cut scenes;
 - multi-frame book-opening animation;
-- independent medication master library;
-- complete first-install offline support;
-- downloadable Windows/macOS wrappers;
+- DOCX and TXT adapters;
 - OCR ingestion;
-- broader analytics and adaptive study recommendations.
+- complete first-install offline support;
+- independent medication master library;
+- richer concepts and analytics;
+- downloadable Windows and macOS wrappers.
 
-Deferred does not mean rejected. It means not allowed to interrupt the current stabilization sequence.
-
----
-
-# 14. Rejected or Superseded Directions
-
-## Preserve old desktop compatibility
-
-Rejected. There are no meaningful installed legacy users whose compatibility should shape the architecture.
-
-## Maintain separate desktop and browser quiz engines indefinitely
-
-Rejected as the preferred direction. The browser is active; future downloads should reuse browser-centered behavior.
-
-## Keep old code because it might be useful someday
-
-Rejected. Git history preserves it. Active code must justify its current role.
-
-## Preserve publisher, edition, page, and detailed source provenance in final Packs
-
-Rejected as a general requirement. The Pack is the authority boundary. Temporary import diagnostics may retain source context while needed.
-
-## Remove near-duplicate questions automatically
-
-Rejected. Only genuine exact duplicates are candidates for automatic removal.
-
-## Build a new parser for every book
-
-Rejected. Real source-specific evidence may justify narrowly scoped cleaning/recovery rules, but all sources feed the same architecture.
-
-## Start with a broad rewrite
-
-Rejected. Migration proceeds through protected, testable stages.
+Deferred does not mean rejected. It means these items must not interrupt the current stabilization and release sequence.
 
 ---
 
-# 15. Current Priority Order
+# 13. Rejected or Superseded Directions
 
-1. Complete documentation and continuity baseline.
-2. Protect active browser behavior with automated tests.
-3. Design and implement permanent question identity.
-4. Separate browser quiz behavior from GUI enough to test and evolve safely.
-5. Add Shuffle/Keep Source Order.
-6. Add browser Completion and Ordered Response support.
-7. Remove verified legacy desktop/study and old DOCX pathways.
-8. Implement conservative exact deduplication and stronger quarantine identity.
-9. Define reliable offline behavior.
-10. Consolidate visual system without changing its identity.
-11. Revisit medication architecture and optional enrichment.
-12. Add source formats and downloadable wrappers only when justified.
+The following directions are rejected or superseded:
 
----
-
-# 16. Documentation Outputs From This Plan
-
-## Architecture Bible
-
-Should contain durable technical truth:
-
-- product definition;
-- authority model;
-- approved responsibility map;
-- Pack and identity model;
-- browser-centered architecture;
-- repository boundaries;
-- permanent architectural principles.
-
-It should not contain temporary branch state, exact next commands, or dated session history.
-
-## Restart Packet
-
-Should contain current operational truth:
-
-- continuity note and frozen baseline;
-- current branch and remotes;
-- current documentation milestone;
-- approved migration sequence;
-- completed/active/deferred status;
-- exact next safe step;
-- verification, commit, push, and stopping procedures;
-- permanent user workflow preferences relevant to development.
-
-It must replace stale state rather than append dated addenda.
-
-## README
-
-Should be concise and user-facing:
-
-- what PrepFlow does;
-- how to open the active browser version;
-- how study sessions work today;
-- current subjects;
-- current limitations accurately stated.
-
-It should not advertise abandoned desktop downloads or unsupported question types.
-
-## Question Lifecycle Document
-
-Its useful content is redundant with the Architecture Bible. Absorb the permanent question-lifecycle material into the Architecture Bible, then delete `docs/QUESTION_LIFECYCLE.md` in a later documentation cleanup commit.
+- preserving unreleased desktop compatibility as an architectural constraint;
+- maintaining separate desktop and browser quiz engines indefinitely;
+- keeping old code only because it may be useful someday;
+- requiring detailed publisher and page provenance in every finished question;
+- automatically deleting near-duplicate questions;
+- building a separate parser for every book;
+- starting with a broad rewrite;
+- treating the old city-and-nurses homepage as the active visual target;
+- starting nurse-sprite work merely because dated documentation once listed it next;
+- flattening live application state into the hospital artwork;
+- making exploratory CSS override stacks permanent without consolidation;
+- force-pushing public master, frozen release branches, or release tags.
 
 ---
 
-# 17. Safe Stop Rule
+# 14. Release Preservation
 
-Do not begin invasive code cleanup in the same session unless:
+The durable release policy is:
 
-- this decision map is committed;
-- the new Architecture Bible is committed;
-- the new Restart Packet is committed;
-- the README no longer misstates current behavior;
-- the exact next implementation stage is recorded;
-- the working tree and remote state are known.
+```text
+docs/RELEASE_PRESERVATION_POLICY.md
+```
 
-The project may safely stop after any committed documentation stage. It should not stop halfway through a bulk deletion or identity migration without a recorded rollback point and next action.
+Every major public update must preserve:
+
+1. the active local development state;
+2. a synchronized private and public-mirror development checkpoint;
+3. a frozen release branch and tag for the approved public release.
+
+The previous public release remains preserved until the replacement deployment is verified.
 
 ---
 
-# 18. Change Control
+# 15. Change Control
 
-This document records the July 2026 continuity-rebuild decisions.
+Update this plan when the migration sequence, major cleanup boundary, or release strategy changes.
 
-Update it only when:
+Do not place the next terminal command or transient branch hash here. Those belong in `docs/RESTART_PACKET.md`.
 
-- Charlie changes an approved product decision;
-- implementation evidence disproves a finding;
-- the migration sequence materially changes;
-- a deferred item becomes active;
-- a stage is completed and its outcome affects later stages.
-
-Do not append a dated diary. Replace stale status in the relevant section.
+Historical evidence remains available in Git history, dated continuity documents, and the frozen tag `before-continuity-rebuild-2026-07-20`.
