@@ -59,7 +59,7 @@ Do not move, reuse, rewrite, or continue ordinary development on that frozen rel
 
 Use this order:
 
-1. Charlie's explicit approval or correction.
+1. The project owner's explicit approval or correction.
 2. The rendered local application for visual and interaction truth.
 3. The local repository and working tree.
 4. This restart packet.
@@ -181,7 +181,7 @@ Verified integrity before release preparation:
 A pre-cleanup safety copy exists outside the repository:
 
 ```text
-~/prepflow-local-backups/hospital-home-pre-cleanup/
+External pre-cleanup backup stored outside the repository.
 ```
 
 Cleanup is integral, but it must be a separate protected milestone. Do not casually rewrite the working cascade before release.
@@ -269,7 +269,7 @@ Read continuity
 Permanent rules:
 
 - one focused change at a time;
-- when Charlie says `next`, provide the next executable step;
+- when the user says `next`, provide the next executable step;
 - do not ask for code already available through GitHub or the local project;
 - do not perform speculative redesigns;
 - do not claim tests, pushes, previews, merges, or approvals that were not verified;

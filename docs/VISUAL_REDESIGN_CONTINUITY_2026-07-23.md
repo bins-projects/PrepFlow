@@ -55,7 +55,7 @@ Public site: https://bins-projects.github.io/PrepFlow/web/
 
 The merge commit hash differs from the source snapshot because GitHub created a merge commit. The deployed source tree corresponds to `648bcfb`.
 
-Charlie opened the public site after deployment and confirmed that it looked great.
+The project owner opened the public site after deployment and confirmed that the release looked correct.
 
 Daily work continues on:
 
