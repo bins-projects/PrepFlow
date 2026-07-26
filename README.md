@@ -2,7 +2,7 @@
 
 PrepFlow is a browser-based nursing study application built around organized question Packs.
 
-It lets you choose chapters, answer one question at a time, review the correct answer and rationale, and repeat missed questions until they are mastered.
+It lets students build a quiz from selected nursing chapters, study one question at a time, review the correct answer and rationale, and repeat missed questions until they are mastered.
 
 ## Open PrepFlow
 
@@ -30,18 +30,30 @@ PrepFlow can be installed from a supported browser so it opens in its own window
 3. Name it **PrepFlow** and select **Add**.
 4. Open it from the Dock, Applications, or Spotlight.
 
-## How to Study
+## How to Build a Quiz
 
-1. Choose a study category.
-2. Select one or more chapters.
-3. Add chapters from another category when needed.
-4. Choose a block size.
-5. Start the quiz.
-6. Submit each answer and review the feedback.
-7. Complete the block.
-8. Repeat missed questions until they are mastered.
+1. Open the PrepFlow Teaching Hospital homepage.
+2. Select **Start Here!** or **Build Your Quiz**.
+3. Choose Fundamentals, Pharm, or Medical-Surgical.
+4. Select one or more chapters.
+5. Use **Done** to return to the quiz builder.
+6. Add chapters from other books when needed.
+7. Choose the quiz settings and block size.
+8. Start the quiz.
 
-PrepFlow automatically saves an unfinished session in one local save slot so it can be resumed later.
+The three subject books are located inside the dedicated quiz-builder screen rather than acting as the homepage controls.
+
+## Saved Sessions
+
+PrepFlow automatically saves one unfinished session locally.
+
+When a saved quiz exists, the hospital homepage shows:
+
+- the current block as **Block X of Y**;
+- **Continue Quiz**;
+- **Build a New Quiz**.
+
+Starting a new quiz replaces the existing saved session only after the user chooses that action.
 
 ## Study Library
 
@@ -50,6 +62,8 @@ PrepFlow currently includes:
 - Fundamentals
 - Pharm
 - Medical-Surgical
+
+The hospital homepage also provides access to the **Drug Library** through the References sign.
 
 ## Question Types
 
@@ -72,6 +86,7 @@ During a session, PrepFlow:
 - tracks first-pass performance;
 - places missed questions into a review queue;
 - repeats missed questions until answered correctly;
+- shows a block summary;
 - displays final first-pass results after the session is complete.
 
 Selected questions currently use one stable shuffled order for the session.
@@ -82,4 +97,4 @@ PrepFlow also includes a compiler that turns deliberately selected educational s
 
 The browser application is the active user-facing product. Future downloadable editions should reuse the browser-centered application rather than maintain a separate study system.
 
-Internal architecture and development continuity are documented under `docs/`.
+Internal architecture, art rules, release preservation, and development continuity are documented under `docs/`.
