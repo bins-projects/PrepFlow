@@ -42,9 +42,9 @@ The public `master` hash differs because GitHub created merge commit `8e8e85b` w
 - the homepage was inspected in the real local browser;
 - all three books opened their corresponding chapter-selection screens;
 - zero-selection badges remained hidden;
-- the approved artwork and spacing were visually accepted by Charlie;
+- the approved artwork and spacing were visually accepted by the project owner;
 - local, private-development, and public-mirror development branches matched before release;
-- the public site was opened after deployment and Charlie confirmed that it looked great.
+- the project owner opened and approved the public site after deployment.
 
 ## Development continues separately
 
