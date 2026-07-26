@@ -1,9 +1,17 @@
 (function () {
   function resumeDescription(saved) {
-    const subject = saved.currentSubject || "Custom Quiz";
-    const mode = saved.reviewMode ? "reviewing missed questions" : "in progress";
+    const questionCount = Array.isArray(saved.sessionQuestions)
+      ? saved.sessionQuestions.length
+      : 0;
 
-    return `${subject} — Block ${saved.blockNumber}, ${mode}.`;
+    const blockSize = Number(saved.sessionBlockSize) || 15;
+    const totalBlocks = Math.max(1, Math.ceil(questionCount / blockSize));
+    const currentBlock = Math.min(
+      Math.max(Number(saved.blockNumber) || 1, 1),
+      totalBlocks
+    );
+
+    return `Block ${currentBlock} of ${totalBlocks}`;
   }
 
   function resumeAriaLabel(description) {

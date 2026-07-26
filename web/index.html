@@ -25,6 +25,8 @@
   <link rel="stylesheet" href="launcher-box-fix.css?v=20260721-1">
   <link rel="stylesheet" href="half-width-composition.css?v=20260723-1">
   <link rel="stylesheet" href="approved-book-buttons.css?v=20260724-books-1">
+  <link rel="stylesheet" href="hospital-home.css?v=20260726-text-glow-1">
+  <link rel="stylesheet" href="quiz-builder-screen.css?v=20260726-structure-1">
 </head>
 <body>
   <main class="app-shell">
@@ -33,51 +35,37 @@
         <div class="pixel-logo" aria-label="PrepFlow">
           <span class="prep">Prep</span><span class="flow">Flow</span>
         </div>
-        <p class="pixel-tagline">Study. Practice. Master.</p>
+        <p class="pixel-tagline">Prepare. Practice. Progress.</p>
 
         <section id="home-launcher" class="home-launcher" aria-label="Quiz controls">
-          <section id="quiz-builder" class="launcher-view launcher-setup" aria-label="Quiz setup">
+          <section id="quiz-builder" class="launcher-view launcher-setup" aria-label="Create a quiz">
             <div class="home-quiz-copy">
-              <strong>Build Your Quiz</strong>
-              <span>Select chapters from the books below, then start your quiz.</span>
-              <small id="builder-selection-count">0 chapters selected</small>
-              <span id="builder-book-count" class="sr-only">Open a book to choose chapters</span>
+              <strong class="home-entry-heading">Start Here!</strong>
+              <p class="home-entry-copy">
+                Build a custom quiz with your chosen<br>
+                subjects, chapters, and settings.
+              </p>
             </div>
-
-            <label class="builder-block-size home-block-size">
-              <span>Questions per block</span>
-              <select id="global-block-size">
-                <option value="1">1</option>
-                <option value="3">3</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15" selected>15</option>
-              </select>
-            </label>
-
-            <label class="order-mode-toggle" for="shuffle-questions">
-              <span>Source Order</span>
-              <input id="shuffle-questions" type="checkbox" checked>
-              <span class="order-mode-track" aria-hidden="true"><span></span></span>
-              <span>Shuffle</span>
-            </label>
-
-            <div class="launcher-actions">
-              <button id="clear-selections" class="home-clear-selections" disabled>Clear Selection</button>
-              <button id="build-quiz" class="home-start-quiz" disabled>Start Quiz <span aria-hidden="true">▶</span></button>
-            </div>
+            <button id="open-quiz-builder" class="home-start-quiz">
+              <span class="command-label">Build Your Quiz</span>
+              <span aria-hidden="true">▶</span>
+            </button>
           </section>
 
           <section id="resume-panel" class="launcher-view launcher-resume" aria-label="Saved quiz" hidden>
             <div class="resume-copy">
-              <span class="resume-star" aria-hidden="true">★</span>
               <div>
                 <strong>Quiz in Progress</strong>
                 <p id="resume-description"></p>
               </div>
             </div>
-            <button id="resume-session" class="home-start-quiz">Continue Quiz <span aria-hidden="true">▶</span></button>
-            <button id="discard-session" class="home-clear-selections">Start Over</button>
+            <button id="resume-session" class="home-start-quiz">
+              <span class="command-label">Continue Quiz</span>
+              <span aria-hidden="true">▶</span>
+            </button>
+            <button id="discard-session" class="home-clear-selections">
+              <span class="command-label">Build a New Quiz</span>
+            </button>
           </section>
         </section>
 
@@ -86,37 +74,83 @@
           <span>Keep building.<br>Keep winning.</span>
         </aside>
 
-        <button id="open-drug-reference" class="pixel-callout reference-library-callout" aria-label="Open Reference Library">
+        <button id="open-drug-reference" class="reference-library-callout" aria-label="Open Drug Library">
           <span class="reference-callout-icon" aria-hidden="true">▤</span>
           <span class="reference-callout-copy">
-            <strong>Reference Library</strong>
-            <small>Drug guides &amp; clinical tools</small>
+            <strong>Drug Library</strong>
+            <small>Open medication references</small>
           </span>
           <span class="reference-callout-arrow" aria-hidden="true">▶</span>
         </button>
       </section>
     </header>
 
-    <section class="subjects" aria-label="Quiz library">
-      <button class="subject-card fundamentals" data-subject="Fundamentals" data-pack="../packs/fundamentals.prepflow.json" aria-label="Open Fundamentals — 1,040 questions">
-        <img class="approved-book-art" src="images/book-sprite-preview/prepflow-fundamentals-book.png" alt="" aria-hidden="true">
-        <span class="sr-only">Fundamentals — 1,040 questions. Choose chapters.</span>
-      </button>
+    <section id="quiz-builder-screen" class="quiz-builder-screen" hidden aria-label="Quiz builder">
+      <div class="quiz-builder-window">
+        <header class="quiz-builder-header">
+          <div>
+            <h2>Build Your Quiz</h2>
+            <p>Choose one or more books, select chapters, then customize your quiz.</p>
+          </div>
+          <button id="close-quiz-builder" class="secondary-button">Close</button>
+        </header>
 
-      <button class="subject-card pharm" data-subject="Pharm" data-pack="../packs/pharmacy.prepflow.json" aria-label="Open Pharm — 1,238 questions">
-        <img class="approved-book-art" src="images/book-sprite-preview/prepflow-pharm-book.png" alt="" aria-hidden="true">
-        <span class="sr-only">Pharm — 1,238 questions. Choose chapters.</span>
-      </button>
+        <section class="subjects" aria-label="Quiz library">
+          <button class="subject-card fundamentals" data-subject="Fundamentals" data-pack="../packs/fundamentals.prepflow.json" aria-label="Open Fundamentals — 1,040 questions">
+            <img class="approved-book-art" src="images/book-sprite-preview/prepflow-fundamentals-book.png" alt="" aria-hidden="true">
+            <span class="sr-only">Fundamentals — 1,040 questions. Choose chapters.</span>
+          </button>
 
-      <button class="subject-card med-surg" data-subject="Medical-Surgical" data-pack="../packs/medical_surgical.prepflow.json" aria-label="Open Med-Surg — 1,443 questions">
-        <img class="approved-book-art" src="images/book-sprite-preview/prepflow-medsurg-book.png" alt="" aria-hidden="true">
-        <span class="sr-only">Med-Surg — 1,443 questions. Choose chapters.</span>
-      </button>
+          <button class="subject-card pharm" data-subject="Pharm" data-pack="../packs/pharmacy.prepflow.json" aria-label="Open Pharm — 1,238 questions">
+            <img class="approved-book-art" src="images/book-sprite-preview/prepflow-pharm-book.png" alt="" aria-hidden="true">
+            <span class="sr-only">Pharm — 1,238 questions. Choose chapters.</span>
+          </button>
+
+          <button class="subject-card med-surg" data-subject="Medical-Surgical" data-pack="../packs/medical_surgical.prepflow.json" aria-label="Open Med-Surg — 1,443 questions">
+            <img class="approved-book-art" src="images/book-sprite-preview/prepflow-medsurg-book.png" alt="" aria-hidden="true">
+            <span class="sr-only">Med-Surg — 1,443 questions. Choose chapters.</span>
+          </button>
+        </section>
+
+        <section class="builder-controls" aria-label="Quiz settings">
+          <div class="builder-summary">
+            <strong id="builder-selection-count">0 chapters selected</strong>
+            <span id="builder-book-count">Open a book to choose chapters</span>
+          </div>
+
+          <label class="builder-block-size">
+            <span>Questions per block</span>
+            <select id="global-block-size">
+              <option value="1">1</option>
+              <option value="3">3</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15" selected>15</option>
+            </select>
+          </label>
+
+          <label class="order-mode-toggle" for="shuffle-questions">
+            <span>Source Order</span>
+            <input id="shuffle-questions" type="checkbox" checked>
+            <span class="order-mode-track" aria-hidden="true"><span></span></span>
+            <span>Shuffle</span>
+          </label>
+
+          <div class="builder-actions">
+            <button id="clear-selections" class="secondary-button" disabled>
+              Clear Selection
+            </button>
+            <button id="build-quiz" class="start-button" disabled>
+              Start Quiz <span aria-hidden="true">▶</span>
+            </button>
+          </div>
+        </section>
+      </div>
     </section>
 
     <section id="chapter-screen" class="chapter-screen" hidden>
       <div class="chapter-header">
-        <button id="back-button" class="secondary-button">← Close Book</button>
+        <button id="back-button" class="secondary-button">← Back to Quiz Builder</button>
         <div><h2 id="chapter-title"></h2><p>Choose one or more chapters</p></div>
       </div>
 
@@ -132,7 +166,8 @@
         <span id="selection-count">0 chapters selected</span>
       </div>
       <div id="chapter-list" class="chapter-list"></div>
-      <button id="start-button" class="start-button" disabled>Start Studying</button>
+      <button id="done-chapters" class="start-button">Done — Return to Builder</button>
+      <button id="start-button" class="start-button" disabled hidden>Start Studying</button>
     </section>
 
     <section id="drug-reference-screen" class="drug-reference-screen" hidden>
@@ -197,7 +232,7 @@
   <script src="review-rules.js?v=20260721-1"></script>
   <script src="navigation-rules.js?v=20260721-1"></script>
   <script src="selection-rules.js?v=20260721-1"></script>
-  <script src="resume-rules.js?v=20260721-1"></script>
+  <script src="resume-rules.js?v=20260726-progress-1"></script>
   <script src="display-rules.js?v=20260721-1"></script>
   <script src="order-rules.js?v=20260721-1"></script>
   <script src="app.js?v=20260724-books-1"></script>

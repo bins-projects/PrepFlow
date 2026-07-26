@@ -4,6 +4,10 @@ const hero = document.querySelector(".hero");
 const subjects = document.querySelector(".subjects");
 const status = document.querySelector("#status");
 const homeLauncher = document.querySelector("#home-launcher");
+const quizBuilderScreen = document.querySelector("#quiz-builder-screen");
+const openQuizBuilderButton = document.querySelector("#open-quiz-builder");
+const closeQuizBuilderButton = document.querySelector("#close-quiz-builder");
+const doneChaptersButton = document.querySelector("#done-chapters");
 
 const resumePanel = document.querySelector("#resume-panel");
 const resumeDescription = document.querySelector("#resume-description");
@@ -122,11 +126,6 @@ function refreshResumePanel() {
 
   quizBuilder.hidden = hasSavedSession;
   resumePanel.hidden = !hasSavedSession;
-  subjects.classList.toggle("saved-session-active", hasSavedSession);
-
-  document.querySelectorAll(".subject-card").forEach((book) => {
-    book.disabled = hasSavedSession;
-  });
 
   if (!saved) {
     resumeDescription.textContent = "";
@@ -147,6 +146,7 @@ function hideAllScreens() {
   hero.hidden = true;
   subjects.hidden = true;
   homeLauncher.hidden = true;
+  quizBuilderScreen.hidden = true;
   quizBuilder.hidden = true;
   resumePanel.hidden = true;
   chapterScreen.hidden = true;
@@ -199,7 +199,6 @@ function showSubjects() {
   hideAllScreens();
 
   hero.hidden = false;
-  subjects.hidden = false;
   homeLauncher.hidden = false;
   status.hidden = true;
 
@@ -207,6 +206,22 @@ function showSubjects() {
   status.textContent = PrepFlowSelectionRules.homeStatusText(selected);
 
   refreshResumePanel();
+}
+
+function showQuizBuilder() {
+  document.body.classList.remove("book-open");
+  document.body.classList.add("builder-open");
+
+  hero.hidden = false;
+  homeLauncher.hidden = true;
+  quizBuilderScreen.hidden = false;
+  chapterScreen.hidden = true;
+  quizScreen.hidden = true;
+  blockSummary.hidden = true;
+  status.hidden = true;
+
+  subjects.hidden = false;
+  updateSelectionStatus();
 }
 
 async function loadPack(packPath) {
@@ -299,7 +314,9 @@ async function showChapters(button) {
       button.classList.contains("pharm") ? "pharm" :
       "med-surg";
 
+    quizBuilderScreen.hidden = true;
     chapterScreen.hidden = false;
+    document.body.classList.remove("builder-open");
     document.body.classList.add("book-open");
     status.hidden = true;
     chapterList.scrollTop = 0;
@@ -724,11 +741,18 @@ summaryAction.addEventListener("click", () => {
   showSubjects();
 });
 
+openQuizBuilderButton.addEventListener("click", showQuizBuilder);
+closeQuizBuilderButton.addEventListener("click", () => {
+  document.body.classList.remove("builder-open");
+  showSubjects();
+});
+doneChaptersButton.addEventListener("click", showQuizBuilder);
+
 document.querySelectorAll(".subject-card").forEach((button) => {
   button.addEventListener("click", () => showChapters(button));
 });
 
-document.querySelector("#back-button").addEventListener("click", showSubjects);
+document.querySelector("#back-button").addEventListener("click", showQuizBuilder);
 document.querySelector("#exit-quiz").addEventListener("click", showSubjects);
 document.querySelector("#summary-exit").addEventListener("click", showSubjects);
 
@@ -760,7 +784,7 @@ resumeSessionButton.addEventListener("click", resumeSavedSession);
 
 discardSessionButton.addEventListener("click", () => {
   const confirmed = window.confirm(
-    "Start over and permanently delete your saved quiz progress?"
+    "Starting a new quiz will replace your saved quiz progress. Continue?"
   );
 
   if (!confirmed) {
@@ -769,7 +793,7 @@ discardSessionButton.addEventListener("click", () => {
 
   clearSavedSession();
   selectedChapters.clear();
-  showSubjects();
+  showQuizBuilder();
 });
 
 startButton.addEventListener("click", startQuiz);

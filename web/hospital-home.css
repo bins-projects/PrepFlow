@@ -1,0 +1,1860 @@
+/* PrepFlow Teaching Hospital final composite background. */
+
+.pixel-stage {
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(4, 7, 26, .05) 0 55%,
+      rgba(5, 8, 30, .16) 94%,
+      rgba(7, 11, 36, .22) 100%
+    ),
+    url("images/home-hospital/prepflow-home-background-final.png")
+      center center / cover no-repeat,
+    #070b24 !important;
+}
+
+.pixel-logo,
+.pixel-tagline {
+  display: none !important;
+}
+
+/*
+  The final composite already contains both architectural signs.
+  Keep the live launcher and reference controls separate from the artwork.
+  Their exact placement will be rebuilt after the clean background is verified.
+*/
+
+/* Live Drug Library control inside the final right REFERENCES sign. */
+#open-drug-reference.reference-library-callout {
+  position: absolute !important;
+  z-index: 20 !important;
+
+  right: 2.8% !important;
+  left: auto !important;
+  top: auto !important;
+  bottom: 14.5% !important;
+
+  width: 11.4% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 4.5rem !important;
+  margin: 0 !important;
+  padding: .7rem .45rem !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border: 2px solid #d9aa4e !important;
+  border-radius: .25rem !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(72, 44, 18, .78),
+      rgba(16, 12, 20, .96) 42%,
+      rgba(8, 8, 15, .98)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 218, 132, .16),
+    inset 0 0 18px rgba(255, 177, 70, .10),
+    0 0 10px rgba(255, 170, 64, .22) !important;
+
+  color: #f5d584 !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  text-align: center !important;
+  text-transform: none !important;
+  cursor: pointer !important;
+
+  transform: none !important;
+  transition:
+    transform 140ms ease,
+    filter 140ms ease,
+    box-shadow 140ms ease !important;
+}
+
+#open-drug-reference .reference-callout-icon,
+#open-drug-reference .reference-callout-copy small,
+#open-drug-reference .reference-callout-arrow {
+  display: none !important;
+}
+
+#open-drug-reference .reference-callout-copy {
+  display: block !important;
+  width: 100% !important;
+}
+
+#open-drug-reference .reference-callout-copy strong {
+  display: block !important;
+  color: #f7dc91 !important;
+  font-size: clamp(.72rem, 1vw, 1.05rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  letter-spacing: .08em !important;
+  text-shadow:
+    0 1px 0 #4b260d,
+    0 0 7px rgba(255, 184, 74, .35) !important;
+}
+
+#open-drug-reference:hover,
+#open-drug-reference:focus-visible {
+  outline: 2px solid #fff0b2 !important;
+  outline-offset: 2px !important;
+  transform: translateY(-2px) !important;
+  filter: brightness(1.12) !important;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 230, 161, .22),
+    inset 0 0 20px rgba(255, 184, 74, .16),
+    0 0 15px rgba(255, 177, 63, .38) !important;
+}
+
+#open-drug-reference:active {
+  transform: translateY(1px) !important;
+  filter: brightness(.95) !important;
+}
+
+/* Authoritative 16:9 scene canvas.
+   Artwork and live controls now scale together. */
+html,
+body {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background: #050817 !important;
+}
+
+.app-shell,
+.hero {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.hero {
+  display: grid !important;
+  place-items: center !important;
+  overflow: hidden !important;
+}
+
+.pixel-stage {
+  position: relative !important;
+
+  width: min(100vw, calc(100vh * 16 / 9)) !important;
+  height: min(100vh, calc(100vw * 9 / 16)) !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  aspect-ratio: 16 / 9 !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+
+  background-size: 100% 100% !important;
+  background-position: center !important;
+}
+
+/* Keep the Drug Library button in scene coordinates. */
+#open-drug-reference.reference-library-callout {
+  right: 1.5% !important;
+  bottom: 22.5% !important;
+  width: 11.2% !important;
+  min-height: 8.2% !important;
+}
+
+/* Final fit inside the painted right display opening. */
+#open-drug-reference.reference-library-callout {
+  right: 3.4% !important;
+  bottom: 22.5% !important;
+  width: 9.4% !important;
+  min-height: 5.8% !important;
+  padding: .35rem .25rem !important;
+}
+
+#open-drug-reference .reference-callout-copy strong {
+  font-size: clamp(.58rem, .78vw, .88rem) !important;
+  letter-spacing: .045em !important;
+  white-space: nowrap !important;
+}
+
+/* Integrate the live Drug Library control with the painted display opening. */
+#open-drug-reference.reference-library-callout {
+  right: 1.25% !important;
+  bottom: 13.4% !important;
+  width: 11.9% !important;
+  min-height: 17.5% !important;
+  padding: 0 !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(24, 18, 20, .22),
+      rgba(7, 7, 13, .46)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 16px rgba(255, 183, 68, .08) !important;
+}
+
+#open-drug-reference .reference-callout-copy {
+  display: grid !important;
+  place-items: center !important;
+  height: 100% !important;
+}
+
+#open-drug-reference .reference-callout-copy strong {
+  font-size: clamp(.64rem, .9vw, 1rem) !important;
+  white-space: nowrap !important;
+}
+
+#open-drug-reference:hover,
+#open-drug-reference:focus-visible {
+  outline: 2px solid rgba(255, 228, 155, .9) !important;
+  outline-offset: -5px !important;
+  transform: none !important;
+  filter: brightness(1.12) !important;
+  box-shadow:
+    inset 0 0 22px rgba(255, 187, 75, .18) !important;
+}
+
+/* Compact Drug Library button inside the REFERENCES panel. */
+#open-drug-reference.reference-library-callout {
+  right: 3.4% !important;
+  bottom: 31.5% !important;
+
+  width: 9.2% !important;
+  height: 4.8% !important;
+  min-height: 0 !important;
+
+  padding: 0 .35rem !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#open-drug-reference .reference-callout-copy {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+#open-drug-reference .reference-callout-copy strong {
+  display: block !important;
+  font-size: clamp(.78rem, 1.05vw, 1.15rem) !important;
+  line-height: 1 !important;
+  letter-spacing: .045em !important;
+  white-space: nowrap !important;
+}
+
+#open-drug-reference:hover,
+#open-drug-reference:focus-visible {
+  outline: 1px solid rgba(255, 224, 145, .72) !important;
+  outline-offset: 3px !important;
+  background: rgba(255, 193, 83, .06) !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: brightness(1.15) !important;
+}
+
+#open-drug-reference:active {
+  transform: translateY(1px) !important;
+  filter: brightness(.92) !important;
+}
+
+/* Strip all remaining button chrome: text-only live control. */
+#open-drug-reference,
+#open-drug-reference:hover,
+#open-drug-reference:focus,
+#open-drug-reference:focus-visible,
+#open-drug-reference:active {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+
+  border: 0 !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  border-radius: 0 !important;
+
+  background: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+
+  transform: none !important;
+  text-decoration: none !important;
+}
+
+#open-drug-reference::before,
+#open-drug-reference::after,
+#open-drug-reference .reference-callout-copy::before,
+#open-drug-reference .reference-callout-copy::after {
+  content: none !important;
+  display: none !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+#open-drug-reference:hover .reference-callout-copy strong,
+#open-drug-reference:focus .reference-callout-copy strong,
+#open-drug-reference:focus-visible .reference-callout-copy strong {
+  color: #fff1b5 !important;
+  text-shadow:
+    0 1px 0 #3b210c,
+    0 0 8px rgba(255, 203, 105, .9),
+    0 0 15px rgba(255, 173, 55, .5) !important;
+}
+
+/* Final Drug Library horizontal centering adjustment. */
+#open-drug-reference.reference-library-callout {
+  right: 2.8% !important;
+}
+
+/* Hidden application screens must fully disappear.
+   Prevent homepage layout rules from overriding the hidden attribute. */
+.hero[hidden],
+.subjects[hidden],
+#home-launcher[hidden] {
+  display: none !important;
+}
+
+
+/* Final left-sign homepage controls before consolidation. */
+#home-launcher {
+  position: absolute !important;
+  z-index: 20 !important;
+
+  left: 4.75% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 20.2% !important;
+
+  width: 22.2% !important;
+  height: 20.8% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+
+  margin: 0 !important;
+  padding: 1.15% 1.25% !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  overflow: hidden !important;
+}
+
+#home-launcher::before,
+#home-launcher::after {
+  content: none !important;
+  display: none !important;
+}
+
+#home-launcher .launcher-view {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+#quiz-builder.launcher-setup:not([hidden]) {
+  display: grid !important;
+  grid-template-rows: 1fr auto !important;
+  gap: clamp(.45rem, .8vw, .85rem) !important;
+  align-items: center !important;
+}
+
+#home-launcher .home-quiz-copy {
+  display: grid !important;
+  align-content: center !important;
+  gap: clamp(.2rem, .36vw, .38rem) !important;
+  text-align: center !important;
+}
+
+#home-launcher .home-quiz-copy strong {
+  color: #f3d486 !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(.72rem, 1.15vw, 1.3rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: .035em !important;
+  text-shadow:
+    0 1px 0 #39200d,
+    0 0 7px rgba(255, 188, 75, .26) !important;
+}
+
+#home-launcher .home-quiz-copy span {
+  color: #d7c39c !important;
+  font-size: clamp(.47rem, .66vw, .76rem) !important;
+  line-height: 1.3 !important;
+  letter-spacing: .02em !important;
+}
+
+#open-quiz-builder {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+
+  width: 82% !important;
+  min-width: 0 !important;
+  height: clamp(1.8rem, 2.85vw, 3rem) !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 clamp(.5rem, .8vw, .85rem) !important;
+
+  border: 1px solid rgba(224, 174, 77, .72) !important;
+  border-radius: .15rem !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(91, 57, 22, .76),
+      rgba(35, 23, 17, .91)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 224, 153, .08),
+    inset 0 -4px 8px rgba(0, 0, 0, .24) !important;
+
+  color: #f9dda0 !important;
+  font-size: clamp(.54rem, .78vw, .9rem) !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: .055em !important;
+  white-space: nowrap !important;
+  text-shadow: 0 1px 0 #311b0b !important;
+
+  transform: none !important;
+  cursor: pointer !important;
+}
+
+#open-quiz-builder:hover,
+#open-quiz-builder:focus-visible {
+  outline: 1px solid rgba(255, 231, 168, .9) !important;
+  outline-offset: 2px !important;
+  color: #fff2c1 !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(119, 75, 29, .82),
+      rgba(43, 28, 18, .94)
+    ) !important;
+  box-shadow:
+    inset 0 0 12px rgba(255, 192, 77, .14),
+    0 0 10px rgba(255, 181, 63, .18) !important;
+  text-shadow:
+    0 1px 0 #311b0b,
+    0 0 8px rgba(255, 202, 104, .58) !important;
+  transform: none !important;
+}
+
+#open-quiz-builder:active {
+  transform: translateY(1px) !important;
+}
+
+/* Compact saved-quiz state inside the painted left display. */
+#resume-panel.launcher-resume:not([hidden]) {
+  display: grid !important;
+  grid-template-rows: auto auto auto !important;
+  align-content: center !important;
+  gap: clamp(.45rem, .75vw, .8rem) !important;
+
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 3% 5% !important;
+
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+#home-launcher .resume-copy {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+#home-launcher .resume-copy > div {
+  display: grid !important;
+  gap: clamp(.15rem, .3vw, .3rem) !important;
+}
+
+#home-launcher .resume-copy strong {
+  display: block !important;
+  margin: 0 !important;
+
+  color: #f3d486 !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(.72rem, 1.12vw, 1.25rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: .035em !important;
+
+  text-shadow:
+    0 1px 0 #39200d,
+    0 0 7px rgba(255, 188, 75, .26) !important;
+}
+
+#resume-description {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  color: #d7c39c !important;
+  font-size: clamp(.46rem, .64vw, .74rem) !important;
+  line-height: 1.2 !important;
+  letter-spacing: .02em !important;
+  text-align: center !important;
+}
+
+#resume-session,
+#discard-session {
+  width: 82% !important;
+  min-width: 0 !important;
+  height: clamp(1.65rem, 2.45vw, 2.65rem) !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 .5rem !important;
+
+  border-radius: .15rem !important;
+  box-shadow: none !important;
+  transform: none !important;
+
+  font-size: clamp(.48rem, .68vw, .78rem) !important;
+  line-height: 1 !important;
+  letter-spacing: .045em !important;
+  white-space: nowrap !important;
+}
+
+#resume-session {
+  border: 1px solid rgba(224, 174, 77, .72) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(91, 57, 22, .76),
+      rgba(35, 23, 17, .91)
+    ) !important;
+  color: #f9dda0 !important;
+}
+
+#discard-session {
+  border: 0 !important;
+  background: transparent !important;
+  color: #d7c39c !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+}
+
+#resume-session:hover,
+#resume-session:focus-visible,
+#discard-session:hover,
+#discard-session:focus-visible {
+  outline: 1px solid rgba(255, 231, 168, .82) !important;
+  outline-offset: 2px !important;
+  color: #fff2c1 !important;
+  text-shadow: 0 0 8px rgba(255, 202, 104, .58) !important;
+}
+
+/* Prevent legacy resume positioning from pulling content outside the sign. */
+#resume-panel,
+#resume-panel *,
+#home-launcher .resume-copy,
+#home-launcher .resume-copy > div,
+#resume-description,
+#resume-session,
+#discard-session {
+  position: static !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+}
+
+#resume-panel.launcher-resume:not([hidden]) {
+  grid-template-rows: auto auto auto !important;
+  align-content: center !important;
+  justify-items: center !important;
+  gap: clamp(.34rem, .58vw, .62rem) !important;
+  padding: 5% 5% 4% !important;
+}
+
+#home-launcher .resume-copy,
+#home-launcher .resume-copy > div {
+  width: 100% !important;
+  min-width: 0 !important;
+  text-align: center !important;
+}
+
+#home-launcher .resume-copy strong {
+  display: block !important;
+}
+
+#resume-description {
+  width: 100% !important;
+  white-space: normal !important;
+}
+
+
+/* Final saved-session hierarchy and tightly matched hit areas. */
+#resume-panel.launcher-resume:not([hidden]) {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: clamp(.45rem, .75vw, .8rem) !important;
+
+  width: 100% !important;
+  height: 100% !important;
+  padding: 5% 6% !important;
+  overflow: visible !important;
+}
+
+#resume-panel .resume-copy,
+#resume-panel .resume-copy > div {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+  text-align: center !important;
+}
+
+#resume-panel .resume-copy strong {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  width: 100% !important;
+  margin: 0 0 clamp(.2rem, .38vw, .4rem) !important;
+
+  color: #f5d98e !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(.9rem, 1.42vw, 1.55rem) !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: .035em !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+
+  text-shadow:
+    0 1px 0 #39200d,
+    0 0 8px rgba(255, 190, 77, .32) !important;
+}
+
+#resume-description {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  width: 100% !important;
+  margin: 0 !important;
+
+  color: #e3c98f !important;
+  font-size: clamp(.68rem, .9vw, 1rem) !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: .035em !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+/* Primary button: visual rectangle and clickable rectangle are identical. */
+#resume-session {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 78% !important;
+  height: clamp(2rem, 3vw, 3.15rem) !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 clamp(.55rem, .85vw, .9rem) !important;
+
+  font-size: clamp(.58rem, .82vw, .94rem) !important;
+}
+
+/* Secondary text action: no oversized invisible hover region. */
+#discard-session {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-self: center !important;
+
+  width: max-content !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: .3rem .45rem !important;
+
+  font-size: clamp(.55rem, .76vw, .86rem) !important;
+}
+
+/* Final saved-session vertical fit inside the painted opening. */
+#resume-panel.launcher-resume:not([hidden]) {
+  justify-content: flex-start !important;
+  padding-top: 15% !important;
+}
+
+#resume-description {
+  margin-top: .12rem !important;
+  font-size: clamp(.76rem, 1vw, 1.08rem) !important;
+}
+
+/* Keep both saved-session actions visible within the left sign. */
+#resume-panel.launcher-resume:not([hidden]) {
+  gap: clamp(.3rem, .52vw, .55rem) !important;
+  padding-top: 12% !important;
+}
+
+#resume-session {
+  height: clamp(1.85rem, 2.7vw, 2.85rem) !important;
+}
+
+#discard-session {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  flex: 0 0 auto !important;
+}
+
+/* Give saved-session actions separate, non-overlapping space. */
+#resume-panel.launcher-resume:not([hidden]) {
+  justify-content: flex-start !important;
+  gap: clamp(.34rem, .55vw, .6rem) !important;
+  padding-top: 9% !important;
+  overflow: visible !important;
+}
+
+#resume-session {
+  flex: 0 0 auto !important;
+}
+
+#discard-session {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: max-content !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: .28rem .45rem !important;
+
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+/* Scale left-sign controls with the fixed 16:9 scene.
+   This preserves the fullscreen composition at smaller window sizes. */
+.pixel-stage {
+  container-type: inline-size !important;
+}
+
+#resume-panel.launcher-resume:not([hidden]) {
+  justify-content: center !important;
+  align-items: center !important;
+
+  gap: .48cqw !important;
+  padding: .85cqw 1.25cqw !important;
+
+  overflow: visible !important;
+}
+
+#resume-panel .resume-copy strong {
+  margin: 0 0 .22cqw !important;
+
+  font-size: 1.42cqw !important;
+  line-height: 1 !important;
+}
+
+#resume-description {
+  margin: 0 !important;
+
+  font-size: .76cqw !important;
+  line-height: 1 !important;
+}
+
+/* Primary action: visible rectangle equals clickable rectangle. */
+#resume-session {
+  flex: 0 0 auto !important;
+
+  width: 78% !important;
+  height: 2.7cqw !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+
+  margin: 0 !important;
+  padding: 0 .7cqw !important;
+
+  font-size: .7cqw !important;
+  line-height: 1 !important;
+}
+
+/* Secondary action: text-sized control with no invisible full-width hitbox. */
+#discard-session {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  flex: 0 0 auto !important;
+
+  width: max-content !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+
+  margin: 0 !important;
+  padding: .22cqw .38cqw !important;
+
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  color: #f3d99d !important;
+  font-size: .68cqw !important;
+  line-height: 1 !important;
+  text-decoration: underline !important;
+  text-underline-offset: .16cqw !important;
+}
+
+/* Final saved-state placement and command hierarchy. */
+#resume-panel.launcher-resume:not([hidden]) {
+  translate: 0 1.1cqw !important;
+}
+
+/* Primary command. */
+#resume-session {
+  border-color: #edbd62 !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(112, 69, 25, .94),
+      rgba(42, 26, 16, .98)
+    ) !important;
+
+  color: #fff1bd !important;
+  font-weight: 800 !important;
+  letter-spacing: .06em !important;
+
+  text-shadow:
+    0 1px 0 #241307,
+    0 0 5px rgba(255, 214, 132, .4) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 239, 190, .14),
+    inset 0 -3px 7px rgba(0, 0, 0, .3) !important;
+}
+
+/* Secondary command with a text-sized clickable area. */
+#discard-session {
+  color: #ffe3a2 !important;
+  font-weight: 800 !important;
+  letter-spacing: .055em !important;
+
+  text-decoration-thickness: 1px !important;
+  text-decoration-color: rgba(255, 220, 142, .72) !important;
+  text-shadow: 0 1px 0 #211307 !important;
+}
+
+#resume-session:hover,
+#resume-session:focus-visible {
+  border-color: #ffe3a1 !important;
+  color: #fff9dc !important;
+
+  text-shadow:
+    0 1px 0 #241307,
+    0 0 8px rgba(255, 224, 155, .78) !important;
+}
+
+#discard-session:hover,
+#discard-session:focus-visible {
+  color: #fff8d2 !important;
+  background: rgba(255, 220, 142, .08) !important;
+  text-shadow:
+    0 1px 0 #211307,
+    0 0 7px rgba(255, 218, 139, .65) !important;
+}
+
+/* Saved-session launcher uses a lower scene position than the build state. */
+#home-launcher:has(#resume-panel:not([hidden])) {
+  bottom: 17.2% !important;
+}
+
+/* Remove the unsuccessful internal translation. */
+#resume-panel.launcher-resume:not([hidden]) {
+  translate: none !important;
+}
+
+/* Authoritative left-sign opening coordinates.
+   The live launcher occupies the complete painted black display. */
+#home-launcher,
+#home-launcher:has(#resume-panel:not([hidden])) {
+  left: 4.75% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 8.5% !important;
+
+  width: 22.2% !important;
+  height: 26.2% !important;
+
+  transform: none !important;
+}
+
+/* Saved-session contents sit inside the opening, not on its stone frame. */
+#resume-panel.launcher-resume:not([hidden]) {
+  translate: none !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+
+  gap: .48cqw !important;
+  padding: 2.2cqw 1.25cqw .8cqw !important;
+}
+
+/* Final no-saved-session hierarchy using the shared scene-relative system. */
+#quiz-builder.launcher-setup:not([hidden]) {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+
+  gap: .75cqw !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 2.35cqw 1.25cqw .8cqw !important;
+}
+
+#quiz-builder .home-quiz-copy {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+#quiz-builder .home-quiz-copy strong {
+  display: block !important;
+  margin: 0 0 .28cqw !important;
+
+  color: #f5d98e !important;
+  font-size: 1.28cqw !important;
+  line-height: 1 !important;
+  letter-spacing: .03em !important;
+  white-space: nowrap !important;
+}
+
+#quiz-builder .home-quiz-copy span {
+  display: block !important;
+  margin: 0 !important;
+
+  color: #dec796 !important;
+  font-size: .62cqw !important;
+  line-height: 1.15 !important;
+  letter-spacing: .025em !important;
+  white-space: nowrap !important;
+}
+
+/* Primary command: visible shape and clickable area match exactly. */
+#open-quiz-builder {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+
+  width: 90% !important;
+  height: 3.35cqw !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: .55cqw 0 0 !important;
+  padding: 0 .9cqw !important;
+
+  border: 1px solid #edbd62 !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(112, 69, 25, .94),
+      rgba(42, 26, 16, .98)
+    ) !important;
+
+  color: #fff1bd !important;
+  font-size: .86cqw !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: .06em !important;
+
+  text-shadow:
+    0 1px 0 #241307,
+    0 0 5px rgba(255, 214, 132, .4) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 239, 190, .14),
+    inset 0 -3px 7px rgba(0, 0, 0, .3) !important;
+}
+
+#open-quiz-builder:hover,
+#open-quiz-builder:focus-visible {
+  border-color: #ffe3a1 !important;
+  color: #fff9dc !important;
+
+  text-shadow:
+    0 1px 0 #241307,
+    0 0 8px rgba(255, 224, 155, .78) !important;
+}
+
+/* Improve readability of the no-saved-state supporting copy. */
+#quiz-builder .home-quiz-copy span {
+  font-size: .74cqw !important;
+  line-height: 1.2 !important;
+  letter-spacing: .02em !important;
+}
+
+/* Lock Drug Library lettering to the same 16:9 scene-relative system. */
+#open-drug-reference.reference-library-callout {
+  right: 1.65% !important;
+  bottom: 31.5% !important;
+  width: 9.2% !important;
+  height: 4.8% !important;
+
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+#open-drug-reference .reference-callout-copy {
+  display: grid !important;
+  place-items: center !important;
+
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#open-drug-reference .reference-callout-copy strong {
+  margin: 0 !important;
+  padding: 0 !important;
+
+  font-size: 1.08cqw !important;
+  line-height: 1 !important;
+  letter-spacing: .045em !important;
+  white-space: nowrap !important;
+}
+
+/* Increase no-saved-state supporting text readability. */
+#quiz-builder .home-quiz-copy span {
+  font-size: .9cqw !important;
+  line-height: 1.2 !important;
+  letter-spacing: .018em !important;
+}
+
+/* Strengthen the no-saved informational block above the action. */
+#quiz-builder .home-quiz-copy strong {
+  font-size: 1.48cqw !important;
+  line-height: 1.02 !important;
+}
+
+#quiz-builder .home-quiz-copy span {
+  margin-top: .24cqw !important;
+  font-size: 1.02cqw !important;
+  line-height: 1.15 !important;
+  letter-spacing: .014em !important;
+}
+
+
+/* Unified no-saved-state flavor text. */
+#quiz-builder .home-quiz-copy p {
+  width: 92% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+
+  color: #f0d79c !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 1.12cqw !important;
+  font-weight: 700 !important;
+  line-height: 1.28 !important;
+  letter-spacing: .015em !important;
+  text-align: center !important;
+  text-wrap: balance !important;
+
+  text-shadow:
+    0 1px 0 #39200d,
+    0 0 6px rgba(255, 190, 77, .24) !important;
+}
+
+
+/* Calm two-line guidance above the stronger quiz-builder command. */
+#quiz-builder .home-quiz-copy p {
+  width: 100% !important;
+  margin: 0 auto !important;
+
+  color: #ddc58f !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 1.02cqw !important;
+  font-weight: 500 !important;
+  line-height: 1.32 !important;
+  letter-spacing: .012em !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+
+  text-shadow:
+    0 1px 0 #2e1a0b,
+    0 0 4px rgba(255, 190, 77, .14) !important;
+}
+
+#open-quiz-builder {
+  margin-top: 1cqw !important;
+}
+
+
+/* Clear first-time-user entry cue for the custom quiz workflow. */
+#quiz-builder .home-quiz-copy {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+#quiz-builder .home-entry-heading {
+  display: block !important;
+  margin: 0 0 .52cqw !important;
+
+  color: #fff0b7 !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 1.52cqw !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: .085em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+
+  text-shadow:
+    0 1px 0 #321b09,
+    0 0 8px rgba(255, 202, 99, .42) !important;
+}
+
+#quiz-builder .home-entry-copy {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  color: #e2ca92 !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: .94cqw !important;
+  font-weight: 500 !important;
+  line-height: 1.28 !important;
+  letter-spacing: .012em !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+
+  text-shadow:
+    0 1px 0 #2e1a0b,
+    0 0 4px rgba(255, 190, 77, .14) !important;
+}
+
+#open-quiz-builder {
+  margin-top: .82cqw !important;
+}
+
+/* Stronger onboarding copy and a restrained light sweep. */
+#quiz-builder .home-quiz-copy {
+  transform: translateY(-.45cqw) !important;
+}
+
+#quiz-builder .home-entry-heading {
+  font-size: 1.72cqw !important;
+  letter-spacing: .075em !important;
+
+  color: transparent !important;
+  background-image:
+    linear-gradient(
+      105deg,
+      #e8c978 0%,
+      #f5dda0 36%,
+      #fff8d8 48%,
+      #f5dda0 60%,
+      #e8c978 100%
+    ) !important;
+  background-size: 240% 100% !important;
+  background-position: 100% 50% !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+
+  animation: prepflow-heading-sweep 4.8s ease-in-out infinite !important;
+
+  text-shadow:
+    0 1px 0 #321b09,
+    0 0 4px rgba(255, 202, 99, .2) !important;
+}
+
+#quiz-builder .home-entry-copy {
+  margin-top: .12cqw !important;
+  font-size: 1.08cqw !important;
+  line-height: 1.3 !important;
+  font-weight: 600 !important;
+}
+
+@keyframes prepflow-heading-sweep {
+  0%,
+  62% {
+    background-position: 100% 50%;
+  }
+
+  82% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #quiz-builder .home-entry-heading {
+    animation: none !important;
+    color: #fff0b7 !important;
+    background: none !important;
+    -webkit-text-fill-color: currentColor !important;
+  }
+}
+
+/* =========================================================
+   HOMEPAGE TEXT-LIGHT INTERACTION SYSTEM
+   Orientation text stays steadily illuminated.
+   Clickable command lettering receives a restrained sweep.
+   ========================================================= */
+
+/* START HERE: steady backlit orientation cue, not animated. */
+#quiz-builder .home-quiz-copy .home-entry-heading {
+  color: #fff0b7 !important;
+  -webkit-text-fill-color: #fff0b7 !important;
+  background: none !important;
+  animation: none !important;
+
+  font-size: 1.9cqw !important;
+  font-weight: 800 !important;
+  letter-spacing: .075em !important;
+
+  text-shadow:
+    0 1px 0 #321b09,
+    0 0 .28cqw rgba(255, 207, 112, .72),
+    0 0 .62cqw rgba(255, 174, 62, .32) !important;
+}
+
+/* Shared animated command-text treatment.
+   Only the lettering moves; control chrome remains stationary. */
+#open-quiz-builder,
+#resume-session,
+#discard-session,
+#open-drug-reference .reference-callout-copy strong {
+  background-image:
+    linear-gradient(
+      105deg,
+      #f0ce7c 0%,
+      #f0ce7c 38%,
+      #fff8d8 47%,
+      #ffffff 50%,
+      #fff8d8 53%,
+      #f0ce7c 62%,
+      #f0ce7c 100%
+    ) !important;
+
+  background-size: 320% 100% !important;
+  background-position: 120% 50% !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+
+  animation: prepflow-command-text-sweep 6s linear infinite !important;
+}
+
+/* Preserve button backgrounds by applying text clipping only to
+   the Drug Library text element and by restoring command surfaces. */
+#open-quiz-builder,
+#resume-session {
+  background-color: transparent !important;
+}
+
+/* Primary command surfaces remain visually stationary. */
+#open-quiz-builder,
+#resume-session {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 239, 190, .14),
+    inset 0 -3px 7px rgba(0, 0, 0, .3) !important;
+}
+
+/* Immediate feedback when a command is actually targeted. */
+#open-quiz-builder:hover,
+#open-quiz-builder:focus-visible,
+#resume-session:hover,
+#resume-session:focus-visible,
+#discard-session:hover,
+#discard-session:focus-visible,
+#open-drug-reference:hover .reference-callout-copy strong,
+#open-drug-reference:focus-visible .reference-callout-copy strong {
+  animation-play-state: paused !important;
+  background-position: 50% 50% !important;
+
+  filter: none !important;
+  text-shadow:
+    0 1px 0 #2b1708,
+    0 0 .35cqw rgba(255, 229, 164, .92),
+    0 0 .7cqw rgba(255, 180, 59, .48) !important;
+}
+
+@keyframes prepflow-command-text-sweep {
+  0%,
+  66% {
+    background-position: 120% 50%;
+  }
+
+  84% {
+    background-position: -120% 50%;
+  }
+
+  100% {
+    background-position: -120% 50%;
+  }
+}
+
+/* Accessibility: retain clear illuminated text without movement. */
+@media (prefers-reduced-motion: reduce) {
+  #open-quiz-builder,
+  #resume-session,
+  #discard-session,
+  #open-drug-reference .reference-callout-copy strong {
+    animation: none !important;
+    background: none !important;
+    color: #fff0b7 !important;
+    -webkit-text-fill-color: #fff0b7 !important;
+  }
+}
+
+
+/* =========================================================
+   AUTHORITATIVE HOMEPAGE COMMAND-LIGHT SYSTEM
+   Animate label spans only—not whole button elements.
+   ========================================================= */
+
+/* Undo the unsuccessful text-clipping treatment on controls. */
+#open-quiz-builder,
+#resume-session,
+#discard-session {
+  color: #f2d487 !important;
+  -webkit-text-fill-color: currentColor !important;
+
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+
+  animation: none !important;
+}
+
+/* Restore stationary primary-button surfaces. */
+#open-quiz-builder,
+#resume-session {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(112, 69, 25, .94),
+      rgba(42, 26, 16, .98)
+    ) !important;
+
+  border-color: #edbd62 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 239, 190, .14),
+    inset 0 -3px 7px rgba(0, 0, 0, .3) !important;
+}
+
+/* Secondary action stays text-only. */
+#discard-session {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* START HERE remains steadily backlit and does not animate. */
+#quiz-builder .home-quiz-copy .home-entry-heading {
+  color: #fff0b7 !important;
+  -webkit-text-fill-color: #fff0b7 !important;
+  background: none !important;
+  animation: none !important;
+
+  text-shadow:
+    0 1px 0 #321b09,
+    0 0 .26cqw rgba(255, 218, 142, .82),
+    0 0 .58cqw rgba(255, 174, 62, .36) !important;
+}
+
+/* Only actual command lettering receives the pulse. */
+.command-label,
+#open-drug-reference .reference-callout-copy strong {
+  display: inline-block !important;
+
+  color: #f2d487 !important;
+  -webkit-text-fill-color: currentColor !important;
+  background: none !important;
+
+  animation: prepflow-command-pulse 4.6s ease-in-out infinite !important;
+}
+
+/* Immediate targeting feedback. */
+#open-quiz-builder:hover .command-label,
+#open-quiz-builder:focus-visible .command-label,
+#resume-session:hover .command-label,
+#resume-session:focus-visible .command-label,
+#discard-session:hover .command-label,
+#discard-session:focus-visible .command-label,
+#open-drug-reference:hover .reference-callout-copy strong,
+#open-drug-reference:focus-visible .reference-callout-copy strong {
+  animation: none !important;
+  color: #fff8d3 !important;
+
+  text-shadow:
+    0 1px 0 #291708,
+    0 0 .34cqw rgba(255, 235, 180, .96),
+    0 0 .68cqw rgba(255, 180, 59, .55) !important;
+}
+
+@keyframes prepflow-command-pulse {
+  0%,
+  68%,
+  100% {
+    color: #e8c56f;
+    text-shadow:
+      0 1px 0 #291708,
+      0 0 .08cqw rgba(255, 211, 126, .22);
+  }
+
+  78% {
+    color: #fff9da;
+    text-shadow:
+      0 1px 0 #291708,
+      0 0 .34cqw rgba(255, 238, 190, .95),
+      0 0 .7cqw rgba(255, 178, 56, .55);
+  }
+
+  88% {
+    color: #f2d487;
+    text-shadow:
+      0 1px 0 #291708,
+      0 0 .16cqw rgba(255, 218, 143, .45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .command-label,
+  #open-drug-reference .reference-callout-copy strong {
+    animation: none !important;
+    color: #fff0b7 !important;
+    text-shadow:
+      0 1px 0 #291708,
+      0 0 .18cqw rgba(255, 218, 143, .48) !important;
+  }
+}
+
+
+/* =========================================================
+   AUTHORITATIVE HOMEPAGE ATTENTION TREATMENT
+   ========================================================= */
+
+/* Orientation cue: continuously backlit, never animated. */
+#quiz-builder .home-quiz-copy .home-entry-heading {
+  color: #fff4c9 !important;
+  -webkit-text-fill-color: #fff4c9 !important;
+  background: none !important;
+  animation: none !important;
+
+  font-size: 2cqw !important;
+  font-weight: 900 !important;
+
+  text-shadow:
+    0 1px 0 #2a1608,
+    0 0 .18cqw rgba(255, 250, 220, 1),
+    0 0 .42cqw rgba(255, 218, 138, .95),
+    0 0 .78cqw rgba(255, 166, 50, .58) !important;
+}
+
+/* Actual clickable lettering: clear and frequent illumination pulse. */
+#open-quiz-builder .command-label,
+#resume-session .command-label,
+#discard-session .command-label,
+#open-drug-reference .reference-callout-copy strong {
+  display: inline-block !important;
+
+  color: #f2d487 !important;
+  -webkit-text-fill-color: currentColor !important;
+  background: none !important;
+
+  animation:
+    prepflow-command-illumination 2.6s ease-in-out infinite !important;
+}
+
+/* Drug Library resting color and shadow are controlled by its keyframes. */
+
+/* Immediate steady illumination during hover or keyboard focus. */
+#open-quiz-builder:hover .command-label,
+#open-quiz-builder:focus-visible .command-label,
+#resume-session:hover .command-label,
+#resume-session:focus-visible .command-label,
+#discard-session:hover .command-label,
+#discard-session:focus-visible .command-label,
+#open-drug-reference:hover .reference-callout-copy strong,
+#open-drug-reference:focus-visible .reference-callout-copy strong {
+  animation: none !important;
+  color: #fffbe4 !important;
+
+  text-shadow:
+    0 1px 0 #291608,
+    0 0 .18cqw rgba(255, 252, 228, 1),
+    0 0 .42cqw rgba(255, 221, 145, .98),
+    0 0 .72cqw rgba(255, 166, 45, .62) !important;
+}
+
+@keyframes prepflow-command-illumination {
+  0%,
+  100% {
+    color: #e8c36c;
+    text-shadow:
+      0 1px 0 #291608,
+      0 0 .04cqw rgba(255, 211, 125, .18);
+  }
+
+  42% {
+    color: #f4da94;
+    text-shadow:
+      0 1px 0 #291608,
+      0 0 .12cqw rgba(255, 224, 158, .55);
+  }
+
+  55% {
+    color: #fffce8;
+    text-shadow:
+      0 1px 0 #291608,
+      0 0 .22cqw rgba(255, 253, 232, 1),
+      0 0 .5cqw rgba(255, 221, 140, .98),
+      0 0 .82cqw rgba(255, 159, 36, .58);
+  }
+
+  70% {
+    color: #f6dfa0;
+    text-shadow:
+      0 1px 0 #291608,
+      0 0 .12cqw rgba(255, 225, 159, .55);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #open-quiz-builder .command-label,
+  #resume-session .command-label,
+  #discard-session .command-label,
+  #open-drug-reference .reference-callout-copy strong {
+    animation: none !important;
+    color: #fff0b7 !important;
+    text-shadow:
+      0 1px 0 #291608,
+      0 0 .15cqw rgba(255, 220, 148, .55) !important;
+  }
+}
+
+/* Definitive visible command-label pulse.
+   Uses opacity and scale so older fixed color rules cannot suppress it. */
+#open-quiz-builder .command-label,
+#resume-session .command-label,
+#discard-session .command-label,
+#open-drug-reference .reference-callout-copy strong {
+  opacity: .72;
+  transform: scale(1);
+  transform-origin: center;
+  animation: prepflow-command-visible-pulse 2.2s ease-in-out infinite !important;
+  will-change: opacity, transform, text-shadow;
+}
+
+@keyframes prepflow-command-visible-pulse {
+  0%,
+  100% {
+    opacity: .72;
+    transform: scale(1);
+    text-shadow:
+      0 1px 0 #291608,
+      0 0 .04cqw rgba(255, 211, 125, .18);
+  }
+
+  45% {
+    opacity: .82;
+    transform: scale(1.012);
+    text-shadow:
+      0 1px 0 #291608,
+      0 0 .13cqw rgba(255, 228, 170, .58);
+  }
+
+  58% {
+    opacity: 1;
+    transform: scale(1.065);
+    text-shadow:
+      0 1px 0 #291608,
+      0 0 .25cqw rgba(255, 252, 225, 1),
+      0 0 .52cqw rgba(255, 216, 126, .95),
+      0 0 .82cqw rgba(255, 157, 39, .56);
+  }
+
+  74% {
+    opacity: .86;
+    transform: scale(1.018);
+    text-shadow:
+      0 1px 0 #291608,
+      0 0 .13cqw rgba(255, 225, 160, .58);
+  }
+}
+
+/* Hover and keyboard focus remain steadily illuminated. */
+#open-quiz-builder:hover .command-label,
+#open-quiz-builder:focus-visible .command-label,
+#resume-session:hover .command-label,
+#resume-session:focus-visible .command-label,
+#discard-session:hover .command-label,
+#discard-session:focus-visible .command-label,
+#open-drug-reference:hover .reference-callout-copy strong,
+#open-drug-reference:focus-visible .reference-callout-copy strong {
+  opacity: 1 !important;
+  transform: scale(1.065) !important;
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #open-quiz-builder .command-label,
+  #resume-session .command-label,
+  #discard-session .command-label,
+  #open-drug-reference .reference-callout-copy strong {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+/* Final left-sign live-panel alignment:
+   slightly larger and shifted up-left within the painted opening. */
+#home-launcher,
+#home-launcher:has(#resume-panel:not([hidden])) {
+  left: 3.65% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 9.7% !important;
+
+  width: 23.1% !important;
+  height: 27.1% !important;
+
+  transform: none !important;
+}
+
+/* Slightly enlarge the left-sign supporting copy. */
+#quiz-builder .home-entry-copy {
+  font-size: 1.18cqw !important;
+  line-height: 1.28 !important;
+}
+
+
+/* =========================================================
+   V1 HOMEPAGE BRAND TITLE
+   Live HTML so the permanent logo can replace it later.
+   ========================================================= */
+
+.pixel-stage > .pixel-logo {
+  position: absolute !important;
+  z-index: 8 !important;
+
+  left: 7.2% !important;
+  top: 7.8% !important;
+  right: auto !important;
+  bottom: auto !important;
+
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: flex-start !important;
+
+  width: max-content !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  color: #fff0bd !important;
+  background: none !important;
+
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 4.8cqw !important;
+  font-weight: 900 !important;
+  line-height: .9 !important;
+  letter-spacing: -.045em !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+
+  transform: none !important;
+  animation: none !important;
+
+  text-shadow:
+    0 .08cqw 0 #6d3b13,
+    0 .16cqw 0 #2a1a13,
+    0 0 .18cqw rgba(255, 246, 207, .82),
+    0 0 .48cqw rgba(255, 196, 89, .62),
+    0 0 .9cqw rgba(255, 137, 35, .3) !important;
+}
+
+.pixel-stage > .pixel-logo .prep,
+.pixel-stage > .pixel-logo .flow {
+  display: inline !important;
+  position: static !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  background: none !important;
+  font: inherit !important;
+  letter-spacing: inherit !important;
+  text-shadow: inherit !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+.pixel-stage > .pixel-logo .flow {
+  color: #ffd27b !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+.pixel-stage > .pixel-tagline {
+  position: absolute !important;
+  z-index: 8 !important;
+
+  left: 7.55% !important;
+  top: 14.1% !important;
+  right: auto !important;
+  bottom: auto !important;
+
+  display: block !important;
+  width: max-content !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  color: #f0d9a5 !important;
+  background: none !important;
+
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 1.22cqw !important;
+  font-weight: 700 !important;
+  font-style: italic !important;
+  line-height: 1 !important;
+  letter-spacing: .07em !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+
+  opacity: .94 !important;
+  transform: none !important;
+  animation: none !important;
+
+  text-shadow:
+    0 1px 0 #321d10,
+    0 0 .14cqw rgba(255, 222, 153, .55),
+    0 0 .34cqw rgba(255, 166, 54, .24) !important;
+}
+
+/* Final V1 tagline placement and legibility. */
+.pixel-stage > .pixel-tagline {
+  left: 8.25% !important;
+  top: 15.6% !important;
+
+  color: #ffe0a0 !important;
+  font-size: 1.16cqw !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  letter-spacing: .075em !important;
+
+  -webkit-text-stroke: .035cqw rgba(39, 23, 16, .92) !important;
+
+  text-shadow:
+    0 .08cqw 0 #24140d,
+    0 0 .12cqw rgba(30, 17, 12, .9),
+    0 0 .28cqw rgba(255, 190, 80, .38) !important;
+}
+
+/* Cool-contrast tagline treatment for readability over the sunset sky. */
+.pixel-stage > .pixel-tagline {
+  color: #e7f0ff !important;
+  -webkit-text-fill-color: #e7f0ff !important;
+
+  -webkit-text-stroke: .045cqw rgba(15, 24, 48, .98) !important;
+
+  text-shadow:
+    0 .08cqw 0 #10182f,
+    0 0 .12cqw rgba(8, 16, 38, .95),
+    0 0 .3cqw rgba(92, 133, 205, .42) !important;
+}
+
+/* Final V1 tagline treatment:
+   larger lettering on a restrained dark backing for sunset contrast. */
+.pixel-stage > .pixel-tagline {
+  left: 8.1% !important;
+  top: 15.9% !important;
+
+  padding: .28cqw .72cqw .32cqw !important;
+
+  color: #f3f6ff !important;
+  -webkit-text-fill-color: #f3f6ff !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(13, 22, 46, .82),
+      rgba(20, 31, 59, .72)
+    ) !important;
+
+  border: 1px solid rgba(126, 151, 199, .48) !important;
+  border-radius: .18cqw !important;
+
+  font-size: 1.28cqw !important;
+  font-weight: 800 !important;
+  font-style: normal !important;
+  line-height: 1 !important;
+  letter-spacing: .065em !important;
+
+  -webkit-text-stroke: 0 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(222, 232, 255, .13),
+    0 .12cqw .28cqw rgba(5, 10, 25, .52) !important;
+
+  text-shadow:
+    0 .07cqw 0 #0a1024,
+    0 0 .12cqw rgba(201, 220, 255, .48) !important;
+}
