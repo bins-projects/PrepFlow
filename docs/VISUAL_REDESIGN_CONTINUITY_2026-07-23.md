@@ -1,5 +1,7 @@
 # PrepFlow Visual Redesign Continuity — 2026-07-23
 
+> **HISTORICAL / SUPERSEDED:** This document records the former sunset-city, three-book, and nurse-separation milestone. It must not be used as the current implementation plan or next-task authority. The active product is now the PrepFlow Teaching Hospital homepage with a dedicated quiz-builder flow. Read `docs/RESTART_PACKET.md` for current state and `docs/ART_SYSTEM.md` for current visual ownership rules.
+
 > **Updated 2026-07-24 after public release:** The approved three-book milestone is complete, tested, released publicly, and preserved as a fixed source snapshot. Active visual development now moves to separating the background and nurses while public production remains on the released book milestone.
 
 Durable visual rules:
