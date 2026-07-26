@@ -12,11 +12,7 @@ PrepFlow uses three distinct protected states.
 
 ### 1. Local development
 
-Active work is performed in:
-
-```text
-~/projects/prepflow
-```
+Active work is performed in the local PrepFlow working copy.
 
 The normal development branch is:
 
@@ -32,12 +28,13 @@ After a coherent local milestone is approved:
 
 1. run applicable automated tests;
 2. verify the real browser workflow;
-3. inspect the working tree and focused diff;
-4. commit the milestone;
-5. push the development branch to the private development repository;
-6. push the matching development branch to the public mirror;
-7. fetch both remotes;
-8. verify that local, private, and public-mirror development hashes match.
+3. run the privacy and artifact scan;
+4. inspect the working tree and focused diff;
+5. commit the milestone;
+6. push the development branch to the private development repository;
+7. push the matching development branch to the public mirror;
+8. fetch both remotes;
+9. verify that local, private, and public-mirror development hashes match.
 
 The private and public-mirror development branches should normally represent the same verified development commit.
 
@@ -67,6 +64,26 @@ Example release tag:
 
 ```text
 v0.9.0
+```
+
+## Privacy and Artifact Gate
+
+Privacy review is an upstream development requirement, not a final release-only task.
+
+Before every commit and again before creating a release branch:
+
+1. scan the focused diff and tracked files for personal names, personal email addresses, usernames, device names, absolute home-directory paths, and external backup locations;
+2. replace personal names with role-based language such as `the user` or `the project owner`;
+3. describe external backups without recording their personal filesystem paths;
+4. verify that temporary files, source documents, screenshots, exports, credentials, and unrelated artifacts are not being committed;
+5. inspect the exact staged diff before committing.
+
+Do not place personal names, personal email addresses, usernames, device names, absolute home-directory paths, or exact external-backup paths in tracked project files. Use repository-relative paths, generic local-workspace language, and role-based references instead.
+
+Required workflow:
+
+```text
+edit → test → privacy scan → inspect diff → commit → push
 ```
 
 ## Rollback Rule
@@ -109,7 +126,8 @@ Before structural cleanup:
 4. make cleanup a focused milestone;
 5. rerun automated tests;
 6. verify the real browser result;
-7. inspect the final diff before committing.
+7. run the privacy and artifact scan;
+8. inspect the final diff before committing.
 
 When immediate cleanup would create unacceptable risk to a working release candidate, the current verified implementation may be preserved and released only after:
 
@@ -119,10 +137,10 @@ When immediate cleanup would create unacceptable risk to a working release candi
 
 ## Current Hospital-Homepage Checkpoint
 
-The hospital-homepage development checkpoint is:
+The current verified hospital-homepage development checkpoint is:
 
 ```text
-e44d710ef6901b7eb4347229a5fcd0c0f6db9835
+6d1ce05705811177fe9aaa27df93d0c6982d67ee
 ```
 
 It is present on:
@@ -138,4 +156,4 @@ The previous public release must remain preserved until the hospital-homepage re
 
 ## Change Control
 
-Update this policy when the release topology, rollback method, branch naming convention, or preservation rules change.
+Update this policy when the release topology, rollback method, branch naming convention, privacy gate, or preservation rules change.
