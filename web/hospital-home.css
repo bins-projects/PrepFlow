@@ -1,0 +1,333 @@
+/* PrepFlow Teaching Hospital final composite background. */
+
+.pixel-stage {
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(4, 7, 26, .05) 0 55%,
+      rgba(5, 8, 30, .16) 94%,
+      rgba(7, 11, 36, .22) 100%
+    ),
+    url("images/home-hospital/prepflow-home-background-final.png")
+      center center / cover no-repeat,
+    #070b24 !important;
+}
+
+.pixel-logo,
+.pixel-tagline {
+  display: none !important;
+}
+
+/*
+  The final composite already contains both architectural signs.
+  Keep the live launcher and reference controls separate from the artwork.
+  Their exact placement will be rebuilt after the clean background is verified.
+*/
+
+/* Live Drug Library control inside the final right REFERENCES sign. */
+#open-drug-reference.reference-library-callout {
+  position: absolute !important;
+  z-index: 20 !important;
+
+  right: 2.8% !important;
+  left: auto !important;
+  top: auto !important;
+  bottom: 14.5% !important;
+
+  width: 11.4% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 4.5rem !important;
+  margin: 0 !important;
+  padding: .7rem .45rem !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border: 2px solid #d9aa4e !important;
+  border-radius: .25rem !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(72, 44, 18, .78),
+      rgba(16, 12, 20, .96) 42%,
+      rgba(8, 8, 15, .98)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 218, 132, .16),
+    inset 0 0 18px rgba(255, 177, 70, .10),
+    0 0 10px rgba(255, 170, 64, .22) !important;
+
+  color: #f5d584 !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  text-align: center !important;
+  text-transform: none !important;
+  cursor: pointer !important;
+
+  transform: none !important;
+  transition:
+    transform 140ms ease,
+    filter 140ms ease,
+    box-shadow 140ms ease !important;
+}
+
+#open-drug-reference .reference-callout-icon,
+#open-drug-reference .reference-callout-copy small,
+#open-drug-reference .reference-callout-arrow {
+  display: none !important;
+}
+
+#open-drug-reference .reference-callout-copy {
+  display: block !important;
+  width: 100% !important;
+}
+
+#open-drug-reference .reference-callout-copy strong {
+  display: block !important;
+  color: #f7dc91 !important;
+  font-size: clamp(.72rem, 1vw, 1.05rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  letter-spacing: .08em !important;
+  text-shadow:
+    0 1px 0 #4b260d,
+    0 0 7px rgba(255, 184, 74, .35) !important;
+}
+
+#open-drug-reference:hover,
+#open-drug-reference:focus-visible {
+  outline: 2px solid #fff0b2 !important;
+  outline-offset: 2px !important;
+  transform: translateY(-2px) !important;
+  filter: brightness(1.12) !important;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 230, 161, .22),
+    inset 0 0 20px rgba(255, 184, 74, .16),
+    0 0 15px rgba(255, 177, 63, .38) !important;
+}
+
+#open-drug-reference:active {
+  transform: translateY(1px) !important;
+  filter: brightness(.95) !important;
+}
+
+/* Authoritative 16:9 scene canvas.
+   Artwork and live controls now scale together. */
+html,
+body {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background: #050817 !important;
+}
+
+.app-shell,
+.hero {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.hero {
+  display: grid !important;
+  place-items: center !important;
+  overflow: hidden !important;
+}
+
+.pixel-stage {
+  position: relative !important;
+
+  width: min(100vw, calc(100vh * 16 / 9)) !important;
+  height: min(100vh, calc(100vw * 9 / 16)) !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  aspect-ratio: 16 / 9 !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+
+  background-size: 100% 100% !important;
+  background-position: center !important;
+}
+
+/* Keep the Drug Library button in scene coordinates. */
+#open-drug-reference.reference-library-callout {
+  right: 1.5% !important;
+  bottom: 22.5% !important;
+  width: 11.2% !important;
+  min-height: 8.2% !important;
+}
+
+/* Final fit inside the painted right display opening. */
+#open-drug-reference.reference-library-callout {
+  right: 3.4% !important;
+  bottom: 22.5% !important;
+  width: 9.4% !important;
+  min-height: 5.8% !important;
+  padding: .35rem .25rem !important;
+}
+
+#open-drug-reference .reference-callout-copy strong {
+  font-size: clamp(.58rem, .78vw, .88rem) !important;
+  letter-spacing: .045em !important;
+  white-space: nowrap !important;
+}
+
+/* Integrate the live Drug Library control with the painted display opening. */
+#open-drug-reference.reference-library-callout {
+  right: 1.25% !important;
+  bottom: 13.4% !important;
+  width: 11.9% !important;
+  min-height: 17.5% !important;
+  padding: 0 !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(24, 18, 20, .22),
+      rgba(7, 7, 13, .46)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 16px rgba(255, 183, 68, .08) !important;
+}
+
+#open-drug-reference .reference-callout-copy {
+  display: grid !important;
+  place-items: center !important;
+  height: 100% !important;
+}
+
+#open-drug-reference .reference-callout-copy strong {
+  font-size: clamp(.64rem, .9vw, 1rem) !important;
+  white-space: nowrap !important;
+}
+
+#open-drug-reference:hover,
+#open-drug-reference:focus-visible {
+  outline: 2px solid rgba(255, 228, 155, .9) !important;
+  outline-offset: -5px !important;
+  transform: none !important;
+  filter: brightness(1.12) !important;
+  box-shadow:
+    inset 0 0 22px rgba(255, 187, 75, .18) !important;
+}
+
+/* Compact Drug Library button inside the REFERENCES panel. */
+#open-drug-reference.reference-library-callout {
+  right: 3.4% !important;
+  bottom: 31.5% !important;
+
+  width: 9.2% !important;
+  height: 4.8% !important;
+  min-height: 0 !important;
+
+  padding: 0 .35rem !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#open-drug-reference .reference-callout-copy {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+#open-drug-reference .reference-callout-copy strong {
+  display: block !important;
+  color: #f4d27b !important;
+  font-size: clamp(.78rem, 1.05vw, 1.15rem) !important;
+  line-height: 1 !important;
+  letter-spacing: .045em !important;
+  white-space: nowrap !important;
+  text-shadow:
+    0 1px 0 #3b210c,
+    0 0 5px rgba(255, 186, 72, .25) !important;
+}
+
+#open-drug-reference:hover,
+#open-drug-reference:focus-visible {
+  outline: 1px solid rgba(255, 224, 145, .72) !important;
+  outline-offset: 3px !important;
+  background: rgba(255, 193, 83, .06) !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: brightness(1.15) !important;
+}
+
+#open-drug-reference:active {
+  transform: translateY(1px) !important;
+  filter: brightness(.92) !important;
+}
+
+/* Strip all remaining button chrome: text-only live control. */
+#open-drug-reference,
+#open-drug-reference:hover,
+#open-drug-reference:focus,
+#open-drug-reference:focus-visible,
+#open-drug-reference:active {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+
+  border: 0 !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  border-radius: 0 !important;
+
+  background: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+
+  transform: none !important;
+  text-decoration: none !important;
+}
+
+#open-drug-reference::before,
+#open-drug-reference::after,
+#open-drug-reference .reference-callout-copy::before,
+#open-drug-reference .reference-callout-copy::after {
+  content: none !important;
+  display: none !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+#open-drug-reference:hover .reference-callout-copy strong,
+#open-drug-reference:focus .reference-callout-copy strong,
+#open-drug-reference:focus-visible .reference-callout-copy strong {
+  color: #fff1b5 !important;
+  text-shadow:
+    0 1px 0 #3b210c,
+    0 0 8px rgba(255, 203, 105, .9),
+    0 0 15px rgba(255, 173, 55, .5) !important;
+}
+
+/* Final Drug Library horizontal centering adjustment. */
+#open-drug-reference.reference-library-callout {
+  right: 2.8% !important;
+}
+
+/* Hidden application screens must fully disappear.
+   Prevent homepage layout rules from overriding the hidden attribute. */
+.hero[hidden],
+.subjects[hidden],
+#home-launcher[hidden] {
+  display: none !important;
+}
