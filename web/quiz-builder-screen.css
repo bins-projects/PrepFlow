@@ -88,3 +88,831 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Nursing-station Quiz Builder background — placement pass 1 */
+.quiz-builder-window {
+  width: min(1120px, 96vw);
+  aspect-ratio: 3 / 2;
+  max-height: 92vh;
+  position: relative;
+  overflow: hidden;
+
+  background:
+    linear-gradient(rgba(4, 8, 22, 0.04), rgba(4, 8, 22, 0.04)),
+    url("images/quiz-builder/prepflow-nursing-station-quiz-builder.png?v=20260727-2")
+    center / cover no-repeat;
+
+  border: 2px solid rgba(238, 193, 104, 0.8);
+}
+
+/* Nursing-station Quiz Builder — book placement pass 1 */
+.quiz-builder-screen .subjects {
+  position: absolute !important;
+  z-index: 3;
+  left: 8% !important;
+  right: 8% !important;
+  top: 35% !important;
+  width: auto !important;
+  height: 42%;
+
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 7% !important;
+  align-items: end;
+  padding: 0 !important;
+}
+
+.quiz-builder-screen .subject-card {
+  width: min(215px, 20vw) !important;
+  height: auto !important;
+  align-self: end;
+}
+
+.quiz-builder-screen .approved-book-art {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Nursing-station Quiz Builder — control-band placement pass 1 */
+.quiz-builder-screen .builder-controls {
+  position: absolute;
+  z-index: 5;
+  left: 3%;
+  right: 3%;
+  bottom: 2.5%;
+  height: 18%;
+
+  margin: 0;
+  padding: 14px 18px;
+
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) auto auto;
+  gap: 18px;
+  align-items: center;
+
+  background: rgba(5, 10, 28, 0.82);
+  border: 1px solid rgba(238, 193, 104, 0.42);
+}
+
+.quiz-builder-screen .builder-summary,
+.quiz-builder-screen .builder-block-size,
+.quiz-builder-screen .order-mode-toggle,
+.quiz-builder-screen .builder-actions {
+  position: static;
+}
+
+/* Nursing-station Quiz Builder — header placement pass 1 */
+.quiz-builder-screen .quiz-builder-header {
+  position: absolute;
+  z-index: 6;
+  top: 3.5%;
+  left: 32%;
+  right: 3%;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+}
+
+.quiz-builder-screen .quiz-builder-header h2,
+.quiz-builder-screen .quiz-builder-header p {
+  text-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.95),
+    0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+.quiz-builder-screen .quiz-builder-header p {
+  max-width: 520px;
+}
+
+/* Nursing-station Quiz Builder — unified lower interface */
+.quiz-builder-screen .quiz-builder-header {
+  position: absolute;
+  z-index: 7;
+  left: 4%;
+  right: 4%;
+  bottom: 13.5%;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.quiz-builder-screen .quiz-builder-header > div {
+  display: contents;
+}
+
+.quiz-builder-screen .quiz-builder-header h2 {
+  margin: 0;
+  white-space: nowrap;
+  font-size: clamp(20px, 2vw, 28px);
+}
+
+.quiz-builder-screen .quiz-builder-header p {
+  margin: 0;
+  min-width: 0;
+  font-size: clamp(13px, 1.15vw, 16px);
+}
+
+.quiz-builder-screen .builder-controls {
+  left: 3%;
+  right: 3%;
+  bottom: 2.5%;
+  height: 10%;
+  min-height: 74px;
+  padding: 10px 18px;
+
+  grid-template-columns:
+    minmax(190px, 1fr)
+    auto
+    auto
+    auto;
+  gap: 16px;
+}
+
+/* Let the artwork remain completely unobstructed above the lower band. */
+.quiz-builder-screen .quiz-builder-header,
+.quiz-builder-screen .builder-controls {
+  background: transparent;
+  border: 0;
+}
+
+/* Nursing-station Quiz Builder — unified lower interface */
+.quiz-builder-screen .quiz-builder-header {
+  position: absolute;
+  z-index: 7;
+  left: 4%;
+  right: 4%;
+  bottom: 13.5%;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.quiz-builder-screen .quiz-builder-header > div {
+  display: contents;
+}
+
+.quiz-builder-screen .quiz-builder-header h2 {
+  margin: 0;
+  white-space: nowrap;
+  font-size: clamp(20px, 2vw, 28px);
+}
+
+.quiz-builder-screen .quiz-builder-header p {
+  margin: 0;
+  min-width: 0;
+  font-size: clamp(13px, 1.15vw, 16px);
+}
+
+.quiz-builder-screen .builder-controls {
+  left: 3%;
+  right: 3%;
+  bottom: 2.5%;
+  height: 10%;
+  min-height: 74px;
+  padding: 10px 18px;
+
+  grid-template-columns:
+    minmax(190px, 1fr)
+    auto
+    auto
+    auto;
+  gap: 16px;
+}
+
+/* Let the artwork remain completely unobstructed above the lower band. */
+.quiz-builder-screen .quiz-builder-header,
+.quiz-builder-screen .builder-controls {
+  background: transparent;
+  border: 0;
+}
+
+/* Quiz Builder — force both live rows into the painted lower console */
+.quiz-builder-screen .quiz-builder-header {
+  top: auto !important;
+  bottom: 11.5% !important;
+  left: 5% !important;
+  right: 5% !important;
+}
+
+.quiz-builder-screen .builder-controls {
+  top: auto !important;
+  bottom: 2.2% !important;
+  left: 5% !important;
+  right: 5% !important;
+  height: 8% !important;
+  min-height: 58px;
+  padding: 6px 10px;
+}
+
+/* Quiz Builder command system — homepage-aligned pass 1 */
+.quiz-builder-screen #close-quiz-builder,
+.quiz-builder-screen #clear-selections,
+.quiz-builder-screen #build-quiz {
+  min-height: 52px;
+  padding: 10px 20px;
+  border-width: 2px;
+  border-style: solid;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  font: inherit;
+  font-size: clamp(14px, 1.2vw, 18px);
+  font-weight: 800;
+  letter-spacing: .065em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  cursor: pointer;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background-color 140ms ease,
+    opacity 140ms ease;
+}
+
+.quiz-builder-screen #build-quiz {
+  color: #fff0c7;
+  border-color: rgba(238, 193, 104, .92);
+  background: rgba(72, 49, 18, .9);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 232, 171, .18),
+    0 0 14px rgba(238, 193, 104, .18);
+}
+
+.quiz-builder-screen #clear-selections,
+.quiz-builder-screen #close-quiz-builder {
+  color: #cbd6ff;
+  border-color: rgba(153, 175, 235, .82);
+  background: rgba(15, 23, 54, .9);
+  box-shadow: inset 0 0 0 1px rgba(198, 211, 255, .1);
+}
+
+.quiz-builder-screen #build-quiz:not(:disabled):hover,
+.quiz-builder-screen #clear-selections:not(:disabled):hover,
+.quiz-builder-screen #close-quiz-builder:hover {
+  transform: translateY(-2px);
+}
+
+.quiz-builder-screen #build-quiz:focus-visible,
+.quiz-builder-screen #clear-selections:focus-visible,
+.quiz-builder-screen #close-quiz-builder:focus-visible {
+  outline: 3px solid #fff2bd;
+  outline-offset: 3px;
+}
+
+.quiz-builder-screen #build-quiz:disabled,
+.quiz-builder-screen #clear-selections:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Only the primary command lettering pulses. */
+.quiz-builder-screen #build-quiz:not(:disabled) .command-label {
+  display: inline-block;
+  transform-origin: center;
+  animation: prepflow-command-visible-pulse 2.2s ease-in-out infinite;
+}
+
+/* Quiz Builder — selection display and command typography */
+.quiz-builder-screen .book-selected-count {
+  display: none !important;
+}
+
+/* Preserve selected-book feedback without a floating count capsule. */
+.quiz-builder-screen .subject-card.has-selections .approved-book-art {
+  filter:
+    drop-shadow(0 0 5px rgba(255, 239, 177, .9))
+    drop-shadow(0 0 12px rgba(238, 193, 104, .55));
+}
+
+/* Replace inherited arcade/monospace lettering on live builder commands. */
+.quiz-builder-screen #close-quiz-builder,
+.quiz-builder-screen #clear-selections,
+.quiz-builder-screen #build-quiz {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: .035em !important;
+}
+
+.quiz-builder-screen #close-quiz-builder .command-label,
+.quiz-builder-screen #clear-selections .command-label,
+.quiz-builder-screen #build-quiz .command-label {
+  font-family: inherit !important;
+  font-weight: inherit !important;
+}
+
+/* Keep the summary as the single source of exact selection information. */
+.quiz-builder-screen .builder-summary strong {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(14px, 1.2vw, 18px);
+  letter-spacing: .025em;
+}
+
+.quiz-builder-screen .builder-summary span {
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: .02em;
+}
+
+/* Quiz Builder — independent book seating pass 1 */
+.quiz-builder-screen .subjects {
+  position: absolute !important;
+  z-index: 3;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  pointer-events: none;
+}
+
+.quiz-builder-screen .subject-card {
+  position: absolute !important;
+  width: 16.5% !important;
+  margin: 0 !important;
+  pointer-events: auto;
+}
+
+.quiz-builder-screen .subject-card.fundamentals {
+  left: 12.5% !important;
+  top: 43.5% !important;
+}
+
+.quiz-builder-screen .subject-card.pharm {
+  left: 41.8% !important;
+  top: 44.2% !important;
+}
+
+.quiz-builder-screen .subject-card.med-surg {
+  left: 71.8% !important;
+  top: 43.8% !important;
+}
+
+.quiz-builder-screen .approved-book-art {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Fundamentals seating pass 1 */
+.quiz-builder-screen .subject-card.fundamentals {
+  left: 12.8% !important;
+  top: 43.1% !important;
+  transform-origin: bottom center !important;
+  transform:
+    perspective(900px)
+    rotateZ(2.2deg)
+    rotateX(7deg)
+    skewX(-1.5deg) !important;
+}
+
+/* Fundamentals seating pass 2 */
+.quiz-builder-screen .subject-card.fundamentals {
+  left: 14.1% !important;
+  top: 42.7% !important;
+  transform:
+    perspective(900px)
+    rotateZ(.6deg)
+    rotateX(5deg)
+    skewX(-.5deg) !important;
+}
+
+/* Fundamentals seating pass 3 — measured horizontal correction */
+.quiz-builder-screen .subject-card.fundamentals {
+  left: 20.4% !important;
+  top: 42.7% !important;
+  transform:
+    perspective(900px)
+    rotateZ(.6deg)
+    rotateX(5deg)
+    skewX(-.5deg) !important;
+}
+
+
+/* Quiz Builder true-screen ownership — 2026-07-27 */
+
+body.builder-open {
+  overflow: hidden;
+}
+
+body.builder-open .app-shell {
+  width: 100%;
+  max-width: none;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+}
+
+.quiz-builder-screen {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+  padding: 0;
+
+  background: #030614;
+  overflow: hidden;
+}
+
+/*
+  Preserve the complete functional 16:9 Quiz Builder composition.
+  Background artwork, books, and live controls remain in one coordinate plane.
+*/
+.quiz-builder-window {
+  position: relative;
+
+  width: min(100vw, calc(100dvh * 16 / 9));
+  height: min(100dvh, calc(100vw * 9 / 16));
+  aspect-ratio: 16 / 9;
+
+  max-width: none;
+  max-height: none;
+  flex: none;
+  margin: 0;
+  padding: 0;
+
+  background-size: 100% 100%;
+  background-position: center;
+  border: 0;
+}
+
+/* Quiz Builder 16:9 book seating — first measured pass */
+.quiz-builder-screen .subject-card {
+  width: 12.2% !important;
+  height: auto !important;
+  top: 51.5% !important;
+  margin: 0 !important;
+  transform: none !important;
+  transform-origin: bottom center !important;
+}
+
+.quiz-builder-screen .subject-card.fundamentals {
+  left: 22.4% !important;
+}
+
+.quiz-builder-screen .subject-card.pharm {
+  left: 43.9% !important;
+}
+
+.quiz-builder-screen .subject-card.med-surg {
+  left: 69.3% !important;
+}
+
+.quiz-builder-screen .approved-book-art {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Quiz Builder books — authoritative resting coordinates */
+.quiz-builder-screen .subject-card {
+  width: 9.6% !important;
+
+  top: auto !important;
+  bottom: 47.2% !important;
+
+  height: auto !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+
+  transform: none !important;
+  transform-origin: bottom center !important;
+}
+
+.quiz-builder-screen .subject-card.fundamentals {
+  left: 21.1% !important;
+}
+
+.quiz-builder-screen .subject-card.pharm {
+  left: 44.8% !important;
+}
+
+.quiz-builder-screen .subject-card.med-surg {
+  left: 68.5% !important;
+}
+
+.quiz-builder-screen .approved-book-art {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Quiz Builder book launch interaction — authoritative */
+
+.quiz-builder-window {
+  container-type: inline-size;
+}
+
+.quiz-builder-screen .subject-card {
+  overflow: visible !important;
+  isolation: isolate;
+  transition: opacity 180ms ease;
+}
+
+/* Distances are calculated from each resting book center
+   to the shared 50% horizontal preview coordinate. */
+.quiz-builder-screen .subject-card.fundamentals {
+  --book-launch-x: 24.1cqw;
+}
+
+.quiz-builder-screen .subject-card.pharm {
+  --book-launch-x: 0.4cqw;
+}
+
+.quiz-builder-screen .subject-card.med-surg {
+  --book-launch-x: -23.3cqw;
+}
+
+.quiz-builder-screen .approved-book-art {
+  position: relative;
+  z-index: 2;
+
+  transform: translateX(0) scale(1);
+  transform-origin: bottom center !important;
+
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
+
+  will-change: transform, filter;
+}
+
+/* Small indication before clicking; the full travel happens on activation. */
+.quiz-builder-screen .subject-card:not(.is-launching):hover .approved-book-art,
+.quiz-builder-screen .subject-card:not(.is-launching):focus-visible .approved-book-art {
+  transform: translateX(0) scale(1.08);
+  filter:
+    drop-shadow(0 0 .35cqw rgba(255, 239, 177, .86))
+    drop-shadow(0 0 .8cqw rgba(238, 193, 104, .5));
+}
+
+.quiz-builder-screen .subject-card::after {
+  content: attr(data-subject);
+
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: -1.8cqw;
+
+  display: block;
+  width: max-content;
+  max-width: 22cqw;
+  padding: .34cqw .9cqw;
+
+  color: #fff0bd;
+  background: rgba(7, 15, 38, .88);
+  border: .08cqw solid rgba(238, 193, 104, .72);
+  border-radius: .2cqw;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.22cqw;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transform: translateX(-50%);
+  text-shadow:
+    0 0 .18cqw rgba(255, 247, 205, .95),
+    0 0 .48cqw rgba(238, 193, 104, .75);
+
+  box-shadow:
+    inset 0 0 .25cqw rgba(255, 236, 174, .15),
+    0 0 .7cqw rgba(238, 193, 104, .3);
+}
+
+body.book-launching .quiz-builder-screen .subject-card:not(.is-launching) {
+  opacity: .3;
+}
+
+.quiz-builder-screen .subject-card.is-launching {
+  z-index: 30 !important;
+  pointer-events: none;
+}
+
+.quiz-builder-screen .subject-card.is-launching .approved-book-art {
+  animation: prepflow-book-center-launch 1150ms ease-in-out forwards;
+}
+
+.quiz-builder-screen .subject-card.is-launching::after {
+  animation: prepflow-book-label-launch 1150ms ease-in-out forwards;
+}
+
+@keyframes prepflow-book-center-launch {
+  0% {
+    transform: translateX(0) scale(1);
+    filter: none;
+  }
+
+  /* Travel and enlarge. */
+  35% {
+    transform: translateX(var(--book-launch-x)) scale(1.65);
+    filter:
+      drop-shadow(0 0 .45cqw rgba(255, 239, 177, .9))
+      drop-shadow(0 0 1cqw rgba(238, 193, 104, .58));
+  }
+
+  /* Hold in the shared center preview position for about half a second. */
+  77% {
+    transform: translateX(var(--book-launch-x)) scale(1.65);
+    filter:
+      drop-shadow(0 0 .45cqw rgba(255, 239, 177, .9))
+      drop-shadow(0 0 1cqw rgba(238, 193, 104, .58));
+  }
+
+  /* One brief confirmation pulse. */
+  89% {
+    transform: translateX(var(--book-launch-x)) scale(1.74);
+    filter:
+      brightness(1.18)
+      drop-shadow(0 0 .7cqw rgba(255, 249, 219, 1))
+      drop-shadow(0 0 1.45cqw rgba(238, 193, 104, .88));
+  }
+
+  100% {
+    transform: translateX(var(--book-launch-x)) scale(1.65);
+    filter:
+      drop-shadow(0 0 .5cqw rgba(255, 239, 177, .95))
+      drop-shadow(0 0 1.1cqw rgba(238, 193, 104, .68));
+  }
+}
+
+@keyframes prepflow-book-label-launch {
+  0%,
+  22% {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+
+  35% {
+    opacity: 1;
+    transform:
+      translateX(calc(-50% + var(--book-launch-x)));
+  }
+
+  77% {
+    opacity: 1;
+    transform:
+      translateX(calc(-50% + var(--book-launch-x)));
+  }
+
+  89% {
+    opacity: 1;
+    transform:
+      translateX(calc(-50% + var(--book-launch-x)))
+      scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translateX(calc(-50% + var(--book-launch-x)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-builder-screen .subject-card.is-launching .approved-book-art,
+  .quiz-builder-screen .subject-card.is-launching::after {
+    animation-duration: 1ms;
+  }
+}
+
+/* Quiz Builder shelf-front plaques — authoritative */
+.quiz-builder-shelf-plaques {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  pointer-events: none;
+}
+
+.quiz-builder-shelf-plaque {
+  position: absolute;
+  top: 58.0%;
+
+  width: 12.2%;
+  height: 2.75%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #cbb47b 0%,
+      #a88952 48%,
+      #74542d 100%
+    );
+
+  border: max(1px, .08cqw) solid #4d3118;
+  border-radius: .09cqw;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .84cqw;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .075em;
+  text-align: center;
+  white-space: nowrap;
+
+  transform: translateX(-50%);
+
+  box-shadow:
+    inset 0 .07cqw 0 rgba(255, 239, 186, .42),
+    inset 0 -.14cqw .2cqw rgba(45, 27, 11, .46),
+    0 .16cqw .22cqw rgba(0, 0, 0, .64),
+    0 0 .22cqw rgba(221, 164, 65, .18);
+
+  -webkit-text-stroke: .025cqw rgba(4, 12, 28, .88);
+  color: #24354a;
+
+  text-shadow:
+    0 .05cqw 0 rgba(255, 255, 255, .72),
+    0 0 .16cqw rgba(255, 220, 135, .48);
+}
+
+/* Small metal return resting on the shelf top. */
+.quiz-builder-shelf-plaque::before {
+  content: "";
+
+  position: absolute;
+  left: -.08cqw;
+  right: -.08cqw;
+  top: -.26cqw;
+  height: .26cqw;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #a98245,
+      #543718
+    );
+
+  border: .07cqw solid #4f3213;
+  border-bottom: 0;
+  border-radius: .1cqw .1cqw 0 0;
+
+  transform: perspective(4cqw) rotateX(48deg);
+  transform-origin: bottom center;
+
+  box-shadow:
+    inset 0 .05cqw 0 rgba(255, 239, 174, .55),
+    0 -.06cqw .1cqw rgba(0, 0, 0, .38);
+}
+
+/* Thin return wrapping beneath the shelf edge. */
+.quiz-builder-shelf-plaque::after {
+  content: "";
+
+  position: absolute;
+  left: .08cqw;
+  right: .08cqw;
+  bottom: -.28cqw;
+  height: .28cqw;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #493018,
+      #170d07
+    );
+
+  border: .06cqw solid #321d0b;
+  border-top: 0;
+  border-radius: 0 0 .09cqw .09cqw;
+
+  transform: perspective(4cqw) rotateX(-42deg);
+  transform-origin: top center;
+
+  box-shadow: 0 .1cqw .16cqw rgba(0, 0, 0, .65);
+}
+
+.quiz-builder-shelf-plaque.fundamentals-plaque {
+  left: 24.9%;
+}
+
+.quiz-builder-shelf-plaque.pharm-plaque {
+  left: 47.6%;
+}
+
+.quiz-builder-shelf-plaque.medsurg-plaque {
+  left: 70.5%;
+}

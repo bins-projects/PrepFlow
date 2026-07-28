@@ -212,15 +212,11 @@ function showQuizBuilder() {
   document.body.classList.remove("book-open");
   document.body.classList.add("builder-open");
 
-  hero.hidden = false;
-  homeLauncher.hidden = true;
-  quizBuilderScreen.hidden = false;
-  chapterScreen.hidden = true;
-  quizScreen.hidden = true;
-  blockSummary.hidden = true;
-  status.hidden = true;
+  hideAllScreens();
 
+  quizBuilderScreen.hidden = false;
   subjects.hidden = false;
+
   updateSelectionStatus();
 }
 
@@ -748,8 +744,36 @@ closeQuizBuilderButton.addEventListener("click", () => {
 });
 doneChaptersButton.addEventListener("click", showQuizBuilder);
 
+const BOOK_LAUNCH_DURATION_MS = 1150;
+let bookLaunchInProgress = false;
+
+function wait(milliseconds) {
+  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+}
+
+async function launchBook(button) {
+  if (bookLaunchInProgress) {
+    return;
+  }
+
+  bookLaunchInProgress = true;
+  document.body.classList.add("book-launching");
+  button.classList.add("is-launching");
+  button.setAttribute("aria-busy", "true");
+
+  try {
+    await wait(BOOK_LAUNCH_DURATION_MS);
+    await showChapters(button);
+  } finally {
+    button.classList.remove("is-launching");
+    button.removeAttribute("aria-busy");
+    document.body.classList.remove("book-launching");
+    bookLaunchInProgress = false;
+  }
+}
+
 document.querySelectorAll(".subject-card").forEach((button) => {
-  button.addEventListener("click", () => showChapters(button));
+  button.addEventListener("click", () => launchBook(button));
 });
 
 document.querySelector("#back-button").addEventListener("click", showQuizBuilder);

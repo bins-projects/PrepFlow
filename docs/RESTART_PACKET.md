@@ -309,25 +309,58 @@ Never force-push public `master`, a frozen release branch, or a release tag.
 
 ---
 
+# 10A. Current Local Quiz Builder Interior Milestone
+
+The local working tree contains a newer approved Quiz Builder interior than the
+current remote checkpoint.
+
+It includes a separate full-screen 16:9 nursing-station scene, three new closed
+books on one measured shelf baseline, the centered launch/hold/pulse sequence,
+and decorative noninteractive shelf-front plaques.
+
+Exact geometry, runtime assets, deferred work, and pre-commit verification are
+recorded in:
+
+```text
+docs/QUIZ_BUILDER_INTERIOR_CHECKPOINT_2026-07-27.md
+```
+
+This state is local only until testing, privacy review, focused diff inspection,
+explicit staging, commit, synchronized pushes, and hash verification are
+complete.
+
+Do not overwrite the local working tree with the older remote state.
+
 # 11. Immediate Finishing Sequence
 
-1. synchronize this restart-packet correction locally and to the public mirror;
-2. rerun automated tests;
-3. perform a final real-browser smoke test;
-4. inspect final status, diff, and privacy exposure;
-5. create the final synchronized development checkpoint;
-6. create a fixed hospital-homepage release branch;
-7. choose and create the immutable release tag;
-8. open and inspect the public release pull request;
-9. merge and verify the deployed site;
-10. record the new production boundary.
+1. test the Fundamentals, Pharm, and Med-Surg book launches in the real browser;
+2. confirm each book opens the correct chapter list;
+3. confirm Close returns to the hospital homepage;
+4. hard-refresh and repeat the basic Quiz Builder path;
+5. inspect the current Quiz Builder CSS for superseded experimental rules;
+6. keep one authoritative rule for each current element, breakpoint, and state;
+7. deliberately exclude or relocate
+   `web/quiz-builder-screen.css.before-nursing-station`;
+8. run applicable automated tests;
+9. inspect the complete focused code, asset, and documentation diff;
+10. run the privacy and artifact scan;
+11. stage the intended files explicitly without using `git add .`;
+12. commit the coherent Quiz Builder interior milestone locally;
+13. push `docs/continuity-rebuild` to both `origin` and `public`;
+14. fetch both remotes and verify all three development hashes are equal.
+
+Do not push this milestone directly to `master`.
+
+Do not begin the chapter-selection redesign until the current Quiz Builder
+interior has been preserved as a verified synchronized development checkpoint.
 
 Do not resume the obsolete nurse-separation milestone.
 
-Do not treat the current stylesheet override stack as permanent finished architecture. Preserve the working result and keep consolidation as a protected post-release cleanup milestone.
+Keep `web/hospital-home.css` consolidation as a separate protected cleanup
+milestone. Do not mix that cleanup into the Quiz Builder interior commit.
 
 ---
 
 # 12. Fresh-Chat Opening Instruction
 
-> Continue PrepFlow from my local repository at `~/projects/prepflow` on branch `docs/continuity-rebuild`. Read the full current `docs/RESTART_PACKET.md`, `docs/RELEASE_PRESERVATION_POLICY.md`, and `docs/ART_SYSTEM.md` before giving me a command. Inspect `git status --short --branch` first and inspect the rendered local application before visual changes. The current development state contains the approved PrepFlow Teaching Hospital homepage, dedicated quiz-builder workflow, saved-session `Block X of Y` state, Drug Library sign control, shared command pulsing, and temporary live PrepFlow title/tagline. The previous city-and-nurses milestone is historical; do not begin nurse separation. `web/hospital-home.css` is visually approved but layered and must eventually be consolidated through a separate backed-up, browser-verified cleanup milestone. Preserve frozen releases according to `docs/RELEASE_PRESERVATION_POLICY.md`. Give one executable step at a time, use the GitHub connector for substantial documentation rewrites, and never use `git add .` during release preparation.
+> Continue PrepFlow from my local repository at `~/projects/prepflow` on branch `docs/continuity-rebuild`. Read the full current `docs/RESTART_PACKET.md`, `docs/RELEASE_PRESERVATION_POLICY.md`, and `docs/ART_SYSTEM.md` before giving me a command. Inspect `git status --short --branch` first and inspect the rendered local application before visual changes. The current development state contains the approved PrepFlow Teaching Hospital homepage, dedicated quiz-builder workflow, saved-session `Block X of Y` state, Drug Library sign control, shared command pulsing, and temporary live PrepFlow title/tagline. The previous city-and-nurses milestone is historical; do not begin nurse separation. The local working tree also contains the newer approved Quiz Builder interior; read `docs/QUIZ_BUILDER_INTERIOR_CHECKPOINT_2026-07-27.md` and do not overwrite it with the older remote state. `web/hospital-home.css` is visually approved but layered and must eventually be consolidated through a separate backed-up, browser-verified cleanup milestone. Preserve frozen releases according to `docs/RELEASE_PRESERVATION_POLICY.md`. Give one executable step at a time, use the GitHub connector for substantial documentation rewrites, and never use `git add .` during release preparation.

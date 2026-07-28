@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="half-width-composition.css?v=20260723-1">
   <link rel="stylesheet" href="approved-book-buttons.css?v=20260724-books-1">
   <link rel="stylesheet" href="hospital-home.css?v=20260726-text-glow-1">
-  <link rel="stylesheet" href="quiz-builder-screen.css?v=20260726-structure-1">
+  <link rel="stylesheet" href="quiz-builder-screen.css?v=20260727-shelf-plaques-overlap-1">
 </head>
 <body>
   <main class="app-shell">
@@ -92,25 +92,44 @@
             <h2>Build Your Quiz</h2>
             <p>Choose one or more books, select chapters, then customize your quiz.</p>
           </div>
-          <button id="close-quiz-builder" class="secondary-button">Close</button>
+          <button id="close-quiz-builder" class="secondary-button">
+              <span class="command-label">Close</span>
+            </button>
         </header>
 
         <section class="subjects" aria-label="Quiz library">
           <button class="subject-card fundamentals" data-subject="Fundamentals" data-pack="../packs/fundamentals.prepflow.json" aria-label="Open Fundamentals — 1,040 questions">
-            <img class="approved-book-art" src="images/book-sprite-preview/prepflow-fundamentals-book.png" alt="" aria-hidden="true">
+            <img class="approved-book-art" src="images/quiz-builder/books/fundamentals-closed.png" alt="" aria-hidden="true">
             <span class="sr-only">Fundamentals — 1,040 questions. Choose chapters.</span>
           </button>
-
-          <button class="subject-card pharm" data-subject="Pharm" data-pack="../packs/pharmacy.prepflow.json" aria-label="Open Pharm — 1,238 questions">
-            <img class="approved-book-art" src="images/book-sprite-preview/prepflow-pharm-book.png" alt="" aria-hidden="true">
+          <button class="subject-card pharm"
+                  data-subject="Pharm"
+                  data-pack="../packs/pharmacy.prepflow.json"
+                  aria-label="Open Pharm — 1,238 questions">
+            <img class="approved-book-art"
+                 src="images/quiz-builder/books/pharm-closed.png?v=20260727-pharm-2"
+                 alt=""
+                 aria-hidden="true">
             <span class="sr-only">Pharm — 1,238 questions. Choose chapters.</span>
           </button>
 
           <button class="subject-card med-surg" data-subject="Medical-Surgical" data-pack="../packs/medical_surgical.prepflow.json" aria-label="Open Med-Surg — 1,443 questions">
-            <img class="approved-book-art" src="images/book-sprite-preview/prepflow-medsurg-book.png" alt="" aria-hidden="true">
+            <img class="approved-book-art" src="images/quiz-builder/books/medsurg-closed.png" alt="" aria-hidden="true">
             <span class="sr-only">Med-Surg — 1,443 questions. Choose chapters.</span>
           </button>
         </section>
+
+        <div class="quiz-builder-shelf-plaques" aria-hidden="true">
+          <div class="quiz-builder-shelf-plaque fundamentals-plaque">
+            FUNDAMENTALS
+          </div>
+          <div class="quiz-builder-shelf-plaque pharm-plaque">
+            PHARM
+          </div>
+          <div class="quiz-builder-shelf-plaque medsurg-plaque">
+            MED-SURG
+          </div>
+        </div>
 
         <section class="builder-controls" aria-label="Quiz settings">
           <div class="builder-summary">
@@ -138,10 +157,11 @@
 
           <div class="builder-actions">
             <button id="clear-selections" class="secondary-button" disabled>
-              Clear Selection
+              <span class="command-label">Clear Selection</span>
             </button>
             <button id="build-quiz" class="start-button" disabled>
-              Start Quiz <span aria-hidden="true">▶</span>
+              <span class="command-label">Start Quiz</span>
+              <span class="command-arrow" aria-hidden="true">▶</span>
             </button>
           </div>
         </section>

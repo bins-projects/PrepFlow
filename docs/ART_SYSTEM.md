@@ -80,13 +80,17 @@ The architectural perspective belongs to the artwork. Live control faces must re
 
 ## 2.3 Book assets
 
-The three subject books remain separate transparent clickable artwork:
+The authoritative closed books for the current Quiz Builder interior
+remain separate transparent clickable artwork:
 
 ```text
-web/images/book-sprite-preview/prepflow-fundamentals-book.png
-web/images/book-sprite-preview/prepflow-pharm-book.png
-web/images/book-sprite-preview/prepflow-medsurg-book.png
+web/images/quiz-builder/books/fundamentals-closed.png
+web/images/quiz-builder/books/pharm-closed.png
+web/images/quiz-builder/books/medsurg-closed.png
 ```
+
+The earlier files under `web/images/book-sprite-preview/` are historical and
+must not replace the current Quiz Builder books.
 
 Books own:
 
@@ -337,6 +341,51 @@ The complete transparent book is the clickable button inside the quiz builder. Z
 
 ---
 
+# 7A. Quiz Builder Interior Composition
+
+The current local Quiz Builder uses one contained 16:9 nursing-station scene:
+
+```text
+web/images/quiz-builder/prepflow-nursing-station-quiz-builder.png
+```
+
+The background, closed books, shelf plaques, and lower browser-owned controls
+share one proportional scene-coordinate plane.
+
+Approved closed-book resting geometry:
+
+```text
+width: 9.6%
+bottom: 47.2%
+
+Fundamentals left: 21.1%
+Pharm left:        44.8%
+Med-Surg left:     68.5%
+```
+
+Approved decorative plaque geometry:
+
+```text
+top: 58.0%
+
+Fundamentals left: 24.9%
+Pharm left:        47.6%
+Med-Surg left:     70.5%
+```
+
+The visible book artwork animates independently of its fixed subject-card
+hitbox. The approved sequence centers and enlarges the selected book, dims the
+other books, holds briefly, pulses once, and then invokes the existing
+chapter-opening behavior.
+
+The plaques are live HTML/CSS scene decoration, not buttons.
+
+For scene-bound objects sharing one painted surface, use measured rendered
+geometry and one shared baseline. When a newer adjustment replaces an earlier
+experimental CSS rule, remove or replace the superseded rule. Keep one
+authoritative current rule unless another is intentionally required for a
+distinct breakpoint, state, or interaction.
+
 # 8. Asset Development Workflow
 
 For one isolated asset:
@@ -449,7 +498,7 @@ Temporary experiments do not become permanent architecture merely because they e
 
 - nurse sprite separation;
 - nurse animation;
-- hospital-interior quiz scene;
+- redesign of the current chapter-selection layer;
 - permanent reusable PrepFlow emblem.
 
 ## Superseded
