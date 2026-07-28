@@ -8,7 +8,8 @@ It lets students build a quiz from selected nursing chapters, study one question
 
 [Open PrepFlow in your browser](https://bins-projects.github.io/PrepFlow/web/)
 
-No account is required. Study progress is stored locally in the browser on the device being used.
+No account is required and no login is needed. quiz progress is stored locally in the browser on the device being used.
+tou do not need to stay connected to continue your quiz later
 
 Clearing browser or site data may remove a saved session. A session saved in one browser or device does not automatically appear in another.
 
