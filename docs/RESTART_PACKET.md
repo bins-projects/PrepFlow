@@ -309,49 +309,56 @@ Never force-push public `master`, a frozen release branch, or a release tag.
 
 ---
 
-# 10A. Current Local Quiz Builder Interior Milestone
+# 10A. Current Local Quiz Builder Open-Book Milestone
 
-The approved Quiz Builder interior is preserved in synchronized development
-commit `5897f0d7fbb334cdc7eebaad73d1cbd3292a4a82`.
+The approved nursing-station interior and responsive coordinate lock are
+preserved in synchronized development commit
+`53d18865c8276a3cca2fd464d7e593acd1da2042`.
 
-The local working tree contains a focused responsive-lock follow-up. Books and
-decorative shelf-front plaques now derive their horizontal placement from the
-same station-center variables, and the Quiz Builder resets the global homepage
-`.subjects` maximum-width constraint so both layers use the complete 16:9 scene
-plane.
+The local working tree now contains the completed shared open-book chapter
+interface for Fundamentals, Pharm, and Medical-Surgical.
 
-Exact geometry, runtime assets, deferred work, and pre-commit verification are
-recorded in:
+Implemented behavior includes:
+
+- shared open and close animation;
+- one responsive five-row scrolling chapter viewport;
+- per-book chapter and question summaries;
+- compact selected chapter-number feedback;
+- persistent cross-book selection state;
+- combined builder totals;
+- approved hover, selected, keyboard-focus, and Back-control behavior.
+
+Exact implementation details, runtime assets, cleanup decisions, verification,
+and deferred work are recorded in:
 
 ```text
-docs/QUIZ_BUILDER_INTERIOR_CHECKPOINT_2026-07-27.md
+docs/QUIZ_BUILDER_OPEN_BOOK_CHECKPOINT_2026-07-28.md
 ```
 
-This state is local only until testing, privacy review, focused diff inspection,
-explicit staging, commit, synchronized pushes, and hash verification are
-complete.
+This state remains local until documentation review, privacy and artifact
+inspection, explicit staging, commit, synchronized pushes, and hash
+verification are complete.
 
 Do not overwrite the local working tree with the older remote state.
 
 # 11. Immediate Finishing Sequence
 
-1. inspect the complete focused responsive-lock and documentation diff;
-2. confirm `web/quiz-builder-screen.css.before-nursing-station` remains excluded;
-3. run the privacy and artifact scan;
-4. stage only the intended files without using `git add .`;
-5. commit the responsive book/plaque coordinate-lock follow-up;
-6. push `docs/continuity-rebuild` to both `origin` and `public`;
-7. fetch both remotes and verify all three development hashes are equal.
+1. inspect the open-book documentation and final focused diff;
+2. run the privacy and artifact scan;
+3. stage only the intended files without using `git add .`;
+4. commit the shared Quiz Builder open-book milestone;
+5. push `docs/continuity-rebuild` to both `origin` and `public`;
+6. fetch both remotes and verify all three development hashes are equal.
 
 Do not push this milestone directly to `master`.
 
-Do not begin the chapter-selection redesign until the current Quiz Builder
-interior has been preserved as a verified synchronized development checkpoint.
+Do not begin another Quiz Builder redesign until this open-book milestone has
+been preserved as a verified synchronized development checkpoint.
 
 Do not resume the obsolete nurse-separation milestone.
 
-Keep `web/hospital-home.css` consolidation as a separate protected cleanup
-milestone. Do not mix that cleanup into the Quiz Builder interior commit.
+Keep broad Quiz Builder CSS cleanup and `web/hospital-home.css` consolidation
+as separate protected cleanup milestones.
 
 ---
 

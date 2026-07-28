@@ -640,14 +640,20 @@ body.builder-open .app-shell {
    to the shared 50% horizontal preview coordinate. */
 .quiz-builder-screen .subject-card.fundamentals {
   --book-launch-x: 24.1cqw;
+  --book-center-scale: 2.11;
+  --book-center-pulse-scale: 2.23;
 }
 
 .quiz-builder-screen .subject-card.pharm {
   --book-launch-x: 0.4cqw;
+  --book-center-scale: 2.11;
+  --book-center-pulse-scale: 2.23;
 }
 
 .quiz-builder-screen .subject-card.med-surg {
   --book-launch-x: -23.3cqw;
+  --book-center-scale: 2.11;
+  --book-center-pulse-scale: 2.23;
 }
 
 .quiz-builder-screen .approved-book-art {
@@ -737,7 +743,7 @@ body.book-launching .quiz-builder-screen .subject-card:not(.is-launching) {
 
   /* Travel and enlarge. */
   35% {
-    transform: translateX(var(--book-launch-x)) scale(1.65);
+    transform: translateX(var(--book-launch-x)) scale(var(--book-center-scale));
     filter:
       drop-shadow(0 0 .45cqw rgba(255, 239, 177, .9))
       drop-shadow(0 0 1cqw rgba(238, 193, 104, .58));
@@ -745,7 +751,7 @@ body.book-launching .quiz-builder-screen .subject-card:not(.is-launching) {
 
   /* Hold in the shared center preview position for about half a second. */
   77% {
-    transform: translateX(var(--book-launch-x)) scale(1.65);
+    transform: translateX(var(--book-launch-x)) scale(var(--book-center-scale));
     filter:
       drop-shadow(0 0 .45cqw rgba(255, 239, 177, .9))
       drop-shadow(0 0 1cqw rgba(238, 193, 104, .58));
@@ -753,7 +759,7 @@ body.book-launching .quiz-builder-screen .subject-card:not(.is-launching) {
 
   /* One brief confirmation pulse. */
   89% {
-    transform: translateX(var(--book-launch-x)) scale(1.74);
+    transform: translateX(var(--book-launch-x)) scale(var(--book-center-pulse-scale));
     filter:
       brightness(1.18)
       drop-shadow(0 0 .7cqw rgba(255, 249, 219, 1))
@@ -761,7 +767,7 @@ body.book-launching .quiz-builder-screen .subject-card:not(.is-launching) {
   }
 
   100% {
-    transform: translateX(var(--book-launch-x)) scale(1.65);
+    transform: translateX(var(--book-launch-x)) scale(var(--book-center-scale));
     filter:
       drop-shadow(0 0 .5cqw rgba(255, 239, 177, .95))
       drop-shadow(0 0 1.1cqw rgba(238, 193, 104, .68));
@@ -929,4 +935,778 @@ body.book-launching .quiz-builder-screen .subject-card:not(.is-launching) {
 
 .quiz-builder-shelf-plaque.medsurg-plaque {
   left: var(--medsurg-station-x);
+}
+
+
+/* Quiz Builder shared open-book transition layer. */
+.quiz-builder-screen .quiz-builder-openbook {
+  position: absolute;
+  z-index: 32;
+  left: 50%;
+  top: 48%;
+  width: 58%;
+  height: auto;
+
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.84);
+  transform-origin: center;
+
+  pointer-events: none;
+  will-change: opacity, transform, filter;
+
+  transition:
+    opacity 260ms ease,
+    transform 420ms ease,
+    filter 420ms ease;
+}
+
+.quiz-builder-screen .quiz-builder-openbook[hidden] {
+  display: none !important;
+}
+
+body.book-opening .quiz-builder-screen .quiz-builder-openbook {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  filter:
+    drop-shadow(0 0 .5cqw rgba(255, 239, 177, .82))
+    drop-shadow(0 0 1.2cqw rgba(238, 193, 104, .42));
+}
+
+/*
+  At the reveal point the active closed-book artwork is already centered.
+  It turns and fades away while the shared open book settles beneath it.
+*/
+body.book-opening
+.quiz-builder-screen
+.subject-card.is-launching
+.approved-book-art {
+  animation: none !important;
+
+  opacity: 0;
+  transform:
+    translateX(var(--book-launch-x))
+    scale(var(--book-center-scale))
+    perspective(900px)
+    rotateY(-72deg);
+
+  transition:
+    opacity 220ms ease,
+    transform 360ms ease,
+    filter 260ms ease;
+}
+
+
+/* Shared real open-book chapter state — authoritative interior */
+
+/*
+  The existing chapter controls remain functional HTML. Only their visual
+  shell changes. The nursing-station artwork remains the responsive 16:9
+  coordinate plane beneath this state.
+*/
+body.real-book-chapters .quiz-builder-screen {
+  display: grid !important;
+}
+
+/* Hide the resting builder controls while preserving the scene background. */
+body.real-book-chapters .quiz-builder-header,
+body.real-book-chapters .quiz-builder-screen .subjects,
+body.real-book-chapters .quiz-builder-shelf-plaques,
+body.real-book-chapters .builder-controls {
+  visibility: hidden !important;
+}
+
+/*
+  Replace the synthetic CSS textbook with the approved real open-book artwork.
+  Geometry matches the tested transition preview.
+*/
+body.real-book-chapters .chapter-screen {
+  --book-accent: #263d70;
+  --book-stage-unit: min(1vw, calc(1dvh * 16 / 9));
+
+  position: fixed;
+  z-index: 100;
+
+  inset: auto;
+  left: 50%;
+  top: 50%;
+
+  width: min(100vw, calc(100dvh * 16 / 9));
+  height: min(100dvh, calc(100vw * 9 / 16));
+  max-width: none;
+  max-height: none;
+
+  margin: 0;
+  padding: 0;
+
+  display: block;
+
+  overflow: hidden;
+
+  border: 0;
+  border-radius: 0;
+
+  background:
+    url("images/quiz-builder/books/quizbook-transparent.png?v=20260728-clean-preview-1")
+    50% 48% / 58% auto no-repeat;
+
+  box-shadow: none;
+
+  color: #111a31;
+
+  transform: translate(-50%, -50%);
+  animation: none;
+}
+
+/* Remove the old synthetic binding and page texture. */
+body.real-book-chapters .chapter-screen::before,
+body.real-book-chapters .chapter-screen::after {
+  content: none;
+}
+
+/* Header seated across the upper page area. */
+body.real-book-chapters .chapter-header {
+  position: absolute;
+  z-index: 7;
+
+  left: 27%;
+  top: 19.8%;
+  width: 46%;
+  height: 10.6%;
+
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  column-gap: 2.4cqw;
+
+  border: 0;
+}
+
+body.real-book-chapters .chapter-header::after {
+  content: none;
+}
+
+body.real-book-chapters .chapter-book-heading {
+  grid-column: 1;
+
+  min-width: 0;
+  padding-top: .25cqw;
+
+  text-align: center;
+}
+
+body.real-book-chapters .chapter-header h2 {
+  margin: 0;
+
+  color: #132342;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(1.18rem, 1.95cqw, 1.88rem);
+  font-weight: 900;
+  letter-spacing: .025em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+body.real-book-chapters .chapter-header p {
+  margin: .28cqw 0 0;
+
+  color: #536079;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(.52rem, .7cqw, .74rem);
+  font-weight: 800;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+body.real-book-chapters #back-button {
+  position: absolute;
+  left: 0;
+  top: calc(var(--book-stage-unit) * -.4);
+
+  padding:
+    calc(var(--book-stage-unit) * .52)
+    calc(var(--book-stage-unit) * .78);
+
+  border:
+    calc(var(--book-stage-unit) * .12)
+    solid
+    #c8aa61;
+  border-radius: calc(var(--book-stage-unit) * .12);
+
+  background:
+    linear-gradient(
+      to bottom,
+      #1b315d,
+      #0b1731
+    );
+
+  color: #f4dc9d;
+
+  box-shadow:
+    inset 0 calc(var(--book-stage-unit) * .06) 0
+      rgba(255, 255, 255, .14),
+    0 calc(var(--book-stage-unit) * .12)
+      calc(var(--book-stage-unit) * .2)
+      rgba(0, 0, 0, .32);
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: calc(var(--book-stage-unit) * .62);
+  font-weight: 900;
+  letter-spacing: .035em;
+  line-height: 1;
+  text-transform: uppercase;
+
+  transform-origin: center;
+  animation:
+    prepflow-book-return-pulse
+    2.2s
+    ease-in-out
+    infinite;
+
+  will-change: transform, box-shadow, color;
+}
+
+/* Existing hidden utility controls remain hidden. */
+body.real-book-chapters .chapter-actions {
+  display: contents;
+}
+
+/* Chapters occupy the two usable page surfaces. */
+body.real-book-chapters .chapter-list {
+  position: absolute;
+  z-index: 7;
+
+  left: 27%;
+  right: 27%;
+  top: 29.2%;
+  bottom: 29.7%;
+
+  min-height: 0;
+  padding: 0 .65cqw;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: calc((100% - 2.2cqw) / 5);
+  align-content: start;
+  gap: .55cqw 2.2cqw;
+
+  overflow-y: auto;
+}
+
+body.real-book-chapters .chapter-option {
+  height: 100%;
+  min-height: 0;
+  margin: 0 !important;
+  padding: .5cqw .68cqw;
+
+  display: flex;
+  align-items: center;
+
+  border: .08cqw solid #9a8a68;
+  border-left: .24cqw solid #263d70;
+  border-radius: .08cqw;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 254, 246, .94),
+      rgba(239, 232, 211, .9)
+    );
+
+  box-shadow:
+    inset 0 .05cqw 0 rgba(255, 255, 255, .8),
+    0 .08cqw .12cqw rgba(35, 31, 24, .14);
+
+  color: #16233e;
+
+  transition:
+    transform 120ms ease,
+    border-color 120ms ease,
+    background 120ms ease,
+    box-shadow 120ms ease;
+}
+
+body.real-book-chapters .chapter-option-text {
+  display: block;
+  width: 100%;
+  padding-right: 3.6cqw;
+}
+
+body.real-book-chapters .chapter-name {
+  display: block;
+
+  color: #172540;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .79cqw;
+  font-weight: 850;
+  letter-spacing: .003em;
+  line-height: 1.16;
+}
+
+body.real-book-chapters .chapter-count {
+  display: block;
+  margin-top: .18cqw;
+
+  color: #677187;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .55cqw;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+body.real-book-chapters
+.chapter-option:has(input:checked) {
+  border-color: #b69245;
+  border-left-color: #b69245;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 248, 219, .98),
+      rgba(236, 218, 166, .94)
+    );
+
+  box-shadow:
+    inset 0 0 0 .08cqw rgba(255, 245, 196, .85),
+    0 0 .35cqw rgba(181, 143, 59, .28);
+
+  animation:
+    prepflow-selected-chapter-pulse
+    2.2s
+    ease-in-out
+    infinite;
+
+  will-change: box-shadow, border-color;
+}
+
+body.real-book-chapters
+.chapter-option:has(input:checked)::after {
+  right: .45cqw;
+
+  color: #20365e;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(.34rem, .42cqw, .47rem);
+  font-weight: 900;
+  letter-spacing: .045em;
+}
+
+/* Legacy chapter-screen controls are not used by the real open-book interior. */
+body.real-book-chapters #selection-count,
+body.real-book-chapters #done-chapters {
+  display: none !important;
+}
+
+.chapter-selection-summary {
+  display: none;
+}
+
+body.real-book-chapters .chapter-selection-summary {
+  grid-column: 2;
+
+  min-width: 0;
+  padding-top: 0;
+
+  display: grid;
+
+  transform: translateY(-.62cqw);
+  justify-items: center;
+  align-content: center;
+  gap: .3cqw;
+
+  color: #17294c;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+body.real-book-chapters .chapter-selection-summary strong {
+  color: #17294c;
+  font-size: clamp(.82rem, 1.12cqw, 1.2rem);
+  font-weight: 900;
+  letter-spacing: .05em;
+}
+
+body.real-book-chapters .chapter-selection-summary span {
+  display: block;
+
+  color: #263d70;
+  font-size: clamp(.68rem, .9cqw, .98rem);
+  font-weight: 900;
+  letter-spacing: .025em;
+}
+
+
+/* Open-book return interaction — authoritative Back-button behavior. */
+
+/*
+  Phase 1: chapter content disappears and the open book turns edge-on.
+  Phase 2: the closed cover appears at the same centered size, then returns
+  to the exact shelf card that originally opened it.
+*/
+body.real-book-chapters.book-closing .chapter-screen {
+  pointer-events: none;
+  transform-origin: center;
+
+  animation:
+    prepflow-open-book-fold-away
+    300ms
+    cubic-bezier(.55, 0, .8, .35)
+    forwards;
+}
+
+body.real-book-chapters.book-closing .chapter-header,
+body.real-book-chapters.book-closing .chapter-list {
+  animation:
+    prepflow-book-content-dismiss
+    140ms
+    ease
+    forwards;
+}
+
+/* Reveal only the shelf layer needed for the returning subject book. */
+body.real-book-chapters.book-closing
+.quiz-builder-screen
+.subjects {
+  visibility: visible !important;
+}
+
+body.real-book-chapters.book-closing
+.quiz-builder-screen
+.subject-card {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.real-book-chapters.book-closing
+.quiz-builder-screen
+.subject-card.is-closing {
+  visibility: visible !important;
+  opacity: 1;
+  z-index: 110 !important;
+}
+
+/*
+  The closed cover remains invisible during the open-book fold.
+  At 300ms it appears edge-on at the centered preview size, faces forward,
+  then shrinks and travels back to its shelf position.
+*/
+body.real-book-chapters.book-closing
+.quiz-builder-screen
+.subject-card.is-closing
+.approved-book-art {
+  animation:
+    prepflow-closed-book-handoff-return
+    450ms
+    cubic-bezier(.35, 0, .2, 1)
+    300ms
+    both;
+}
+
+body.real-book-chapters.book-closing
+.quiz-builder-screen
+.subject-card.is-closing::after {
+  display: none;
+}
+
+@keyframes prepflow-book-content-dismiss {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes prepflow-open-book-fold-away {
+  0% {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      perspective(1200px)
+      rotateY(0deg)
+      scale(1);
+  }
+
+  72% {
+    opacity: .94;
+    transform:
+      translate(-50%, -50%)
+      perspective(1200px)
+      rotateY(68deg)
+      scale(.98);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      perspective(1200px)
+      rotateY(88deg)
+      scale(.96);
+  }
+}
+
+@keyframes prepflow-closed-book-handoff-return {
+  0% {
+    opacity: 0;
+
+    transform:
+      translateX(var(--book-launch-x))
+      scale(var(--book-center-scale))
+      perspective(900px)
+      rotateY(-88deg);
+
+    filter:
+      drop-shadow(0 0 .5cqw rgba(255, 239, 177, .82))
+      drop-shadow(0 0 1.2cqw rgba(238, 193, 104, .42));
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  28% {
+    opacity: 1;
+
+    transform:
+      translateX(var(--book-launch-x))
+      scale(var(--book-center-scale))
+      perspective(900px)
+      rotateY(0deg);
+
+    filter:
+      drop-shadow(0 0 .5cqw rgba(255, 239, 177, .82))
+      drop-shadow(0 0 1.2cqw rgba(238, 193, 104, .42));
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateX(0)
+      scale(1)
+      perspective(900px)
+      rotateY(0deg);
+
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.real-book-chapters.book-closing .chapter-screen,
+  body.real-book-chapters.book-closing .chapter-header,
+  body.real-book-chapters.book-closing .chapter-list,
+  body.real-book-chapters.book-closing
+  .quiz-builder-screen
+  .subject-card.is-closing
+  .approved-book-art {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+  }
+}
+
+
+/* Real open-book chapter-card interaction states — authoritative. */
+
+/* Mouse targeting feedback for an unselected chapter. */
+body.real-book-chapters
+.chapter-option:not(:has(input:checked)):hover {
+  z-index: 2;
+
+  transform:
+    translateY(-.16cqw)
+    scale(1.015);
+
+  border-color: #b9a16d;
+  border-left-color: #35548d;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 250, .98),
+      rgba(243, 236, 214, .96)
+    );
+
+  box-shadow:
+    inset 0 .05cqw 0 rgba(255, 255, 255, .92),
+    0 .12cqw .22cqw rgba(35, 31, 24, .22),
+    0 0 .22cqw rgba(74, 105, 161, .18);
+}
+
+/* Hovering a selected chapter pauses the pulse at its brightest state. */
+body.real-book-chapters
+.chapter-option:has(input:checked):hover {
+  z-index: 2;
+
+  transform:
+    translateY(-.16cqw)
+    scale(1.015);
+  animation: none;
+
+  border-color: #c9a84f;
+  border-left-color: #c9a84f;
+
+  box-shadow:
+    inset 0 0 0 .08cqw rgba(255, 249, 215, .96),
+    0 .12cqw .22cqw rgba(54, 40, 12, .24),
+    0 0 .34cqw rgba(204, 159, 54, .72),
+    0 0 .66cqw rgba(238, 193, 104, .42);
+}
+
+/*
+  The real checkbox remains keyboard-operable. This outline appears when
+  keyboard navigation places focus inside the chapter card.
+*/
+body.real-book-chapters
+.chapter-option:has(input:focus-visible) {
+  z-index: 3;
+
+  outline:
+    max(2px, .1cqw)
+    solid
+    #1f3f78;
+  outline-offset: max(2px, .1cqw);
+
+  box-shadow:
+    0 0 0 max(3px, .16cqw) rgba(239, 199, 105, .9),
+    0 0 .48cqw rgba(38, 61, 112, .48);
+}
+
+@keyframes prepflow-selected-chapter-pulse {
+  0%,
+  100% {
+    border-color: #b69245;
+    border-left-color: #b69245;
+
+    box-shadow:
+      inset 0 0 0 .08cqw rgba(255, 245, 196, .82),
+      0 0 .2cqw rgba(181, 143, 59, .24);
+  }
+
+  45% {
+    border-color: #bea052;
+    border-left-color: #bea052;
+
+    box-shadow:
+      inset 0 0 0 .08cqw rgba(255, 247, 204, .9),
+      0 0 .3cqw rgba(198, 154, 50, .44);
+  }
+
+  58% {
+    border-color: #d0af58;
+    border-left-color: #d0af58;
+
+    box-shadow:
+      inset 0 0 0 .08cqw rgba(255, 252, 226, .98),
+      0 0 .4cqw rgba(219, 174, 63, .72),
+      0 0 .72cqw rgba(238, 193, 104, .42);
+  }
+
+  74% {
+    border-color: #c09e4c;
+    border-left-color: #c09e4c;
+
+    box-shadow:
+      inset 0 0 0 .08cqw rgba(255, 247, 204, .9),
+      0 0 .3cqw rgba(198, 154, 50, .42);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.real-book-chapters
+  .chapter-option:has(input:checked) {
+    animation: none;
+
+    border-color: #c5a34d;
+    border-left-color: #c5a34d;
+
+    box-shadow:
+      inset 0 0 0 .08cqw rgba(255, 248, 210, .92),
+      0 0 .34cqw rgba(198, 154, 50, .48);
+  }
+}
+
+
+body.real-book-chapters #selected-chapter-numbers {
+  margin-top: .08cqw;
+
+  color: #58647c;
+  font-size: clamp(.68rem, .9cqw, .98rem);
+  font-weight: 800;
+  letter-spacing: .015em;
+  line-height: 1.15;
+  text-transform: none;
+}
+
+
+body.real-book-chapters #back-button:hover,
+body.real-book-chapters #back-button:focus-visible {
+  animation: none;
+
+  color: #fff8d6;
+  transform: scale(1.045);
+
+  border-color: #dfc174;
+
+  box-shadow:
+    inset 0 calc(var(--book-stage-unit) * .06) 0
+      rgba(255, 255, 255, .2),
+    0 calc(var(--book-stage-unit) * .14)
+      calc(var(--book-stage-unit) * .24)
+      rgba(0, 0, 0, .34),
+    0 0 calc(var(--book-stage-unit) * .34)
+      rgba(255, 229, 157, .9),
+    0 0 calc(var(--book-stage-unit) * .68)
+      rgba(238, 193, 104, .58);
+}
+
+@keyframes prepflow-book-return-pulse {
+  0%,
+  100% {
+    color: #f0d38c;
+    transform: scale(1);
+
+    box-shadow:
+      inset 0 calc(var(--book-stage-unit) * .06) 0
+        rgba(255, 255, 255, .14),
+      0 calc(var(--book-stage-unit) * .12)
+        calc(var(--book-stage-unit) * .2)
+        rgba(0, 0, 0, .32),
+      0 0 calc(var(--book-stage-unit) * .1)
+        rgba(238, 193, 104, .2);
+  }
+
+  45% {
+    color: #f6dfa3;
+    transform: scale(1.012);
+  }
+
+  58% {
+    color: #fff9dc;
+    transform: scale(1.045);
+
+    box-shadow:
+      inset 0 calc(var(--book-stage-unit) * .06) 0
+        rgba(255, 255, 255, .2),
+      0 calc(var(--book-stage-unit) * .14)
+        calc(var(--book-stage-unit) * .24)
+        rgba(0, 0, 0, .34),
+      0 0 calc(var(--book-stage-unit) * .32)
+        rgba(255, 232, 168, .96),
+      0 0 calc(var(--book-stage-unit) * .66)
+        rgba(238, 193, 104, .56);
+  }
+
+  74% {
+    color: #f5dda0;
+    transform: scale(1.014);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.real-book-chapters #back-button {
+    animation: none;
+  }
 }

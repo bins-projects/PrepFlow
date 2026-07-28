@@ -8,6 +8,7 @@ const quizBuilderScreen = document.querySelector("#quiz-builder-screen");
 const openQuizBuilderButton = document.querySelector("#open-quiz-builder");
 const closeQuizBuilderButton = document.querySelector("#close-quiz-builder");
 const doneChaptersButton = document.querySelector("#done-chapters");
+const quizBuilderOpenBook = document.querySelector("#quiz-builder-openbook");
 
 const resumePanel = document.querySelector("#resume-panel");
 const resumeDescription = document.querySelector("#resume-description");
@@ -18,6 +19,9 @@ const chapterScreen = document.querySelector("#chapter-screen");
 const chapterTitle = document.querySelector("#chapter-title");
 const chapterList = document.querySelector("#chapter-list");
 const selectionCount = document.querySelector("#selection-count");
+const selectedChapterSummary = document.querySelector("#selected-chapter-summary");
+const selectedQuestionSummary = document.querySelector("#selected-question-summary");
+const selectedChapterNumbers = document.querySelector("#selected-chapter-numbers");
 const startButton = document.querySelector("#start-button");
 const blockSizeSelect = document.querySelector("#block-size");
 
@@ -156,23 +160,67 @@ function hideAllScreens() {
 }
 
 function updateSelectionStatus() {
-  const selected = selectedChapters.size;
+  const totalSelected = selectedChapters.size;
+
+  const allSelections = [...selectedChapters.values()];
+  const currentBookSelections = allSelections.filter(
+    (selection) => selection.packPath === currentPackPath
+  );
+
+  const currentBookSelected = currentBookSelections.length;
+
   const selectedPackPaths = new Set(
-    [...selectedChapters.values()].map((selection) => selection.packPath)
+    allSelections.map((selection) => selection.packPath)
   );
   const selectedBooks = selectedPackPaths.size;
 
-  const chapterSelectionText =
-    PrepFlowSelectionRules.chapterSelectionText(selected);
+  const totalChapterSelectionText =
+    PrepFlowSelectionRules.chapterSelectionText(totalSelected);
 
-  selectionCount.textContent = chapterSelectionText;
-  builderSelectionCount.textContent = chapterSelectionText;
+  const currentBookChapterSelectionText =
+    PrepFlowSelectionRules.chapterSelectionText(currentBookSelected);
+
+  const currentBookQuestions = currentBookSelections.reduce(
+    (total, selection) => total + (selection.questionCount || 0),
+    0
+  );
+
+  selectionCount.textContent = currentBookChapterSelectionText;
+  selectedChapterSummary.textContent =
+    currentBookChapterSelectionText;
+  selectedQuestionSummary.textContent =
+    `${currentBookQuestions.toLocaleString()} ${
+      currentBookQuestions === 1 ? "question" : "questions"
+    } selected`;
+
+  const currentBookChapterNumbers = currentBookSelections
+    .map((selection) => String(selection.chapterKey).split("|", 1)[0])
+    .filter(Boolean);
+
+  const visibleChapterNumbers = currentBookChapterNumbers.slice(0, 5);
+  const remainingChapterCount =
+    currentBookChapterNumbers.length - visibleChapterNumbers.length;
+
+  selectedChapterNumbers.textContent =
+    visibleChapterNumbers.length === 0
+      ? "Selected: none"
+      : `Selected: ${visibleChapterNumbers.join(", ")}${
+          remainingChapterCount > 0
+            ? ` +${remainingChapterCount} more`
+            : ""
+        }`;
+
+  builderSelectionCount.textContent =
+    totalChapterSelectionText;
   builderBookCount.textContent =
-    PrepFlowSelectionRules.bookSelectionText(selected, selectedBooks);
+    PrepFlowSelectionRules.bookSelectionText(
+      totalSelected,
+      selectedBooks
+    );
 
-  startButton.disabled = selected === 0;
-  buildQuizButton.disabled = selected === 0;
-  clearSelectionsButton.disabled = selected === 0;
+  startButton.disabled = totalSelected === 0;
+  buildQuizButton.disabled = totalSelected === 0;
+  clearSelectionsButton.disabled = totalSelected === 0;
 
   document.querySelectorAll(".subject-card").forEach((book) => {
     const packPath = book.dataset.pack;
@@ -195,7 +243,10 @@ function updateSelectionStatus() {
 }
 
 function showSubjects() {
-  document.body.classList.remove("book-open");
+  document.body.classList.remove(
+    "book-open",
+    "real-book-chapters"
+  );
   hideAllScreens();
 
   hero.hidden = false;
@@ -209,7 +260,10 @@ function showSubjects() {
 }
 
 function showQuizBuilder() {
-  document.body.classList.remove("book-open");
+  document.body.classList.remove(
+    "book-open",
+    "real-book-chapters"
+  );
   document.body.classList.add("builder-open");
 
   hideAllScreens();
@@ -270,6 +324,7 @@ async function showChapters(button) {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.value = key;
+      checkbox.dataset.questionCount = chapter.count;
 
       const selectionKey = `${currentPackPath}|${key}`;
       checkbox.checked = selectedChapters.has(selectionKey);
@@ -280,6 +335,7 @@ async function showChapters(button) {
             packPath: currentPackPath,
             subject: currentSubject,
             chapterKey: key,
+            questionCount: chapter.count,
           });
         } else {
           selectedChapters.delete(selectionKey);
@@ -310,10 +366,30 @@ async function showChapters(button) {
       button.classList.contains("pharm") ? "pharm" :
       "med-surg";
 
-    quizBuilderScreen.hidden = true;
+    const usesRealOpenBook = true;
+
     chapterScreen.hidden = false;
-    document.body.classList.remove("builder-open");
-    document.body.classList.add("book-open");
+
+    if (usesRealOpenBook) {
+      /*
+        Keep the approved nursing-station scene visible beneath the real
+        open-book chapter interface.
+      */
+      quizBuilderScreen.hidden = false;
+      document.body.classList.add(
+        "builder-open",
+        "book-open",
+        "real-book-chapters"
+      );
+    } else {
+      quizBuilderScreen.hidden = true;
+      document.body.classList.remove(
+        "builder-open",
+        "real-book-chapters"
+      );
+      document.body.classList.add("book-open");
+    }
+
     status.hidden = true;
     chapterList.scrollTop = 0;
 
@@ -745,7 +821,13 @@ closeQuizBuilderButton.addEventListener("click", () => {
 doneChaptersButton.addEventListener("click", showQuizBuilder);
 
 const BOOK_LAUNCH_DURATION_MS = 1150;
+const OPEN_BOOK_REVEAL_MS = 760;
+const OPEN_BOOK_TOTAL_MS = 1500;
+const BOOK_CLOSE_DURATION_MS = 760;
+
 let bookLaunchInProgress = false;
+let bookCloseInProgress = false;
+let activeBookButton = null;
 
 function wait(milliseconds) {
   return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
@@ -756,18 +838,49 @@ async function launchBook(button) {
     return;
   }
 
+  activeBookButton = button;
+
+  const usesOpenBookTransition = true;
+
   bookLaunchInProgress = true;
   document.body.classList.add("book-launching");
   button.classList.add("is-launching");
   button.setAttribute("aria-busy", "true");
 
   try {
-    await wait(BOOK_LAUNCH_DURATION_MS);
+    if (usesOpenBookTransition) {
+      await wait(OPEN_BOOK_REVEAL_MS);
+
+      quizBuilderOpenBook.hidden = false;
+
+      /*
+        Allow the browser to establish the hidden starting state before
+        activating the fade-and-settle transition.
+      */
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.body.classList.add("book-opening");
+        });
+      });
+
+      await wait(
+        OPEN_BOOK_TOTAL_MS - OPEN_BOOK_REVEAL_MS
+      );
+    } else {
+      await wait(BOOK_LAUNCH_DURATION_MS);
+    }
+
     await showChapters(button);
   } finally {
     button.classList.remove("is-launching");
     button.removeAttribute("aria-busy");
-    document.body.classList.remove("book-launching");
+
+    document.body.classList.remove(
+      "book-launching",
+      "book-opening"
+    );
+
+    quizBuilderOpenBook.hidden = true;
     bookLaunchInProgress = false;
   }
 }
@@ -776,7 +889,43 @@ document.querySelectorAll(".subject-card").forEach((button) => {
   button.addEventListener("click", () => launchBook(button));
 });
 
-document.querySelector("#back-button").addEventListener("click", showQuizBuilder);
+async function closeCurrentBook() {
+  if (bookCloseInProgress || bookLaunchInProgress) {
+    return;
+  }
+
+  const usesRealOpenBook =
+    document.body.classList.contains("real-book-chapters");
+
+  if (!usesRealOpenBook || !activeBookButton) {
+    showQuizBuilder();
+    activeBookButton = null;
+    return;
+  }
+
+  bookCloseInProgress = true;
+
+  document.body.classList.add("book-closing");
+  activeBookButton.classList.add("is-closing");
+  activeBookButton.setAttribute("aria-busy", "true");
+
+  try {
+    await wait(BOOK_CLOSE_DURATION_MS);
+    showQuizBuilder();
+  } finally {
+    document.body.classList.remove("book-closing");
+    activeBookButton.classList.remove("is-closing");
+    activeBookButton.removeAttribute("aria-busy");
+
+    activeBookButton = null;
+    bookCloseInProgress = false;
+  }
+}
+
+document.querySelector("#back-button").addEventListener(
+  "click",
+  closeCurrentBook
+);
 document.querySelector("#exit-quiz").addEventListener("click", showSubjects);
 document.querySelector("#summary-exit").addEventListener("click", showSubjects);
 
@@ -789,6 +938,7 @@ document.querySelector("#select-all").addEventListener("click", () => {
       packPath: currentPackPath,
       subject: currentSubject,
       chapterKey: checkbox.value,
+      questionCount: Number(checkbox.dataset.questionCount || 0),
     });
   });
 

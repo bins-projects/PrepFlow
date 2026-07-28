@@ -92,6 +92,17 @@ web/images/quiz-builder/books/medsurg-closed.png
 The earlier files under `web/images/book-sprite-preview/` are historical and
 must not replace the current Quiz Builder books.
 
+The shared chapter-selection interior uses one transparent open-book asset:
+
+```text
+web/images/quiz-builder/books/quizbook-transparent.png
+```
+
+This neutral open book contains no subject-specific or changing information.
+Subject title, chapters, counts, selection state, navigation, and accessibility
+remain live browser-owned content. The same open-book asset is intentionally
+reused for all three subjects.
+
 Books own:
 
 - permanent subject title;

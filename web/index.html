@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="half-width-composition.css?v=20260723-1">
   <link rel="stylesheet" href="approved-book-buttons.css?v=20260724-books-1">
   <link rel="stylesheet" href="hospital-home.css?v=20260726-text-glow-1">
-  <link rel="stylesheet" href="quiz-builder-screen.css?v=20260728-reset-subjects-maxwidth-1">
+  <link rel="stylesheet" href="quiz-builder-screen.css?v=20260728-openbook-consolidated-1">
 </head>
 <body>
   <main class="app-shell">
@@ -119,6 +119,15 @@
           </button>
         </section>
 
+        <img
+          id="quiz-builder-openbook"
+          class="quiz-builder-openbook"
+          src="images/quiz-builder/books/quizbook-transparent.png?v=20260728-clean-preview-1"
+          alt=""
+          aria-hidden="true"
+          hidden
+        >
+
         <div class="quiz-builder-shelf-plaques" aria-hidden="true">
           <div class="quiz-builder-shelf-plaque fundamentals-plaque">
             FUNDAMENTALS
@@ -171,7 +180,18 @@
     <section id="chapter-screen" class="chapter-screen" hidden>
       <div class="chapter-header">
         <button id="back-button" class="secondary-button">← Back to Quiz Builder</button>
-        <div><h2 id="chapter-title"></h2><p>Choose one or more chapters</p></div>
+
+        <div class="chapter-book-heading">
+          <h2 id="chapter-title"></h2>
+          <p>Choose one or more chapters</p>
+        </div>
+
+        <div class="chapter-selection-summary" aria-live="polite">
+          <strong>Selection Summary</strong>
+          <span id="selected-chapter-summary">0 chapters selected</span>
+          <span id="selected-question-summary">0 questions selected</span>
+          <span id="selected-chapter-numbers">Selected: none</span>
+        </div>
       </div>
 
       <div class="chapter-actions">
@@ -255,7 +275,7 @@
   <script src="resume-rules.js?v=20260726-progress-1"></script>
   <script src="display-rules.js?v=20260721-1"></script>
   <script src="order-rules.js?v=20260721-1"></script>
-  <script src="app.js?v=20260724-books-1"></script>
+  <script src="app.js?v=20260728-per-book-selection-summary-1"></script>
   <script src="drug-reference-batch-loader.js?v=20260719-batch-01"></script>
   <script src="drug-reference.js?v=20260719-warfarin-1"></script>
 </body>
