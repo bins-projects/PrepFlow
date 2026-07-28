@@ -12,23 +12,7 @@ No account is required. Study progress is stored locally in the browser on the d
 
 Clearing browser or site data may remove a saved session. A session saved in one browser or device does not automatically appear in another.
 
-## Install as an App
 
-PrepFlow can be installed from a supported browser so it opens in its own window.
-
-### Chromebook or Chrome
-
-1. Open PrepFlow in Chrome.
-2. Select the install icon in the address bar.
-3. Choose **Install**.
-4. Open PrepFlow from the device launcher.
-
-### Mac with Safari
-
-1. Open PrepFlow in Safari.
-2. Choose **File** and then **Add to Dock**.
-3. Name it **PrepFlow** and select **Add**.
-4. Open it from the Dock, Applications, or Spotlight.
 
 ## How to Build a Quiz
 
@@ -62,8 +46,13 @@ PrepFlow currently includes:
 - Fundamentals
 - Pharm
 - Medical-Surgical
-
-The hospital homepage also provides access to the **Drug Library** through the References sign.
+- growing list of drugs that learning nurse need to know,
+including standard dosages, common forms of administration,
+side effects, drug interactions and more.
+search alphabetically or try the systems tab beta,
+search by common body systems or type
+The hospital homepage also provides access to the **Drug Library** 
+through the References sign.
 
 ## Question Types
 
@@ -91,10 +80,4 @@ During a session, PrepFlow:
 
 Selected questions currently use one stable shuffled order for the session.
 
-## Project Direction
 
-PrepFlow also includes a compiler that turns deliberately selected educational source material into cleaned, structured, validated Packs.
-
-The browser application is the active user-facing product. Future downloadable editions should reuse the browser-centered application rather than maintain a separate study system.
-
-Internal architecture, art rules, release preservation, and development continuity are documented under `docs/`.
