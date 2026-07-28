@@ -1,0 +1,119 @@
+{
+  "queue": "structural",
+  "finding_count": 9,
+  "question_count": 9,
+  "counts_by_rule": {
+    "duplicate correct answers": 8,
+    "correct answer not found in choices": 1
+  },
+  "findings": [
+    {
+      "category": "Structure",
+      "rule": "duplicate correct answers",
+      "severity": "high",
+      "question_id": "PFQ-fundamentals-000000024",
+      "question_index": 24,
+      "chapter": "Nursing, Theory, and Professional Practice",
+      "path": "$.questions[23].correct_answers",
+      "detail": "Correct-answer list contains duplicate values.",
+      "text": "[\"A\", \"B\", \"C\", \"D\", \"B\", \"C\"]",
+      "excerpt": "[\"A\", \"B\", \"C\", \"D\", \"B\", \"C\"]"
+    },
+    {
+      "category": "Structure",
+      "rule": "duplicate correct answers",
+      "severity": "high",
+      "question_id": "PFQ-fundamentals-000000093",
+      "question_index": 93,
+      "chapter": "Critical Thinking in Nursing",
+      "path": "$.questions[92].correct_answers",
+      "detail": "Correct-answer list contains duplicate values.",
+      "text": "[\"B\", \"B\", \"C\"]",
+      "excerpt": "[\"B\", \"B\", \"C\"]"
+    },
+    {
+      "category": "Structure",
+      "rule": "correct answer not found in choices",
+      "severity": "high",
+      "question_id": "PFQ-fundamentals-000000191",
+      "question_index": 191,
+      "chapter": "Planning",
+      "path": "$.questions[190].correct_answers",
+      "detail": "Available choice labels: ['B', 'C', 'D']",
+      "text": "A",
+      "excerpt": "A"
+    },
+    {
+      "category": "Structure",
+      "rule": "duplicate correct answers",
+      "severity": "high",
+      "question_id": "PFQ-fundamentals-000000518",
+      "question_index": 518,
+      "chapter": "Ethnicity and Cultural Assessment",
+      "path": "$.questions[517].correct_answers",
+      "detail": "Correct-answer list contains duplicate values.",
+      "text": "[\"C\", \"B\", \"C\"]",
+      "excerpt": "[\"C\", \"B\", \"C\"]"
+    },
+    {
+      "category": "Structure",
+      "rule": "duplicate correct answers",
+      "severity": "high",
+      "question_id": "PFQ-fundamentals-000000566",
+      "question_index": 566,
+      "chapter": "Public Health, Community-Based, and Home Health Care",
+      "path": "$.questions[565].correct_answers",
+      "detail": "Correct-answer list contains duplicate values.",
+      "text": "[\"A\", \"B\", \"D\", \"E\", \"B\", \"C\"]",
+      "excerpt": "[\"A\", \"B\", \"D\", \"E\", \"B\", \"C\"]"
+    },
+    {
+      "category": "Structure",
+      "rule": "duplicate correct answers",
+      "severity": "high",
+      "question_id": "PFQ-fundamentals-000000654",
+      "question_index": 654,
+      "chapter": "Hygiene and Personal Care",
+      "path": "$.questions[653].correct_answers",
+      "detail": "Correct-answer list contains duplicate values.",
+      "text": "[\"C\", \"B\", \"C\"]",
+      "excerpt": "[\"C\", \"B\", \"C\"]"
+    },
+    {
+      "category": "Structure",
+      "rule": "duplicate correct answers",
+      "severity": "high",
+      "question_id": "PFQ-fundamentals-000000795",
+      "question_index": 795,
+      "chapter": "Stress and Coping",
+      "path": "$.questions[794].correct_answers",
+      "detail": "Correct-answer list contains duplicate values.",
+      "text": "[\"B\", \"C\", \"E\", \"B\", \"C\"]",
+      "excerpt": "[\"B\", \"C\", \"E\", \"B\", \"C\"]"
+    },
+    {
+      "category": "Structure",
+      "rule": "duplicate correct answers",
+      "severity": "high",
+      "question_id": "PFQ-fundamentals-000000871",
+      "question_index": 871,
+      "chapter": "Medication Administration",
+      "path": "$.questions[870].correct_answers",
+      "detail": "Correct-answer list contains duplicate values.",
+      "text": "[\"C\", \"E\", \"F\", \"B\", \"C\"]",
+      "excerpt": "[\"C\", \"E\", \"F\", \"B\", \"C\"]"
+    },
+    {
+      "category": "Structure",
+      "rule": "duplicate correct answers",
+      "severity": "high",
+      "question_id": "PFQ-fundamentals-000000955",
+      "question_index": 955,
+      "chapter": "Fluid, Electrolytes, and Acid-Base Balance",
+      "path": "$.questions[954].correct_answers",
+      "detail": "Correct-answer list contains duplicate values.",
+      "text": "[\"B\", \"B\", \"C\"]",
+      "excerpt": "[\"B\", \"B\", \"C\"]"
+    }
+  ]
+}

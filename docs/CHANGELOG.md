@@ -1,3 +1,33 @@
+# Unreleased — Quiz Builder Interior Milestone
+
+## Quiz Builder
+
+- Added a separate full-screen 16:9 nursing-station Quiz Builder scene.
+- Added new transparent Fundamentals, Pharm, and Med-Surg closed books.
+- Seated all three books on one measured counter baseline.
+- Added centered launch motion, enlargement, hold, pulse, and delayed chapter
+  opening while preserving fixed subject-button hitboxes.
+- Added noninteractive aged-brass shelf-front subject plaques.
+- Preserved Pack loading, chapter state, accessibility labels, and mixed-Pack
+  quiz construction.
+
+## Durable implementation rules
+
+- Scene-bound objects sharing one painted surface use measured rendered geometry
+  and one shared baseline.
+- A replacement CSS adjustment removes or replaces the superseded experimental
+  rule instead of stacking another override.
+- One authoritative current rule is retained unless a distinct breakpoint,
+  state, or interaction intentionally requires another.
+
+## Documentation
+
+- Added `docs/QUIZ_BUILDER_INTERIOR_CHECKPOINT_2026-07-27.md`.
+- Updated `docs/RESTART_PACKET.md`.
+- Updated `docs/ART_SYSTEM.md`.
+
+---
+
 # PrepFlow Changelog
 
 This document records major project milestones. Minor edits and intermediate work are preserved in Git history.
