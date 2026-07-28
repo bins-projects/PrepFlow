@@ -311,12 +311,14 @@ Never force-push public `master`, a frozen release branch, or a release tag.
 
 # 10A. Current Local Quiz Builder Interior Milestone
 
-The local working tree contains a newer approved Quiz Builder interior than the
-current remote checkpoint.
+The approved Quiz Builder interior is preserved in synchronized development
+commit `5897f0d7fbb334cdc7eebaad73d1cbd3292a4a82`.
 
-It includes a separate full-screen 16:9 nursing-station scene, three new closed
-books on one measured shelf baseline, the centered launch/hold/pulse sequence,
-and decorative noninteractive shelf-front plaques.
+The local working tree contains a focused responsive-lock follow-up. Books and
+decorative shelf-front plaques now derive their horizontal placement from the
+same station-center variables, and the Quiz Builder resets the global homepage
+`.subjects` maximum-width constraint so both layers use the complete 16:9 scene
+plane.
 
 Exact geometry, runtime assets, deferred work, and pre-commit verification are
 recorded in:
@@ -333,21 +335,13 @@ Do not overwrite the local working tree with the older remote state.
 
 # 11. Immediate Finishing Sequence
 
-1. test the Fundamentals, Pharm, and Med-Surg book launches in the real browser;
-2. confirm each book opens the correct chapter list;
-3. confirm Close returns to the hospital homepage;
-4. hard-refresh and repeat the basic Quiz Builder path;
-5. inspect the current Quiz Builder CSS for superseded experimental rules;
-6. keep one authoritative rule for each current element, breakpoint, and state;
-7. deliberately exclude or relocate
-   `web/quiz-builder-screen.css.before-nursing-station`;
-8. run applicable automated tests;
-9. inspect the complete focused code, asset, and documentation diff;
-10. run the privacy and artifact scan;
-11. stage the intended files explicitly without using `git add .`;
-12. commit the coherent Quiz Builder interior milestone locally;
-13. push `docs/continuity-rebuild` to both `origin` and `public`;
-14. fetch both remotes and verify all three development hashes are equal.
+1. inspect the complete focused responsive-lock and documentation diff;
+2. confirm `web/quiz-builder-screen.css.before-nursing-station` remains excluded;
+3. run the privacy and artifact scan;
+4. stage only the intended files without using `git add .`;
+5. commit the responsive book/plaque coordinate-lock follow-up;
+6. push `docs/continuity-rebuild` to both `origin` and `public`;
+7. fetch both remotes and verify all three development hashes are equal.
 
 Do not push this milestone directly to `master`.
 

@@ -2,9 +2,13 @@
 
 ## Status
 
-The current local working tree on `docs/continuity-rebuild` contains the
-visually approved Quiz Builder interior milestone. It is not yet committed,
-pushed, or released.
+The visually approved Quiz Builder interior milestone is preserved in commit
+`5897f0d7fbb334cdc7eebaad73d1cbd3292a4a82` on
+`docs/continuity-rebuild` and was synchronized to both development remotes.
+
+The current local working tree contains a focused follow-up fix that locks the
+book and shelf-plaque layers together across browser sizes. It is not yet
+committed or pushed.
 
 ## Implemented and approved
 
@@ -61,13 +65,21 @@ bottom: 47.2%
 transform-origin: bottom center
 ```
 
-Horizontal book positions:
+Shared station-center coordinates:
 
 ```text
-Fundamentals: left 21.1%
-Pharm:        left 44.8%
-Med-Surg:     left 68.5%
+Fundamentals: 25.9%
+Pharm:        49.6%
+Med-Surg:     73.3%
 ```
+
+Each `9.6%`-wide book card derives its left edge from the shared station center:
+
+```text
+left: calc(station center - 4.8%)
+```
+
+The decorative plaque for that subject uses the same station center directly.
 
 The narrow wooden strip visible beneath the books is intentional and provides
 the depth cue that they are resting on the counter.
@@ -102,15 +114,15 @@ pointer-events: none
 They use an upper flange, main face, and lower return to appear wrapped around
 the shelf edge.
 
-Approved row position and centers:
+Approved row position:
 
 ```text
-top: 58.0%
-
-Fundamentals: left 24.9%
-Pharm:        left 47.6%
-Med-Surg:     left 70.5%
+top: 58%
 ```
+
+Each plaque uses the same shared station-center variable as its corresponding
+book. Books and plaques therefore remain horizontally locked while the 16:9
+scene changes rendered size.
 
 The uniform aged-brass/light-enamel treatment with dark lettering is approved.
 Subject color coding was tested and superseded.
@@ -122,9 +134,16 @@ For scene-bound objects that share one painted physical surface:
 1. measure the rendered scene surface;
 2. inspect transparent padding and visible alpha bounds;
 3. establish one shared baseline;
-4. use independent horizontal coordinates only where necessary;
-5. verify in the real browser;
-6. keep one authoritative current CSS rule.
+4. establish shared station anchors for objects that must remain aligned;
+5. verify both the visual result and rendered element boxes at multiple sizes;
+6. reset inherited global constraints that alter the scene coordinate plane;
+7. keep one authoritative current CSS rule.
+
+The responsive drift was caused by the global homepage rule
+`.subjects { max-width: calc(100vw - 48px) !important; }` shrinking only the
+Quiz Builder book layer. The authoritative Quiz Builder `.subjects` rule now
+uses `max-width: none !important`, so the book and plaque layers both occupy the
+complete 16:9 scene plane.
 
 When a new adjustment replaces an earlier experimental rule for the same
 element, remove or replace the superseded rule instead of stacking another
@@ -141,19 +160,15 @@ breakpoint, state, or interaction.
 
 ## Local working files
 
-Modified:
+Current follow-up modifications:
 
 ```text
-web/app.js
 web/index.html
 web/quiz-builder-screen.css
 ```
 
-New runtime assets:
-
-```text
-web/images/quiz-builder/
-```
+The application logic and runtime artwork are already preserved in the
+synchronized `5897f0d` checkpoint.
 
 Local safety copy:
 
@@ -164,15 +179,18 @@ web/quiz-builder-screen.css.before-nursing-station
 The safety copy is not a runtime dependency and must not enter the production
 commit without an explicit decision.
 
-## Required verification before commit
+## Verification completed for the responsive-lock follow-up
 
-- launch Fundamentals and confirm the correct chapters open;
-- launch Pharm and confirm the correct chapters open;
-- launch Med-Surg and confirm the correct chapters open;
-- confirm Close returns to the homepage;
-- hard-refresh and repeat the basic path;
-- run applicable automated tests;
-- inspect the focused diff;
+- book and plaque centers were measured from the rendered browser elements;
+- the narrower inherited book coordinate layer was identified and corrected;
+- books and plaques remain locked while resizing the 16:9 scene;
+- Fundamentals, Pharm, and Med-Surg launch and open their correct chapter lists;
+- Return to Hospital, Clear Selections, and Build Quiz remain functional;
+- the complete automated suite passes: `72 passed`.
+
+Still required before commit:
+
+- inspect the final focused diff;
 - run the privacy and artifact scan;
 - stage files explicitly; never use `git add .`.
 

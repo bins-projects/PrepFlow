@@ -50,7 +50,6 @@
   position: static !important;
   width: 100% !important;
   margin: 0 !important;
-  padding: 8px !important;
 
   display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
@@ -433,7 +432,11 @@
   z-index: 3;
   inset: 0 !important;
   width: 100% !important;
+  max-width: none !important;
   height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
   display: block !important;
   pointer-events: none;
 }
@@ -586,23 +589,29 @@ body.builder-open .app-shell {
 
   height: auto !important;
   margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
   min-width: 0 !important;
   min-height: 0 !important;
+  box-sizing: border-box !important;
+
+  background: transparent !important;
+  appearance: none;
 
   transform: none !important;
   transform-origin: bottom center !important;
 }
 
 .quiz-builder-screen .subject-card.fundamentals {
-  left: 21.1% !important;
+  left: calc(var(--fundamentals-station-x) - 4.8%) !important;
 }
 
 .quiz-builder-screen .subject-card.pharm {
-  left: 44.8% !important;
+  left: calc(var(--pharm-station-x) - 4.8%) !important;
 }
 
 .quiz-builder-screen .subject-card.med-surg {
-  left: 68.5% !important;
+  left: calc(var(--medsurg-station-x) - 4.8%) !important;
 }
 
 .quiz-builder-screen .approved-book-art {
@@ -615,6 +624,10 @@ body.builder-open .app-shell {
 
 .quiz-builder-window {
   container-type: inline-size;
+
+  --fundamentals-station-x: 25.9%;
+  --pharm-station-x: 49.6%;
+  --medsurg-station-x: 73.3%;
 }
 
 .quiz-builder-screen .subject-card {
@@ -805,7 +818,8 @@ body.book-launching .quiz-builder-screen .subject-card:not(.is-launching) {
 
 .quiz-builder-shelf-plaque {
   position: absolute;
-  top: 58.0%;
+  /* Locked to the 16:9 scene coordinate plane. */
+  top: 58%;
 
   width: 12.2%;
   height: 2.75%;
@@ -906,13 +920,13 @@ body.book-launching .quiz-builder-screen .subject-card:not(.is-launching) {
 }
 
 .quiz-builder-shelf-plaque.fundamentals-plaque {
-  left: 24.9%;
+  left: var(--fundamentals-station-x);
 }
 
 .quiz-builder-shelf-plaque.pharm-plaque {
-  left: 47.6%;
+  left: var(--pharm-station-x);
 }
 
 .quiz-builder-shelf-plaque.medsurg-plaque {
-  left: 70.5%;
+  left: var(--medsurg-station-x);
 }
