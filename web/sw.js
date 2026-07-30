@@ -10,6 +10,7 @@ const APP_FILES = [
   "./mobile-quiz-builder.js",
   "./images/home-hospital/prepflow-mobile-home-background.png",
   "./images/quiz-builder/prepflow-mobile-quiz-builder-background.png",
+  "./images/quiz-builder/prepflow-mobile-chapter-clipboard.png",
   "./manifest.webmanifest",
   "./icons/prepflow-192.png",
   "./icons/prepflow-512.png",

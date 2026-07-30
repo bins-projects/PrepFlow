@@ -191,7 +191,13 @@
       </div>
     </section>
 
-    <section id="chapter-screen" class="chapter-screen" hidden>
+    <section
+      id="chapter-screen"
+      class="chapter-screen"
+      role="region"
+      aria-labelledby="chapter-title"
+      hidden
+    >
       <div class="chapter-header">
         <button id="back-button" class="secondary-button">← Back to Quiz Builder</button>
 
@@ -219,7 +225,12 @@
         </label>
         <span id="selection-count">0 chapters selected</span>
       </div>
-      <div id="chapter-list" class="chapter-list"></div>
+      <div
+        id="chapter-list"
+        class="chapter-list"
+        role="group"
+        aria-labelledby="chapter-title"
+      ></div>
       <button id="done-chapters" class="start-button">Done — Return to Builder</button>
       <button id="start-button" class="start-button" disabled hidden>Start Studying</button>
     </section>

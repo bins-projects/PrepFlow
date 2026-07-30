@@ -1006,3 +1006,657 @@ html.mobile-portrait
     transition: none !important;
   }
 }
+
+/* =========================================================
+   PHASE 4: MOBILE CLIPBOARD CHAPTER SELECTION
+   Existing chapter controls, selection state, and handlers
+   remain authoritative.
+   ========================================================= */
+
+html.mobile-portrait
+  body.book-launching
+  .quiz-builder-openbook,
+html.mobile-portrait
+  body.real-book-chapters
+  .quiz-builder-openbook {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-screen {
+  --mobile-clipboard-height:
+    min(
+      calc(
+        var(--mobile-viewport-height)
+        - var(--mobile-safe-area-top)
+        - var(--mobile-safe-area-bottom)
+        - 1rem
+      ),
+      calc(
+        (
+          100vw
+          - var(--mobile-safe-area-left)
+          - var(--mobile-safe-area-right)
+          - 1rem
+        )
+        * 2532 / 1170
+      )
+    );
+  --mobile-clipboard-width:
+    calc(var(--mobile-clipboard-height) * 1170 / 2532);
+  --mobile-clipboard-center-x:
+    calc(
+      (
+        100vw
+        + var(--mobile-safe-area-left)
+        - var(--mobile-safe-area-right)
+      )
+      / 2
+    );
+  --mobile-clipboard-center-y:
+    calc(
+      (
+        var(--mobile-viewport-height)
+        + var(--mobile-safe-area-top)
+        - var(--mobile-safe-area-bottom)
+      )
+      / 2
+    );
+  --mobile-chapter-accent: #315fa8;
+  --mobile-chapter-accent-soft: rgba(49, 95, 168, .16);
+
+  position: fixed !important;
+  z-index: 100 !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: var(--mobile-viewport-height) !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: rgba(3, 9, 29, .58) !important;
+  box-shadow: none !important;
+  color: #172540 !important;
+  transform: none !important;
+  animation: prepflow-mobile-clipboard-enter 240ms ease-out both !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-screen[data-theme="pharm"] {
+  --mobile-chapter-accent: #28764e;
+  --mobile-chapter-accent-soft: rgba(40, 118, 78, .16);
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-screen[data-theme="med-surg"] {
+  --mobile-chapter-accent: #684495;
+  --mobile-chapter-accent-soft: rgba(104, 68, 149, .16);
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-screen::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 1 !important;
+  top: var(--mobile-clipboard-center-y) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: block !important;
+  width: var(--mobile-clipboard-width) !important;
+  height: var(--mobile-clipboard-height) !important;
+  background:
+    url("images/quiz-builder/prepflow-mobile-chapter-clipboard.png")
+    center / contain no-repeat !important;
+  pointer-events: none !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-screen::after {
+  content: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .quiz-builder-window {
+  overflow: hidden !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-header {
+  position: static !important;
+  display: contents !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-header::after {
+  content: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-book-heading {
+  position: absolute !important;
+  z-index: 3 !important;
+  top:
+    calc(
+      var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .168
+    ) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  width: calc(var(--mobile-clipboard-width) * .7) !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+  transform: translateX(-50%) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-header h2 {
+  margin: 0 !important;
+  color: #172540 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(1rem, 4.6vw, 1.25rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.05 !important;
+  letter-spacing: .025em !important;
+  text-transform: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-header h2::after {
+  content: "" !important;
+  display: block !important;
+  width: 3.25rem !important;
+  height: 2px !important;
+  margin: .2rem auto 0 !important;
+  background: var(--mobile-chapter-accent) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-book-heading p,
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-selection-summary strong,
+html.mobile-portrait
+  body.real-book-chapters
+  #selected-chapter-numbers {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-selection-summary {
+  position: absolute !important;
+  z-index: 3 !important;
+  top:
+    calc(
+      var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .198
+    ) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .3rem !important;
+  width: calc(var(--mobile-clipboard-width) * .7) !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: var(--mobile-chapter-accent) !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-align: center !important;
+  text-transform: none !important;
+  transform: translateX(-50%) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-selection-summary span {
+  display: inline !important;
+  margin: 0 !important;
+  color: var(--mobile-chapter-accent) !important;
+  font-size: clamp(.62rem, 2.7vw, .73rem) !important;
+  font-weight: 850 !important;
+  line-height: 1.1 !important;
+  letter-spacing: .005em !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  #selected-chapter-summary::after {
+  content: "•" !important;
+  margin-left: .3rem !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-actions {
+  position: absolute !important;
+  z-index: 3 !important;
+  top:
+    calc(
+      var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .228
+    ) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: .5rem !important;
+  width: calc(var(--mobile-clipboard-width) * .7) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translateX(-50%) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  #select-all,
+html.mobile-portrait
+  body.real-book-chapters
+  #clear-all {
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .45rem .35rem !important;
+  border: 1px solid rgba(66, 68, 73, .52) !important;
+  border-radius: .35rem !important;
+  background: rgba(250, 245, 228, .86) !important;
+  color: #24304a !important;
+  box-shadow: 0 1px 2px rgba(42, 34, 24, .12) !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(.7rem, 3vw, .82rem) !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-actions
+  .block-size-control,
+html.mobile-portrait
+  body.real-book-chapters
+  #selection-count,
+html.mobile-portrait
+  body.real-book-chapters
+  #start-button {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-list {
+  position: absolute !important;
+  z-index: 3 !important;
+  top:
+    calc(
+      var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .292
+    ) !important;
+  right: auto !important;
+  bottom:
+    calc(
+      var(--mobile-viewport-height)
+      - var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .22
+    ) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-auto-rows: max-content !important;
+  align-content: start !important;
+  gap: .45rem !important;
+  width: calc(var(--mobile-clipboard-width) * .7) !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: .25rem .2rem .5rem !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: thin !important;
+  scrollbar-color:
+    color-mix(in srgb, var(--mobile-chapter-accent) 52%, transparent)
+    transparent !important;
+  touch-action: pan-y !important;
+  transform: translateX(-50%) !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 4rem !important;
+  margin: 0 !important;
+  padding: .65rem .7rem !important;
+  overflow: visible !important;
+  border: 1px solid rgba(119, 104, 75, .52) !important;
+  border-left: .3rem solid rgba(71, 77, 91, .5) !important;
+  border-radius: .35rem !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 254, 247, .94),
+      rgba(239, 233, 215, .92)
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .82),
+    0 2px 3px rgba(43, 37, 27, .12) !important;
+  color: #172540 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option input[type="checkbox"] {
+  flex: 0 0 auto !important;
+  width: 1.4rem !important;
+  height: 1.4rem !important;
+  margin: 0 .65rem 0 0 !important;
+  accent-color: var(--mobile-chapter-accent) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option-text {
+  display: block !important;
+  width: auto !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-name {
+  display: block !important;
+  color: #172540 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(.76rem, 3.2vw, .9rem) !important;
+  font-weight: 850 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+  overflow-wrap: anywhere !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-count {
+  display: block !important;
+  margin-top: .25rem !important;
+  color: #606a7c !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(.66rem, 2.7vw, .75rem) !important;
+  font-weight: 750 !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option:has(input:checked) {
+  border-color: var(--mobile-chapter-accent) !important;
+  border-left-color: var(--mobile-chapter-accent) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 254, 247, .98),
+      var(--mobile-chapter-accent-soft)
+    ) !important;
+  box-shadow:
+    inset 0 0 0 1px var(--mobile-chapter-accent-soft),
+    0 2px 5px rgba(33, 37, 49, .16) !important;
+  animation: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option:has(input:checked)::after {
+  content: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option:has(input:focus-visible) {
+  outline: 3px solid var(--mobile-chapter-accent) !important;
+  outline-offset: 2px !important;
+  box-shadow:
+    0 0 0 2px rgba(255, 251, 230, .92),
+    0 0 0 5px var(--mobile-chapter-accent-soft) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  #back-button,
+html.mobile-portrait
+  body.real-book-chapters
+  #done-chapters {
+  position: absolute !important;
+  z-index: 4 !important;
+  top: auto !important;
+  bottom:
+    calc(
+      var(--mobile-viewport-height)
+      - var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .146
+    ) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: calc(var(--mobile-clipboard-width) * .22) !important;
+  min-width: 0 !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .45rem .25rem !important;
+  border: 1px solid #7f735e !important;
+  border-radius: .3rem !important;
+  background: rgba(248, 241, 220, .88) !important;
+  color: #26324a !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .75),
+    0 2px 3px rgba(42, 34, 24, .16) !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(.62rem, 2.8vw, .74rem) !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  #back-button {
+  left:
+    calc(
+      var(--mobile-clipboard-center-x)
+      - var(--mobile-clipboard-width) / 2
+      + var(--mobile-clipboard-width) * .17
+    ) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  #done-chapters {
+  right:
+    calc(
+      100vw
+      - var(--mobile-clipboard-center-x)
+      - var(--mobile-clipboard-width) / 2
+      + var(--mobile-clipboard-width) * .17
+    ) !important;
+  left: auto !important;
+  border-color: var(--mobile-chapter-accent) !important;
+  color: var(--mobile-chapter-accent) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters.book-closing
+  .chapter-screen {
+  pointer-events: none !important;
+  animation:
+    prepflow-mobile-clipboard-exit
+    220ms
+    ease-in
+    forwards !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters.book-closing
+  .chapter-header,
+html.mobile-portrait
+  body.real-book-chapters.book-closing
+  .chapter-list {
+  animation: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters.book-closing
+  .quiz-builder-screen
+  .subjects {
+  visibility: hidden !important;
+}
+
+@media (max-height: 680px) and (orientation: portrait) {
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-header h2 {
+    font-size: clamp(.82rem, 3.8vw, .88rem) !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-selection-summary {
+    top:
+      calc(
+        var(--mobile-clipboard-center-y)
+        - var(--mobile-clipboard-height) / 2
+        + var(--mobile-clipboard-height) * .204
+      ) !important;
+    flex-wrap: wrap !important;
+    gap: .1rem .2rem !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-selection-summary span {
+    font-size: clamp(.56rem, 2.5vw, .68rem) !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-actions {
+    top:
+      calc(
+        var(--mobile-clipboard-center-y)
+        - var(--mobile-clipboard-height) / 2
+        + var(--mobile-clipboard-height) * .24
+      ) !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-list {
+    top:
+      calc(
+        var(--mobile-clipboard-center-y)
+        - var(--mobile-clipboard-height) / 2
+        + var(--mobile-clipboard-height) * .325
+      ) !important;
+    bottom:
+      calc(
+        var(--mobile-viewport-height)
+        - var(--mobile-clipboard-center-y)
+        - var(--mobile-clipboard-height) / 2
+        + var(--mobile-clipboard-height) * .225
+      ) !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    #back-button,
+  html.mobile-portrait
+    body.real-book-chapters
+    #done-chapters {
+    font-size: clamp(.58rem, 2.6vw, .68rem) !important;
+    line-height: 1.05 !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    #back-button {
+    left:
+      calc(
+        var(--mobile-clipboard-center-x)
+        - var(--mobile-clipboard-width) / 2
+        + var(--mobile-clipboard-width) * .145
+      ) !important;
+    width: calc(var(--mobile-clipboard-width) * .28) !important;
+    white-space: normal !important;
+  }
+}
+
+@keyframes prepflow-mobile-clipboard-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes prepflow-mobile-clipboard-exit {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-screen,
+  html.mobile-portrait
+    body.real-book-chapters.book-closing
+    .chapter-screen {
+    animation-duration: 1ms !important;
+  }
+}

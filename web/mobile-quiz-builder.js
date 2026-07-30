@@ -13,6 +13,9 @@
     "#mobile-choose-chapters"
   );
   const status = document.querySelector("#mobile-carousel-status");
+  const backButton = document.querySelector("#back-button");
+  const doneButton = document.querySelector("#done-chapters");
+  const selectAllButton = document.querySelector("#select-all");
 
   if (
     !carousel
@@ -28,6 +31,9 @@
   let touchStart = null;
   let suppressClicksUntil = 0;
   let selectionSignature = "";
+  let chapterPresentationActive = false;
+  const defaultBackLabel = backButton?.textContent || "";
+  const defaultDoneLabel = doneButton?.textContent || "";
 
   function isMobilePortrait() {
     return (
@@ -84,6 +90,36 @@
     } else {
       updateAction();
     }
+  }
+
+  function syncChapterPresentation() {
+    const mobilePortrait = isMobilePortrait();
+    const chapterActive =
+      document.body.classList.contains("real-book-chapters");
+    const chapterOpened = !chapterPresentationActive && chapterActive;
+    const chapterClosed = chapterPresentationActive && !chapterActive;
+
+    if (backButton) {
+      backButton.textContent =
+        mobilePortrait ? "← Back to Books" : defaultBackLabel;
+    }
+
+    if (doneButton) {
+      doneButton.textContent =
+        mobilePortrait ? "Done" : defaultDoneLabel;
+    }
+
+    if (mobilePortrait && chapterOpened && selectAllButton) {
+      requestAnimationFrame(() => {
+        selectAllButton.focus({ preventScroll: true });
+      });
+    } else if (mobilePortrait && chapterClosed) {
+      requestAnimationFrame(() => {
+        activeBook().focus({ preventScroll: true });
+      });
+    }
+
+    chapterPresentationActive = chapterActive;
   }
 
   function renderCarousel({ announce = true } = {}) {
@@ -156,6 +192,7 @@
     }
 
     syncLaunchPresentation();
+    syncChapterPresentation();
   }
 
   carousel.addEventListener(
@@ -280,7 +317,10 @@
     });
   });
 
-  const launchObserver = new MutationObserver(syncLaunchPresentation);
+  const launchObserver = new MutationObserver(() => {
+    syncLaunchPresentation();
+    syncChapterPresentation();
+  });
 
   launchObserver.observe(document.body, {
     attributes: true,

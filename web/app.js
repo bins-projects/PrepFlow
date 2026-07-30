@@ -824,6 +824,8 @@ const BOOK_LAUNCH_DURATION_MS = 1150;
 const OPEN_BOOK_REVEAL_MS = 760;
 const OPEN_BOOK_TOTAL_MS = 1500;
 const BOOK_CLOSE_DURATION_MS = 760;
+const MOBILE_BOOK_LAUNCH_DURATION_MS = 240;
+const MOBILE_BOOK_CLOSE_DURATION_MS = 220;
 
 let bookLaunchInProgress = false;
 let bookCloseInProgress = false;
@@ -833,6 +835,15 @@ function wait(milliseconds) {
   return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 }
 
+function usesMobilePortraitPresentation() {
+  return (
+    document.documentElement.classList.contains("mobile-portrait")
+    && window.matchMedia(
+      "(max-width: 760px) and (orientation: portrait)"
+    ).matches
+  );
+}
+
 async function launchBook(button) {
   if (bookLaunchInProgress) {
     return;
@@ -840,7 +851,8 @@ async function launchBook(button) {
 
   activeBookButton = button;
 
-  const usesOpenBookTransition = true;
+  const usesMobileTransition = usesMobilePortraitPresentation();
+  const usesOpenBookTransition = !usesMobileTransition;
 
   bookLaunchInProgress = true;
   document.body.classList.add("book-launching");
@@ -848,7 +860,9 @@ async function launchBook(button) {
   button.setAttribute("aria-busy", "true");
 
   try {
-    if (usesOpenBookTransition) {
+    if (usesMobileTransition) {
+      await wait(MOBILE_BOOK_LAUNCH_DURATION_MS);
+    } else if (usesOpenBookTransition) {
       await wait(OPEN_BOOK_REVEAL_MS);
 
       quizBuilderOpenBook.hidden = false;
@@ -910,7 +924,11 @@ async function closeCurrentBook() {
   activeBookButton.setAttribute("aria-busy", "true");
 
   try {
-    await wait(BOOK_CLOSE_DURATION_MS);
+    await wait(
+      usesMobilePortraitPresentation()
+        ? MOBILE_BOOK_CLOSE_DURATION_MS
+        : BOOK_CLOSE_DURATION_MS
+    );
     showQuizBuilder();
   } finally {
     document.body.classList.remove("book-closing");
