@@ -7,6 +7,7 @@ const APP_FILES = [
   "./app.js",
   "./mobile-portrait.css",
   "./mobile-portrait.js",
+  "./images/home-hospital/prepflow-mobile-home-background.png",
   "./manifest.webmanifest",
   "./icons/prepflow-192.png",
   "./icons/prepflow-512.png",

@@ -5,6 +5,8 @@ html.mobile-portrait {
   --mobile-safe-area-left: env(safe-area-inset-left, 0px);
   --mobile-viewport-height: 100vh;
   --mobile-motion-duration: 240ms;
+  --mobile-home-dock-height: 4.875rem;
+  --mobile-home-saved-dock-height: 10rem;
 
   width: 100%;
   min-width: 0;
@@ -36,4 +38,387 @@ html.mobile-portrait *::after {
   html.mobile-portrait {
     --mobile-motion-duration: 0.01ms;
   }
+}
+
+/* =========================================================
+   MOBILE HOSPITAL HOME
+   Repositions the existing live homepage controls without
+   changing their application state or event handlers.
+   ========================================================= */
+
+html.mobile-portrait,
+html.mobile-portrait body {
+  height: var(--mobile-viewport-height) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  background: #050817 !important;
+}
+
+html.mobile-portrait .app-shell,
+html.mobile-portrait .hero {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: var(--mobile-viewport-height) !important;
+  min-height: var(--mobile-viewport-height) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html.mobile-portrait .hero {
+  display: grid !important;
+  place-items: stretch !important;
+  overflow: hidden !important;
+}
+
+html.mobile-portrait .pixel-stage {
+  position: relative !important;
+  isolation: isolate !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--mobile-viewport-height) !important;
+  min-height: var(--mobile-viewport-height) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  aspect-ratio: auto !important;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(4, 7, 26, .04) 0 54%,
+      rgba(5, 8, 30, .12) 72%,
+      rgba(5, 8, 30, .38) 100%
+    ),
+    url("images/home-hospital/prepflow-mobile-home-background.png")
+      center center / cover no-repeat,
+    #070b24 !important;
+}
+
+html.mobile-portrait .pixel-stage::after {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 10 !important;
+  inset: auto 0 0 !important;
+  display: block !important;
+  height: min(34%, 17rem) !important;
+  pointer-events: none !important;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(5, 9, 30, 0),
+      rgba(5, 9, 30, .34) 30%,
+      rgba(5, 9, 30, .78) 100%
+    ) !important;
+}
+
+/* Live branding remains above the hospital architecture. */
+html.mobile-portrait .pixel-stage > .pixel-logo {
+  position: absolute !important;
+  z-index: 12 !important;
+  top: calc(var(--mobile-safe-area-top) + clamp(1.25rem, 5.5vh, 3rem)) !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: 0 !important;
+
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 1rem !important;
+
+  color: #fff0bd !important;
+  background: none !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(2.75rem, 13vw, 4rem) !important;
+  font-weight: 900 !important;
+  line-height: .9 !important;
+  letter-spacing: -.045em !important;
+  white-space: nowrap !important;
+  transform: none !important;
+  animation: none !important;
+  text-shadow:
+    0 2px 0 #6d3b13,
+    0 4px 0 #2a1a13,
+    0 0 5px rgba(255, 246, 207, .82),
+    0 0 13px rgba(255, 196, 89, .58),
+    0 0 24px rgba(255, 137, 35, .26) !important;
+}
+
+html.mobile-portrait .pixel-stage > .pixel-tagline {
+  position: absolute !important;
+  z-index: 12 !important;
+  top: calc(var(--mobile-safe-area-top) + clamp(5rem, 15vh, 7.5rem)) !important;
+  right: 50% !important;
+  bottom: auto !important;
+  left: auto !important;
+
+  display: block !important;
+  width: max-content !important;
+  max-width: calc(100% - 2rem) !important;
+  margin: 0 !important;
+  padding: .38rem .75rem .42rem !important;
+
+  color: #f3f6ff !important;
+  -webkit-text-fill-color: #f3f6ff !important;
+  background: rgba(13, 22, 46, .76) !important;
+  border: 1px solid rgba(126, 151, 199, .48) !important;
+  border-radius: .3rem !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(.74rem, 3.4vw, .95rem) !important;
+  font-weight: 800 !important;
+  font-style: normal !important;
+  line-height: 1 !important;
+  letter-spacing: .055em !important;
+  white-space: nowrap !important;
+  opacity: 1 !important;
+  transform: translateX(50%) !important;
+  animation: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(222, 232, 255, .13),
+    0 3px 8px rgba(5, 10, 25, .48) !important;
+  text-shadow:
+    0 1px 0 #0a1024,
+    0 0 4px rgba(201, 220, 255, .46) !important;
+}
+
+/* Shared lower-roadway dock surfaces. */
+html.mobile-portrait #home-launcher,
+html.mobile-portrait #open-drug-reference.reference-library-callout {
+  position: absolute !important;
+  z-index: 20 !important;
+  top: auto !important;
+  bottom: calc(var(--mobile-safe-area-bottom) + .75rem) !important;
+
+  display: grid !important;
+  place-items: stretch !important;
+  min-width: 0 !important;
+  height: var(--mobile-home-dock-height) !important;
+  min-height: var(--mobile-home-dock-height) !important;
+  margin: 0 !important;
+  padding: .55rem !important;
+
+  border: 1px solid rgba(231, 185, 96, .62) !important;
+  border-radius: .7rem !important;
+  background: rgba(7, 13, 38, .84) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 188, .08),
+    0 8px 24px rgba(2, 5, 18, .38) !important;
+  transform: none !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* Separate 60/40 positioning preserves a constant 12px panel gap. */
+html.mobile-portrait #home-launcher {
+  right: auto !important;
+  left: calc(var(--mobile-safe-area-left) + .75rem) !important;
+  width: calc(60% - var(--mobile-safe-area-left) - 1.125rem) !important;
+  overflow: visible !important;
+}
+
+html.mobile-portrait #open-drug-reference.reference-library-callout {
+  right: calc(var(--mobile-safe-area-right) + .75rem) !important;
+  left: auto !important;
+  width: calc(40% - var(--mobile-safe-area-right) - 1.125rem) !important;
+}
+
+html.mobile-portrait #home-launcher .launcher-view {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  overflow: visible !important;
+}
+
+html.mobile-portrait #quiz-builder.launcher-setup:not([hidden]) {
+  display: grid !important;
+  place-items: stretch !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+html.mobile-portrait #quiz-builder .home-quiz-copy {
+  display: none !important;
+}
+
+html.mobile-portrait #open-quiz-builder,
+html.mobile-portrait #resume-session {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 3.625rem !important;
+  margin: 0 !important;
+  padding: .75rem .55rem !important;
+
+  border: 1px solid #efbd5d !important;
+  border-radius: .45rem !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(117, 74, 29, .96),
+      rgba(42, 26, 16, .98)
+    ) !important;
+  color: #fff1bd !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(.78rem, 3.5vw, 1rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  letter-spacing: .035em !important;
+  white-space: normal !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  text-shadow: 0 1px 0 #241307 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 236, 184, .15),
+    0 4px 12px rgba(2, 5, 18, .3) !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #open-quiz-builder:hover,
+html.mobile-portrait #open-quiz-builder:focus-visible,
+html.mobile-portrait #resume-session:hover,
+html.mobile-portrait #resume-session:focus-visible {
+  outline: 2px solid #fff0b2 !important;
+  outline-offset: 2px !important;
+  color: #fff7d8 !important;
+  filter: brightness(1.1) !important;
+  transform: none !important;
+}
+
+/* Saved-session content remains driven by refreshResumePanel(). */
+html.mobile-portrait #home-launcher:has(#resume-panel:not([hidden])),
+html.mobile-portrait .pixel-stage:has(#resume-panel:not([hidden]))
+  #open-drug-reference.reference-library-callout {
+  height: var(--mobile-home-saved-dock-height) !important;
+  min-height: var(--mobile-home-saved-dock-height) !important;
+}
+
+html.mobile-portrait #resume-panel.launcher-resume:not([hidden]) {
+  display: grid !important;
+  grid-template-rows: auto auto auto !important;
+  align-content: center !important;
+  justify-items: stretch !important;
+  gap: .4rem !important;
+}
+
+html.mobile-portrait #resume-panel .resume-copy,
+html.mobile-portrait #resume-panel .resume-copy > div {
+  display: grid !important;
+  gap: .14rem !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+html.mobile-portrait #resume-panel .resume-copy strong {
+  margin: 0 !important;
+  color: #f5d98e !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(.78rem, 3.4vw, .95rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.05 !important;
+  letter-spacing: .025em !important;
+  white-space: normal !important;
+  text-shadow: 0 1px 0 #241307 !important;
+}
+
+html.mobile-portrait #resume-description {
+  margin: 0 !important;
+  color: #dce6ff !important;
+  font-size: clamp(.7rem, 3vw, .85rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: .02em !important;
+  text-align: center !important;
+}
+
+html.mobile-portrait #resume-session {
+  min-height: 3rem !important;
+  padding: .55rem .45rem !important;
+}
+
+html.mobile-portrait #discard-session {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .45rem !important;
+
+  border: 1px solid rgba(165, 186, 230, .36) !important;
+  border-radius: .4rem !important;
+  background: rgba(14, 24, 55, .72) !important;
+  color: #dce6ff !important;
+  font-size: clamp(.66rem, 2.8vw, .8rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  letter-spacing: .025em !important;
+  white-space: normal !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #discard-session:hover,
+html.mobile-portrait #discard-session:focus-visible {
+  outline: 2px solid #dbe7ff !important;
+  outline-offset: 2px !important;
+  color: #fff !important;
+  background: rgba(30, 47, 91, .88) !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #open-drug-reference .reference-callout-copy {
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+html.mobile-portrait #open-drug-reference .reference-callout-copy strong {
+  display: block !important;
+  color: #f7dc91 !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(.72rem, 3.2vw, .9rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  letter-spacing: .025em !important;
+  white-space: normal !important;
+  text-align: center !important;
+  text-shadow: 0 1px 0 #241307 !important;
+}
+
+html.mobile-portrait #open-drug-reference:hover,
+html.mobile-portrait #open-drug-reference:focus-visible {
+  outline: 2px solid #fff0b2 !important;
+  outline-offset: 2px !important;
+  color: #fff7d8 !important;
+  background: rgba(14, 24, 55, .9) !important;
+  filter: brightness(1.1) !important;
+  transform: none !important;
 }
