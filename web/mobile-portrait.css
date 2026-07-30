@@ -422,3 +422,587 @@ html.mobile-portrait #open-drug-reference:focus-visible {
   filter: brightness(1.1) !important;
   transform: none !important;
 }
+
+/* =========================================================
+   PHASE 3: MOBILE QUIZ BUILDER SHELL AND BOOK CAROUSEL
+   Existing subject buttons, selection state, and quiz controls
+   remain authoritative.
+   ========================================================= */
+
+html.mobile-portrait body.builder-open {
+  overflow: hidden !important;
+}
+
+html.mobile-portrait body.builder-open .quiz-builder-screen {
+  position: fixed !important;
+  z-index: 90 !important;
+  inset: 0 !important;
+  display: grid !important;
+  place-items: stretch !important;
+  width: 100% !important;
+  height: var(--mobile-viewport-height) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #030614 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen[hidden] {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-window {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--mobile-viewport-height) !important;
+  min-height: var(--mobile-viewport-height) !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding:
+    calc(var(--mobile-safe-area-top) + .65rem)
+    calc(var(--mobile-safe-area-right) + .75rem)
+    calc(var(--mobile-safe-area-bottom) + .65rem)
+    calc(var(--mobile-safe-area-left) + .75rem) !important;
+  display: grid !important;
+  grid-template-rows:
+    auto
+    minmax(15rem, 1fr)
+    auto
+    auto !important;
+  gap: .45rem !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  aspect-ratio: auto !important;
+  border: 0 !important;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(3, 7, 22, .12),
+      rgba(3, 7, 22, .04) 48%,
+      rgba(3, 7, 22, .3) 100%
+    ),
+    url("images/quiz-builder/prepflow-mobile-quiz-builder-background.png")
+      center center / cover no-repeat,
+    #071024 !important;
+}
+
+/* Compact live header; the existing builder summary is lifted into it. */
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-header {
+  position: relative !important;
+  z-index: 20 !important;
+  inset: auto !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: start !important;
+  gap: .65rem !important;
+  width: 100% !important;
+  min-height: 5.6rem !important;
+  margin: 0 !important;
+  padding: .7rem .75rem !important;
+  border: 1px solid rgba(232, 191, 105, .52) !important;
+  border-radius: .65rem !important;
+  background: rgba(7, 14, 39, .82) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 238, 197, .08),
+    0 .35rem 1rem rgba(2, 5, 18, .3) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-header > div {
+  display: block !important;
+  min-width: 0 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-header h2 {
+  margin: 0 !important;
+  color: #fff0bd !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(1.18rem, 5.2vw, 1.5rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.05 !important;
+  letter-spacing: .015em !important;
+  white-space: nowrap !important;
+  text-shadow: 0 1px 0 #241307 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-header p {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #close-quiz-builder {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 4.5rem !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .55rem .7rem !important;
+  border: 1px solid rgba(166, 187, 235, .72) !important;
+  border-radius: .45rem !important;
+  background: rgba(17, 29, 65, .9) !important;
+  color: #e4ebff !important;
+  font-size: .78rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: .035em !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-summary {
+  position: absolute !important;
+  z-index: 21 !important;
+  top: calc(var(--mobile-safe-area-top) + 3.55rem) !important;
+  right: calc(var(--mobile-safe-area-right) + 5.9rem) !important;
+  left: calc(var(--mobile-safe-area-left) + 1.55rem) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: .4rem !important;
+  width: auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #dce6ff !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-summary strong,
+html.mobile-portrait
+  body.builder-open
+  .builder-summary span {
+  display: inline !important;
+  margin: 0 !important;
+  color: #dce6ff !important;
+  font-size: clamp(.66rem, 2.8vw, .78rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  white-space: normal !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-summary strong::after {
+  content: "•" !important;
+  margin-left: .4rem !important;
+  color: #d1a957 !important;
+}
+
+/* Three original subject buttons become a cyclic, nonduplicated carousel. */
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen .subjects {
+  position: relative !important;
+  z-index: 8 !important;
+  inset: auto !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: clamp(15rem, 38vh, 21rem) !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  touch-action: pan-y !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen .subject-card {
+  position: absolute !important;
+  top: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  display: block !important;
+  width: clamp(8.25rem, 42vw, 10.75rem) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  opacity: .48 !important;
+  filter: saturate(.72) brightness(.7) !important;
+  transform-origin: center center !important;
+  transition:
+    left var(--mobile-motion-duration) ease,
+    opacity var(--mobile-motion-duration) ease,
+    filter var(--mobile-motion-duration) ease,
+    transform var(--mobile-motion-duration) ease !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card.mobile-carousel-active {
+  z-index: 12 !important;
+  left: 50% !important;
+  opacity: 1 !important;
+  filter:
+    brightness(1.08)
+    drop-shadow(0 0 .65rem rgba(255, 229, 153, .48)) !important;
+  transform: translate(-50%, -50%) scale(1) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card.mobile-carousel-previous {
+  z-index: 9 !important;
+  left: 5% !important;
+  transform:
+    translate(-50%, -45%)
+    scale(.68)
+    rotate(-7deg) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card.mobile-carousel-next {
+  z-index: 9 !important;
+  left: 95% !important;
+  transform:
+    translate(-50%, -45%)
+    scale(.68)
+    rotate(7deg) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card .approved-book-art {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card::after {
+  content: attr(data-subject) !important;
+  position: absolute !important;
+  z-index: 3 !important;
+  right: auto !important;
+  bottom: -.35rem !important;
+  left: 50% !important;
+  display: block !important;
+  width: max-content !important;
+  max-width: 10rem !important;
+  padding: .35rem .6rem !important;
+  border: 1px solid rgba(232, 191, 105, .62) !important;
+  border-radius: .35rem !important;
+  background: rgba(7, 14, 39, .88) !important;
+  color: #fff0bd !important;
+  font-size: .72rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: .035em !important;
+  opacity: 1 !important;
+  transform: translateX(-50%) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card:not(.mobile-carousel-active)::after {
+  opacity: .72 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card:focus-visible {
+  outline: 3px solid #fff0b2 !important;
+  outline-offset: .3rem !important;
+  border-radius: .4rem !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card.is-launching .approved-book-art {
+  animation: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-shelf-plaques {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .book-selected-count {
+  position: absolute !important;
+  z-index: 5 !important;
+  top: .15rem !important;
+  right: -.35rem !important;
+  bottom: auto !important;
+  left: auto !important;
+  display: block !important;
+  min-width: 2.75rem !important;
+  min-height: 2.75rem !important;
+  padding: .45rem .5rem !important;
+  border: 2px solid #f0c66c !important;
+  border-radius: 999px !important;
+  background: #152554 !important;
+  color: #fff4ca !important;
+  font-size: .66rem !important;
+  font-weight: 900 !important;
+  line-height: 1.05 !important;
+  text-align: center !important;
+  transform: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .book-selected-count:empty {
+  display: none !important;
+}
+
+/* Live Choose/Edit action delegates to the centered subject button. */
+html.mobile-portrait
+  body.builder-open
+  .mobile-carousel-tools {
+  position: relative !important;
+  z-index: 20 !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .mobile-carousel-tools[hidden] {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #mobile-choose-chapters {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: min(13.5rem, 72%) !important;
+  min-height: 3rem !important;
+  margin: 0 !important;
+  padding: .65rem .9rem !important;
+  border: 1px solid #efbd5d !important;
+  border-radius: .5rem !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(117, 74, 29, .96),
+      rgba(42, 26, 16, .98)
+    ) !important;
+  color: #fff1bd !important;
+  font-size: .84rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: .045em !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 236, 184, .15),
+    0 .25rem .7rem rgba(2, 5, 18, .32) !important;
+}
+
+html.mobile-portrait
+  body.builder-open.book-launching
+  .subject-card:not(.mobile-carousel-active) {
+  opacity: .28 !important;
+  filter: saturate(.55) brightness(.58) !important;
+}
+
+html.mobile-portrait
+  body.builder-open.book-launching
+  #mobile-choose-chapters:disabled {
+  opacity: .72 !important;
+  cursor: wait !important;
+}
+
+/* Existing lower settings and actions occupy the painted console. */
+html.mobile-portrait
+  body.builder-open
+  .builder-controls {
+  position: static !important;
+  z-index: 20 !important;
+  inset: auto !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: .55rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: .7rem !important;
+  border: 1px solid rgba(232, 191, 105, .52) !important;
+  border-radius: .65rem !important;
+  background: rgba(7, 14, 39, .86) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 238, 197, .08),
+    0 -.25rem 1rem rgba(2, 5, 18, .28) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-block-size,
+html.mobile-portrait
+  body.builder-open
+  .order-mode-toggle {
+  position: static !important;
+  inset: auto !important;
+  display: grid !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .45rem .5rem !important;
+  border: 1px solid rgba(160, 183, 235, .44) !important;
+  border-radius: .4rem !important;
+  background: rgba(13, 24, 57, .82) !important;
+  color: #e3ebff !important;
+  font-size: clamp(.66rem, 2.8vw, .78rem) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-block-size {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: .4rem !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #global-block-size {
+  width: 3.5rem !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .35rem !important;
+  border: 1px solid #d8b15d !important;
+  border-radius: .3rem !important;
+  background: #101d44 !important;
+  color: #fff !important;
+  font-size: 1rem !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .order-mode-toggle {
+  grid-template-columns: 1fr auto 1fr !important;
+  gap: .35rem !important;
+  text-align: center !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-actions {
+  position: static !important;
+  inset: auto !important;
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) !important;
+  gap: .55rem !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #clear-selections,
+html.mobile-portrait
+  body.builder-open
+  #build-quiz {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 3rem !important;
+  margin: 0 !important;
+  padding: .6rem .5rem !important;
+  border-radius: .45rem !important;
+  font-size: clamp(.72rem, 3vw, .86rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.05 !important;
+  letter-spacing: .035em !important;
+  white-space: normal !important;
+  text-align: center !important;
+  transform: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #clear-selections {
+  border: 1px solid rgba(166, 187, 235, .68) !important;
+  background: rgba(17, 29, 65, .86) !important;
+  color: #e4ebff !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #build-quiz {
+  border: 1px solid #efbd5d !important;
+  background: rgba(92, 58, 23, .94) !important;
+  color: #fff1bd !important;
+  box-shadow: 0 0 .75rem rgba(238, 193, 104, .2) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #clear-selections:disabled,
+html.mobile-portrait
+  body.builder-open
+  #build-quiz:disabled {
+  opacity: .46 !important;
+  filter: grayscale(.45) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .mobile-carousel-tools {
+  visibility: hidden !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.mobile-portrait
+    body.builder-open
+    .quiz-builder-screen .subject-card {
+    transition: none !important;
+  }
+}
