@@ -1,0 +1,39 @@
+html.mobile-portrait {
+  --mobile-safe-area-top: env(safe-area-inset-top, 0px);
+  --mobile-safe-area-right: env(safe-area-inset-right, 0px);
+  --mobile-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --mobile-safe-area-left: env(safe-area-inset-left, 0px);
+  --mobile-viewport-height: 100vh;
+  --mobile-motion-duration: 240ms;
+
+  width: 100%;
+  min-width: 0;
+  min-height: var(--mobile-viewport-height);
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+html.mobile-portrait body,
+html.mobile-portrait .app-shell {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--mobile-viewport-height);
+}
+
+html.mobile-portrait *,
+html.mobile-portrait *::before,
+html.mobile-portrait *::after {
+  box-sizing: border-box;
+}
+
+@supports (height: 100dvh) {
+  html.mobile-portrait {
+    --mobile-viewport-height: 100dvh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.mobile-portrait {
+    --mobile-motion-duration: 0.01ms;
+  }
+}

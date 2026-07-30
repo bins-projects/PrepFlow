@@ -5,6 +5,8 @@ const APP_FILES = [
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./mobile-portrait.css",
+  "./mobile-portrait.js",
   "./manifest.webmanifest",
   "./icons/prepflow-192.png",
   "./icons/prepflow-512.png",
