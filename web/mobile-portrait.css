@@ -1433,7 +1433,7 @@ html.mobile-portrait
 html.mobile-portrait
   body.builder-open
   .mobile-carousel-prompt strong {
-  font-size: clamp(.78rem, 3.4vw, .9rem) !important;
+  font-size: clamp(.95rem, 4vw, 1.05rem) !important;
   font-weight: 800 !important;
 }
 
