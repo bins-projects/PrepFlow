@@ -78,6 +78,7 @@ let blockMissed = [];
 let reviewQueue = [];
 let reviewMode = false;
 let currentReviewQuestion = null;
+let questionSubmissionState = "idle";
 
 function readSavedSession() {
   const raw = localStorage.getItem(SAVE_KEY);
@@ -437,6 +438,8 @@ function showQuestion() {
   const isMultipleResponse = PrepFlowQuizRules.isMultipleResponseQuestion(question);
   const blockLength = blockEnd - blockStart;
 
+  questionSubmissionState = "idle";
+
   hideAllScreens();
   quizScreen.hidden = false;
 
@@ -512,6 +515,13 @@ function showQuestion() {
   );
 
   saveSession("question");
+
+  document.dispatchEvent(new CustomEvent("prepflow:question-shown", {
+    detail: {
+      questionType: question.type || question.question_type,
+      packPath: currentQuestionReference().packPath,
+    },
+  }));
 }
 
 function beginBlock() {
@@ -534,6 +544,7 @@ function beginBlock() {
 function showFinalSummary() {
   hideAllScreens();
   blockSummary.hidden = false;
+  blockSummary.dataset.summaryState = "final";
 
   const totalQuestions = sessionQuestions.length;
   const percentage = PrepFlowSessionRules.firstPassPercentage(
@@ -555,6 +566,94 @@ function showFinalSummary() {
   clearSavedSession();
 }
 
+function appendProgressStat(container, label, value) {
+  const statistic = document.createElement("section");
+  statistic.className = "block-progress-stat";
+
+  const statisticLabel = document.createElement("span");
+  statisticLabel.className = "block-progress-stat-label";
+  statisticLabel.textContent = label;
+
+  const statisticValue = document.createElement("strong");
+  statisticValue.textContent = value;
+
+  statistic.append(statisticLabel, statisticValue);
+  container.append(statistic);
+}
+
+function questionCountText(count) {
+  return `${count} ${count === 1 ? "question" : "questions"}`;
+}
+
+function renderMobileBlockProgress(blockLength) {
+  const cumulativeCompleted = blockEnd;
+  const totalQuestions = sessionQuestions.length;
+  const nextBlockEnd = PrepFlowSessionRules.blockEnd(
+    blockEnd,
+    sessionBlockSize,
+    totalQuestions
+  );
+  const nextBlockLength = nextBlockEnd - blockEnd;
+  const blockPercentage = PrepFlowSessionRules.firstPassPercentage(
+    blockCorrect,
+    blockLength
+  );
+  const cumulativePercentage = PrepFlowSessionRules.firstPassPercentage(
+    firstPassCorrect,
+    cumulativeCompleted
+  );
+  const overallPercentage = PrepFlowSessionRules.firstPassPercentage(
+    cumulativeCompleted,
+    totalQuestions
+  );
+  const missedCount = blockMissed.length;
+
+  summaryScore.replaceChildren();
+  summaryMessage.replaceChildren();
+
+  appendProgressStat(
+    summaryMessage,
+    "Block first-attempt score",
+    `${blockCorrect} of ${blockLength} correct (${blockPercentage}%)`
+  );
+  appendProgressStat(
+    summaryMessage,
+    "Cumulative first-attempt score",
+    `${firstPassCorrect} of ${cumulativeCompleted} correct (${cumulativePercentage}%)`
+  );
+  appendProgressStat(
+    summaryMessage,
+    "Review complete",
+    missedCount === 1
+      ? "1 missed question mastered"
+      : `${missedCount} missed questions mastered`
+  );
+
+  const overall = document.createElement("section");
+  overall.className = "block-progress-stat block-progress-overall";
+  const overallLabel = document.createElement("span");
+  overallLabel.className = "block-progress-stat-label";
+  overallLabel.textContent = "Overall quiz progress";
+  const overallValue = document.createElement("strong");
+  overallValue.textContent =
+    `${cumulativeCompleted} of ${totalQuestions} questions (${overallPercentage}%)`;
+  const progress = document.createElement("progress");
+  progress.max = Math.max(totalQuestions, 1);
+  progress.value = cumulativeCompleted;
+  progress.setAttribute(
+    "aria-label",
+    `Overall quiz progress: ${cumulativeCompleted} of ${totalQuestions} questions complete`
+  );
+  overall.append(overallLabel, overallValue, progress);
+  summaryMessage.append(overall);
+
+  appendProgressStat(
+    summaryMessage,
+    "Up next",
+    `Block ${blockNumber + 1}: ${questionCountText(nextBlockLength)}`
+  );
+}
+
 function showBlockSummary(mastered = false) {
   summaryExit.hidden = false;
   hideAllScreens();
@@ -562,6 +661,26 @@ function showBlockSummary(mastered = false) {
 
   const blockLength = blockEnd - blockStart;
   const missedCount = blockMissed.length;
+  const hasMoreQuestions = blockEnd < sessionQuestions.length;
+  const showsMobileBlockProgress =
+    mastered
+    && hasMoreQuestions
+    && usesMobilePortraitPresentation();
+
+  blockSummary.dataset.summaryState = showsMobileBlockProgress
+    ? "block-progress"
+    : "block-summary";
+
+  if (showsMobileBlockProgress) {
+    summaryTitle.textContent = `Block ${blockNumber} Complete`;
+    renderMobileBlockProgress(blockLength);
+    summaryAction.textContent = "Continue to Next Block";
+    summaryAction.dataset.action = "next-block";
+    summaryAction.dataset.blockEnd = String(blockEnd);
+    summaryExit.textContent = "Save & Quit";
+    saveSession("block-progress");
+    return;
+  }
 
   summaryTitle.textContent = PrepFlowDisplayRules.blockTitle(
     blockNumber,
@@ -579,11 +698,13 @@ function showBlockSummary(mastered = false) {
   const nextAction = PrepFlowSummaryRules.summaryAction({
     mastered,
     missedCount,
-    hasMoreQuestions: blockEnd < sessionQuestions.length,
+    hasMoreQuestions,
   });
 
   summaryAction.textContent = nextAction.label;
   summaryAction.dataset.action = nextAction.action;
+  summaryAction.dataset.blockEnd = String(blockEnd);
+  summaryExit.textContent = "Exit Session";
 
   saveSession(mastered ? "mastered-summary" : "block-summary");
 }
@@ -593,6 +714,63 @@ function startReview() {
   reviewQueue = [...blockMissed];
   currentReviewQuestion = reviewQueue.shift();
   showQuestion();
+}
+
+function advanceToNextBlock(completedBlockEnd = blockEnd) {
+  const boundary = Number(completedBlockEnd);
+
+  if (
+    !Number.isFinite(boundary)
+    || boundary !== blockEnd
+    || blockStart >= boundary
+  ) {
+    return;
+  }
+
+  if (boundary >= sessionQuestions.length) {
+    showFinalSummary();
+    return;
+  }
+
+  blockStart = boundary;
+  blockNumber += 1;
+  beginBlock();
+}
+
+function completeMasteredBlock() {
+  reviewMode = false;
+  reviewQueue = [];
+  currentReviewQuestion = null;
+
+  const nextStep = PrepFlowNavigationRules.completedReviewStep(
+    blockEnd < sessionQuestions.length
+  );
+
+  if (nextStep === "next-block") {
+    showBlockSummary(true);
+    return;
+  }
+
+  showFinalSummary();
+}
+
+function completeFirstPassBlock() {
+  const nextStep = PrepFlowNavigationRules.completedFirstPassStep(
+    blockMissed.length,
+    blockEnd < sessionQuestions.length
+  );
+
+  if (nextStep === "review") {
+    startReview();
+    return;
+  }
+
+  if (nextStep === "next-block") {
+    showBlockSummary(true);
+    return;
+  }
+
+  showFinalSummary();
 }
 
 async function startQuiz() {
@@ -689,11 +867,31 @@ async function resumeSavedSession() {
     reviewMode = Boolean(saved.reviewMode);
     currentReviewQuestion = saved.currentReviewQuestion;
 
-    if (
+    if (saved.screen === "feedback") {
+      advanceFromFeedback();
+    } else if (saved.screen === "block-progress") {
+      showBlockSummary(true);
+    } else if (
       saved.screen === "block-summary"
       || saved.screen === "mastered-summary"
     ) {
-      showBlockSummary(saved.screen === "mastered-summary");
+      const mastered = saved.screen === "mastered-summary";
+
+      if (usesMobilePortraitPresentation()) {
+        if (!mastered && blockMissed.length > 0) {
+          startReview();
+        } else if (blockEnd < sessionQuestions.length) {
+          advanceToNextBlock(saved.blockEnd);
+        } else {
+          showFinalSummary();
+        }
+      } else {
+        showBlockSummary(mastered);
+      }
+    } else if (reviewMode && !currentReviewQuestion) {
+      advanceFromFeedback();
+    } else if (!reviewMode && questionIndex >= blockEnd) {
+      completeFirstPassBlock();
     } else {
       showQuestion();
     }
@@ -705,6 +903,10 @@ async function resumeSavedSession() {
 }
 
 submitAnswer.addEventListener("click", () => {
+  if (questionSubmissionState !== "idle") {
+    return;
+  }
+
   const selected = answerChoices.querySelectorAll(
     'input[name="answer"]:checked'
   );
@@ -713,60 +915,90 @@ submitAnswer.addEventListener("click", () => {
     return;
   }
 
-  const question = currentQuestion();
-  const selectedAnswers = Array.from(selected, (input) => input.value);
-  const { isCorrect, correctAnswers } =
-    PrepFlowQuizRules.evaluateAnswer(question, selectedAnswers);
+  questionSubmissionState = "grading";
+  submitAnswer.disabled = true;
 
-  if (isCorrect) {
-    feedbackResult.textContent = "Correct!";
+  let scoringStarted = false;
 
-    if (!reviewMode) {
-      firstPassCorrect += 1;
-      blockCorrect += 1;
-    }
-  } else {
-    feedbackResult.textContent =
-      `Incorrect. Correct answer: ${correctAnswers.join(", ")}`;
+  try {
+    const question = currentQuestion();
+    const selectedAnswers = Array.from(selected, (input) => input.value);
+    const { isCorrect, correctAnswers } =
+      PrepFlowQuizRules.evaluateAnswer(question, selectedAnswers);
 
-    if (reviewMode) {
-      reviewQueue = PrepFlowReviewRules.queueAfterAnswer(
-        reviewQueue,
-        currentReviewQuestion,
-        false
-      );
+    scoringStarted = true;
+
+    if (isCorrect) {
+      feedbackResult.textContent = "Correct!";
+
+      if (!reviewMode) {
+        firstPassCorrect += 1;
+        blockCorrect += 1;
+      }
     } else {
-      firstPassMissed += 1;
-      blockMissed.push(sessionQuestions[questionIndex]);
+      feedbackResult.textContent =
+        `Incorrect. Correct answer: ${correctAnswers.join(", ")}`;
+
+      if (reviewMode) {
+        reviewQueue = PrepFlowReviewRules.queueAfterAnswer(
+          reviewQueue,
+          currentReviewQuestion,
+          false
+        );
+      } else {
+        firstPassMissed += 1;
+        blockMissed.push(sessionQuestions[questionIndex]);
+      }
     }
+
+    questionSubmissionState = "submitted";
+    feedbackRationale.textContent = question.rationale || "";
+
+    document.dispatchEvent(new CustomEvent("prepflow:answer-graded", {
+      detail: {
+        isCorrect,
+        selectedAnswers,
+        correctAnswers,
+        choices: question.choices.map((choice) => ({
+          label: choice.label,
+          text: choice.text,
+        })),
+        multipleResponse: PrepFlowQuizRules.isMultipleResponseQuestion(question),
+      },
+    }));
+    answerChoices.hidden = true;
+    feedback.hidden = false;
+
+    answerChoices.querySelectorAll("input").forEach((input) => {
+      input.disabled = true;
+    });
+
+    quizScore.textContent = PrepFlowDisplayRules.runningScoreText(
+      firstPassCorrect,
+      firstPassMissed
+    );
+
+    submitAnswer.hidden = true;
+    continueButton.hidden = false;
+    saveSession("feedback");
+  } catch (error) {
+    if (!scoringStarted) {
+      questionSubmissionState = "idle";
+      submitAnswer.disabled = false;
+    }
+
+    throw error;
   }
-
-  feedbackRationale.textContent = question.rationale || "";
-  answerChoices.hidden = true;
-  feedback.hidden = false;
-
-  answerChoices.querySelectorAll("input").forEach((input) => {
-    input.disabled = true;
-  });
-
-  quizScore.textContent = PrepFlowDisplayRules.runningScoreText(
-    firstPassCorrect,
-    firstPassMissed
-  );
-
-  submitAnswer.hidden = true;
-  continueButton.hidden = false;
 });
 
-continueButton.addEventListener("click", () => {
+function advanceFromFeedback() {
   if (reviewMode) {
     const nextStep = PrepFlowReviewRules.nextReviewStep(reviewQueue);
     reviewQueue = nextStep.reviewQueue;
     currentReviewQuestion = nextStep.currentQuestion;
 
     if (nextStep.finished) {
-      reviewMode = false;
-      showBlockSummary(true);
+      completeMasteredBlock();
       return;
     }
 
@@ -781,12 +1013,14 @@ continueButton.addEventListener("click", () => {
   questionIndex = nextStep.questionIndex;
 
   if (nextStep.blockComplete) {
-    showBlockSummary(false);
+    completeFirstPassBlock();
     return;
   }
 
   showQuestion();
-});
+}
+
+continueButton.addEventListener("click", advanceFromFeedback);
 
 summaryAction.addEventListener("click", () => {
   const action = summaryAction.dataset.action;
@@ -797,9 +1031,7 @@ summaryAction.addEventListener("click", () => {
   }
 
   if (action === "next-block") {
-    blockStart = blockEnd;
-    blockNumber += 1;
-    beginBlock();
+    advanceToNextBlock(summaryAction.dataset.blockEnd);
     return;
   }
 
@@ -824,6 +1056,8 @@ const BOOK_LAUNCH_DURATION_MS = 1150;
 const OPEN_BOOK_REVEAL_MS = 760;
 const OPEN_BOOK_TOTAL_MS = 1500;
 const BOOK_CLOSE_DURATION_MS = 760;
+const MOBILE_BOOK_LAUNCH_DURATION_MS = 240;
+const MOBILE_BOOK_CLOSE_DURATION_MS = 220;
 
 let bookLaunchInProgress = false;
 let bookCloseInProgress = false;
@@ -833,6 +1067,15 @@ function wait(milliseconds) {
   return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 }
 
+function usesMobilePortraitPresentation() {
+  return (
+    document.documentElement.classList.contains("mobile-portrait")
+    && window.matchMedia(
+      "(max-width: 760px) and (orientation: portrait)"
+    ).matches
+  );
+}
+
 async function launchBook(button) {
   if (bookLaunchInProgress) {
     return;
@@ -840,7 +1083,8 @@ async function launchBook(button) {
 
   activeBookButton = button;
 
-  const usesOpenBookTransition = true;
+  const usesMobileTransition = usesMobilePortraitPresentation();
+  const usesOpenBookTransition = !usesMobileTransition;
 
   bookLaunchInProgress = true;
   document.body.classList.add("book-launching");
@@ -848,7 +1092,9 @@ async function launchBook(button) {
   button.setAttribute("aria-busy", "true");
 
   try {
-    if (usesOpenBookTransition) {
+    if (usesMobileTransition) {
+      await wait(MOBILE_BOOK_LAUNCH_DURATION_MS);
+    } else if (usesOpenBookTransition) {
       await wait(OPEN_BOOK_REVEAL_MS);
 
       quizBuilderOpenBook.hidden = false;
@@ -910,7 +1156,11 @@ async function closeCurrentBook() {
   activeBookButton.setAttribute("aria-busy", "true");
 
   try {
-    await wait(BOOK_CLOSE_DURATION_MS);
+    await wait(
+      usesMobilePortraitPresentation()
+        ? MOBILE_BOOK_CLOSE_DURATION_MS
+        : BOOK_CLOSE_DURATION_MS
+    );
     showQuizBuilder();
   } finally {
     document.body.classList.remove("book-closing");

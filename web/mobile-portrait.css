@@ -1,0 +1,2611 @@
+html.mobile-portrait {
+  --mobile-safe-area-top: env(safe-area-inset-top, 0px);
+  --mobile-safe-area-right: env(safe-area-inset-right, 0px);
+  --mobile-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --mobile-safe-area-left: env(safe-area-inset-left, 0px);
+  --mobile-viewport-height: 100vh;
+  --mobile-motion-duration: 240ms;
+  --mobile-home-dock-height: 4.875rem;
+  --mobile-home-saved-dock-height: 10.25rem;
+
+  width: 100%;
+  min-width: 0;
+  min-height: var(--mobile-viewport-height);
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+html.mobile-portrait body,
+html.mobile-portrait .app-shell {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--mobile-viewport-height);
+}
+
+html.mobile-portrait *,
+html.mobile-portrait *::before,
+html.mobile-portrait *::after {
+  box-sizing: border-box;
+}
+
+@supports (height: 100dvh) {
+  html.mobile-portrait {
+    --mobile-viewport-height: 100dvh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.mobile-portrait {
+    --mobile-motion-duration: 0.01ms;
+  }
+}
+
+/* Phase 5: persistent portrait-mobile clipboard quiz flow. */
+html.mobile-portrait #quiz-screen:not([hidden]) {
+  --mobile-viewport-height: 100vh;
+  --mobile-safe-area-top: env(safe-area-inset-top, 0px);
+  --mobile-safe-area-right: env(safe-area-inset-right, 0px);
+  --mobile-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --mobile-safe-area-left: env(safe-area-inset-left, 0px);
+  --mobile-clipboard-height: min(
+    calc(
+      var(--mobile-viewport-height)
+      - var(--mobile-safe-area-top)
+      - var(--mobile-safe-area-bottom)
+      - .125rem
+    ),
+    calc(
+      (
+        100vw
+        - var(--mobile-safe-area-left)
+        - var(--mobile-safe-area-right)
+        - .125rem
+      )
+      * 2532 / 1170
+    )
+  );
+  --mobile-clipboard-width: calc(var(--mobile-clipboard-height) * 1170 / 2532);
+  --mobile-clipboard-center-x: calc(
+    (100vw + var(--mobile-safe-area-left) - var(--mobile-safe-area-right)) / 2
+  );
+  --mobile-clipboard-center-y: calc(
+    (
+      var(--mobile-viewport-height)
+      + var(--mobile-safe-area-top)
+      - var(--mobile-safe-area-bottom)
+    ) / 2
+  );
+  --mobile-quiz-accent: #315fa8;
+  position: fixed !important;
+  z-index: 110 !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: var(--mobile-viewport-height) !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  isolation: isolate !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+@supports (height: 100dvh) {
+  html.mobile-portrait #quiz-screen:not([hidden]) {
+    --mobile-viewport-height: 100dvh;
+  }
+}
+
+@media (display-mode: standalone) and (orientation: portrait) {
+  html.mobile-portrait #quiz-screen:not([hidden]) {
+    --mobile-clipboard-height: min(
+      calc(var(--mobile-viewport-height) - .0625rem),
+      calc((100vw - .0625rem) * 2532 / 1170)
+    );
+    --mobile-clipboard-center-x: 50vw;
+    --mobile-clipboard-center-y: calc(var(--mobile-viewport-height) / 2);
+  }
+}
+
+html.mobile-portrait #quiz-screen:not([hidden])::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 1 !important;
+  top: var(--mobile-clipboard-center-y) !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: block !important;
+  width: var(--mobile-clipboard-width) !important;
+  height: var(--mobile-clipboard-height) !important;
+  border: 0 !important;
+  background: url("images/quiz-builder/prepflow-mobile-chapter-clipboard.png") center / contain no-repeat !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  clip-path: none !important;
+  mask: none !important;
+  pointer-events: none !important;
+  transform: translate(-50%, -50%) !important;
+  transition:
+    opacity var(--mobile-motion-duration) ease,
+    visibility var(--mobile-motion-duration) ease !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden])::after {
+  content: none !important;
+  display: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .mobile-quiz-scene {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  display: block;
+  background:
+    linear-gradient(rgba(3, 9, 29, .58), rgba(3, 9, 29, .58)),
+    url("images/quiz-builder/prepflow-mobile-quiz-builder-background.png") center / cover no-repeat;
+  background-color: #03091d;
+  pointer-events: none;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]):not(.mobile-quiz-unit-visible)::before,
+html.mobile-portrait #quiz-screen:not([hidden]):not(.mobile-quiz-unit-visible) .quiz-header,
+html.mobile-portrait #quiz-screen:not([hidden]):not(.mobile-quiz-unit-visible) .quiz-book {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]).mobile-quiz-unit-visible::before,
+html.mobile-portrait #quiz-screen:not([hidden]).mobile-quiz-unit-visible .quiz-header,
+html.mobile-portrait #quiz-screen:not([hidden]).mobile-quiz-unit-visible .quiz-book {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-header {
+  position: absolute !important;
+  z-index: 4 !important;
+  top: calc(
+    var(--mobile-clipboard-center-y)
+    - var(--mobile-clipboard-height) / 2
+    + var(--mobile-clipboard-height) * .205
+  ) !important;
+  right: calc(
+    100vw - var(--mobile-clipboard-center-x)
+    - var(--mobile-clipboard-width) / 2
+    + var(--mobile-clipboard-width) * .14
+  ) !important;
+  left: auto !important;
+  width: 5rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transition:
+    opacity var(--mobile-motion-duration) ease,
+    visibility var(--mobile-motion-duration) ease !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) #exit-quiz {
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: .35rem .45rem !important;
+  border: 1px solid #81765f !important;
+  border-radius: .3rem !important;
+  background: rgba(248, 241, 220, .9) !important;
+  color: #26324a !important;
+  font: 800 clamp(.6rem, 2.55vw, .72rem)/1 Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  writing-mode: horizontal-tb !important;
+  clip-path: none !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book {
+  --mobile-paper-header-height: 4.25rem;
+  --mobile-paper-footer-height: 3.25rem;
+  position: absolute !important;
+  z-index: 3 !important;
+  top: calc(
+    var(--mobile-clipboard-center-y)
+    - var(--mobile-clipboard-height) / 2
+    + var(--mobile-clipboard-height) * .205
+  ) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: block !important;
+  width: calc(var(--mobile-clipboard-width) * .72) !important;
+  height: calc(var(--mobile-clipboard-height) * .65) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #172540 !important;
+  transform: translateX(-50%) !important;
+  transition:
+    opacity var(--mobile-motion-duration) ease,
+    visibility var(--mobile-motion-duration) ease !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-subject-accent="pharm"] {
+  --mobile-quiz-accent: #28764e;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-subject-accent="med-surg"] {
+  --mobile-quiz-accent: #684495;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page {
+  position: absolute !important;
+  inset: 0 !important;
+  display: grid !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateX(.5rem) !important;
+  transition: opacity 220ms ease, transform 220ms ease, visibility 220ms !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page::before,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page::after {
+  content: none !important;
+  display: none !important;
+  inset: auto !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .question-page {
+  height: 100% !important;
+  max-height: none !important;
+  grid-template-rows:
+    var(--mobile-paper-header-height)
+    auto
+    auto
+    minmax(0, 1fr)
+    var(--mobile-paper-footer-height) !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .question-page .quiz-page-meta {
+  grid-row: 1 !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .question-page .quiz-page-label {
+  grid-row: 2 !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .question-page .mobile-question-instruction {
+  grid-row: 3 !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .question-page .quiz-page-scroll {
+  grid-row: 4 !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  scrollbar-gutter: auto !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .question-page .mobile-question-actions {
+  grid-row: 5 !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .response-page {
+  grid-template-rows:
+    var(--mobile-paper-header-height)
+    auto
+    minmax(0, 1fr)
+    var(--mobile-paper-footer-height) !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="question"] .question-page,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="review"] .question-page,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="answers"] .response-page,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="feedback"] .response-page {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateX(0) !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="answers"] .question-page,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="feedback"] .question-page {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: none !important;
+  transform: translateX(0) !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="answers"] .question-page > :not(.quiz-page-meta),
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="feedback"] .question-page > :not(.quiz-page-meta) {
+  visibility: hidden !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page-meta {
+  position: relative !important;
+  z-index: 5 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 5rem !important;
+  align-content: center !important;
+  gap: .2rem !important;
+  min-width: 0 !important;
+  min-height: var(--mobile-paper-header-height) !important;
+  padding: .15rem 0 .35rem !important;
+  border-bottom: 1px solid rgba(77, 71, 57, .35) !important;
+  color: #43516a !important;
+  font: 750 clamp(.62rem, 2.55vw, .72rem)/1.25 Arial, sans-serif !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) #quiz-subject {
+  grid-column: 1 !important;
+  overflow: hidden !important;
+  color: var(--mobile-quiz-accent) !important;
+  font-size: clamp(.7rem, 3vw, .84rem) !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) #quiz-position {
+  grid-column: 1 !important;
+  display: -webkit-box !important;
+  max-width: 100% !important;
+  color: #43516a !important;
+  font: 800 clamp(.58rem, 2.35vw, .68rem)/1.3 Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: normal !important;
+  overflow: hidden !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page-label,
+html.mobile-portrait #quiz-screen:not([hidden]) #feedback-result {
+  margin: .45rem 0 .3rem !important;
+  padding: 0 0 .28rem !important;
+  border: 0 !important;
+  border-bottom: 2px solid var(--mobile-quiz-accent) !important;
+  background: transparent !important;
+  color: #172540 !important;
+  font: 900 clamp(.95rem, 4vw, 1.12rem)/1.1 Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+  text-transform: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .mobile-question-instruction {
+  margin: 0 0 .3rem !important;
+  color: #59647a !important;
+  font: 750 clamp(.66rem, 2.8vw, .78rem)/1.2 Arial, sans-serif !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page-scroll,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-response-scroll {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: .4rem .18rem .55rem !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) #question-stem {
+  margin: 0 !important;
+  color: #172540 !important;
+  font: 700 clamp(.9rem, 3.7vw, 1.05rem)/1.4 Arial, sans-serif !important;
+  overflow-wrap: anywhere !important;
+  text-transform: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .mobile-question-actions,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-footer {
+  align-items: flex-end !important;
+  display: flex !important;
+  gap: .4rem !important;
+  justify-content: space-between !important;
+  min-height: var(--mobile-paper-footer-height) !important;
+  margin: 0 !important;
+  padding: .4rem calc(var(--mobile-clipboard-width) * .03) 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(77, 71, 57, .35) !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .mobile-question-actions {
+  justify-content: flex-end !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .mobile-question-actions button,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-footer button {
+  flex: 0 0 calc(var(--mobile-clipboard-width) * .3) !important;
+  align-self: flex-end !important;
+  height: 44px !important;
+  max-height: 44px !important;
+  min-width: 0 !important;
+  width: calc(var(--mobile-clipboard-width) * .3) !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: .45rem .35rem !important;
+  border: 1px solid var(--mobile-quiz-accent) !important;
+  border-radius: .3rem !important;
+  background: #263b60 !important;
+  color: #fff !important;
+  font: 850 clamp(.65rem, 2.75vw, .78rem)/1.1 Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .mobile-question-actions button {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-footer .secondary-button,
+html.mobile-portrait #quiz-screen:not([hidden]) #mobile-back-feedback {
+  background: rgba(248, 241, 220, .9) !important;
+  color: #26324a !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-footer button[disabled] {
+  opacity: .48 !important;
+  cursor: not-allowed !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) #answer-choices {
+  display: grid !important;
+  gap: .45rem !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .response-page .quiz-page-label {
+  grid-row: 2 !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-response-scroll {
+  grid-row: 3 !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-footer {
+  grid-row: 4 !important;
+  z-index: 4 !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  overflow: visible !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .answer-choice {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 56px !important;
+  margin: 0 !important;
+  padding: .62rem .65rem !important;
+  overflow: visible !important;
+  border: 1px solid rgba(119, 104, 75, .52) !important;
+  border-radius: .35rem !important;
+  background: rgba(255, 254, 247, .92) !important;
+  color: #172540 !important;
+  font: 700 clamp(.78rem, 3.25vw, .92rem)/1.3 Arial, sans-serif !important;
+  overflow-wrap: anywhere !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .answer-choice:has(input:checked) {
+  border-color: var(--mobile-quiz-accent) !important;
+  background: rgba(49, 95, 168, .1) !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .answer-choice input {
+  flex: 0 0 auto !important;
+  width: 1.3rem !important;
+  height: 1.3rem !important;
+  margin: 0 .6rem 0 0 !important;
+  accent-color: var(--mobile-quiz-accent) !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .answer-choice > span {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .answer-choice:has(input:checked)::after {
+  content: "SELECTED" !important;
+  flex: 0 0 auto !important;
+  align-self: center !important;
+  margin-left: .35rem !important;
+  font-size: clamp(.54rem, 2.2vw, .62rem) !important;
+  letter-spacing: .02em !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .answer-choice:has(input:focus-visible),
+html.mobile-portrait #quiz-screen:not([hidden]) button:focus-visible,
+html.mobile-portrait #quiz-screen:not([hidden]) h2:focus-visible,
+html.mobile-portrait #quiz-screen:not([hidden]) h3:focus-visible,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page-label:focus-visible {
+  outline: 3px solid var(--mobile-quiz-accent) !important;
+  outline-offset: 2px !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="answers"] #feedback,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="feedback"] #answer-choices {
+  display: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .feedback {
+  margin: 0 !important;
+  padding: 0 .1rem .65rem !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) #feedback-result {
+  position: sticky !important;
+  z-index: 1 !important;
+  top: -.3rem !important;
+  margin-top: -.3rem !important;
+  padding-top: .3rem !important;
+  background: #f8f1dc !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) #feedback-result:first-letter {
+  color: inherit !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) #feedback-result {
+  color: #28764e !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) #feedback-result:not(:empty) {
+  border-bottom-color: currentColor !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-result="incorrect"] #feedback-result {
+  color: #a4452d !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .mobile-answer-review section {
+  margin: 0 0 .85rem !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .feedback h4 {
+  margin: 0 0 .35rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+  color: #37445c !important;
+  font: 900 clamp(.76rem, 3.1vw, .88rem)/1.25 Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .mobile-answer-review ul {
+  margin: 0 !important;
+  padding-left: 1.15rem !important;
+  color: #172540 !important;
+  font: 700 clamp(.8rem, 3.3vw, .94rem)/1.42 Arial, sans-serif !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) #feedback-rationale {
+  margin: 0 !important;
+  padding: 0 0 .5rem !important;
+  color: #172540 !important;
+  font: 650 clamp(.82rem, 3.4vw, .96rem)/1.48 Arial, sans-serif !important;
+  overflow-wrap: anywhere !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="answers"] #continue-button,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="answers"] #mobile-view-question,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="feedback"] #submit-answer,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="feedback"] #mobile-back-question,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-mobile-state="feedback"] #response-page-label {
+  display: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) [hidden] {
+  display: none !important;
+}
+
+@media (max-height: 680px) and (orientation: portrait) {
+  html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page-meta {
+    gap: 0 !important;
+  }
+
+  html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page-label {
+    margin-top: .2rem !important;
+  }
+
+  html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page-scroll,
+  html.mobile-portrait #quiz-screen:not([hidden]) .quiz-response-scroll {
+    padding-top: .18rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page {
+    transform: none !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* Mobile rolling report shown only at a mastered, non-final block boundary. */
+html.mobile-portrait #block-summary[data-summary-state="block-progress"]:not([hidden]) {
+  --mobile-clipboard-height: min(
+    calc(
+      var(--mobile-viewport-height)
+      - var(--mobile-safe-area-top)
+      - var(--mobile-safe-area-bottom)
+      - 1rem
+    ),
+    calc(
+      (
+        100vw
+        - var(--mobile-safe-area-left)
+        - var(--mobile-safe-area-right)
+        - 1rem
+      )
+      * 2532 / 1170
+    )
+  );
+  --mobile-clipboard-width: calc(var(--mobile-clipboard-height) * 1170 / 2532);
+  --mobile-clipboard-center-x: calc(
+    (100vw + var(--mobile-safe-area-left) - var(--mobile-safe-area-right)) / 2
+  );
+  --mobile-clipboard-center-y: calc(
+    (
+      var(--mobile-viewport-height)
+      + var(--mobile-safe-area-top)
+      - var(--mobile-safe-area-bottom)
+    ) / 2
+  );
+  position: fixed !important;
+  z-index: 110 !important;
+  inset: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  grid-template-rows: auto minmax(0, 1fr) 3.25rem !important;
+  gap: .45rem .4rem !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: var(--mobile-viewport-height) !important;
+  margin: 0 !important;
+  padding:
+    calc(
+      var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .205
+    )
+    calc((100vw - var(--mobile-clipboard-width) * .7) / 2)
+    calc(
+      var(--mobile-viewport-height)
+      - var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .146
+    ) !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background:
+    linear-gradient(rgba(3, 9, 29, .58), rgba(3, 9, 29, .58)),
+    url("images/quiz-builder/prepflow-mobile-quiz-builder-background.png")
+      center / cover no-repeat !important;
+  box-shadow: none !important;
+  color: #172540 !important;
+  text-align: left !important;
+  isolation: isolate !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"]::before {
+  content: "" !important;
+  position: fixed !important;
+  z-index: 1 !important;
+  top: var(--mobile-clipboard-center-y) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: block !important;
+  width: var(--mobile-clipboard-width) !important;
+  height: var(--mobile-clipboard-height) !important;
+  border: 0 !important;
+  background: url("images/quiz-builder/prepflow-mobile-chapter-clipboard.png")
+    center / contain no-repeat !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"]::after {
+  content: none !important;
+  display: none !important;
+}
+
+html.mobile-portrait #block-summary:not([data-summary-state="block-progress"])::before,
+html.mobile-portrait #block-summary:not([data-summary-state="block-progress"])::after {
+  content: none !important;
+  display: none !important;
+  inset: auto !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] > * {
+  position: relative !important;
+  z-index: 3 !important;
+  min-width: 0 !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-title {
+  grid-column: 1 / -1 !important;
+  margin: 0 !important;
+  padding: 0 0 .4rem !important;
+  border-bottom: 2px solid #315fa8 !important;
+  color: #172540 !important;
+  font: 900 clamp(1rem, 4.5vw, 1.25rem)/1.1 Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+  text-shadow: none !important;
+  text-transform: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-score {
+  display: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-message {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  align-content: start !important;
+  gap: .45rem !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: .1rem .15rem .45rem !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  color: #172540 !important;
+  font: 700 clamp(.72rem, 3vw, .86rem)/1.3 Arial, sans-serif !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] .block-progress-stat {
+  display: grid !important;
+  gap: .15rem !important;
+  margin: 0 !important;
+  padding: .45rem .5rem !important;
+  border: 1px solid rgba(119, 104, 75, .42) !important;
+  border-radius: .3rem !important;
+  background: rgba(255, 254, 247, .7) !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] .block-progress-stat-label {
+  color: #59647a !important;
+  font-size: clamp(.62rem, 2.6vw, .72rem) !important;
+  font-weight: 800 !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] .block-progress-stat strong {
+  color: #172540 !important;
+  font-size: clamp(.76rem, 3.25vw, .92rem) !important;
+  line-height: 1.25 !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] .block-progress-overall progress {
+  width: 100% !important;
+  height: .55rem !important;
+  margin-top: .2rem !important;
+  accent-color: #315fa8 !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-action,
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-exit {
+  align-self: end !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: .4rem .3rem !important;
+  border-radius: .3rem !important;
+  font: 850 clamp(.6rem, 2.55vw, .72rem)/1.08 Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-transform: none !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-action {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+  border: 1px solid #315fa8 !important;
+  background: #263b60 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-exit {
+  grid-column: 2 !important;
+  grid-row: 3 !important;
+  border: 1px solid #81765f !important;
+  background: rgba(248, 241, 220, .92) !important;
+  color: #26324a !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] button:focus-visible {
+  outline: 3px solid #315fa8 !important;
+  outline-offset: 2px !important;
+}
+
+@media (max-height: 680px) and (orientation: portrait) {
+  html.mobile-portrait #block-summary[data-summary-state="block-progress"] {
+    gap: .3rem !important;
+  }
+
+  html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-message {
+    gap: .3rem !important;
+  }
+
+  html.mobile-portrait #block-summary[data-summary-state="block-progress"] .block-progress-stat {
+    padding: .32rem .4rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.mobile-portrait #block-summary[data-summary-state="block-progress"] {
+    animation: none !important;
+  }
+}
+
+/* =========================================================
+   MOBILE HOSPITAL HOME
+   Repositions the existing live homepage controls without
+   changing their application state or event handlers.
+   ========================================================= */
+
+html.mobile-portrait,
+html.mobile-portrait body {
+  height: var(--mobile-viewport-height) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  background: #050817 !important;
+}
+
+html.mobile-portrait .app-shell,
+html.mobile-portrait .hero {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: var(--mobile-viewport-height) !important;
+  min-height: var(--mobile-viewport-height) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html.mobile-portrait .hero {
+  display: grid !important;
+  place-items: stretch !important;
+  overflow: hidden !important;
+}
+
+html.mobile-portrait .pixel-stage {
+  position: relative !important;
+  isolation: isolate !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--mobile-viewport-height) !important;
+  min-height: var(--mobile-viewport-height) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  aspect-ratio: auto !important;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(4, 7, 26, .04) 0 54%,
+      rgba(5, 8, 30, .12) 72%,
+      rgba(5, 8, 30, .38) 100%
+    ),
+    url("images/home-hospital/prepflow-mobile-home-background.png")
+      center center / cover no-repeat,
+    #070b24 !important;
+}
+
+html.mobile-portrait .pixel-stage::after {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 10 !important;
+  inset: auto 0 0 !important;
+  display: block !important;
+  height: min(34%, 17rem) !important;
+  pointer-events: none !important;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(5, 9, 30, 0),
+      rgba(5, 9, 30, .34) 30%,
+      rgba(5, 9, 30, .78) 100%
+    ) !important;
+}
+
+/* Live branding remains above the hospital architecture. */
+html.mobile-portrait .pixel-stage > .pixel-logo {
+  position: absolute !important;
+  z-index: 12 !important;
+  top: calc(var(--mobile-safe-area-top) + clamp(1.25rem, 5.5vh, 3rem)) !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: 0 !important;
+
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 1rem !important;
+
+  color: #fff0bd !important;
+  background: none !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(2.75rem, 13vw, 4rem) !important;
+  font-weight: 900 !important;
+  line-height: .9 !important;
+  letter-spacing: -.045em !important;
+  white-space: nowrap !important;
+  transform: none !important;
+  animation: none !important;
+  text-shadow:
+    0 2px 0 #6d3b13,
+    0 4px 0 #2a1a13,
+    0 0 5px rgba(255, 246, 207, .82),
+    0 0 13px rgba(255, 196, 89, .58),
+    0 0 24px rgba(255, 137, 35, .26) !important;
+}
+
+html.mobile-portrait .pixel-stage > .pixel-tagline {
+  position: absolute !important;
+  z-index: 12 !important;
+  top: calc(var(--mobile-safe-area-top) + clamp(5rem, 15vh, 7.5rem)) !important;
+  right: 50% !important;
+  bottom: auto !important;
+  left: auto !important;
+
+  display: block !important;
+  width: max-content !important;
+  max-width: calc(100% - 2rem) !important;
+  margin: 0 !important;
+  padding: .38rem .75rem .42rem !important;
+
+  color: #f3f6ff !important;
+  -webkit-text-fill-color: #f3f6ff !important;
+  background: rgba(13, 22, 46, .76) !important;
+  border: 1px solid rgba(126, 151, 199, .48) !important;
+  border-radius: .3rem !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(.74rem, 3.4vw, .95rem) !important;
+  font-weight: 800 !important;
+  font-style: normal !important;
+  line-height: 1 !important;
+  letter-spacing: .055em !important;
+  white-space: nowrap !important;
+  opacity: 1 !important;
+  transform: translateX(50%) !important;
+  animation: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(222, 232, 255, .13),
+    0 3px 8px rgba(5, 10, 25, .48) !important;
+  text-shadow:
+    0 1px 0 #0a1024,
+    0 0 4px rgba(201, 220, 255, .46) !important;
+}
+
+/* Shared lower-roadway dock surfaces. */
+html.mobile-portrait #home-launcher,
+html.mobile-portrait #open-drug-reference.reference-library-callout {
+  position: absolute !important;
+  z-index: 20 !important;
+  top: auto !important;
+  bottom: calc(var(--mobile-safe-area-bottom) + .75rem) !important;
+
+  display: grid !important;
+  place-items: stretch !important;
+  min-width: 0 !important;
+  height: var(--mobile-home-dock-height) !important;
+  min-height: var(--mobile-home-dock-height) !important;
+  margin: 0 !important;
+  padding: .55rem !important;
+
+  border: 1px solid rgba(231, 185, 96, .62) !important;
+  border-radius: .7rem !important;
+  background: rgba(7, 13, 38, .84) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 188, .08),
+    0 8px 24px rgba(2, 5, 18, .38) !important;
+  transform: none !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* Separate 60/40 positioning preserves a constant 12px panel gap. */
+html.mobile-portrait #home-launcher {
+  right: auto !important;
+  left: calc(var(--mobile-safe-area-left) + .75rem) !important;
+  width: calc(60% - var(--mobile-safe-area-left) - 1.125rem) !important;
+  overflow: visible !important;
+}
+
+html.mobile-portrait #open-drug-reference.reference-library-callout {
+  right: calc(var(--mobile-safe-area-right) + .75rem) !important;
+  left: auto !important;
+  width: calc(40% - var(--mobile-safe-area-right) - 1.125rem) !important;
+}
+
+html.mobile-portrait #home-launcher .launcher-view {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  overflow: visible !important;
+}
+
+html.mobile-portrait #quiz-builder.launcher-setup:not([hidden]) {
+  display: grid !important;
+  place-items: stretch !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+html.mobile-portrait #quiz-builder .home-quiz-copy {
+  display: none !important;
+}
+
+html.mobile-portrait #open-quiz-builder,
+html.mobile-portrait #resume-session {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 3.625rem !important;
+  margin: 0 !important;
+  padding: .75rem .55rem !important;
+
+  border: 1px solid #efbd5d !important;
+  border-radius: .45rem !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(117, 74, 29, .96),
+      rgba(42, 26, 16, .98)
+    ) !important;
+  color: #fff1bd !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(.78rem, 3.5vw, 1rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  letter-spacing: .035em !important;
+  white-space: normal !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  text-shadow: 0 1px 0 #241307 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 236, 184, .15),
+    0 4px 12px rgba(2, 5, 18, .3) !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #open-quiz-builder:hover,
+html.mobile-portrait #open-quiz-builder:focus-visible,
+html.mobile-portrait #resume-session:hover,
+html.mobile-portrait #resume-session:focus-visible {
+  outline: 2px solid #fff0b2 !important;
+  outline-offset: 2px !important;
+  color: #fff7d8 !important;
+  filter: brightness(1.1) !important;
+  transform: none !important;
+}
+
+/* Saved-session content remains driven by refreshResumePanel(). */
+html.mobile-portrait #home-launcher:has(#resume-panel:not([hidden])) {
+  top: auto !important;
+  bottom: calc(var(--mobile-safe-area-bottom) + .75rem) !important;
+  width: calc(66% - var(--mobile-safe-area-left) - 1.125rem) !important;
+  height: var(--mobile-home-saved-dock-height) !important;
+  min-height: var(--mobile-home-saved-dock-height) !important;
+}
+
+html.mobile-portrait .pixel-stage:has(#resume-panel:not([hidden]))
+  #open-drug-reference.reference-library-callout {
+  width: calc(34% - var(--mobile-safe-area-right) - 1.125rem) !important;
+  height: 11rem !important;
+  min-height: 11rem !important;
+}
+
+html.mobile-portrait #resume-panel.launcher-resume:not([hidden]) {
+  display: grid !important;
+  grid-template-rows: minmax(2.35rem, auto) minmax(3rem, auto) minmax(2.75rem, auto) !important;
+  align-content: stretch !important;
+  justify-items: stretch !important;
+  gap: .25rem !important;
+  height: 100% !important;
+}
+
+html.mobile-portrait #resume-panel .resume-copy,
+html.mobile-portrait #resume-panel .resume-copy > div {
+  display: grid !important;
+  gap: .1rem !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+html.mobile-portrait #resume-panel .resume-copy strong {
+  margin: 0 !important;
+  color: #f5d98e !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(.78rem, 3.4vw, .95rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.05 !important;
+  letter-spacing: .025em !important;
+  white-space: normal !important;
+  text-shadow: 0 1px 0 #241307 !important;
+}
+
+html.mobile-portrait #resume-description {
+  margin: 0 !important;
+  color: #dce6ff !important;
+  font-size: clamp(.7rem, 3vw, .85rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: .02em !important;
+  text-align: center !important;
+}
+
+html.mobile-portrait #resume-session {
+  min-height: 3rem !important;
+  padding: .55rem .45rem !important;
+}
+
+html.mobile-portrait #discard-session {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .45rem !important;
+
+  border: 1px solid rgba(165, 186, 230, .36) !important;
+  border-radius: .4rem !important;
+  background: rgba(14, 24, 55, .72) !important;
+  color: #dce6ff !important;
+  font-size: clamp(.66rem, 2.8vw, .8rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  letter-spacing: .025em !important;
+  white-space: normal !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #discard-session:hover,
+html.mobile-portrait #discard-session:focus-visible {
+  outline: 2px solid #dbe7ff !important;
+  outline-offset: 2px !important;
+  color: #fff !important;
+  background: rgba(30, 47, 91, .88) !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #open-drug-reference .reference-callout-copy {
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+html.mobile-portrait #open-drug-reference .reference-callout-copy strong {
+  display: block !important;
+  color: #f7dc91 !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(.72rem, 3.2vw, .9rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  letter-spacing: .025em !important;
+  white-space: normal !important;
+  text-align: center !important;
+  text-shadow: 0 1px 0 #241307 !important;
+}
+
+html.mobile-portrait #open-drug-reference:hover,
+html.mobile-portrait #open-drug-reference:focus-visible {
+  outline: 2px solid #fff0b2 !important;
+  outline-offset: 2px !important;
+  color: #fff7d8 !important;
+  background: rgba(14, 24, 55, .9) !important;
+  filter: brightness(1.1) !important;
+  transform: none !important;
+}
+
+/* =========================================================
+   PHASE 3: MOBILE QUIZ BUILDER SHELL AND BOOK CAROUSEL
+   Existing subject buttons, selection state, and quiz controls
+   remain authoritative.
+   ========================================================= */
+
+html.mobile-portrait body.builder-open {
+  overflow: hidden !important;
+}
+
+html.mobile-portrait body.builder-open .quiz-builder-screen {
+  position: fixed !important;
+  z-index: 90 !important;
+  inset: 0 !important;
+  display: grid !important;
+  place-items: stretch !important;
+  width: 100% !important;
+  height: var(--mobile-viewport-height) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #030614 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen[hidden] {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-window {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--mobile-viewport-height) !important;
+  min-height: var(--mobile-viewport-height) !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding:
+    calc(var(--mobile-safe-area-top) + .65rem)
+    calc(var(--mobile-safe-area-right) + .75rem)
+    calc(var(--mobile-safe-area-bottom) + .65rem)
+    calc(var(--mobile-safe-area-left) + .75rem) !important;
+  display: grid !important;
+  grid-template-rows:
+    auto
+    minmax(15rem, 1fr)
+    auto
+    auto !important;
+  gap: .45rem !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  aspect-ratio: auto !important;
+  border: 0 !important;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(3, 7, 22, .12),
+      rgba(3, 7, 22, .04) 48%,
+      rgba(3, 7, 22, .3) 100%
+    ),
+    url("images/quiz-builder/prepflow-mobile-quiz-builder-background.png")
+      center center / cover no-repeat,
+    #071024 !important;
+}
+
+/* Compact live header; the existing builder summary is lifted into it. */
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-header {
+  position: relative !important;
+  z-index: 20 !important;
+  inset: auto !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: start !important;
+  gap: .65rem !important;
+  width: 100% !important;
+  min-height: 5.6rem !important;
+  margin: 0 !important;
+  padding: .7rem .75rem !important;
+  border: 1px solid rgba(232, 191, 105, .52) !important;
+  border-radius: .65rem !important;
+  background: rgba(7, 14, 39, .82) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 238, 197, .08),
+    0 .35rem 1rem rgba(2, 5, 18, .3) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-header > div {
+  display: block !important;
+  min-width: 0 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-header h2 {
+  margin: 0 !important;
+  color: #fff0bd !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(1.18rem, 5.2vw, 1.5rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.05 !important;
+  letter-spacing: .015em !important;
+  white-space: nowrap !important;
+  text-shadow: 0 1px 0 #241307 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-header p {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #close-quiz-builder {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 4.5rem !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .55rem .7rem !important;
+  border: 1px solid rgba(166, 187, 235, .72) !important;
+  border-radius: .45rem !important;
+  background: rgba(17, 29, 65, .9) !important;
+  color: #e4ebff !important;
+  font-size: .78rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: .035em !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-summary {
+  position: static !important;
+  z-index: auto !important;
+  inset: auto !important;
+  grid-area: summary !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: .2rem .45rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: .25rem .1rem !important;
+  color: #dce6ff !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-summary strong,
+html.mobile-portrait
+  body.builder-open
+  .builder-summary span {
+  display: block !important;
+  margin: 0 !important;
+  color: #dce6ff !important;
+  font-size: clamp(.66rem, 2.8vw, .78rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-summary strong {
+  text-align: left !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-summary span {
+  text-align: right !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-summary strong::after {
+  content: none !important;
+}
+
+/* Three original subject buttons become a cyclic, nonduplicated carousel. */
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen .subjects {
+  position: relative !important;
+  z-index: 8 !important;
+  inset: auto !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: clamp(15rem, 38vh, 21rem) !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  touch-action: pan-y !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen .subject-card,
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen .subject-card:hover,
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen .subject-card:active,
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen .subject-card:focus-visible {
+  position: absolute !important;
+  top: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  display: block !important;
+  width: clamp(8.25rem, 42vw, 10.75rem) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  opacity: .48 !important;
+  filter: saturate(.72) brightness(.7) !important;
+  transform-origin: center center !important;
+  transition:
+    left var(--mobile-motion-duration) ease,
+    opacity var(--mobile-motion-duration) ease,
+    filter var(--mobile-motion-duration) ease,
+    transform var(--mobile-motion-duration) ease !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card::before {
+  content: none !important;
+  display: none !important;
+  inset: auto !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card.mobile-carousel-active {
+  z-index: 12 !important;
+  left: 50% !important;
+  opacity: 1 !important;
+  filter:
+    brightness(1.08)
+    drop-shadow(0 0 .65rem rgba(255, 229, 153, .48)) !important;
+  transform: translate(-50%, -50%) scale(1) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card.mobile-carousel-previous {
+  z-index: 9 !important;
+  left: 5% !important;
+  transform:
+    translate(-50%, -45%)
+    scale(.68)
+    rotate(-7deg) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card.mobile-carousel-next {
+  z-index: 9 !important;
+  left: 95% !important;
+  transform:
+    translate(-50%, -45%)
+    scale(.68)
+    rotate(7deg) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card .approved-book-art {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card::after {
+  content: attr(data-subject) !important;
+  position: absolute !important;
+  z-index: 3 !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: -.35rem !important;
+  left: 50% !important;
+  display: block !important;
+  width: max-content !important;
+  max-width: 10rem !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: .35rem .6rem !important;
+  border: 1px solid rgba(232, 191, 105, .62) !important;
+  border-radius: .35rem !important;
+  background: rgba(7, 14, 39, .88) !important;
+  color: #fff0bd !important;
+  font-size: .72rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: .035em !important;
+  opacity: 1 !important;
+  transform: translateX(-50%) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card:not(.mobile-carousel-active)::after {
+  opacity: .72 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card:focus-visible {
+  outline: 0 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card:focus-visible .approved-book-art {
+  filter:
+    drop-shadow(0 0 .18rem #fff0b2)
+    drop-shadow(0 0 .55rem rgba(255, 229, 153, .78)) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-screen
+  .subject-card.is-launching .approved-book-art {
+  animation: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .quiz-builder-shelf-plaques {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .subject-card.mobile-carousel-active
+  .book-selected-count:not(:empty) {
+  position: absolute !important;
+  z-index: 5 !important;
+  top: .25rem !important;
+  right: .1rem !important;
+  bottom: auto !important;
+  left: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: max-content !important;
+  max-width: min(6rem, 68%) !important;
+  min-width: 0 !important;
+  min-height: 1.75rem !important;
+  padding: .28rem .42rem !important;
+  overflow: hidden !important;
+  border: 1px solid #f0c66c !important;
+  border-radius: 999px !important;
+  background: #152554 !important;
+  color: #fff4ca !important;
+  font-size: clamp(.54rem, 2.25vw, .62rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.08 !important;
+  letter-spacing: .01em !important;
+  text-align: center !important;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  transform: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .subject-card.mobile-carousel-active
+  .book-selected-count:empty {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Live Choose/Edit action delegates to the centered subject button. */
+html.mobile-portrait
+  body.builder-open
+  .mobile-carousel-tools {
+  position: relative !important;
+  z-index: 20 !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .mobile-carousel-tools[hidden] {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #mobile-choose-chapters {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: min(13.5rem, 72%) !important;
+  min-height: 3rem !important;
+  margin: 0 !important;
+  padding: .65rem .9rem !important;
+  border: 1px solid #efbd5d !important;
+  border-radius: .5rem !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(117, 74, 29, .96),
+      rgba(42, 26, 16, .98)
+    ) !important;
+  color: #fff1bd !important;
+  font-size: .84rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: .045em !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 236, 184, .15),
+    0 .25rem .7rem rgba(2, 5, 18, .32) !important;
+}
+
+html.mobile-portrait
+  body.builder-open.book-launching
+  .subject-card:not(.mobile-carousel-active) {
+  opacity: .28 !important;
+  filter: saturate(.55) brightness(.58) !important;
+}
+
+html.mobile-portrait
+  body.builder-open.book-launching
+  #mobile-choose-chapters:disabled {
+  opacity: .72 !important;
+  cursor: wait !important;
+}
+
+/* Existing lower settings and actions occupy the painted console. */
+html.mobile-portrait
+  body.builder-open
+  .builder-controls {
+  position: static !important;
+  z-index: 20 !important;
+  inset: auto !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  grid-template-areas:
+    "block order"
+    "summary summary"
+    "actions actions" !important;
+  gap: .4rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: .55rem !important;
+  border: 1px solid rgba(232, 191, 105, .52) !important;
+  border-radius: .65rem !important;
+  background: rgba(7, 14, 39, .86) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 238, 197, .08),
+    0 -.25rem 1rem rgba(2, 5, 18, .28) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-block-size,
+html.mobile-portrait
+  body.builder-open
+  .order-mode-toggle {
+  position: static !important;
+  inset: auto !important;
+  display: grid !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .45rem .5rem !important;
+  border: 1px solid rgba(160, 183, 235, .44) !important;
+  border-radius: .4rem !important;
+  background: rgba(13, 24, 57, .82) !important;
+  color: #e3ebff !important;
+  font-size: clamp(.66rem, 2.8vw, .78rem) !important;
+  line-height: 1.15 !important;
+  white-space: normal !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-block-size {
+  grid-area: block !important;
+  grid-template-columns: minmax(0, 1fr) 3.25rem !important;
+  gap: .3rem !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-block-size > span {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #global-block-size {
+  align-self: center !important;
+  width: 3.25rem !important;
+  max-width: 100% !important;
+  height: 44px !important;
+  min-width: 0 !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .35rem !important;
+  border: 1px solid #d8b15d !important;
+  border-radius: .3rem !important;
+  background: #101d44 !important;
+  color: #fff !important;
+  font-size: 1rem !important;
+  line-height: 1.1 !important;
+  vertical-align: middle !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .order-mode-toggle {
+  grid-area: order !important;
+  grid-template-columns: 1fr auto 1fr !important;
+  gap: .35rem !important;
+  text-align: center !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-actions {
+  position: static !important;
+  inset: auto !important;
+  grid-area: actions !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) !important;
+  gap: .55rem !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #clear-selections,
+html.mobile-portrait
+  body.builder-open
+  #build-quiz {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 3rem !important;
+  margin: 0 !important;
+  padding: .6rem .5rem !important;
+  border-radius: .45rem !important;
+  font-size: clamp(.72rem, 3vw, .86rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.05 !important;
+  letter-spacing: .035em !important;
+  white-space: normal !important;
+  text-align: center !important;
+  transform: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #clear-selections {
+  border: 1px solid rgba(166, 187, 235, .68) !important;
+  background: rgba(17, 29, 65, .86) !important;
+  color: #e4ebff !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #build-quiz {
+  border: 1px solid #efbd5d !important;
+  background: rgba(92, 58, 23, .94) !important;
+  color: #fff1bd !important;
+  box-shadow: 0 0 .75rem rgba(238, 193, 104, .2) !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  #clear-selections:disabled,
+html.mobile-portrait
+  body.builder-open
+  #build-quiz:disabled {
+  opacity: .46 !important;
+  filter: grayscale(.45) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .mobile-carousel-tools {
+  visibility: hidden !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.mobile-portrait
+    body.builder-open
+    .quiz-builder-screen .subject-card {
+    transition: none !important;
+  }
+}
+
+/* =========================================================
+   PHASE 4: MOBILE CLIPBOARD CHAPTER SELECTION
+   Existing chapter controls, selection state, and handlers
+   remain authoritative.
+   ========================================================= */
+
+html.mobile-portrait
+  body.book-launching
+  .quiz-builder-openbook,
+html.mobile-portrait
+  body.real-book-chapters
+  .quiz-builder-openbook {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-screen {
+  --mobile-clipboard-height:
+    min(
+      calc(
+        var(--mobile-viewport-height)
+        - var(--mobile-safe-area-top)
+        - var(--mobile-safe-area-bottom)
+        - 1rem
+      ),
+      calc(
+        (
+          100vw
+          - var(--mobile-safe-area-left)
+          - var(--mobile-safe-area-right)
+          - 1rem
+        )
+        * 2532 / 1170
+      )
+    );
+  --mobile-clipboard-width:
+    calc(var(--mobile-clipboard-height) * 1170 / 2532);
+  --mobile-clipboard-center-x:
+    calc(
+      (
+        100vw
+        + var(--mobile-safe-area-left)
+        - var(--mobile-safe-area-right)
+      )
+      / 2
+    );
+  --mobile-clipboard-center-y:
+    calc(
+      (
+        var(--mobile-viewport-height)
+        + var(--mobile-safe-area-top)
+        - var(--mobile-safe-area-bottom)
+      )
+      / 2
+    );
+  --mobile-chapter-accent: #315fa8;
+  --mobile-chapter-accent-soft: rgba(49, 95, 168, .16);
+
+  position: fixed !important;
+  z-index: 100 !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: var(--mobile-viewport-height) !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: rgba(3, 9, 29, .58) !important;
+  box-shadow: none !important;
+  color: #172540 !important;
+  transform: none !important;
+  animation: prepflow-mobile-clipboard-enter 240ms ease-out both !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-screen[data-theme="pharm"] {
+  --mobile-chapter-accent: #28764e;
+  --mobile-chapter-accent-soft: rgba(40, 118, 78, .16);
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-screen[data-theme="med-surg"] {
+  --mobile-chapter-accent: #684495;
+  --mobile-chapter-accent-soft: rgba(104, 68, 149, .16);
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-screen::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 1 !important;
+  top: var(--mobile-clipboard-center-y) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: block !important;
+  width: var(--mobile-clipboard-width) !important;
+  height: var(--mobile-clipboard-height) !important;
+  background:
+    url("images/quiz-builder/prepflow-mobile-chapter-clipboard.png")
+    center / contain no-repeat !important;
+  pointer-events: none !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-screen::after {
+  content: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .quiz-builder-window {
+  overflow: hidden !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-header {
+  position: static !important;
+  display: contents !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-header::after {
+  content: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-book-heading {
+  position: absolute !important;
+  z-index: 3 !important;
+  top:
+    calc(
+      var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .215
+    ) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  width: calc(var(--mobile-clipboard-width) * .7) !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+  transform: translateX(-50%) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-header h2 {
+  margin: 0 !important;
+  color: #172540 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(1rem, 4.6vw, 1.25rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.05 !important;
+  letter-spacing: .025em !important;
+  text-transform: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-header h2::after {
+  content: "" !important;
+  display: block !important;
+  width: 3.25rem !important;
+  height: 2px !important;
+  margin: .2rem auto 0 !important;
+  background: var(--mobile-chapter-accent) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-book-heading p,
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-selection-summary strong,
+html.mobile-portrait
+  body.real-book-chapters
+  #selected-chapter-numbers {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-selection-summary {
+  position: absolute !important;
+  z-index: 3 !important;
+  top:
+    calc(
+      var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .255
+    ) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .3rem !important;
+  width: calc(var(--mobile-clipboard-width) * .7) !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: var(--mobile-chapter-accent) !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  text-align: center !important;
+  text-transform: none !important;
+  transform: translateX(-50%) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-selection-summary span {
+  display: inline !important;
+  margin: 0 !important;
+  color: var(--mobile-chapter-accent) !important;
+  font-size: clamp(.62rem, 2.7vw, .73rem) !important;
+  font-weight: 850 !important;
+  line-height: 1.1 !important;
+  letter-spacing: .005em !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  #selected-chapter-summary::after {
+  content: "•" !important;
+  margin-left: .3rem !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-actions {
+  position: absolute !important;
+  z-index: 3 !important;
+  top:
+    calc(
+      var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .289
+    ) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: .5rem !important;
+  width: calc(var(--mobile-clipboard-width) * .7) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translateX(-50%) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  #select-all,
+html.mobile-portrait
+  body.real-book-chapters
+  #clear-all {
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .45rem .35rem !important;
+  border: 1px solid rgba(66, 68, 73, .52) !important;
+  border-radius: .35rem !important;
+  background: rgba(250, 245, 228, .86) !important;
+  color: #24304a !important;
+  box-shadow: 0 1px 2px rgba(42, 34, 24, .12) !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(.7rem, 3vw, .82rem) !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-actions
+  .block-size-control,
+html.mobile-portrait
+  body.real-book-chapters
+  #selection-count,
+html.mobile-portrait
+  body.real-book-chapters
+  #start-button {
+  display: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-list {
+  position: absolute !important;
+  z-index: 3 !important;
+  top:
+    calc(
+      var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .362
+    ) !important;
+  right: auto !important;
+  bottom:
+    calc(
+      var(--mobile-viewport-height)
+      - var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .22
+    ) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-auto-rows: max-content !important;
+  align-content: start !important;
+  gap: .45rem !important;
+  width: calc(var(--mobile-clipboard-width) * .7) !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: .25rem .2rem .5rem !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: thin !important;
+  scrollbar-color:
+    color-mix(in srgb, var(--mobile-chapter-accent) 52%, transparent)
+    transparent !important;
+  touch-action: pan-y !important;
+  transform: translateX(-50%) !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 4rem !important;
+  margin: 0 !important;
+  padding: .65rem .7rem !important;
+  overflow: visible !important;
+  border: 1px solid rgba(119, 104, 75, .52) !important;
+  border-left: .3rem solid rgba(71, 77, 91, .5) !important;
+  border-radius: .35rem !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 254, 247, .94),
+      rgba(239, 233, 215, .92)
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .82),
+    0 2px 3px rgba(43, 37, 27, .12) !important;
+  color: #172540 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option input[type="checkbox"] {
+  flex: 0 0 auto !important;
+  width: 1.4rem !important;
+  height: 1.4rem !important;
+  margin: 0 .65rem 0 0 !important;
+  accent-color: var(--mobile-chapter-accent) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option-text {
+  display: block !important;
+  width: auto !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-name {
+  display: block !important;
+  color: #172540 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(.76rem, 3.2vw, .9rem) !important;
+  font-weight: 850 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+  overflow-wrap: anywhere !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-count {
+  display: block !important;
+  margin-top: .25rem !important;
+  color: #606a7c !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(.66rem, 2.7vw, .75rem) !important;
+  font-weight: 750 !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option:has(input:checked) {
+  border-color: var(--mobile-chapter-accent) !important;
+  border-left-color: var(--mobile-chapter-accent) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 254, 247, .98),
+      var(--mobile-chapter-accent-soft)
+    ) !important;
+  box-shadow:
+    inset 0 0 0 1px var(--mobile-chapter-accent-soft),
+    0 2px 5px rgba(33, 37, 49, .16) !important;
+  animation: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option:has(input:checked)::after {
+  content: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  .chapter-option:has(input:focus-visible) {
+  outline: 3px solid var(--mobile-chapter-accent) !important;
+  outline-offset: 2px !important;
+  box-shadow:
+    0 0 0 2px rgba(255, 251, 230, .92),
+    0 0 0 5px var(--mobile-chapter-accent-soft) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  #back-button,
+html.mobile-portrait
+  body.real-book-chapters
+  #done-chapters {
+  position: absolute !important;
+  z-index: 4 !important;
+  top: auto !important;
+  bottom:
+    calc(
+      var(--mobile-viewport-height)
+      - var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .146
+    ) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: calc(var(--mobile-clipboard-width) * .22) !important;
+  min-width: 0 !important;
+  min-height: 2.75rem !important;
+  margin: 0 !important;
+  padding: .45rem .25rem !important;
+  border: 1px solid #7f735e !important;
+  border-radius: .3rem !important;
+  background: rgba(248, 241, 220, .88) !important;
+  color: #26324a !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .75),
+    0 2px 3px rgba(42, 34, 24, .16) !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(.62rem, 2.8vw, .74rem) !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  #back-button {
+  left:
+    calc(
+      var(--mobile-clipboard-center-x)
+      - var(--mobile-clipboard-width) / 2
+      + var(--mobile-clipboard-width) * .17
+    ) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters
+  #done-chapters {
+  right:
+    calc(
+      100vw
+      - var(--mobile-clipboard-center-x)
+      - var(--mobile-clipboard-width) / 2
+      + var(--mobile-clipboard-width) * .17
+    ) !important;
+  left: auto !important;
+  border-color: var(--mobile-chapter-accent) !important;
+  color: var(--mobile-chapter-accent) !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters.book-closing
+  .chapter-screen {
+  pointer-events: none !important;
+  animation:
+    prepflow-mobile-clipboard-exit
+    220ms
+    ease-in
+    forwards !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters.book-closing
+  .chapter-header,
+html.mobile-portrait
+  body.real-book-chapters.book-closing
+  .chapter-list {
+  animation: none !important;
+}
+
+html.mobile-portrait
+  body.real-book-chapters.book-closing
+  .quiz-builder-screen
+  .subjects {
+  visibility: hidden !important;
+}
+
+@media (max-height: 680px) and (orientation: portrait) {
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-header h2 {
+    font-size: clamp(.82rem, 3.8vw, .88rem) !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-selection-summary {
+    top:
+      calc(
+        var(--mobile-clipboard-center-y)
+        - var(--mobile-clipboard-height) / 2
+        + var(--mobile-clipboard-height) * .255
+      ) !important;
+    flex-wrap: wrap !important;
+    gap: .1rem .2rem !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-selection-summary span {
+    font-size: clamp(.56rem, 2.5vw, .68rem) !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-actions {
+    top:
+      calc(
+        var(--mobile-clipboard-center-y)
+        - var(--mobile-clipboard-height) / 2
+        + var(--mobile-clipboard-height) * .298
+      ) !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-list {
+    top:
+      calc(
+        var(--mobile-clipboard-center-y)
+        - var(--mobile-clipboard-height) / 2
+        + var(--mobile-clipboard-height) * .38
+      ) !important;
+    bottom:
+      calc(
+        var(--mobile-viewport-height)
+        - var(--mobile-clipboard-center-y)
+        - var(--mobile-clipboard-height) / 2
+        + var(--mobile-clipboard-height) * .225
+      ) !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    #back-button,
+  html.mobile-portrait
+    body.real-book-chapters
+    #done-chapters {
+    font-size: clamp(.58rem, 2.6vw, .68rem) !important;
+    line-height: 1.05 !important;
+  }
+
+  html.mobile-portrait
+    body.real-book-chapters
+    #back-button {
+    left:
+      calc(
+        var(--mobile-clipboard-center-x)
+        - var(--mobile-clipboard-width) / 2
+        + var(--mobile-clipboard-width) * .145
+      ) !important;
+    width: calc(var(--mobile-clipboard-width) * .28) !important;
+    white-space: normal !important;
+  }
+}
+
+@keyframes prepflow-mobile-clipboard-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes prepflow-mobile-clipboard-exit {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.mobile-portrait
+    body.real-book-chapters
+    .chapter-screen,
+  html.mobile-portrait
+    body.real-book-chapters.book-closing
+    .chapter-screen {
+    animation-duration: 1ms !important;
+  }
+}
