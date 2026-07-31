@@ -594,6 +594,7 @@ function showBlockSummary(mastered = false) {
 
   summaryAction.textContent = nextAction.label;
   summaryAction.dataset.action = nextAction.action;
+  summaryAction.dataset.blockEnd = String(blockEnd);
 
   saveSession(mastered ? "mastered-summary" : "block-summary");
 }
@@ -603,6 +604,71 @@ function startReview() {
   reviewQueue = [...blockMissed];
   currentReviewQuestion = reviewQueue.shift();
   showQuestion();
+}
+
+function advanceToNextBlock(completedBlockEnd = blockEnd) {
+  const boundary = Number(completedBlockEnd);
+
+  if (
+    !Number.isFinite(boundary)
+    || boundary !== blockEnd
+    || blockStart >= boundary
+  ) {
+    return;
+  }
+
+  if (boundary >= sessionQuestions.length) {
+    showFinalSummary();
+    return;
+  }
+
+  blockStart = boundary;
+  blockNumber += 1;
+  beginBlock();
+}
+
+function completeMasteredBlock() {
+  reviewMode = false;
+  reviewQueue = [];
+  currentReviewQuestion = null;
+
+  const nextStep = PrepFlowNavigationRules.completedReviewStep(
+    blockEnd < sessionQuestions.length
+  );
+
+  if (nextStep === "next-block") {
+    if (usesMobilePortraitPresentation()) {
+      advanceToNextBlock(blockEnd);
+    } else {
+      showBlockSummary(true);
+    }
+    return;
+  }
+
+  showFinalSummary();
+}
+
+function completeFirstPassBlock() {
+  const nextStep = PrepFlowNavigationRules.completedFirstPassStep(
+    blockMissed.length,
+    blockEnd < sessionQuestions.length
+  );
+
+  if (nextStep === "review") {
+    startReview();
+    return;
+  }
+
+  if (nextStep === "next-block") {
+    if (usesMobilePortraitPresentation()) {
+      advanceToNextBlock(blockEnd);
+    } else {
+      showBlockSummary(true);
+    }
+    return;
+  }
+
+  showFinalSummary();
 }
 
 async function startQuiz() {
@@ -699,11 +765,29 @@ async function resumeSavedSession() {
     reviewMode = Boolean(saved.reviewMode);
     currentReviewQuestion = saved.currentReviewQuestion;
 
-    if (
+    if (saved.screen === "feedback") {
+      advanceFromFeedback();
+    } else if (
       saved.screen === "block-summary"
       || saved.screen === "mastered-summary"
     ) {
-      showBlockSummary(saved.screen === "mastered-summary");
+      const mastered = saved.screen === "mastered-summary";
+
+      if (usesMobilePortraitPresentation()) {
+        if (!mastered && blockMissed.length > 0) {
+          startReview();
+        } else if (blockEnd < sessionQuestions.length) {
+          advanceToNextBlock(saved.blockEnd);
+        } else {
+          showFinalSummary();
+        }
+      } else {
+        showBlockSummary(mastered);
+      }
+    } else if (reviewMode && !currentReviewQuestion) {
+      advanceFromFeedback();
+    } else if (!reviewMode && questionIndex >= blockEnd) {
+      completeFirstPassBlock();
     } else {
       showQuestion();
     }
@@ -792,6 +876,7 @@ submitAnswer.addEventListener("click", () => {
 
     submitAnswer.hidden = true;
     continueButton.hidden = false;
+    saveSession("feedback");
   } catch (error) {
     if (!scoringStarted) {
       questionSubmissionState = "idle";
@@ -802,15 +887,14 @@ submitAnswer.addEventListener("click", () => {
   }
 });
 
-continueButton.addEventListener("click", () => {
+function advanceFromFeedback() {
   if (reviewMode) {
     const nextStep = PrepFlowReviewRules.nextReviewStep(reviewQueue);
     reviewQueue = nextStep.reviewQueue;
     currentReviewQuestion = nextStep.currentQuestion;
 
     if (nextStep.finished) {
-      reviewMode = false;
-      showBlockSummary(true);
+      completeMasteredBlock();
       return;
     }
 
@@ -825,12 +909,14 @@ continueButton.addEventListener("click", () => {
   questionIndex = nextStep.questionIndex;
 
   if (nextStep.blockComplete) {
-    showBlockSummary(false);
+    completeFirstPassBlock();
     return;
   }
 
   showQuestion();
-});
+}
+
+continueButton.addEventListener("click", advanceFromFeedback);
 
 summaryAction.addEventListener("click", () => {
   const action = summaryAction.dataset.action;
@@ -841,9 +927,7 @@ summaryAction.addEventListener("click", () => {
   }
 
   if (action === "next-block") {
-    blockStart = blockEnd;
-    blockNumber += 1;
-    beginBlock();
+    advanceToNextBlock(summaryAction.dataset.blockEnd);
     return;
   }
 
