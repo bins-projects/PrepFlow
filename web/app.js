@@ -544,6 +544,7 @@ function beginBlock() {
 function showFinalSummary() {
   hideAllScreens();
   blockSummary.hidden = false;
+  blockSummary.dataset.summaryState = "final";
 
   const totalQuestions = sessionQuestions.length;
   const percentage = PrepFlowSessionRules.firstPassPercentage(
@@ -565,6 +566,94 @@ function showFinalSummary() {
   clearSavedSession();
 }
 
+function appendProgressStat(container, label, value) {
+  const statistic = document.createElement("section");
+  statistic.className = "block-progress-stat";
+
+  const statisticLabel = document.createElement("span");
+  statisticLabel.className = "block-progress-stat-label";
+  statisticLabel.textContent = label;
+
+  const statisticValue = document.createElement("strong");
+  statisticValue.textContent = value;
+
+  statistic.append(statisticLabel, statisticValue);
+  container.append(statistic);
+}
+
+function questionCountText(count) {
+  return `${count} ${count === 1 ? "question" : "questions"}`;
+}
+
+function renderMobileBlockProgress(blockLength) {
+  const cumulativeCompleted = blockEnd;
+  const totalQuestions = sessionQuestions.length;
+  const nextBlockEnd = PrepFlowSessionRules.blockEnd(
+    blockEnd,
+    sessionBlockSize,
+    totalQuestions
+  );
+  const nextBlockLength = nextBlockEnd - blockEnd;
+  const blockPercentage = PrepFlowSessionRules.firstPassPercentage(
+    blockCorrect,
+    blockLength
+  );
+  const cumulativePercentage = PrepFlowSessionRules.firstPassPercentage(
+    firstPassCorrect,
+    cumulativeCompleted
+  );
+  const overallPercentage = PrepFlowSessionRules.firstPassPercentage(
+    cumulativeCompleted,
+    totalQuestions
+  );
+  const missedCount = blockMissed.length;
+
+  summaryScore.replaceChildren();
+  summaryMessage.replaceChildren();
+
+  appendProgressStat(
+    summaryMessage,
+    "Block first-attempt score",
+    `${blockCorrect} of ${blockLength} correct (${blockPercentage}%)`
+  );
+  appendProgressStat(
+    summaryMessage,
+    "Cumulative first-attempt score",
+    `${firstPassCorrect} of ${cumulativeCompleted} correct (${cumulativePercentage}%)`
+  );
+  appendProgressStat(
+    summaryMessage,
+    "Review complete",
+    missedCount === 1
+      ? "1 missed question mastered"
+      : `${missedCount} missed questions mastered`
+  );
+
+  const overall = document.createElement("section");
+  overall.className = "block-progress-stat block-progress-overall";
+  const overallLabel = document.createElement("span");
+  overallLabel.className = "block-progress-stat-label";
+  overallLabel.textContent = "Overall quiz progress";
+  const overallValue = document.createElement("strong");
+  overallValue.textContent =
+    `${cumulativeCompleted} of ${totalQuestions} questions (${overallPercentage}%)`;
+  const progress = document.createElement("progress");
+  progress.max = Math.max(totalQuestions, 1);
+  progress.value = cumulativeCompleted;
+  progress.setAttribute(
+    "aria-label",
+    `Overall quiz progress: ${cumulativeCompleted} of ${totalQuestions} questions complete`
+  );
+  overall.append(overallLabel, overallValue, progress);
+  summaryMessage.append(overall);
+
+  appendProgressStat(
+    summaryMessage,
+    "Up next",
+    `Block ${blockNumber + 1}: ${questionCountText(nextBlockLength)}`
+  );
+}
+
 function showBlockSummary(mastered = false) {
   summaryExit.hidden = false;
   hideAllScreens();
@@ -572,6 +661,26 @@ function showBlockSummary(mastered = false) {
 
   const blockLength = blockEnd - blockStart;
   const missedCount = blockMissed.length;
+  const hasMoreQuestions = blockEnd < sessionQuestions.length;
+  const showsMobileBlockProgress =
+    mastered
+    && hasMoreQuestions
+    && usesMobilePortraitPresentation();
+
+  blockSummary.dataset.summaryState = showsMobileBlockProgress
+    ? "block-progress"
+    : "block-summary";
+
+  if (showsMobileBlockProgress) {
+    summaryTitle.textContent = `Block ${blockNumber} Complete`;
+    renderMobileBlockProgress(blockLength);
+    summaryAction.textContent = "Continue to Next Block";
+    summaryAction.dataset.action = "next-block";
+    summaryAction.dataset.blockEnd = String(blockEnd);
+    summaryExit.textContent = "Save & Quit";
+    saveSession("block-progress");
+    return;
+  }
 
   summaryTitle.textContent = PrepFlowDisplayRules.blockTitle(
     blockNumber,
@@ -589,12 +698,13 @@ function showBlockSummary(mastered = false) {
   const nextAction = PrepFlowSummaryRules.summaryAction({
     mastered,
     missedCount,
-    hasMoreQuestions: blockEnd < sessionQuestions.length,
+    hasMoreQuestions,
   });
 
   summaryAction.textContent = nextAction.label;
   summaryAction.dataset.action = nextAction.action;
   summaryAction.dataset.blockEnd = String(blockEnd);
+  summaryExit.textContent = "Exit Session";
 
   saveSession(mastered ? "mastered-summary" : "block-summary");
 }
@@ -637,11 +747,7 @@ function completeMasteredBlock() {
   );
 
   if (nextStep === "next-block") {
-    if (usesMobilePortraitPresentation()) {
-      advanceToNextBlock(blockEnd);
-    } else {
-      showBlockSummary(true);
-    }
+    showBlockSummary(true);
     return;
   }
 
@@ -660,11 +766,7 @@ function completeFirstPassBlock() {
   }
 
   if (nextStep === "next-block") {
-    if (usesMobilePortraitPresentation()) {
-      advanceToNextBlock(blockEnd);
-    } else {
-      showBlockSummary(true);
-    }
+    showBlockSummary(true);
     return;
   }
 
@@ -767,6 +869,8 @@ async function resumeSavedSession() {
 
     if (saved.screen === "feedback") {
       advanceFromFeedback();
+    } else if (saved.screen === "block-progress") {
+      showBlockSummary(true);
     } else if (
       saved.screen === "block-summary"
       || saved.screen === "mastered-summary"

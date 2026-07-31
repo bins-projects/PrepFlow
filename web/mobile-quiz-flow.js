@@ -45,6 +45,37 @@
   let focusFrame = null;
   let announcementFrame = null;
   let busyTimer = null;
+  let unitRevealFrame = null;
+
+  const clipboardImage = new Image();
+  const clipboardReady = new Promise((resolve) => {
+    let settled = false;
+
+    function finish() {
+      if (settled) return;
+      settled = true;
+      resolve();
+    }
+
+    function finishAfterDecode() {
+      if (typeof clipboardImage.decode !== "function") {
+        finish();
+        return;
+      }
+
+      clipboardImage.decode().then(finish, finish);
+    }
+
+    clipboardImage.addEventListener("load", finishAfterDecode, { once: true });
+    clipboardImage.addEventListener("error", finish, { once: true });
+    clipboardImage.decoding = "async";
+    clipboardImage.src =
+      "images/quiz-builder/prepflow-mobile-chapter-clipboard.png";
+
+    if (clipboardImage.complete && clipboardImage.naturalWidth > 0) {
+      finishAfterDecode();
+    }
+  });
 
   const announcer = document.createElement("div");
   announcer.className = "sr-only mobile-quiz-announcer";
@@ -84,8 +115,42 @@
       busyTimer = null;
     }
 
+    if (unitRevealFrame !== null) {
+      window.cancelAnimationFrame(unitRevealFrame);
+      unitRevealFrame = null;
+    }
+
     quizBook.removeAttribute("aria-busy");
     return transitionGeneration;
+  }
+
+  function concealMobileUnit() {
+    if (unitRevealFrame !== null) {
+      window.cancelAnimationFrame(unitRevealFrame);
+      unitRevealFrame = null;
+    }
+    quizScreen.classList.remove("mobile-quiz-unit-visible");
+  }
+
+  function revealMobileUnit(expectedGeneration) {
+    clipboardReady.then(() => {
+      if (
+        expectedGeneration !== transitionGeneration
+        || !isPortraitQuiz()
+      ) {
+        return;
+      }
+
+      unitRevealFrame = window.requestAnimationFrame(() => {
+        unitRevealFrame = null;
+        if (
+          expectedGeneration === transitionGeneration
+          && isPortraitQuiz()
+        ) {
+          quizScreen.classList.add("mobile-quiz-unit-visible");
+        }
+      });
+    });
   }
 
   function targetCanReceiveFocus(target) {
@@ -143,6 +208,7 @@
     delete quizBook.dataset.mobileResult;
     delete quizBook.dataset.subjectAccent;
     quizBook.removeAttribute("aria-busy");
+    concealMobileUnit();
   }
 
   function syncMobileControls() {
@@ -305,6 +371,7 @@
           : "Incorrect";
       }
       setState(state, { focus: false });
+      revealMobileUnit(transitionGeneration);
     } else {
       removeMobileSemantics();
       hideMobileControls();

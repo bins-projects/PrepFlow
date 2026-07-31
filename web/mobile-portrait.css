@@ -93,6 +93,7 @@ html.mobile-portrait #quiz-screen:not([hidden]) {
   box-shadow: none !important;
   isolation: isolate !important;
   transform: none !important;
+  animation: none !important;
 }
 
 @supports (height: 100dvh) {
@@ -121,6 +122,9 @@ html.mobile-portrait #quiz-screen:not([hidden])::before {
   mask: none !important;
   pointer-events: none !important;
   transform: translate(-50%, -50%) !important;
+  transition:
+    opacity var(--mobile-motion-duration) ease,
+    visibility var(--mobile-motion-duration) ease !important;
 }
 
 html.mobile-portrait #quiz-screen:not([hidden])::after {
@@ -136,7 +140,23 @@ html.mobile-portrait #quiz-screen:not([hidden]) .mobile-quiz-scene {
   background:
     linear-gradient(rgba(3, 9, 29, .58), rgba(3, 9, 29, .58)),
     url("images/quiz-builder/prepflow-mobile-quiz-builder-background.png") center / cover no-repeat;
+  background-color: #03091d;
   pointer-events: none;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]):not(.mobile-quiz-unit-visible)::before,
+html.mobile-portrait #quiz-screen:not([hidden]):not(.mobile-quiz-unit-visible) .quiz-header,
+html.mobile-portrait #quiz-screen:not([hidden]):not(.mobile-quiz-unit-visible) .quiz-book {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]).mobile-quiz-unit-visible::before,
+html.mobile-portrait #quiz-screen:not([hidden]).mobile-quiz-unit-visible .quiz-header,
+html.mobile-portrait #quiz-screen:not([hidden]).mobile-quiz-unit-visible .quiz-book {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 html.mobile-portrait #quiz-screen:not([hidden]) .quiz-header {
@@ -156,6 +176,9 @@ html.mobile-portrait #quiz-screen:not([hidden]) .quiz-header {
   width: auto !important;
   margin: 0 !important;
   padding: 0 !important;
+  transition:
+    opacity var(--mobile-motion-duration) ease,
+    visibility var(--mobile-motion-duration) ease !important;
 }
 
 html.mobile-portrait #quiz-screen:not([hidden]) #exit-quiz {
@@ -205,6 +228,9 @@ html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book {
   box-shadow: none !important;
   color: #172540 !important;
   transform: translateX(-50%) !important;
+  transition:
+    opacity var(--mobile-motion-duration) ease,
+    visibility var(--mobile-motion-duration) ease !important;
 }
 
 html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book[data-subject-accent="pharm"] {
@@ -232,6 +258,18 @@ html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page {
   pointer-events: none !important;
   transform: translateX(.5rem) !important;
   transition: opacity 220ms ease, transform 220ms ease, visibility 220ms !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page::before,
+html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page::after {
+  content: none !important;
+  display: none !important;
+  inset: auto !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
 }
 
 html.mobile-portrait #quiz-screen:not([hidden]) .question-page {
@@ -558,6 +596,240 @@ html.mobile-portrait #quiz-screen:not([hidden]) [hidden] {
   html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page {
     transform: none !important;
     transition-duration: 1ms !important;
+  }
+}
+
+/* Mobile rolling report shown only at a mastered, non-final block boundary. */
+html.mobile-portrait #block-summary[data-summary-state="block-progress"]:not([hidden]) {
+  --mobile-clipboard-height: min(
+    calc(
+      var(--mobile-viewport-height)
+      - var(--mobile-safe-area-top)
+      - var(--mobile-safe-area-bottom)
+      - 1rem
+    ),
+    calc(
+      (
+        100vw
+        - var(--mobile-safe-area-left)
+        - var(--mobile-safe-area-right)
+        - 1rem
+      )
+      * 2532 / 1170
+    )
+  );
+  --mobile-clipboard-width: calc(var(--mobile-clipboard-height) * 1170 / 2532);
+  --mobile-clipboard-center-x: calc(
+    (100vw + var(--mobile-safe-area-left) - var(--mobile-safe-area-right)) / 2
+  );
+  --mobile-clipboard-center-y: calc(
+    (
+      var(--mobile-viewport-height)
+      + var(--mobile-safe-area-top)
+      - var(--mobile-safe-area-bottom)
+    ) / 2
+  );
+  position: fixed !important;
+  z-index: 110 !important;
+  inset: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  grid-template-rows: auto minmax(0, 1fr) 3.25rem !important;
+  gap: .45rem .4rem !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: var(--mobile-viewport-height) !important;
+  margin: 0 !important;
+  padding:
+    calc(
+      var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .205
+    )
+    calc((100vw - var(--mobile-clipboard-width) * .7) / 2)
+    calc(
+      var(--mobile-viewport-height)
+      - var(--mobile-clipboard-center-y)
+      - var(--mobile-clipboard-height) / 2
+      + var(--mobile-clipboard-height) * .146
+    ) !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background:
+    linear-gradient(rgba(3, 9, 29, .58), rgba(3, 9, 29, .58)),
+    url("images/quiz-builder/prepflow-mobile-quiz-builder-background.png")
+      center / cover no-repeat !important;
+  box-shadow: none !important;
+  color: #172540 !important;
+  text-align: left !important;
+  isolation: isolate !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"]::before {
+  content: "" !important;
+  position: fixed !important;
+  z-index: 1 !important;
+  top: var(--mobile-clipboard-center-y) !important;
+  left: var(--mobile-clipboard-center-x) !important;
+  display: block !important;
+  width: var(--mobile-clipboard-width) !important;
+  height: var(--mobile-clipboard-height) !important;
+  border: 0 !important;
+  background: url("images/quiz-builder/prepflow-mobile-chapter-clipboard.png")
+    center / contain no-repeat !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"]::after {
+  content: none !important;
+  display: none !important;
+}
+
+html.mobile-portrait #block-summary:not([data-summary-state="block-progress"])::before,
+html.mobile-portrait #block-summary:not([data-summary-state="block-progress"])::after {
+  content: none !important;
+  display: none !important;
+  inset: auto !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] > * {
+  position: relative !important;
+  z-index: 3 !important;
+  min-width: 0 !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-title {
+  grid-column: 1 / -1 !important;
+  margin: 0 !important;
+  padding: 0 0 .4rem !important;
+  border-bottom: 2px solid #315fa8 !important;
+  color: #172540 !important;
+  font: 900 clamp(1rem, 4.5vw, 1.25rem)/1.1 Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+  text-shadow: none !important;
+  text-transform: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-score {
+  display: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-message {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  align-content: start !important;
+  gap: .45rem !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: .1rem .15rem .45rem !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  color: #172540 !important;
+  font: 700 clamp(.72rem, 3vw, .86rem)/1.3 Arial, sans-serif !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] .block-progress-stat {
+  display: grid !important;
+  gap: .15rem !important;
+  margin: 0 !important;
+  padding: .45rem .5rem !important;
+  border: 1px solid rgba(119, 104, 75, .42) !important;
+  border-radius: .3rem !important;
+  background: rgba(255, 254, 247, .7) !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] .block-progress-stat-label {
+  color: #59647a !important;
+  font-size: clamp(.62rem, 2.6vw, .72rem) !important;
+  font-weight: 800 !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] .block-progress-stat strong {
+  color: #172540 !important;
+  font-size: clamp(.76rem, 3.25vw, .92rem) !important;
+  line-height: 1.25 !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] .block-progress-overall progress {
+  width: 100% !important;
+  height: .55rem !important;
+  margin-top: .2rem !important;
+  accent-color: #315fa8 !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-action,
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-exit {
+  align-self: end !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: .4rem .3rem !important;
+  border-radius: .3rem !important;
+  font: 850 clamp(.6rem, 2.55vw, .72rem)/1.08 Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-transform: none !important;
+  transform: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-action {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+  border: 1px solid #315fa8 !important;
+  background: #263b60 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-exit {
+  grid-column: 2 !important;
+  grid-row: 3 !important;
+  border: 1px solid #81765f !important;
+  background: rgba(248, 241, 220, .92) !important;
+  color: #26324a !important;
+  box-shadow: none !important;
+}
+
+html.mobile-portrait #block-summary[data-summary-state="block-progress"] button:focus-visible {
+  outline: 3px solid #315fa8 !important;
+  outline-offset: 2px !important;
+}
+
+@media (max-height: 680px) and (orientation: portrait) {
+  html.mobile-portrait #block-summary[data-summary-state="block-progress"] {
+    gap: .3rem !important;
+  }
+
+  html.mobile-portrait #block-summary[data-summary-state="block-progress"] #summary-message {
+    gap: .3rem !important;
+  }
+
+  html.mobile-portrait #block-summary[data-summary-state="block-progress"] .block-progress-stat {
+    padding: .32rem .4rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.mobile-portrait #block-summary[data-summary-state="block-progress"] {
+    animation: none !important;
   }
 }
 
