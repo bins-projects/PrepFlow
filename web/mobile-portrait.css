@@ -1433,7 +1433,7 @@ html.mobile-portrait
 html.mobile-portrait
   body.builder-open
   .mobile-carousel-prompt strong {
-  font-size: clamp(.95rem, 4vw, 1.05rem) !important;
+  font-size: clamp(1.425rem, 6vw, 1.575rem) !important;
   font-weight: 800 !important;
 }
 
@@ -1441,7 +1441,7 @@ html.mobile-portrait
   body.builder-open
   .mobile-carousel-prompt span {
   color: #dce6ff !important;
-  font-size: clamp(.66rem, 2.8vw, .76rem) !important;
+  font-size: clamp(.99rem, 4.2vw, 1.14rem) !important;
   font-weight: 600 !important;
 }
 
