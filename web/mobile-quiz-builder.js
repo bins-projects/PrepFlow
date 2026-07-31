@@ -5,6 +5,7 @@
   const carousel = document.querySelector(
     "#quiz-builder-screen .subjects"
   );
+  const prompt = document.createElement("div");
   const books = Array.from(
     carousel?.querySelectorAll(".subject-card") || []
   );
@@ -27,6 +28,14 @@
     return;
   }
 
+  prompt.className = "mobile-carousel-prompt";
+  prompt.hidden = true;
+  prompt.setAttribute("aria-label", "Book carousel instructions");
+  prompt.innerHTML =
+    "<strong>Swipe left or right to choose a book</strong>"
+    + "<span>Tap the centered book to select chapters</span>";
+  carousel.before(prompt);
+
   let activeIndex = 0;
   let touchStart = null;
   let suppressClicksUntil = 0;
@@ -44,6 +53,10 @@
 
   function activeBook() {
     return books[activeIndex];
+  }
+
+  function dismissPrompt() {
+    prompt.classList.add("is-dismissed");
   }
 
   function isBookLaunching() {
@@ -175,6 +188,7 @@
       return;
     }
 
+    dismissPrompt();
     activeIndex = (index + books.length) % books.length;
     renderCarousel();
     activeBook().focus({ preventScroll: true });
@@ -182,6 +196,7 @@
 
   function syncPresentationMode() {
     const active = isMobilePortrait();
+    prompt.hidden = !active;
     tools.hidden = !active;
     status.hidden = !active;
 
@@ -217,7 +232,12 @@
 
       const book = event.target.closest(".subject-card");
 
-      if (!book || book === activeBook()) {
+      if (!book) {
+        return;
+      }
+
+      if (book === activeBook()) {
+        dismissPrompt();
         return;
       }
 
@@ -297,6 +317,7 @@
 
   chooseButton.addEventListener("click", () => {
     if (isMobilePortrait() && !isBookLaunching()) {
+      dismissPrompt();
       activeBook().click();
     }
   });
