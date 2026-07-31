@@ -262,20 +262,28 @@
 
     <section id="quiz-screen" class="quiz-screen" hidden>
       <header class="quiz-header"><button id="exit-quiz" class="secondary-button">Save &amp; Quit</button><progress id="quiz-progress" value="0" max="1" hidden></progress></header>
+      <div class="mobile-quiz-scene" aria-hidden="true"></div>
       <div class="quiz-book">
         <section class="quiz-page question-page">
           <div class="quiz-page-meta"><strong id="quiz-subject"></strong><span id="quiz-position"></span></div>
           <div class="quiz-page-label">Question</div>
+          <p id="mobile-question-instruction" class="mobile-question-instruction" hidden></p>
           <div class="quiz-page-scroll"><h2 id="question-stem"></h2></div>
+          <footer class="mobile-question-actions">
+            <button id="mobile-view-answers" class="start-button" type="button" hidden>View Answer Choices</button>
+            <button id="mobile-back-feedback" class="secondary-button" type="button" hidden>Back to Feedback</button>
+          </footer>
         </section>
         <section class="quiz-page response-page">
           <div id="response-page-label" class="quiz-page-label">Choose Your Answer</div>
           <div class="quiz-response-scroll">
             <div id="answer-choices" class="answer-choices"></div>
-            <section id="feedback" class="feedback" hidden><h3 id="feedback-result"></h3><h4>Rationale</h4><p id="feedback-rationale"></p></section>
+            <section id="feedback" class="feedback" hidden><h3 id="feedback-result"></h3><div id="mobile-answer-review" class="mobile-answer-review" hidden></div><h4>Rationale</h4><p id="feedback-rationale"></p></section>
           </div>
           <footer class="quiz-footer">
             <span id="quiz-score" hidden></span>
+            <button id="mobile-back-question" class="secondary-button" type="button" hidden>Back to Question</button>
+            <button id="mobile-view-question" class="secondary-button" type="button" hidden>View Question</button>
             <button id="submit-answer" class="start-button" disabled>Submit Answer</button>
             <button id="continue-button" class="start-button" hidden>Continue</button>
           </footer>
@@ -302,6 +310,7 @@
   <script src="order-rules.js?v=20260721-1"></script>
   <script src="app.js?v=20260728-per-book-selection-summary-1"></script>
   <script src="mobile-quiz-builder.js"></script>
+  <script src="mobile-quiz-flow.js"></script>
   <script src="drug-reference-batch-loader.js?v=20260719-batch-01"></script>
   <script src="drug-reference.js?v=20260719-warfarin-1"></script>
 </body>

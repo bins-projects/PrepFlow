@@ -8,6 +8,7 @@ const APP_FILES = [
   "./mobile-portrait.css",
   "./mobile-portrait.js",
   "./mobile-quiz-builder.js",
+  "./mobile-quiz-flow.js",
   "./images/home-hospital/prepflow-mobile-home-background.png",
   "./images/quiz-builder/prepflow-mobile-quiz-builder-background.png",
   "./images/quiz-builder/prepflow-mobile-chapter-clipboard.png",

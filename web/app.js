@@ -78,6 +78,7 @@ let blockMissed = [];
 let reviewQueue = [];
 let reviewMode = false;
 let currentReviewQuestion = null;
+let questionSubmissionState = "idle";
 
 function readSavedSession() {
   const raw = localStorage.getItem(SAVE_KEY);
@@ -437,6 +438,8 @@ function showQuestion() {
   const isMultipleResponse = PrepFlowQuizRules.isMultipleResponseQuestion(question);
   const blockLength = blockEnd - blockStart;
 
+  questionSubmissionState = "idle";
+
   hideAllScreens();
   quizScreen.hidden = false;
 
@@ -512,6 +515,13 @@ function showQuestion() {
   );
 
   saveSession("question");
+
+  document.dispatchEvent(new CustomEvent("prepflow:question-shown", {
+    detail: {
+      questionType: question.type || question.question_type,
+      packPath: currentQuestionReference().packPath,
+    },
+  }));
 }
 
 function beginBlock() {
@@ -705,6 +715,10 @@ async function resumeSavedSession() {
 }
 
 submitAnswer.addEventListener("click", () => {
+  if (questionSubmissionState !== "idle") {
+    return;
+  }
+
   const selected = answerChoices.querySelectorAll(
     'input[name="answer"]:checked'
   );
@@ -713,49 +727,79 @@ submitAnswer.addEventListener("click", () => {
     return;
   }
 
-  const question = currentQuestion();
-  const selectedAnswers = Array.from(selected, (input) => input.value);
-  const { isCorrect, correctAnswers } =
-    PrepFlowQuizRules.evaluateAnswer(question, selectedAnswers);
+  questionSubmissionState = "grading";
+  submitAnswer.disabled = true;
 
-  if (isCorrect) {
-    feedbackResult.textContent = "Correct!";
+  let scoringStarted = false;
 
-    if (!reviewMode) {
-      firstPassCorrect += 1;
-      blockCorrect += 1;
-    }
-  } else {
-    feedbackResult.textContent =
-      `Incorrect. Correct answer: ${correctAnswers.join(", ")}`;
+  try {
+    const question = currentQuestion();
+    const selectedAnswers = Array.from(selected, (input) => input.value);
+    const { isCorrect, correctAnswers } =
+      PrepFlowQuizRules.evaluateAnswer(question, selectedAnswers);
 
-    if (reviewMode) {
-      reviewQueue = PrepFlowReviewRules.queueAfterAnswer(
-        reviewQueue,
-        currentReviewQuestion,
-        false
-      );
+    scoringStarted = true;
+
+    if (isCorrect) {
+      feedbackResult.textContent = "Correct!";
+
+      if (!reviewMode) {
+        firstPassCorrect += 1;
+        blockCorrect += 1;
+      }
     } else {
-      firstPassMissed += 1;
-      blockMissed.push(sessionQuestions[questionIndex]);
+      feedbackResult.textContent =
+        `Incorrect. Correct answer: ${correctAnswers.join(", ")}`;
+
+      if (reviewMode) {
+        reviewQueue = PrepFlowReviewRules.queueAfterAnswer(
+          reviewQueue,
+          currentReviewQuestion,
+          false
+        );
+      } else {
+        firstPassMissed += 1;
+        blockMissed.push(sessionQuestions[questionIndex]);
+      }
     }
+
+    questionSubmissionState = "submitted";
+    feedbackRationale.textContent = question.rationale || "";
+
+    document.dispatchEvent(new CustomEvent("prepflow:answer-graded", {
+      detail: {
+        isCorrect,
+        selectedAnswers,
+        correctAnswers,
+        choices: question.choices.map((choice) => ({
+          label: choice.label,
+          text: choice.text,
+        })),
+        multipleResponse: PrepFlowQuizRules.isMultipleResponseQuestion(question),
+      },
+    }));
+    answerChoices.hidden = true;
+    feedback.hidden = false;
+
+    answerChoices.querySelectorAll("input").forEach((input) => {
+      input.disabled = true;
+    });
+
+    quizScore.textContent = PrepFlowDisplayRules.runningScoreText(
+      firstPassCorrect,
+      firstPassMissed
+    );
+
+    submitAnswer.hidden = true;
+    continueButton.hidden = false;
+  } catch (error) {
+    if (!scoringStarted) {
+      questionSubmissionState = "idle";
+      submitAnswer.disabled = false;
+    }
+
+    throw error;
   }
-
-  feedbackRationale.textContent = question.rationale || "";
-  answerChoices.hidden = true;
-  feedback.hidden = false;
-
-  answerChoices.querySelectorAll("input").forEach((input) => {
-    input.disabled = true;
-  });
-
-  quizScore.textContent = PrepFlowDisplayRules.runningScoreText(
-    firstPassCorrect,
-    firstPassMissed
-  );
-
-  submitAnswer.hidden = true;
-  continueButton.hidden = false;
 });
 
 continueButton.addEventListener("click", () => {
