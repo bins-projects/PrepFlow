@@ -6,6 +6,8 @@
   const filter = document.querySelector("#drug-reference-filter");
   const results = document.querySelector("#drug-reference-results");
   const detail = document.querySelector("#drug-reference-detail");
+  const detailCard = document.querySelector("#drug-reference-card");
+  const backToResults = document.querySelector("#back-to-drug-results");
   const tabs = [...document.querySelectorAll("[data-reference-tab]")];
 
   if (!launch || !screen) return;
@@ -17,6 +19,7 @@
   let entries = [];
   let activeTab = "search";
   let selectedId = null;
+  let resultsScrollPosition = 0;
 
   const routeAliases = {
     pill: "oral", pills: "oral", tablet: "oral", tablets: "oral",
@@ -32,6 +35,10 @@
 
   function normalized(value) {
     return String(value || "").toLocaleLowerCase().replace(/\s+/g, " ").trim();
+  }
+
+  function isMobilePortrait() {
+    return document.documentElement.classList.contains("mobile-portrait");
   }
 
   function searchTerms(entry) {
@@ -103,9 +110,13 @@
         <small>${(entry.routes || []).join(" • ")}</small>
       `;
       button.addEventListener("click", () => {
+        resultsScrollPosition = results.scrollTop;
         selectedId = entry.id;
         renderResults();
         renderDetail(entry);
+        screen.classList.add("showing-drug-card");
+        detail.scrollTop = 0;
+        if (isMobilePortrait()) backToResults.focus({ preventScroll: true });
       });
       results.append(button);
     });
@@ -131,7 +142,7 @@
     const classes = (entry.drugClasses || []).join(" • ") || "Class pending";
     const systems = (entry.bodySystems || []).join(" • ") || "System pending";
 
-    detail.innerHTML = `
+    detailCard.innerHTML = `
       <article class="nursing-drug-card">
         <header class="nursing-drug-header">
           <div>
@@ -194,6 +205,16 @@
     `;
   }
 
+  function showResults() {
+    screen.classList.remove("showing-drug-card");
+    requestAnimationFrame(() => {
+      results.scrollTop = resultsScrollPosition;
+      const selectedResult = results.querySelector(".drug-result.active");
+      if (selectedResult) selectedResult.focus({ preventScroll: true });
+      else searchInput.focus({ preventScroll: true });
+    });
+  }
+
   async function loadReference() {
     if (entries.length) return;
 
@@ -245,6 +266,7 @@
       window.hideAllScreens();
       await loadReference();
       screen.hidden = false;
+      screen.classList.remove("showing-drug-card");
       populateFilter();
       renderResults();
       searchInput.focus();
@@ -260,6 +282,7 @@
   close.addEventListener("click", window.showSubjects);
   searchInput.addEventListener("input", renderResults);
   filter.addEventListener("change", renderResults);
+  backToResults.addEventListener("click", showResults);
 
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
