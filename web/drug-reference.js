@@ -20,6 +20,8 @@
   let activeTab = "search";
   let selectedId = null;
   let resultsScrollPosition = 0;
+  const recentStorageKey = "prepflow.drugReference.recentIds";
+  const recentLimit = 5;
 
   const routeAliases = {
     pill: "oral", pills: "oral", tablet: "oral", tablets: "oral",
@@ -100,11 +102,24 @@
     count.textContent = `${matches.length} ${matches.length === 1 ? "medication" : "medications"}`;
     results.append(count);
 
+    if (!matches.length && !isMobilePortrait()) {
+      const empty = document.createElement("div");
+      empty.className = "drug-reference-no-results";
+      empty.innerHTML = "<strong>No medications match.</strong><p>Check the spelling, clear the current filter, or try a generic name, trade name, class, body system, route, or dosage form.</p>";
+      results.append(empty);
+      if (!isMobilePortrait()) renderReferenceIndex(true);
+      return;
+    }
+
     matches.forEach((entry) => {
       const button = document.createElement("button");
       button.className = "drug-result";
       button.classList.toggle("active", entry.id === selectedId);
+      button.type = "button";
+      button.setAttribute("aria-pressed", String(entry.id === selectedId));
+      button.setAttribute("aria-label", `${entry.genericName}; ${(entry.brandNames || []).join(", ") || "generic entry"}; routes ${(entry.routes || []).join(", ") || "not listed"}`);
       button.innerHTML = `
+        ${isMobilePortrait() ? "" : `<span class="drug-result-check" aria-hidden="true">${entry.id === selectedId ? "✓" : ""}</span>`}
         <strong>${entry.genericName}</strong>
         <span>${(entry.brandNames || []).join(", ") || "Generic entry"}</span>
         <small>${(entry.routes || []).join(" • ")}</small>
@@ -112,6 +127,7 @@
       button.addEventListener("click", () => {
         resultsScrollPosition = results.scrollTop;
         selectedId = entry.id;
+        if (!isMobilePortrait()) rememberOpenedMedication(entry.id);
         renderResults();
         renderDetail(entry);
         screen.classList.add("showing-drug-card");
@@ -119,6 +135,73 @@
         if (isMobilePortrait()) backToResults.focus({ preventScroll: true });
       });
       results.append(button);
+    });
+  }
+
+  function storedRecentIds() {
+    try {
+      const value = JSON.parse(localStorage.getItem(recentStorageKey) || "[]");
+      return Array.isArray(value) ? value.filter((id) => typeof id === "string") : [];
+    } catch (_error) {
+      return [];
+    }
+  }
+
+  function rememberOpenedMedication(id) {
+    const ids = [id, ...storedRecentIds().filter((storedId) => storedId !== id)].slice(0, recentLimit);
+    try {
+      localStorage.setItem(recentStorageKey, JSON.stringify(ids));
+    } catch (_error) {
+      // The reference remains fully usable when storage is unavailable.
+    }
+  }
+
+  function openMedicationById(id) {
+    const entry = entries.find((candidate) => candidate.id === id);
+    if (!entry) return;
+    selectedId = entry.id;
+    rememberOpenedMedication(entry.id);
+    renderResults();
+    renderDetail(entry);
+    detail.scrollTop = 0;
+  }
+
+  function renderReferenceIndex(noResults = false) {
+    if (isMobilePortrait()) return;
+
+    const recentEntries = storedRecentIds()
+      .map((id) => entries.find((entry) => entry.id === id))
+      .filter(Boolean)
+      .slice(0, recentLimit);
+    const recentMarkup = recentEntries.length ? `
+      <section class="reference-index-recents" aria-labelledby="recent-medications-heading">
+        <div class="reference-index-section-heading">
+          <h4 id="recent-medications-heading">Recently Viewed</h4>
+          <button class="continue-last-card" type="button" data-open-drug-id="${recentEntries[0].id}">Continue Last Card</button>
+        </div>
+        <div class="reference-index-recent-list">
+          ${recentEntries.map((entry) => `<button type="button" data-open-drug-id="${entry.id}"><strong>${entry.genericName}</strong><span>${(entry.brandNames || []).join(", ") || "Generic entry"}</span></button>`).join("")}
+        </div>
+      </section>` : "";
+
+    detailCard.innerHTML = `
+      <article class="reference-index ${noResults ? "reference-index-no-results" : ""}">
+        <p class="reference-index-kicker">Clinical study reference</p>
+        <h3>Drug Reference Index</h3>
+        <p class="reference-index-count"><strong>${entries.length}</strong> medications available</p>
+        <p class="reference-index-guidance">Search by generic or trade name, drug class, body system, route, or dosage form. You can also choose a browse view above, then select a medication from the index.</p>
+        <div class="reference-index-browse" aria-label="Browse medication reference">
+          ${tabs.slice(1).map((tab) => `<button type="button" data-open-reference-tab="${tab.dataset.referenceTab}">${tab.textContent}</button>`).join("")}
+        </div>
+        ${recentMarkup}
+        <p class="reference-index-safety"><strong>Study reference:</strong> Verify medication orders, current clinical guidance, institutional policy, allergies, contraindications, and patient-specific factors before administration.</p>
+      </article>`;
+
+    detailCard.querySelectorAll("[data-open-drug-id]").forEach((button) => {
+      button.addEventListener("click", () => openMedicationById(button.dataset.openDrugId));
+    });
+    detailCard.querySelectorAll("[data-open-reference-tab]").forEach((button) => {
+      button.addEventListener("click", () => activateTab(button.dataset.openReferenceTab));
     });
   }
 
@@ -269,6 +352,7 @@
       screen.classList.remove("showing-drug-card");
       populateFilter();
       renderResults();
+      if (!isMobilePortrait()) renderReferenceIndex();
       searchInput.focus();
     } catch (error) {
       window.showSubjects();
@@ -284,12 +368,20 @@
   filter.addEventListener("change", renderResults);
   backToResults.addEventListener("click", showResults);
 
+  function activateTab(tabName) {
+    activeTab = tabName;
+    tabs.forEach((candidate) => {
+      const isActive = candidate.dataset.referenceTab === tabName;
+      candidate.classList.toggle("active", isActive);
+      candidate.setAttribute("aria-pressed", String(isActive));
+    });
+    populateFilter();
+    renderResults();
+  }
+
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
-      activeTab = tab.dataset.referenceTab;
-      tabs.forEach((candidate) => candidate.classList.toggle("active", candidate === tab));
-      populateFilter();
-      renderResults();
+      activateTab(tab.dataset.referenceTab);
     });
   });
 

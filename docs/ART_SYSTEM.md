@@ -397,6 +397,24 @@ experimental CSS rule, remove or replace the superseded rule. Keep one
 authoritative current rule unless another is intentionally required for a
 distinct breakpoint, state, or interaction.
 
+## 7.2 Drug Reference medication-room terminal
+
+The approved Drug Reference desktop plate is:
+
+```text
+web/images/drug-reference/prepflow-medication-room-reference-station.png
+```
+
+Its locked native geometry is 1672 × 941. The live display opening runs from
+`(442, 87)` to `(1261, 486)`, measuring 819 × 399 with an aspect ratio of
+approximately 2.052632:1. Desktop and tablet-landscape HTML must remain inside
+that opening; the plate owns the cabinet bezel and all surrounding equipment.
+Implementation details and scene-relative percentages are recorded in
+`docs/DRUG_REFERENCE_DESKTOP_TERMINAL.md`.
+
+The mobile portrait Drug Reference intentionally remains a separate responsive
+presentation and does not use the medication-room plate.
+
 # 8. Asset Development Workflow
 
 For one isolated asset:
