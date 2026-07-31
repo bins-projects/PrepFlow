@@ -1,4 +1,4 @@
-const CACHE_NAME = "prepflow-pwa-v3-drug-reference-terminal";
+const CACHE_NAME = "prepflow-pwa-v3-drug-reference-legibility";
 
 const APP_FILES = [
   "./",
