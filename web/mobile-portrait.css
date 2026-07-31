@@ -6,7 +6,7 @@ html.mobile-portrait {
   --mobile-viewport-height: 100vh;
   --mobile-motion-duration: 240ms;
   --mobile-home-dock-height: 4.875rem;
-  --mobile-home-saved-dock-height: 10rem;
+  --mobile-home-saved-dock-height: 10.25rem;
 
   width: 100%;
   min-width: 0;
@@ -52,14 +52,14 @@ html.mobile-portrait #quiz-screen:not([hidden]) {
       var(--mobile-viewport-height)
       - var(--mobile-safe-area-top)
       - var(--mobile-safe-area-bottom)
-      - 1rem
+      - .125rem
     ),
     calc(
       (
         100vw
         - var(--mobile-safe-area-left)
         - var(--mobile-safe-area-right)
-        - 1rem
+        - .125rem
       )
       * 2532 / 1170
     )
@@ -99,6 +99,17 @@ html.mobile-portrait #quiz-screen:not([hidden]) {
 @supports (height: 100dvh) {
   html.mobile-portrait #quiz-screen:not([hidden]) {
     --mobile-viewport-height: 100dvh;
+  }
+}
+
+@media (display-mode: standalone) and (orientation: portrait) {
+  html.mobile-portrait #quiz-screen:not([hidden]) {
+    --mobile-clipboard-height: min(
+      calc(var(--mobile-viewport-height) - .0625rem),
+      calc((100vw - .0625rem) * 2532 / 1170)
+    );
+    --mobile-clipboard-center-x: 50vw;
+    --mobile-clipboard-center-y: calc(var(--mobile-viewport-height) / 2);
   }
 }
 
@@ -173,7 +184,7 @@ html.mobile-portrait #quiz-screen:not([hidden]) .quiz-header {
     + var(--mobile-clipboard-width) * .14
   ) !important;
   left: auto !important;
-  width: auto !important;
+  width: 5rem !important;
   margin: 0 !important;
   padding: 0 !important;
   transition:
@@ -186,7 +197,7 @@ html.mobile-portrait #quiz-screen:not([hidden]) #exit-quiz {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: auto !important;
+  width: 100% !important;
   height: auto !important;
   min-width: 0 !important;
   min-height: 44px !important;
@@ -207,7 +218,7 @@ html.mobile-portrait #quiz-screen:not([hidden]) #exit-quiz {
 }
 
 html.mobile-portrait #quiz-screen:not([hidden]) .quiz-book {
-  --mobile-paper-header-height: 3.75rem;
+  --mobile-paper-header-height: 4.25rem;
   --mobile-paper-footer-height: 3.25rem;
   position: absolute !important;
   z-index: 3 !important;
@@ -273,12 +284,39 @@ html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page::after {
 }
 
 html.mobile-portrait #quiz-screen:not([hidden]) .question-page {
+  height: 100% !important;
+  max-height: none !important;
   grid-template-rows:
     var(--mobile-paper-header-height)
     auto
     auto
     minmax(0, 1fr)
     var(--mobile-paper-footer-height) !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .question-page .quiz-page-meta {
+  grid-row: 1 !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .question-page .quiz-page-label {
+  grid-row: 2 !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .question-page .mobile-question-instruction {
+  grid-row: 3 !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .question-page .quiz-page-scroll {
+  grid-row: 4 !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  scrollbar-gutter: auto !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .question-page .mobile-question-actions {
+  grid-row: 5 !important;
 }
 
 html.mobile-portrait #quiz-screen:not([hidden]) .response-page {
@@ -316,18 +354,19 @@ html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page-meta {
   position: relative !important;
   z-index: 5 !important;
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-columns: minmax(0, 1fr) 5rem !important;
   align-content: center !important;
   gap: .2rem !important;
   min-width: 0 !important;
   min-height: var(--mobile-paper-header-height) !important;
-  padding: .15rem 5.4rem .35rem 0 !important;
+  padding: .15rem 0 .35rem !important;
   border-bottom: 1px solid rgba(77, 71, 57, .35) !important;
   color: #43516a !important;
   font: 750 clamp(.62rem, 2.55vw, .72rem)/1.25 Arial, sans-serif !important;
 }
 
 html.mobile-portrait #quiz-screen:not([hidden]) #quiz-subject {
+  grid-column: 1 !important;
   overflow: hidden !important;
   color: var(--mobile-quiz-accent) !important;
   font-size: clamp(.7rem, 3vw, .84rem) !important;
@@ -336,13 +375,17 @@ html.mobile-portrait #quiz-screen:not([hidden]) #quiz-subject {
 }
 
 html.mobile-portrait #quiz-screen:not([hidden]) #quiz-position {
-  display: block !important;
+  grid-column: 1 !important;
+  display: -webkit-box !important;
   max-width: 100% !important;
   color: #43516a !important;
   font: 800 clamp(.58rem, 2.35vw, .68rem)/1.3 Arial, sans-serif !important;
   letter-spacing: 0 !important;
   text-transform: none !important;
   white-space: normal !important;
+  overflow: hidden !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
 }
 
 html.mobile-portrait #quiz-screen:not([hidden]) .quiz-page-label,
@@ -390,20 +433,26 @@ html.mobile-portrait #quiz-screen:not([hidden]) .quiz-footer {
   align-items: flex-end !important;
   display: flex !important;
   gap: .4rem !important;
+  justify-content: space-between !important;
   min-height: var(--mobile-paper-footer-height) !important;
   margin: 0 !important;
-  padding: .4rem 0 0 !important;
+  padding: .4rem calc(var(--mobile-clipboard-width) * .03) 0 !important;
   border: 0 !important;
   border-top: 1px solid rgba(77, 71, 57, .35) !important;
 }
 
+html.mobile-portrait #quiz-screen:not([hidden]) .mobile-question-actions {
+  justify-content: flex-end !important;
+}
+
 html.mobile-portrait #quiz-screen:not([hidden]) .mobile-question-actions button,
 html.mobile-portrait #quiz-screen:not([hidden]) .quiz-footer button {
-  flex: 1 1 0 !important;
+  flex: 0 0 calc(var(--mobile-clipboard-width) * .3) !important;
   align-self: flex-end !important;
   height: 44px !important;
   max-height: 44px !important;
   min-width: 0 !important;
+  width: calc(var(--mobile-clipboard-width) * .3) !important;
   min-height: 44px !important;
   margin: 0 !important;
   padding: .45rem .35rem !important;
@@ -414,6 +463,12 @@ html.mobile-portrait #quiz-screen:not([hidden]) .quiz-footer button {
   font: 850 clamp(.65rem, 2.75vw, .78rem)/1.1 Arial, sans-serif !important;
   letter-spacing: 0 !important;
   text-transform: none !important;
+}
+
+html.mobile-portrait #quiz-screen:not([hidden]) .mobile-question-actions button {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
 }
 
 html.mobile-portrait #quiz-screen:not([hidden]) .quiz-footer .secondary-button,
@@ -1096,25 +1151,34 @@ html.mobile-portrait #resume-session:focus-visible {
 }
 
 /* Saved-session content remains driven by refreshResumePanel(). */
-html.mobile-portrait #home-launcher:has(#resume-panel:not([hidden])),
-html.mobile-portrait .pixel-stage:has(#resume-panel:not([hidden]))
-  #open-drug-reference.reference-library-callout {
+html.mobile-portrait #home-launcher:has(#resume-panel:not([hidden])) {
+  top: auto !important;
+  bottom: calc(var(--mobile-safe-area-bottom) + .75rem) !important;
+  width: calc(66% - var(--mobile-safe-area-left) - 1.125rem) !important;
   height: var(--mobile-home-saved-dock-height) !important;
   min-height: var(--mobile-home-saved-dock-height) !important;
 }
 
+html.mobile-portrait .pixel-stage:has(#resume-panel:not([hidden]))
+  #open-drug-reference.reference-library-callout {
+  width: calc(34% - var(--mobile-safe-area-right) - 1.125rem) !important;
+  height: 11rem !important;
+  min-height: 11rem !important;
+}
+
 html.mobile-portrait #resume-panel.launcher-resume:not([hidden]) {
   display: grid !important;
-  grid-template-rows: auto auto auto !important;
-  align-content: center !important;
+  grid-template-rows: minmax(2.35rem, auto) minmax(3rem, auto) minmax(2.75rem, auto) !important;
+  align-content: stretch !important;
   justify-items: stretch !important;
-  gap: .4rem !important;
+  gap: .25rem !important;
+  height: 100% !important;
 }
 
 html.mobile-portrait #resume-panel .resume-copy,
 html.mobile-portrait #resume-panel .resume-copy > div {
   display: grid !important;
-  gap: .14rem !important;
+  gap: .1rem !important;
   width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -1370,11 +1434,11 @@ html.mobile-portrait
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
   align-items: center !important;
-  gap: .25rem .55rem !important;
+  gap: .2rem .45rem !important;
   width: 100% !important;
   min-width: 0 !important;
   margin: 0 !important;
-  padding: .35rem .15rem !important;
+  padding: .25rem .1rem !important;
   color: #dce6ff !important;
   background: transparent !important;
   border: 0 !important;
@@ -1394,7 +1458,20 @@ html.mobile-portrait
   font-weight: 800 !important;
   line-height: 1.15 !important;
   white-space: normal !important;
-  overflow-wrap: anywhere !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-summary strong {
+  text-align: left !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-summary span {
+  text-align: right !important;
 }
 
 html.mobile-portrait
@@ -1712,13 +1789,13 @@ html.mobile-portrait
     "block order"
     "summary summary"
     "actions actions" !important;
-  gap: .55rem !important;
+  gap: .4rem !important;
   width: 100% !important;
   min-width: 0 !important;
   height: auto !important;
   min-height: 0 !important;
   margin: 0 !important;
-  padding: .7rem !important;
+  padding: .55rem !important;
   border: 1px solid rgba(232, 191, 105, .52) !important;
   border-radius: .65rem !important;
   background: rgba(7, 14, 39, .86) !important;
@@ -1747,20 +1824,36 @@ html.mobile-portrait
   background: rgba(13, 24, 57, .82) !important;
   color: #e3ebff !important;
   font-size: clamp(.66rem, 2.8vw, .78rem) !important;
+  line-height: 1.15 !important;
+  white-space: normal !important;
 }
 
 html.mobile-portrait
   body.builder-open
   .builder-block-size {
   grid-area: block !important;
-  grid-template-columns: minmax(0, 1fr) auto !important;
-  gap: .4rem !important;
+  grid-template-columns: minmax(0, 1fr) 3.25rem !important;
+  gap: .3rem !important;
+}
+
+html.mobile-portrait
+  body.builder-open
+  .builder-block-size > span {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  line-height: 1.15 !important;
 }
 
 html.mobile-portrait
   body.builder-open
   #global-block-size {
-  width: 3.5rem !important;
+  align-self: center !important;
+  width: 3.25rem !important;
+  max-width: 100% !important;
+  height: 44px !important;
+  min-width: 0 !important;
   min-height: 2.75rem !important;
   margin: 0 !important;
   padding: .35rem !important;
@@ -1769,6 +1862,8 @@ html.mobile-portrait
   background: #101d44 !important;
   color: #fff !important;
   font-size: 1rem !important;
+  line-height: 1.1 !important;
+  vertical-align: middle !important;
 }
 
 html.mobile-portrait
@@ -2010,7 +2105,7 @@ html.mobile-portrait
     calc(
       var(--mobile-clipboard-center-y)
       - var(--mobile-clipboard-height) / 2
-      + var(--mobile-clipboard-height) * .205
+      + var(--mobile-clipboard-height) * .215
     ) !important;
   left: var(--mobile-clipboard-center-x) !important;
   width: calc(var(--mobile-clipboard-width) * .7) !important;
@@ -2066,7 +2161,7 @@ html.mobile-portrait
     calc(
       var(--mobile-clipboard-center-y)
       - var(--mobile-clipboard-height) / 2
-      + var(--mobile-clipboard-height) * .244
+      + var(--mobile-clipboard-height) * .255
     ) !important;
   left: var(--mobile-clipboard-center-x) !important;
   display: flex !important;
@@ -2112,7 +2207,7 @@ html.mobile-portrait
     calc(
       var(--mobile-clipboard-center-y)
       - var(--mobile-clipboard-height) / 2
-      + var(--mobile-clipboard-height) * .276
+      + var(--mobile-clipboard-height) * .289
     ) !important;
   left: var(--mobile-clipboard-center-x) !important;
   display: grid !important;
@@ -2172,7 +2267,7 @@ html.mobile-portrait
     calc(
       var(--mobile-clipboard-center-y)
       - var(--mobile-clipboard-height) / 2
-      + var(--mobile-clipboard-height) * .346
+      + var(--mobile-clipboard-height) * .362
     ) !important;
   right: auto !important;
   bottom:
@@ -2419,7 +2514,7 @@ html.mobile-portrait
       calc(
         var(--mobile-clipboard-center-y)
         - var(--mobile-clipboard-height) / 2
-        + var(--mobile-clipboard-height) * .238
+        + var(--mobile-clipboard-height) * .255
       ) !important;
     flex-wrap: wrap !important;
     gap: .1rem .2rem !important;
@@ -2438,7 +2533,7 @@ html.mobile-portrait
       calc(
         var(--mobile-clipboard-center-y)
         - var(--mobile-clipboard-height) / 2
-        + var(--mobile-clipboard-height) * .278
+        + var(--mobile-clipboard-height) * .298
       ) !important;
   }
 
@@ -2449,7 +2544,7 @@ html.mobile-portrait
       calc(
         var(--mobile-clipboard-center-y)
         - var(--mobile-clipboard-height) / 2
-        + var(--mobile-clipboard-height) * .36
+        + var(--mobile-clipboard-height) * .38
       ) !important;
     bottom:
       calc(
