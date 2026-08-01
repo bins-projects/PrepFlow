@@ -1,14 +1,18 @@
-const CACHE_NAME = "prepflow-pwa-v2";
+const CACHE_NAME = "prepflow-pwa-v3-drug-reference-legibility";
 
 const APP_FILES = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./drug-reference.css",
+  "./drug-reference.js",
+  "./drug-reference-batch-loader.js",
   "./mobile-portrait.css",
   "./mobile-portrait.js",
   "./mobile-quiz-builder.js",
   "./mobile-quiz-flow.js",
+  "./images/drug-reference/prepflow-medication-room-reference-station.png",
   "./images/home-hospital/prepflow-mobile-home-background.png",
   "./images/quiz-builder/prepflow-mobile-quiz-builder-background.png",
   "./images/quiz-builder/prepflow-mobile-chapter-clipboard.png",
