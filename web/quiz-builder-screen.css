@@ -1814,3 +1814,25 @@ body.real-book-chapters #back-button:focus-visible {
     animation: none;
   }
 }
+
+
+.study-module-chapter[aria-pressed="true"],
+.study-module-chapter.is-selected {
+  border-color: #1f5f8b;
+  background: #d9edf8;
+  box-shadow: inset 0 0 0 2px rgba(31, 95, 139, 0.18);
+}
+
+.study-module-chapter[aria-pressed="true"]::after,
+.study-module-chapter.is-selected::after {
+  content: "Selected";
+  color: #174866;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.study-module-chapter[aria-pressed="true"] small,
+.study-module-chapter.is-selected small {
+  color: #174866;
+}
