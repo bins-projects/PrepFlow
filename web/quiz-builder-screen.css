@@ -814,6 +814,110 @@ body.book-launching .quiz-builder-screen .subject-card:not(.is-launching) {
   }
 }
 
+/* Compact manifest-driven study module launcher. */
+.quiz-builder-screen .study-modules {
+  position: absolute;
+  z-index: 12;
+  right: 3%;
+  bottom: 21.5%;
+  width: min(340px, 34%);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.study-modules-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .55rem .8rem;
+  background: rgba(8, 17, 42, .94);
+  border: 1px solid rgba(238, 193, 104, .72);
+  color: #fff4d7;
+  font-weight: 800;
+}
+
+.study-modules-panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + .35rem);
+  width: min(420px, 84vw);
+  max-height: min(48vh, 430px);
+  overflow: auto;
+  padding: .45rem;
+  background: rgba(5, 10, 28, .98);
+  border: 1px solid rgba(238, 193, 104, .72);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .42);
+}
+
+.study-module-subject + .study-module-subject {
+  margin-top: .3rem;
+}
+
+.study-module-subject-toggle,
+.study-module-chapter {
+  width: 100%;
+  border: 0;
+  color: #f8f3e7;
+  text-align: left;
+}
+
+.study-module-subject-toggle {
+  padding: .65rem .75rem;
+  background: #25345f;
+  font-weight: 800;
+}
+
+.study-module-subject-toggle::after {
+  content: "▾";
+  float: right;
+}
+
+.study-module-subject-toggle[aria-expanded="true"]::after {
+  content: "▴";
+}
+
+.study-module-chapter {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .55rem .7rem;
+  background: #111c3e;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+.study-module-chapter:hover,
+.study-module-chapter:focus-visible,
+.study-module-subject-toggle:hover,
+.study-module-subject-toggle:focus-visible {
+  background: #334a83;
+  outline: 2px solid #ffd980;
+  outline-offset: -2px;
+}
+
+.study-module-chapter small {
+  flex: 0 0 auto;
+  color: #e7c977;
+}
+
+body.real-book-chapters .study-modules {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 760px) and (orientation: portrait) {
+  .quiz-builder-screen .study-modules {
+    left: 5%;
+    right: 5%;
+    bottom: 18%;
+    width: auto;
+  }
+
+  .study-modules-panel {
+    width: 100%;
+    max-height: 44vh;
+  }
+}
+
 /* Quiz Builder shelf-front plaques — authoritative */
 .quiz-builder-shelf-plaques {
   position: absolute;

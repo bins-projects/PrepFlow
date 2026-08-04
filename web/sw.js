@@ -1,10 +1,13 @@
-const CACHE_NAME = "prepflow-pwa-v3-drug-reference-legibility";
+const CACHE_NAME = "prepflow-pwa-v4-study-modules";
 
 const APP_FILES = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./study-module-rules.js",
+  "./data/study-modules/catalog.json",
+  "./data/study-modules/combined-nursing-final-review.json",
   "./drug-reference.css",
   "./drug-reference.js",
   "./drug-reference-batch-loader.js",
