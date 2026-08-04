@@ -906,10 +906,10 @@ body.real-book-chapters .study-modules {
 
 @media (max-width: 760px) and (orientation: portrait) {
   .quiz-builder-screen .study-modules {
-    left: 5%;
-    right: 5%;
-    bottom: 18%;
-    width: auto;
+    position: relative !important;
+    z-index: 30 !important;
+    inset: auto !important;
+    width: 100%;
   }
 
   .study-modules-panel {
