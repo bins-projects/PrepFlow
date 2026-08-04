@@ -1,0 +1,12 @@
+{
+  "format": "prepflow_study_module_catalog",
+  "version": "1.0",
+  "modules": [
+    {
+      "module_id": "combined-nursing-final-2026",
+      "title": "Combined Nursing Final Review",
+      "short_title": "Final Exam Review",
+      "manifest": "data/study-modules/combined-nursing-final-review.json"
+    }
+  ]
+}
