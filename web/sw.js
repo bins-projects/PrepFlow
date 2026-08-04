@@ -1,4 +1,4 @@
-const CACHE_NAME = "prepflow-pwa-v4-study-modules";
+const CACHE_NAME = "prepflow-pwa-v5-final-exam-completion";
 
 const APP_FILES = [
   "./",
