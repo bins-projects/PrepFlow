@@ -252,6 +252,14 @@ function updateSelectionStatus() {
 
     book.classList.toggle("has-selections", count > 0);
   });
+
+  document.querySelectorAll(".study-module-chapter[data-selection-key]").forEach(
+    (button) => {
+      const selected = selectedChapters.has(button.dataset.selectionKey);
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+    }
+  );
 }
 
 function showSubjects() {
@@ -341,33 +349,38 @@ async function startSession(questionReferences, subject, shouldShuffle, context 
   beginBlock();
 }
 
-async function launchModuleChapter(manifest, group, chapter) {
+function studyModuleSelectionKey(manifest, group, chapter) {
+  return [
+    "study-module",
+    manifest.module_id,
+    group.source_pack_id,
+    chapter.source_chapter,
+  ].join("|");
+}
+
+function toggleModuleChapter(manifest, group, chapter, selectionKey) {
+  if (selectedChapters.has(selectionKey)) {
+    selectedChapters.delete(selectionKey);
+    updateSelectionStatus();
+    return;
+  }
+
   const packPath = PACK_PATHS[group.source_pack_id];
   if (!packPath) {
     throw new Error(`Unknown study category: ${group.source_pack_id}`);
   }
 
-  const pack = await loadPack(packPath);
-  const references = PrepFlowStudyModuleRules.resolveChapter(
-    group,
-    chapter,
-    pack,
-    packPath
-  );
-
-  await startSession(
-    references,
-    `${group.subject} — Chapter ${chapter.source_chapter}`,
-    true,
-    {
-      kind: "study-module",
-      moduleId: manifest.module_id,
-      moduleTitle: manifest.title,
-      subject: group.subject,
-      chapter: chapter.source_chapter,
-      chapterTitle: chapter.title,
-    }
-  );
+  selectedChapters.set(selectionKey, {
+    kind: "study-module",
+    moduleId: manifest.module_id,
+    moduleTitle: manifest.title,
+    packPath,
+    subject: group.subject,
+    chapterKey: `${chapter.source_chapter}|${chapter.title}`,
+    questionCount: chapter.question_ids.length,
+    questionIds: [...chapter.question_ids],
+  });
+  updateSelectionStatus();
 }
 
 function renderStudyModule(manifest, container) {
@@ -402,15 +415,23 @@ function renderStudyModule(manifest, container) {
       const chapterCount = document.createElement("small");
       chapterName.textContent = `Chapter ${chapter.source_chapter}: ${chapter.title}`;
       chapterCount.textContent = `${chapter.expected_question_count} questions`;
+      const selectionKey = studyModuleSelectionKey(manifest, group, chapter);
+      chapterButton.dataset.selectionKey = selectionKey;
+      chapterButton.setAttribute(
+        "aria-pressed",
+        String(selectedChapters.has(selectionKey))
+      );
+      chapterButton.classList.toggle(
+        "is-selected",
+        selectedChapters.has(selectionKey)
+      );
       chapterButton.append(chapterName, chapterCount);
-      chapterButton.addEventListener("click", async () => {
-        chapterButton.disabled = true;
+      chapterButton.addEventListener("click", () => {
         try {
-          await launchModuleChapter(manifest, group, chapter);
+          toggleModuleChapter(manifest, group, chapter, selectionKey);
         } catch (error) {
           status.hidden = false;
           status.textContent = error.message;
-          chapterButton.disabled = false;
         }
       });
       chapterList.append(chapterButton);
@@ -944,26 +965,53 @@ function completeFirstPassBlock() {
 
 async function startQuiz() {
   const selectedQuestions = [];
+  const selectedQuestionKeys = new Set();
+  const supportedTypes = new Set([
+    "mc",
+    "multiple_choice",
+    "multiple_response",
+  ]);
+
+  function addQuestion(packPath, question) {
+    if (!supportedTypes.has(question.type || question.question_type)) {
+      return;
+    }
+
+    const referenceKey = `${packPath}|${question.id}`;
+    if (selectedQuestionKeys.has(referenceKey)) {
+      return;
+    }
+
+    selectedQuestionKeys.add(referenceKey);
+    selectedQuestions.push({
+      packPath,
+      questionId: question.id,
+    });
+  }
 
   try {
     for (const selection of selectedChapters.values()) {
       const pack = await loadPack(selection.packPath);
 
+      if (Array.isArray(selection.questionIds)) {
+        const questionsById = new Map(
+          pack.questions.map((question) => [question.id, question])
+        );
+
+        selection.questionIds.forEach((questionId) => {
+          const question = questionsById.get(questionId);
+          if (!question) {
+            throw new Error(`Question is not available: ${questionId}`);
+          }
+          addQuestion(selection.packPath, question);
+        });
+        continue;
+      }
+
       pack.questions.forEach((question) => {
         const key = `${question.chapter}|${question.chapter_title}`;
-
-        if (
-          key === selection.chapterKey
-          && [
-            "mc",
-            "multiple_choice",
-            "multiple_response",
-          ].includes(question.type || question.question_type)
-        ) {
-          selectedQuestions.push({
-            packPath: selection.packPath,
-            questionId: question.id,
-          });
+        if (key === selection.chapterKey) {
+          addQuestion(selection.packPath, question);
         }
       });
     }
@@ -973,11 +1021,24 @@ async function startQuiz() {
     return;
   }
 
+  const selections = [...selectedChapters.values()];
+  const isFinalExamReview = (
+    selections.length > 0
+    && selections.every((selection) => selection.kind === "study-module")
+  );
+
   try {
     await startSession(
       selectedQuestions,
-      "Custom Quiz",
-      shuffleQuestionsToggle.checked
+      isFinalExamReview ? "Final Exam Review" : "Custom Quiz",
+      shuffleQuestionsToggle.checked,
+      isFinalExamReview
+        ? {
+            kind: "study-module",
+            moduleTitle: "Final Exam Review",
+            selectedChapters: selections.length,
+          }
+        : null
     );
   } catch (error) {
     status.hidden = false;
