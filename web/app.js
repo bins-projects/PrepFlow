@@ -9,8 +9,6 @@ const openQuizBuilderButton = document.querySelector("#open-quiz-builder");
 const closeQuizBuilderButton = document.querySelector("#close-quiz-builder");
 const doneChaptersButton = document.querySelector("#done-chapters");
 const quizBuilderOpenBook = document.querySelector("#quiz-builder-openbook");
-const studyModulesToggle = document.querySelector("#study-modules-toggle");
-const studyModulesPanel = document.querySelector("#study-modules-panel");
 
 const resumePanel = document.querySelector("#resume-panel");
 const resumeDescription = document.querySelector("#resume-description");
@@ -66,14 +64,6 @@ const selectedChapters = new Map();
 let sessionQuestions = [];
 let sessionBlockSize = 15;
 let sessionShuffleQuestions = true;
-let currentSessionContext = null;
-
-const PACK_PATHS = {
-  fundamentals: "../packs/fundamentals.prepflow.json",
-  medical_surgical: "../packs/medical_surgical.prepflow.json",
-  pharmacy: "../packs/pharmacy.prepflow.json",
-};
-let studyModuleCatalog = null;
 
 let blockStart = 0;
 let blockEnd = 0;
@@ -130,7 +120,6 @@ function saveSession(screen) {
     reviewQueue,
     reviewMode,
     currentReviewQuestion,
-    currentSessionContext,
   };
 
   localStorage.setItem(SAVE_KEY, JSON.stringify(state));
@@ -253,13 +242,6 @@ function updateSelectionStatus() {
     book.classList.toggle("has-selections", count > 0);
   });
 
-  document.querySelectorAll(".study-module-chapter[data-selection-key]").forEach(
-    (button) => {
-      const selected = selectedChapters.has(button.dataset.selectionKey);
-      button.classList.toggle("is-selected", selected);
-      button.setAttribute("aria-pressed", String(selected));
-    }
-  );
 }
 
 function showSubjects() {
@@ -308,177 +290,6 @@ async function loadPack(packPath) {
   const pack = await response.json();
   loadedPacks.set(packPath, pack);
   return pack;
-}
-
-async function fetchJson(path, label) {
-  const response = await fetch(path);
-  if (!response.ok) {
-    throw new Error(`Could not load ${label}: ${response.status}`);
-  }
-  return response.json();
-}
-
-async function loadStudyModuleCatalog() {
-  if (!studyModuleCatalog) {
-    studyModuleCatalog = await fetchJson(
-      "data/study-modules/catalog.json",
-      "study modules"
-    );
-  }
-  return studyModuleCatalog;
-}
-
-async function startSession(questionReferences, subject, shouldShuffle, context = null) {
-  sessionShuffleQuestions = shouldShuffle;
-  sessionQuestions = PrepFlowOrderRules.orderQuestions(
-    questionReferences,
-    shouldShuffle
-  );
-
-  if (sessionQuestions.length === 0) {
-    throw new Error("No supported questions were found in that selection.");
-  }
-
-  currentSubject = subject;
-  currentSessionContext = context;
-  sessionBlockSize = Number(globalBlockSizeSelect.value) || 15;
-  blockStart = 0;
-  blockNumber = 1;
-  firstPassCorrect = 0;
-  firstPassMissed = 0;
-  beginBlock();
-}
-
-function studyModuleSelectionKey(manifest, group, chapter) {
-  return [
-    "study-module",
-    manifest.module_id,
-    group.source_pack_id,
-    chapter.source_chapter,
-  ].join("|");
-}
-
-function toggleModuleChapter(manifest, group, chapter, selectionKey) {
-  if (selectedChapters.has(selectionKey)) {
-    selectedChapters.delete(selectionKey);
-    updateSelectionStatus();
-    return;
-  }
-
-  const packPath = PACK_PATHS[group.source_pack_id];
-  if (!packPath) {
-    throw new Error(`Unknown study category: ${group.source_pack_id}`);
-  }
-
-  selectedChapters.set(selectionKey, {
-    kind: "study-module",
-    moduleId: manifest.module_id,
-    moduleTitle: manifest.title,
-    packPath,
-    subject: group.subject,
-    chapterKey: `${chapter.source_chapter}|${chapter.title}`,
-    questionCount: chapter.question_ids.length,
-    questionIds: [...chapter.question_ids],
-  });
-  updateSelectionStatus();
-}
-
-function renderStudyModule(manifest, container) {
-
-  manifest.groups.forEach((group, groupIndex) => {
-    const section = document.createElement("section");
-    section.className = "study-module-subject";
-    const subjectButton = document.createElement("button");
-    const chapterList = document.createElement("div");
-    const listId = `study-module-${manifest.module_id}-${groupIndex}`;
-
-    subjectButton.type = "button";
-    subjectButton.className = "study-module-subject-toggle";
-    subjectButton.textContent = group.subject;
-    subjectButton.setAttribute("aria-expanded", "false");
-    subjectButton.setAttribute("aria-controls", listId);
-    chapterList.id = listId;
-    chapterList.className = "study-module-chapters";
-    chapterList.hidden = true;
-
-    subjectButton.addEventListener("click", () => {
-      const expanded = subjectButton.getAttribute("aria-expanded") === "true";
-      subjectButton.setAttribute("aria-expanded", String(!expanded));
-      chapterList.hidden = expanded;
-    });
-
-    group.chapters.forEach((chapter) => {
-      const chapterButton = document.createElement("button");
-      chapterButton.type = "button";
-      chapterButton.className = "study-module-chapter";
-      const chapterName = document.createElement("span");
-      const chapterCount = document.createElement("small");
-      chapterName.textContent = `Chapter ${chapter.source_chapter}: ${chapter.title}`;
-      chapterCount.textContent = `${chapter.expected_question_count} questions`;
-      const selectionKey = studyModuleSelectionKey(manifest, group, chapter);
-      chapterButton.dataset.selectionKey = selectionKey;
-      chapterButton.setAttribute(
-        "aria-pressed",
-        String(selectedChapters.has(selectionKey))
-      );
-      chapterButton.classList.toggle(
-        "is-selected",
-        selectedChapters.has(selectionKey)
-      );
-      chapterButton.append(chapterName, chapterCount);
-      chapterButton.addEventListener("click", () => {
-        try {
-          toggleModuleChapter(manifest, group, chapter, selectionKey);
-        } catch (error) {
-          status.hidden = false;
-          status.textContent = error.message;
-        }
-      });
-      chapterList.append(chapterButton);
-    });
-
-    section.append(subjectButton, chapterList);
-    container.append(section);
-  });
-}
-
-function renderStudyModules(manifests) {
-  studyModulesPanel.replaceChildren();
-  manifests.forEach((manifest) => {
-    const module = document.createElement("section");
-    module.className = "study-module";
-    if (manifests.length > 1) {
-      const title = document.createElement("h3");
-      title.textContent = manifest.title;
-      module.append(title);
-    }
-    renderStudyModule(manifest, module);
-    studyModulesPanel.append(module);
-  });
-}
-
-async function openStudyModules() {
-  const expanded = studyModulesToggle.getAttribute("aria-expanded") === "true";
-  if (expanded) {
-    studyModulesToggle.setAttribute("aria-expanded", "false");
-    studyModulesPanel.hidden = true;
-    return;
-  }
-
-  try {
-    const catalog = await loadStudyModuleCatalog();
-    const manifests = await Promise.all(catalog.modules.map(async (entry) => {
-      const manifest = await fetchJson(entry.manifest, entry.title);
-      PrepFlowStudyModuleRules.validateManifest(manifest);
-      return manifest;
-    }));
-    renderStudyModules(manifests);
-    studyModulesToggle.setAttribute("aria-expanded", "true");
-    studyModulesPanel.hidden = false;
-  } catch (error) {
-    status.hidden = false;
-    status.textContent = error.message;
-  }
 }
 
 async function showChapters(button) {
@@ -1021,29 +832,28 @@ async function startQuiz() {
     return;
   }
 
-  const selections = [...selectedChapters.values()];
-  const isFinalExamReview = (
-    selections.length > 0
-    && selections.every((selection) => selection.kind === "study-module")
+  sessionShuffleQuestions = shuffleQuestionsToggle.checked;
+  sessionQuestions = PrepFlowOrderRules.orderQuestions(
+    selectedQuestions,
+    sessionShuffleQuestions
   );
 
-  try {
-    await startSession(
-      selectedQuestions,
-      isFinalExamReview ? "Final Exam Review" : "Custom Quiz",
-      shuffleQuestionsToggle.checked,
-      isFinalExamReview
-        ? {
-            kind: "study-module",
-            moduleTitle: "Final Exam Review",
-            selectedChapters: selections.length,
-          }
-        : null
-    );
-  } catch (error) {
+  if (sessionQuestions.length === 0) {
     status.hidden = false;
-    status.textContent = error.message;
+    status.textContent =
+      "No Multiple Choice or Multiple Response questions were found in that selection.";
+    return;
   }
+
+  currentSubject = "Custom Quiz";
+  sessionBlockSize = Number(globalBlockSizeSelect.value) || 15;
+
+  blockStart = 0;
+  blockNumber = 1;
+  firstPassCorrect = 0;
+  firstPassMissed = 0;
+
+  beginBlock();
 }
 
 async function resumeSavedSession() {
@@ -1056,7 +866,6 @@ async function resumeSavedSession() {
 
   try {
     currentSubject = saved.currentSubject || "Custom Quiz";
-    currentSessionContext = saved.currentSessionContext || null;
     sessionQuestions = saved.sessionQuestions || [];
     sessionShuffleQuestions = saved.sessionShuffleQuestions !== false;
     shuffleQuestionsToggle.checked = sessionShuffleQuestions;
@@ -1450,8 +1259,6 @@ clearSelectionsButton.addEventListener("click", () => {
   selectedChapters.clear();
   updateSelectionStatus();
 });
-
-studyModulesToggle.addEventListener("click", openStudyModules);
 
 showSubjects();
 updateSelectionStatus();
