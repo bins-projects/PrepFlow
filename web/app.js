@@ -1,4 +1,5 @@
 const SAVE_KEY = "prepflow.savedSession.v1";
+const PACK_CATALOG_PATH = "./data/pack-catalog.json";
 
 const hero = document.querySelector(".hero");
 const subjects = document.querySelector(".subjects");
@@ -60,6 +61,8 @@ let currentPackPath = null;
 
 const loadedPacks = new Map();
 const selectedChapters = new Map();
+let packCatalog = [];
+let packCatalogPromise = null;
 
 let sessionQuestions = [];
 let sessionBlockSize = 15;
@@ -276,6 +279,73 @@ function showQuizBuilder() {
   updateSelectionStatus();
 }
 
+function bookButton(book) {
+  const button = document.createElement("button");
+  const themed = Boolean(book.art);
+  button.className = `subject-card ${themed ? book.theme || "" : "generic-book"}`.trim();
+  button.dataset.subject = book.title;
+  button.dataset.pack = book.path;
+  button.dataset.theme = book.theme || "generic";
+  button.setAttribute(
+    "aria-label",
+    `Open ${book.title} — ${book.question_count.toLocaleString()} questions in ${book.chapter_count} chapters`
+  );
+  if (themed) {
+    const image = document.createElement("img");
+    image.className = "approved-book-art";
+    image.src = book.art;
+    image.alt = "";
+    image.setAttribute("aria-hidden", "true");
+    button.append(image);
+    const hidden = document.createElement("span");
+    hidden.className = "sr-only";
+    hidden.textContent = `${book.title} — ${book.question_count.toLocaleString()} questions. Choose chapters.`;
+    button.append(hidden);
+  } else {
+    const title = document.createElement("span");
+    title.className = "generic-book-title";
+    title.textContent = book.title;
+    const meta = document.createElement("span");
+    meta.className = "generic-book-meta";
+    meta.textContent = `${book.chapter_count} chapters · ${book.question_count.toLocaleString()} questions`;
+    const action = document.createElement("span");
+    action.className = "generic-book-action";
+    action.textContent = "Choose chapters →";
+    button.append(title, meta, action);
+  }
+  button.addEventListener("click", () => launchBook(button));
+  return button;
+}
+
+function renderBookCatalog(catalog) {
+  packCatalog = catalog.books;
+  subjects.replaceChildren(...packCatalog.map(bookButton));
+  document.dispatchEvent(new CustomEvent("prepflow:catalog-ready"));
+  updateSelectionStatus();
+}
+
+async function loadBookCatalog() {
+  if (packCatalogPromise) return packCatalogPromise;
+  packCatalogPromise = fetch(PACK_CATALOG_PATH)
+    .then((response) => {
+      if (!response.ok) throw new Error(`Could not load the book catalog: ${response.status}`);
+      return response.json();
+    })
+    .then((catalog) => {
+      if (catalog?.format !== "prepflow_pack_catalog" || !Array.isArray(catalog.books)) {
+        throw new Error("The book catalog is invalid.");
+      }
+      renderBookCatalog(catalog);
+      return catalog;
+    })
+    .catch((error) => {
+      status.hidden = false;
+      status.textContent = error.message;
+      throw error;
+    });
+  return packCatalogPromise;
+}
+
 async function loadPack(packPath) {
   if (loadedPacks.has(packPath)) {
     return loadedPacks.get(packPath);
@@ -363,10 +433,7 @@ async function showChapters(button) {
     });
 
     chapterTitle.textContent = currentSubject;
-    chapterScreen.dataset.theme =
-      button.classList.contains("fundamentals") ? "fundamentals" :
-      button.classList.contains("pharm") ? "pharm" :
-      "med-surg";
+    chapterScreen.dataset.theme = button.dataset.theme || "generic";
 
     const usesRealOpenBook = true;
 
@@ -1159,10 +1226,6 @@ async function launchBook(button) {
   }
 }
 
-document.querySelectorAll(".subject-card").forEach((button) => {
-  button.addEventListener("click", () => launchBook(button));
-});
-
 async function closeCurrentBook() {
   if (bookCloseInProgress || bookLaunchInProgress) {
     return;
@@ -1262,6 +1325,7 @@ clearSelectionsButton.addEventListener("click", () => {
 
 showSubjects();
 updateSelectionStatus();
+loadBookCatalog().catch(() => {});
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {

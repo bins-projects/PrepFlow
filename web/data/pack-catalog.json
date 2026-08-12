@@ -1,0 +1,33 @@
+{
+  "format": "prepflow_pack_catalog",
+  "version": "1.0",
+  "books": [
+    {
+      "id": "fundamentals",
+      "title": "Fundamentals of Nursing",
+      "path": "../packs/fundamentals.prepflow.json",
+      "question_count": 1040,
+      "chapter_count": 42,
+      "theme": "fundamentals",
+      "art": "images/quiz-builder/books/fundamentals-closed.png"
+    },
+    {
+      "id": "medical_surgical",
+      "title": "Medical-Surgical",
+      "path": "../packs/medical_surgical.prepflow.json",
+      "question_count": 1443,
+      "chapter_count": 63,
+      "theme": "med-surg",
+      "art": "images/quiz-builder/books/medsurg-closed.png"
+    },
+    {
+      "id": "pharmacy",
+      "title": "Pharm",
+      "path": "../packs/pharmacy.prepflow.json",
+      "question_count": 1238,
+      "chapter_count": 28,
+      "theme": "pharm",
+      "art": "images/quiz-builder/books/pharm-closed.png?v=20260727-pharm-2"
+    }
+  ]
+}

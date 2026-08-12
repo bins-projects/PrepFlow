@@ -1,10 +1,14 @@
-const CACHE_NAME = "prepflow-pwa-v6-remove-final-exam-module";
+importScripts("./pack-precache.js");
+
+const CACHE_NAME = `prepflow-pwa-v7-generic-pack-catalog-${self.PREPFLOW_PACK_PRECACHE.version}`;
 
 const APP_FILES = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./generic-pack-catalog.css",
+  "./data/pack-catalog.json",
   "./drug-reference.css",
   "./drug-reference.js",
   "./drug-reference-batch-loader.js",
@@ -19,14 +23,14 @@ const APP_FILES = [
   "./manifest.webmanifest",
   "./icons/prepflow-192.png",
   "./icons/prepflow-512.png",
-  "../packs/fundamentals.prepflow.json",
-  "../packs/pharmacy.prepflow.json",
-  "../packs/medical_surgical.prepflow.json"
 ];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_FILES))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll([
+      ...APP_FILES,
+      ...self.PREPFLOW_PACK_PRECACHE.urls,
+    ]))
   );
 
   self.skipWaiting();

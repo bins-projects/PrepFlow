@@ -1,4 +1,8 @@
 (function () {
+  let initialized = false;
+
+  function initialize() {
+    if (initialized) return;
   const portraitQuery = window.matchMedia(
     "(max-width: 760px) and (orientation: portrait)"
   );
@@ -27,6 +31,7 @@
   ) {
     return;
   }
+  initialized = true;
 
   prompt.className = "mobile-carousel-prompt";
   prompt.hidden = true;
@@ -355,4 +360,8 @@
   }
 
   syncPresentationMode();
+  }
+
+  document.addEventListener("prepflow:catalog-ready", initialize, { once: true });
+  initialize();
 }());

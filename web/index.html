@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="hospital-home.css?v=20260726-text-glow-1">
   <link rel="stylesheet" href="quiz-builder-screen.css?v=20260811-quiz-builder-cleanup-1">
   <link rel="stylesheet" href="mobile-portrait.css?v=20260731-drug-reference-1">
+  <link rel="stylesheet" href="generic-pack-catalog.css">
 </head>
 <body>
   <main class="app-shell">
@@ -100,27 +101,7 @@
             </button>
         </header>
 
-        <section class="subjects" aria-label="Quiz library">
-          <button class="subject-card fundamentals" data-subject="Fundamentals" data-pack="../packs/fundamentals.prepflow.json" aria-label="Open Fundamentals — 1,040 questions">
-            <img class="approved-book-art" src="images/quiz-builder/books/fundamentals-closed.png" alt="" aria-hidden="true">
-            <span class="sr-only">Fundamentals — 1,040 questions. Choose chapters.</span>
-          </button>
-          <button class="subject-card pharm"
-                  data-subject="Pharm"
-                  data-pack="../packs/pharmacy.prepflow.json"
-                  aria-label="Open Pharm — 1,238 questions">
-            <img class="approved-book-art"
-                 src="images/quiz-builder/books/pharm-closed.png?v=20260727-pharm-2"
-                 alt=""
-                 aria-hidden="true">
-            <span class="sr-only">Pharm — 1,238 questions. Choose chapters.</span>
-          </button>
-
-          <button class="subject-card med-surg" data-subject="Medical-Surgical" data-pack="../packs/medical_surgical.prepflow.json" aria-label="Open Med-Surg — 1,443 questions">
-            <img class="approved-book-art" src="images/quiz-builder/books/medsurg-closed.png" alt="" aria-hidden="true">
-            <span class="sr-only">Med-Surg — 1,443 questions. Choose chapters.</span>
-          </button>
-        </section>
+        <section class="subjects" aria-label="Quiz library" aria-live="polite"></section>
 
         <div id="mobile-carousel-tools" class="mobile-carousel-tools" hidden>
           <button id="mobile-choose-chapters" class="mobile-choose-chapters">
@@ -143,17 +124,6 @@
           hidden
         >
 
-        <div class="quiz-builder-shelf-plaques" aria-hidden="true">
-          <div class="quiz-builder-shelf-plaque fundamentals-plaque">
-            FUNDAMENTALS
-          </div>
-          <div class="quiz-builder-shelf-plaque pharm-plaque">
-            PHARM
-          </div>
-          <div class="quiz-builder-shelf-plaque medsurg-plaque">
-            MED-SURG
-          </div>
-        </div>
 
         <section class="builder-controls" aria-label="Quiz settings">
           <div class="builder-summary">

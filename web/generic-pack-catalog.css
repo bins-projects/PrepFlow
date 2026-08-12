@@ -1,0 +1,27 @@
+/* Plain, data-driven fallback for Packs without dedicated artwork or themes. */
+.subject-card.generic-book,
+.subject-card.generic-book:hover,
+.subject-card.generic-book:focus-visible,
+.subject-card.generic-book:active {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  width: min(256px, 100%) !important;
+  min-height: 200px !important;
+  aspect-ratio: auto !important;
+  padding: 1.25rem !important;
+  border: 2px solid #71e4d1 !important;
+  border-radius: 12px !important;
+  background: #0f2439 !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .3) !important;
+  color: #f4fbff !important;
+  text-align: left;
+}
+
+.generic-book-title { font-size: 1.1rem; font-weight: 800; }
+.generic-book-meta { margin-top: .65rem; color: #b7d9df; font-size: .9rem; }
+.generic-book-action { margin-top: 1rem; color: #71e4d1; font-weight: 700; }
+
+@media (max-width: 900px) {
+  .subjects:has(.generic-book) { grid-template-columns: repeat(auto-fit, minmax(180px, 256px)) !important; }
+}
