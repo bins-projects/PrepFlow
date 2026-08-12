@@ -37,38 +37,6 @@
       : [];
   }
 
-  function createSafeStudyModuleManifest(manifest) {
-    const groups = manifest.groups.map((group) => {
-      const chapters = group.chapters.map((chapter) => {
-        const questionIds = chapter.question_ids.filter(
-          (questionId) => !QUARANTINED_QUESTION_IDS.has(questionId)
-        );
-
-        return {
-          ...chapter,
-          expected_question_count: questionIds.length,
-          question_ids: questionIds,
-        };
-      });
-
-      return { ...group, chapters };
-    });
-
-    const expectedQuestionCount = groups.reduce(
-      (groupTotal, group) => groupTotal + group.chapters.reduce(
-        (chapterTotal, chapter) => chapterTotal + chapter.question_ids.length,
-        0
-      ),
-      0
-    );
-
-    return {
-      ...manifest,
-      expected_question_count: expectedQuestionCount,
-      groups,
-    };
-  }
-
   function installFinalSummaryPresentation() {
     if (document.querySelector("#prepflow-final-summary-mobile-fix")) {
       return;
@@ -134,21 +102,12 @@
 
   function installQuizLifecycleSafeguards() {
     if (
-      typeof renderStudyModule !== "function"
-      || typeof startSession !== "function"
+      typeof startSession !== "function"
       || typeof readSavedSession !== "function"
       || typeof showFinalSummary !== "function"
     ) {
       return;
     }
-
-    const originalRenderStudyModule = renderStudyModule;
-    renderStudyModule = function (manifest, container) {
-      return originalRenderStudyModule(
-        createSafeStudyModuleManifest(manifest),
-        container
-      );
-    };
 
     const originalStartSession = startSession;
     startSession = async function (questionReferences, ...args) {
