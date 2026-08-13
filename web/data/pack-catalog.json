@@ -9,23 +9,8 @@
       "question_count": 1043,
       "chapter_count": 42,
       "theme": "fundamentals",
+      "shelf_label": "Fundamentals",
       "art": "images/quiz-builder/books/fundamentals-closed.png"
-    },
-    {
-      "id": "medical_surgical",
-      "title": "Medical-Surgical",
-      "path": "../packs/medical_surgical.prepflow.json",
-      "question_count": 1441,
-      "chapter_count": 63,
-      "theme": "med-surg",
-      "art": "images/quiz-builder/books/medsurg-closed.png"
-    },
-    {
-      "id": "pediatrics",
-      "title": "Pediatrics",
-      "path": "../packs/pediatrics.prepflow.json",
-      "question_count": 1026,
-      "chapter_count": 34
     },
     {
       "id": "pharmacy",
@@ -34,7 +19,28 @@
       "question_count": 1295,
       "chapter_count": 30,
       "theme": "pharm",
+      "shelf_label": "Pharm",
       "art": "images/quiz-builder/books/pharm-closed.png?v=20260727-pharm-2"
+    },
+    {
+      "id": "medical_surgical",
+      "title": "Medical-Surgical",
+      "path": "../packs/medical_surgical.prepflow.json",
+      "question_count": 1441,
+      "chapter_count": 63,
+      "theme": "med-surg",
+      "shelf_label": "Med-Surg",
+      "art": "images/quiz-builder/books/medsurg-closed.png"
+    },
+    {
+      "id": "pediatrics",
+      "title": "Pediatrics",
+      "path": "../packs/pediatrics.prepflow.json",
+      "question_count": 1026,
+      "chapter_count": 34,
+      "theme": "pediatrics",
+      "shelf_label": "Pediatrics",
+      "art": "images/quiz-builder/books/pediatrics-closed.png?v=20260813-1"
     }
   ]
 }

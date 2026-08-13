@@ -1,5 +1,5 @@
 const SAVE_KEY = "prepflow.savedSession.v1";
-const PACK_CATALOG_PATH = "./data/pack-catalog.json";
+const PACK_CATALOG_PATH = "./data/pack-catalog.json?v=20260813-pediatrics-shelf-1";
 
 const hero = document.querySelector(".hero");
 const subjects = document.querySelector(".subjects");
@@ -10,6 +10,7 @@ const openQuizBuilderButton = document.querySelector("#open-quiz-builder");
 const closeQuizBuilderButton = document.querySelector("#close-quiz-builder");
 const doneChaptersButton = document.querySelector("#done-chapters");
 const quizBuilderOpenBook = document.querySelector("#quiz-builder-openbook");
+const shelfPlaques = document.querySelector(".quiz-builder-shelf-plaques");
 
 const resumePanel = document.querySelector("#resume-panel");
 const resumeDescription = document.querySelector("#resume-description");
@@ -317,9 +318,17 @@ function bookButton(book) {
   return button;
 }
 
+function shelfPlaque(book) {
+  const plaque = document.createElement("div");
+  plaque.className = `quiz-builder-shelf-plaque ${book.theme}-plaque`;
+  plaque.textContent = book.shelf_label || book.title;
+  return plaque;
+}
+
 function renderBookCatalog(catalog) {
   packCatalog = catalog.books;
   subjects.replaceChildren(...packCatalog.map(bookButton));
+  shelfPlaques.replaceChildren(...packCatalog.filter((book) => book.art).map(shelfPlaque));
   document.dispatchEvent(new CustomEvent("prepflow:catalog-ready"));
   updateSelectionStatus();
 }

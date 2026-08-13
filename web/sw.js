@@ -1,6 +1,6 @@
 importScripts("./pack-precache.js");
 
-const CACHE_NAME = `prepflow-pwa-v7-generic-pack-catalog-${self.PREPFLOW_PACK_PRECACHE.version}`;
+const CACHE_NAME = `prepflow-pwa-v8-pediatrics-shelf-${self.PREPFLOW_PACK_PRECACHE.version}`;
 
 const APP_FILES = [
   "./",

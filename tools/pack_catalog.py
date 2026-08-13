@@ -65,10 +65,26 @@ def load_public_pack(path: Path) -> dict:
 # Decoration is optional.  A Pack absent from this table is still a complete,
 # selectable book in the generic UI.
 DECORATIONS = {
-    "fundamentals": {"theme": "fundamentals", "art": "images/quiz-builder/books/fundamentals-closed.png"},
-    "pharmacy": {"theme": "pharm", "art": "images/quiz-builder/books/pharm-closed.png?v=20260727-pharm-2"},
-    "medical_surgical": {"theme": "med-surg", "art": "images/quiz-builder/books/medsurg-closed.png"},
+    "fundamentals": {
+        "theme": "fundamentals", "shelf_label": "Fundamentals",
+        "art": "images/quiz-builder/books/fundamentals-closed.png",
+    },
+    "pharmacy": {
+        "theme": "pharm", "shelf_label": "Pharm",
+        "art": "images/quiz-builder/books/pharm-closed.png?v=20260727-pharm-2",
+    },
+    "medical_surgical": {
+        "theme": "med-surg", "shelf_label": "Med-Surg",
+        "art": "images/quiz-builder/books/medsurg-closed.png",
+    },
+    "pediatrics": {
+        "theme": "pediatrics", "shelf_label": "Pediatrics",
+        "art": "images/quiz-builder/books/pediatrics-closed.png?v=20260813-1",
+    },
 }
+
+# Preserve the established shelf reading order and add Pediatrics at the right.
+SHELF_ORDER = ("fundamentals", "pharmacy", "medical_surgical", "pediatrics")
 
 
 def pack_catalog(pack_directory: Path) -> dict:
@@ -114,6 +130,8 @@ def pack_catalog(pack_directory: Path) -> dict:
         book.update(DECORATIONS.get(pack_id, {}))
         books.append(book)
         seen_ids.add(pack_id)
+    order = {pack_id: index for index, pack_id in enumerate(SHELF_ORDER)}
+    books.sort(key=lambda book: (order.get(book["id"], len(order)), book["title"].casefold()))
     return {"format": CATALOG_FORMAT, "version": CATALOG_VERSION, "books": books}
 
 

@@ -87,6 +87,7 @@ remain separate transparent clickable artwork:
 web/images/quiz-builder/books/fundamentals-closed.png
 web/images/quiz-builder/books/pharm-closed.png
 web/images/quiz-builder/books/medsurg-closed.png
+web/images/quiz-builder/books/pediatrics-closed.png
 ```
 
 The earlier files under `web/images/book-sprite-preview/` are historical and
@@ -101,7 +102,7 @@ web/images/quiz-builder/books/quizbook-transparent.png
 This neutral open book contains no subject-specific or changing information.
 Subject title, chapters, counts, selection state, navigation, and accessibility
 remain live browser-owned content. The same open-book asset is intentionally
-reused for all three subjects.
+reused for all four subjects.
 
 Books own:
 

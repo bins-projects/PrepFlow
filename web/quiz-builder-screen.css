@@ -614,6 +614,10 @@ body.builder-open .app-shell {
   left: calc(var(--medsurg-station-x) - 4.8%) !important;
 }
 
+.quiz-builder-screen .subject-card.pediatrics {
+  left: calc(var(--pediatrics-station-x) - 4.8%) !important;
+}
+
 .quiz-builder-screen .approved-book-art {
   display: block !important;
   width: 100% !important;
@@ -625,9 +629,10 @@ body.builder-open .app-shell {
 .quiz-builder-window {
   container-type: inline-size;
 
-  --fundamentals-station-x: 25.9%;
-  --pharm-station-x: 49.6%;
-  --medsurg-station-x: 73.3%;
+  --fundamentals-station-x: 15.5%;
+  --pharm-station-x: 38.5%;
+  --medsurg-station-x: 61.5%;
+  --pediatrics-station-x: 84.5%;
 }
 
 .quiz-builder-screen .subject-card {
@@ -651,7 +656,21 @@ body.builder-open .app-shell {
 }
 
 .quiz-builder-screen .subject-card.med-surg {
-  --book-launch-x: -23.3cqw;
+  --book-launch-x: -11.5cqw;
+  --book-center-scale: 2.11;
+  --book-center-pulse-scale: 2.23;
+}
+
+.quiz-builder-screen .subject-card.fundamentals {
+  --book-launch-x: 34.5cqw;
+}
+
+.quiz-builder-screen .subject-card.pharm {
+  --book-launch-x: 11.5cqw;
+}
+
+.quiz-builder-screen .subject-card.pediatrics {
+  --book-launch-x: -34.5cqw;
   --book-center-scale: 2.11;
   --book-center-pulse-scale: 2.23;
 }
@@ -933,8 +952,12 @@ body.book-launching .quiz-builder-screen .subject-card:not(.is-launching) {
   left: var(--pharm-station-x);
 }
 
-.quiz-builder-shelf-plaque.medsurg-plaque {
+.quiz-builder-shelf-plaque.med-surg-plaque {
   left: var(--medsurg-station-x);
+}
+
+.quiz-builder-shelf-plaque.pediatrics-plaque {
+  left: var(--pediatrics-station-x);
 }
 
 

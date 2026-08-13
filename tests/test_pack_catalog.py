@@ -8,7 +8,7 @@ import pytest
 from tools.pack_catalog import CATALOG_FORMAT, pack_catalog, write_catalog
 
 
-def write_pack(path: Path, *, pack_id: str = "pediatrics", title: str = "Pediatrics") -> None:
+def write_pack(path: Path, *, pack_id: str = "unskinned", title: str = "Unskinned") -> None:
     path.write_text(json.dumps({
         "format": "prepflow_pack", "version": "1.0", "pack_id": pack_id,
         "title": title,
@@ -23,14 +23,14 @@ def write_pack(path: Path, *, pack_id: str = "pediatrics", title: str = "Pediatr
 
 def test_catalog_includes_valid_unstyled_pack_with_dynamic_metadata(tmp_path: Path) -> None:
     packs = tmp_path / "packs"; packs.mkdir()
-    write_pack(packs / "pediatrics.prepflow.json")
+    write_pack(packs / "unskinned.prepflow.json")
 
     catalog = pack_catalog(packs)
 
     assert catalog["format"] == CATALOG_FORMAT
     assert catalog["books"] == [{
-        "id": "pediatrics", "title": "Pediatrics",
-        "path": "../packs/pediatrics.prepflow.json",
+        "id": "unskinned", "title": "Unskinned",
+        "path": "../packs/unskinned.prepflow.json",
         "question_count": 1, "chapter_count": 1,
     }]
 
@@ -50,7 +50,7 @@ def test_catalog_write_is_metadata_only_and_rejects_invalid_installed_pack(tmp_p
 
 
 def test_installer_adds_pack_and_catalog_entry_without_book_specific_ui(tmp_path: Path) -> None:
-    source = tmp_path / "pediatrics.prepflow.json"
+    source = tmp_path / "unskinned.prepflow.json"
     write_pack(source)
     packs = tmp_path / "installed"; catalog = tmp_path / "web" / "data" / "pack-catalog.json"
 
@@ -60,4 +60,4 @@ def test_installer_adds_pack_and_catalog_entry_without_book_specific_ui(tmp_path
     ], check=True)
 
     assert (packs / source.name).is_file()
-    assert json.loads(catalog.read_text(encoding="utf-8"))["books"][0]["id"] == "pediatrics"
+    assert json.loads(catalog.read_text(encoding="utf-8"))["books"][0]["id"] == "unskinned"
