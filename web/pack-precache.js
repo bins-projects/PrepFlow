@@ -1,1 +1,1 @@
-self.PREPFLOW_PACK_PRECACHE = {"version": "807399957e74efdf", "urls": ["../packs/fundamentals.prepflow.json", "../packs/medical_surgical.prepflow.json", "../packs/pharmacy.prepflow.json"]};
+self.PREPFLOW_PACK_PRECACHE = {"version": "0bbae8763141327a", "urls": ["../packs/fundamentals.prepflow.json", "../packs/medical_surgical.prepflow.json", "../packs/pediatrics.prepflow.json", "../packs/pharmacy.prepflow.json"]};

@@ -7,15 +7,60 @@ questions into ``web/data``.
 """
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 from pathlib import Path
-
-from compiler.repair import RepairError, load_pack
-
 
 CATALOG_FORMAT = "prepflow_pack_catalog"
 CATALOG_VERSION = "1.0"
+
+
+class PackValidationError(ValueError):
+    """Public runtime validation; deliberately independent of private pipeline code."""
+
+
+def load_public_pack(path: Path) -> dict:
+    """Load the Pack shape needed by the static browser catalog and quiz flow."""
+    try:
+        document = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise PackValidationError(f"cannot read JSON: {error}") from error
+    if not isinstance(document, dict):
+        raise PackValidationError("root must be an object")
+    if document.get("format") != "prepflow_pack" or document.get("version") != "1.0":
+        raise PackValidationError("unsupported Pack format")
+    for key in ("pack_id", "title"):
+        if not isinstance(document.get(key), str) or not document[key].strip():
+            raise PackValidationError(f"missing {key}")
+    questions = document.get("questions")
+    if not isinstance(questions, list) or not questions:
+        raise PackValidationError("questions must be a nonempty list")
+    seen_ids: set[str] = set()
+    for index, question in enumerate(questions, start=1):
+        if not isinstance(question, dict):
+            raise PackValidationError(f"question {index} must be an object")
+        question_id = question.get("id")
+        if not isinstance(question_id, str) or not question_id.strip() or question_id in seen_ids:
+            raise PackValidationError(f"question {index} has an invalid or duplicate id")
+        seen_ids.add(question_id)
+        if not isinstance(question.get("stem"), str) or not question["stem"].strip():
+            raise PackValidationError(f"question {index} is missing a stem")
+        choices = question.get("choices")
+        answers = question.get("correct_answers")
+        if not isinstance(choices, list) or not isinstance(answers, list) or not answers:
+            raise PackValidationError(f"question {index} is missing choices or answers")
+        if question.get("type") == "completion":
+            if not all(isinstance(answer, str) and answer.strip() for answer in answers):
+                raise PackValidationError(f"question {index} has invalid completion answers")
+        elif choices:
+            labels = {choice.get("label") for choice in choices if isinstance(choice, dict)}
+            if len(labels) != len(choices) or not labels or not all(isinstance(label, str) and label for label in labels):
+                raise PackValidationError(f"question {index} has invalid choices")
+            if any(answer not in labels for answer in answers):
+                raise PackValidationError(f"question {index} has invalid correct answers")
+        else:
+            raise PackValidationError(f"question {index} is missing choices")
+    return document
 
 # Decoration is optional.  A Pack absent from this table is still a complete,
 # selectable book in the generic UI.
@@ -32,8 +77,8 @@ def pack_catalog(pack_directory: Path) -> dict:
     seen_ids: set[str] = set()
     for path in sorted(pack_directory.glob("*.prepflow.json"), key=lambda item: item.name.casefold()):
         try:
-            pack = load_pack(path)
-        except RepairError as error:
+            pack = load_public_pack(path)
+        except PackValidationError as error:
             raise ValueError(f"Invalid installed Pack {path.name}: {error}") from error
         pack_id = pack["pack_id"]
         title = pack.get("title")

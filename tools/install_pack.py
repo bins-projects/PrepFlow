@@ -11,8 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from compiler.repair import RepairError, load_pack
-from pack_catalog import write_catalog
+from pack_catalog import PackValidationError, load_public_pack, write_catalog
 
 
 def main() -> None:
@@ -25,8 +24,8 @@ def main() -> None:
     if source.is_symlink() or not source.is_file() or source.suffixes[-2:] != [".prepflow", ".json"]:
         raise SystemExit("Pack must be a real .prepflow.json file")
     try:
-        load_pack(source)
-    except RepairError as error:
+        load_public_pack(source)
+    except PackValidationError as error:
         raise SystemExit(f"Pack is invalid: {error}") from error
     destination = args.packs / source.name
     if destination.exists():
