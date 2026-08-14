@@ -38,6 +38,10 @@ const buildQuizButton = document.querySelector("#build-quiz");
 const quizScreen = document.querySelector("#quiz-screen");
 const quizSubject = document.querySelector("#quiz-subject");
 const quizPosition = document.querySelector("#quiz-position");
+const quizQuestionId = document.querySelector("#quiz-question-id");
+const copyQuestionIdButton = document.querySelector("#copy-question-id");
+const copyQuestionReportButton = document.querySelector("#copy-question-report");
+const questionCopyStatus = document.querySelector("#question-copy-status");
 const quizProgress = document.querySelector("#quiz-progress");
 const questionStem = document.querySelector("#question-stem");
 const answerChoices = document.querySelector("#answer-choices");
@@ -503,6 +507,76 @@ function currentQuestion() {
   return question;
 }
 
+function currentQuestionPack() {
+  return loadedPacks.get(currentQuestionReference().packPath);
+}
+
+function displayQuestionReference(packTitle, questionId) {
+  return PrepFlowQuestionReferenceRules.stableReference(
+    packTitle,
+    questionId
+  ).concise;
+}
+
+function currentQuizSessionPosition() {
+  const reference = currentQuestionReference();
+  const originalIndex = reviewMode
+    ? sessionQuestions.findIndex(
+        (candidate) => candidate.packPath === reference.packPath
+          && candidate.questionId === reference.questionId
+      )
+    : questionIndex;
+  const position = originalIndex >= 0 ? originalIndex + 1 : questionIndex + 1;
+  return `Question ${position} of ${sessionQuestions.length}${reviewMode ? " (redo misses)" : ""}`;
+}
+
+async function copyTextLocally(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const fallback = document.createElement("textarea");
+  fallback.value = text;
+  fallback.setAttribute("readonly", "");
+  fallback.style.position = "fixed";
+  fallback.style.opacity = "0";
+  document.body.append(fallback);
+  fallback.select();
+  const copied = document.execCommand("copy");
+  fallback.remove();
+  if (!copied) throw new Error("Clipboard access is unavailable.");
+}
+
+function showCopyStatus(message) {
+  questionCopyStatus.textContent = message;
+  window.setTimeout(() => {
+    if (questionCopyStatus.textContent === message) questionCopyStatus.textContent = "";
+  }, 2500);
+}
+
+async function copyCurrentQuestionId() {
+  const question = currentQuestion();
+  const reference = PrepFlowQuestionReferenceRules.stableReference(
+    currentQuestionPack()?.title,
+    question.id
+  );
+  if (!reference.available) return;
+  await copyTextLocally(reference.fullId);
+  showCopyStatus("Copied full PFQ ID.");
+}
+
+async function copyCurrentQuestionReport() {
+  const question = currentQuestion();
+  const packTitle = currentQuestionPack()?.title || "Pack";
+  const report = PrepFlowQuestionReferenceRules.reportText({
+    packTitle,
+    question,
+    progress: currentQuizSessionPosition(),
+  });
+  await copyTextLocally(report);
+  showCopyStatus("Copied question report.");
+}
+
 function totalBlockCount() {
   return PrepFlowSessionRules.totalBlockCount(
     sessionQuestions.length,
@@ -512,6 +586,11 @@ function totalBlockCount() {
 
 function showQuestion() {
   const question = currentQuestion();
+  const questionPack = currentQuestionPack();
+  const stableReference = PrepFlowQuestionReferenceRules.stableReference(
+    questionPack?.title,
+    question.id
+  );
   const isMultipleResponse = PrepFlowQuizRules.isMultipleResponseQuestion(question);
   const blockLength = blockEnd - blockStart;
 
@@ -521,6 +600,12 @@ function showQuestion() {
   quizScreen.hidden = false;
 
   quizSubject.textContent = currentSubject;
+  quizQuestionId.textContent = displayQuestionReference(questionPack?.title, question.id);
+  quizQuestionId.title = stableReference.available ? stableReference.fullId : "";
+  copyQuestionIdButton.disabled = !stableReference.available;
+  copyQuestionIdButton.title = stableReference.available ? `Copy ${stableReference.fullId}` : "Reference unavailable";
+  copyQuestionReportButton.disabled = false;
+  questionCopyStatus.textContent = "";
 
   if (reviewMode) {
     quizPosition.textContent = PrepFlowDisplayRules.quizPositionText({
@@ -1278,6 +1363,12 @@ document.querySelector("#back-button").addEventListener(
 );
 document.querySelector("#exit-quiz").addEventListener("click", showSubjects);
 document.querySelector("#summary-exit").addEventListener("click", showSubjects);
+copyQuestionIdButton.addEventListener("click", () => {
+  copyCurrentQuestionId().catch((error) => showCopyStatus(error.message));
+});
+copyQuestionReportButton.addEventListener("click", () => {
+  copyCurrentQuestionReport().catch((error) => showCopyStatus(error.message));
+});
 
 document.querySelector("#select-all").addEventListener("click", () => {
   chapterList.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
