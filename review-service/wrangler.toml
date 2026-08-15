@@ -1,0 +1,14 @@
+name = "prepflow-question-review"
+main = "src/index.js"
+compatibility_date = "2026-08-15"
+
+[vars]
+# Comma-separated browser origins allowed to submit review requests.
+# GitHub Pages normally sends the account origin, for example:
+# https://bins-projects.github.io
+PUBLIC_ORIGINS = "https://bins-projects.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "prepflow-question-review"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
