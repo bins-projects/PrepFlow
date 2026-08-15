@@ -23,7 +23,9 @@ class QuizLifecycle:
     question_index: int = 0
     first_pass_correct: int = 0
     first_pass_missed: int = 0
+    first_pass_skipped: int = 0
     block_correct: int = 0
+    block_skipped: int = 0
     block_missed: list[int] = field(default_factory=list)
     review_queue: list[int] = field(default_factory=list)
     current_review: int | None = None
@@ -48,6 +50,24 @@ class QuizLifecycle:
         else:
             self.first_pass_missed += 1
             self.block_missed.append(self.question_index)
+
+    def skip(self) -> None:
+        if self.review_mode:
+            skipped = self.current_review
+            self.first_pass_missed = max(0, self.first_pass_missed - 1)
+            self.first_pass_skipped += 1
+            self.block_skipped += 1
+            self.block_missed = [
+                item for item in self.block_missed if item != skipped
+            ]
+            self.review_queue = [
+                item for item in self.review_queue if item != skipped
+            ]
+        else:
+            self.first_pass_skipped += 1
+            self.block_skipped += 1
+
+        self.continue_from_feedback()
 
     def continue_from_feedback(self) -> None:
         if self.review_mode:
@@ -107,9 +127,11 @@ class QuizLifecycle:
         block_length = self.block_end - self.block_start
         return {
             "block_correct": self.block_correct,
-            "block_total": block_length,
+            "block_total": max(0, block_length - self.block_skipped),
             "cumulative_correct": self.first_pass_correct,
-            "cumulative_total": self.block_end,
+            "cumulative_total": max(
+                0, self.block_end - self.first_pass_skipped
+            ),
             "missed_mastered": len(self.block_missed),
             "overall_completed": self.block_end,
             "overall_total": self.total_questions,
@@ -282,3 +304,67 @@ def test_browser_uses_the_tested_lifecycle_contract() -> None:
     assert "advanceToNextBlock(saved.blockEnd);" in app
     assert 'saveSession("block-progress");' in app
     assert 'saved.screen === "block-progress"' in app
+
+
+def test_first_pass_skip_is_neither_correct_nor_missed() -> None:
+    quiz = QuizLifecycle(2, 2)
+    quiz.skip()
+    assert quiz.question_index == 1
+    assert quiz.first_pass_correct == 0
+    assert quiz.first_pass_missed == 0
+    assert quiz.first_pass_skipped == 1
+    assert quiz.block_missed == []
+
+
+def test_first_pass_skip_does_not_enter_redo_queue() -> None:
+    quiz = QuizLifecycle(1, 1)
+    quiz.skip()
+    assert quiz.review_mode is False
+    assert quiz.review_queue == []
+    assert quiz.screen == "final-summary"
+
+
+def test_skipping_broken_question_during_review_neutralizes_original_miss() -> None:
+    quiz = QuizLifecycle(1, 1)
+    quiz.answer(False)
+    quiz.continue_from_feedback()
+    assert quiz.first_pass_missed == 1
+    assert quiz.review_mode is True
+
+    quiz.skip()
+
+    assert quiz.first_pass_missed == 0
+    assert quiz.first_pass_skipped == 1
+    assert quiz.block_missed == []
+    assert quiz.review_queue == []
+    assert quiz.screen == "final-summary"
+
+
+def test_skip_reduces_scored_denominator_but_not_quiz_progress() -> None:
+    quiz = QuizLifecycle(
+        4,
+        2,
+        question_index=2,
+        first_pass_correct=1,
+        first_pass_skipped=1,
+        block_correct=1,
+        block_skipped=1,
+    )
+    stats = quiz.block_progress_statistics()
+    assert stats["block_total"] == 1
+    assert stats["cumulative_total"] == 1
+    assert stats["overall_completed"] == 2
+    assert stats["overall_total"] == 4
+
+
+def test_browser_skip_contract_neutralizes_score_and_redo() -> None:
+    app = (ROOT / "web/app.js").read_text()
+    html = (ROOT / "web/index.html").read_text()
+
+    assert 'id="skip-question"' in html
+    assert 'id="copy-question-id"' not in html
+    assert 'id="copy-question-report"' not in html
+    assert "firstPassSkipped += 1;" in app
+    assert "firstPassMissed = Math.max(0, firstPassMissed - 1);" in app
+    assert "blockMissed = blockMissed.filter(" in app
+    assert "sessionQuestions.length - firstPassSkipped" in app

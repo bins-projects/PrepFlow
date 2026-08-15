@@ -1,6 +1,6 @@
 importScripts("./pack-precache.js");
 
-const CACHE_NAME = `prepflow-pwa-v9-question-references-${self.PREPFLOW_PACK_PRECACHE.version}`;
+const CACHE_NAME = `prepflow-pwa-v10-review-skip-${self.PREPFLOW_PACK_PRECACHE.version}`;
 
 const APP_FILES = [
   "./",

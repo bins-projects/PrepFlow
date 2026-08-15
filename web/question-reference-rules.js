@@ -131,7 +131,12 @@
     button.textContent = "Send for review";
     button.disabled = true;
     button.addEventListener("click", () => { void sendForReview(button); });
-    actions.append(button);
+    const skipButton = document.querySelector("#skip-question");
+    if (skipButton && skipButton.parentNode === actions) {
+      actions.insertBefore(button, skipButton);
+    } else {
+      actions.append(button);
+    }
 
     document.addEventListener("prepflow:question-shown", () => updateReviewButton(button));
     void loadReviewConfig(button);

@@ -41,6 +41,7 @@ const quizPosition = document.querySelector("#quiz-position");
 const quizQuestionId = document.querySelector("#quiz-question-id");
 const copyQuestionIdButton = document.querySelector("#copy-question-id");
 const copyQuestionReportButton = document.querySelector("#copy-question-report");
+const skipQuestionButton = document.querySelector("#skip-question");
 const questionCopyStatus = document.querySelector("#question-copy-status");
 const quizProgress = document.querySelector("#quiz-progress");
 const questionStem = document.querySelector("#question-stem");
@@ -80,7 +81,9 @@ let blockNumber = 1;
 
 let firstPassCorrect = 0;
 let firstPassMissed = 0;
+let firstPassSkipped = 0;
 let blockCorrect = 0;
+let blockSkipped = 0;
 let blockMissed = [];
 
 let reviewQueue = [];
@@ -123,7 +126,9 @@ function saveSession(screen) {
     blockNumber,
     firstPassCorrect,
     firstPassMissed,
+    firstPassSkipped,
     blockCorrect,
+    blockSkipped,
     blockMissed,
     reviewQueue,
     reviewMode,
@@ -602,9 +607,14 @@ function showQuestion() {
   quizSubject.textContent = currentSubject;
   quizQuestionId.textContent = displayQuestionReference(questionPack?.title, question.id);
   quizQuestionId.title = stableReference.available ? stableReference.fullId : "";
-  copyQuestionIdButton.disabled = !stableReference.available;
-  copyQuestionIdButton.title = stableReference.available ? `Copy ${stableReference.fullId}` : "Reference unavailable";
-  copyQuestionReportButton.disabled = false;
+  if (copyQuestionIdButton) {
+    copyQuestionIdButton.disabled = !stableReference.available;
+    copyQuestionIdButton.title = stableReference.available ? `Copy ${stableReference.fullId}` : "Reference unavailable";
+  }
+  if (copyQuestionReportButton) {
+    copyQuestionReportButton.disabled = false;
+  }
+  skipQuestionButton.disabled = false;
   questionCopyStatus.textContent = "";
 
   if (reviewMode) {
@@ -695,6 +705,7 @@ function beginBlock() {
 
   questionIndex = blockStart;
   blockCorrect = 0;
+  blockSkipped = 0;
   blockMissed = [];
   reviewQueue = [];
   reviewMode = false;
@@ -708,7 +719,10 @@ function showFinalSummary() {
   blockSummary.hidden = false;
   blockSummary.dataset.summaryState = "final";
 
-  const totalQuestions = sessionQuestions.length;
+  const totalQuestions = Math.max(
+    0,
+    sessionQuestions.length - firstPassSkipped
+  );
   const percentage = PrepFlowSessionRules.firstPassPercentage(
     firstPassCorrect,
     totalQuestions
@@ -756,13 +770,18 @@ function renderMobileBlockProgress(blockLength) {
     totalQuestions
   );
   const nextBlockLength = nextBlockEnd - blockEnd;
+  const blockScoredTotal = Math.max(0, blockLength - blockSkipped);
+  const cumulativeScoredTotal = Math.max(
+    0,
+    cumulativeCompleted - firstPassSkipped
+  );
   const blockPercentage = PrepFlowSessionRules.firstPassPercentage(
     blockCorrect,
-    blockLength
+    blockScoredTotal
   );
   const cumulativePercentage = PrepFlowSessionRules.firstPassPercentage(
     firstPassCorrect,
-    cumulativeCompleted
+    cumulativeScoredTotal
   );
   const overallPercentage = PrepFlowSessionRules.firstPassPercentage(
     cumulativeCompleted,
@@ -776,12 +795,12 @@ function renderMobileBlockProgress(blockLength) {
   appendProgressStat(
     summaryMessage,
     "Block first-attempt score",
-    `${blockCorrect} of ${blockLength} correct (${blockPercentage}%)`
+    `${blockCorrect} of ${blockScoredTotal} correct (${blockPercentage}%)`
   );
   appendProgressStat(
     summaryMessage,
     "Cumulative first-attempt score",
-    `${firstPassCorrect} of ${cumulativeCompleted} correct (${cumulativePercentage}%)`
+    `${firstPassCorrect} of ${cumulativeScoredTotal} correct (${cumulativePercentage}%)`
   );
   appendProgressStat(
     summaryMessage,
@@ -850,7 +869,7 @@ function showBlockSummary(mastered = false) {
   );
   summaryScore.textContent = PrepFlowDisplayRules.firstPassBlockScoreText(
     blockCorrect,
-    blockLength
+    Math.max(0, blockLength - blockSkipped)
   );
   summaryMessage.textContent = PrepFlowDisplayRules.blockMessage(
     missedCount,
@@ -1013,6 +1032,7 @@ async function startQuiz() {
   blockNumber = 1;
   firstPassCorrect = 0;
   firstPassMissed = 0;
+  firstPassSkipped = 0;
 
   beginBlock();
 }
@@ -1049,7 +1069,9 @@ async function resumeSavedSession() {
 
     firstPassCorrect = saved.firstPassCorrect;
     firstPassMissed = saved.firstPassMissed;
+    firstPassSkipped = saved.firstPassSkipped || 0;
     blockCorrect = saved.blockCorrect;
+    blockSkipped = saved.blockSkipped || 0;
     blockMissed = saved.blockMissed || [];
 
     reviewQueue = saved.reviewQueue || [];
@@ -1106,6 +1128,7 @@ submitAnswer.addEventListener("click", () => {
 
   questionSubmissionState = "grading";
   submitAnswer.disabled = true;
+  skipQuestionButton.disabled = true;
 
   let scoringStarted = false;
 
@@ -1179,6 +1202,48 @@ submitAnswer.addEventListener("click", () => {
     throw error;
   }
 });
+
+function sameQuestionReference(left, right) {
+  return Boolean(
+    left
+    && right
+    && left.packPath === right.packPath
+    && left.questionId === right.questionId
+  );
+}
+
+function skipCurrentQuestion() {
+  if (questionSubmissionState !== "idle") {
+    return;
+  }
+
+  questionSubmissionState = "skipped";
+  skipQuestionButton.disabled = true;
+
+  if (reviewMode) {
+    const skipped = currentReviewQuestion;
+
+    firstPassMissed = Math.max(0, firstPassMissed - 1);
+    firstPassSkipped += 1;
+    blockSkipped += 1;
+
+    blockMissed = blockMissed.filter(
+      (reference) => !sameQuestionReference(reference, skipped)
+    );
+    reviewQueue = reviewQueue.filter(
+      (reference) => !sameQuestionReference(reference, skipped)
+    );
+
+    advanceFromFeedback();
+    return;
+  }
+
+  firstPassSkipped += 1;
+  blockSkipped += 1;
+  advanceFromFeedback();
+}
+
+skipQuestionButton.addEventListener("click", skipCurrentQuestion);
 
 function advanceFromFeedback() {
   if (reviewMode) {
@@ -1363,10 +1428,10 @@ document.querySelector("#back-button").addEventListener(
 );
 document.querySelector("#exit-quiz").addEventListener("click", showSubjects);
 document.querySelector("#summary-exit").addEventListener("click", showSubjects);
-copyQuestionIdButton.addEventListener("click", () => {
+copyQuestionIdButton?.addEventListener("click", () => {
   copyCurrentQuestionId().catch((error) => showCopyStatus(error.message));
 });
-copyQuestionReportButton.addEventListener("click", () => {
+copyQuestionReportButton?.addEventListener("click", () => {
   copyCurrentQuestionReport().catch((error) => showCopyStatus(error.message));
 });
 
