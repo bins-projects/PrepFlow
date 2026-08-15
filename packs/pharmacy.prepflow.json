@@ -2451,7 +2451,7 @@
       "id": "PFQ-pharmacy-000000082",
       "chapter": 2,
       "chapter_title": "Safely Preparing And Giving Drugs",
-      "type": "multiple_response",
+      "type": "multiple_choice",
       "stem": "You Are Giving Morning Medications To A Patient Who Refuses To Take An Oral Dose Of Docusate (Colace). What Is Your Best Response?",
       "choices": [
         {
@@ -2751,7 +2751,8 @@
         "B"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000093"
+      "source_record_id": "PFV2-REC-000093",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000094",
@@ -2781,7 +2782,8 @@
         "A"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000094"
+      "source_record_id": "PFV2-REC-000094",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000095",
@@ -2811,7 +2813,8 @@
         "C"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000095"
+      "source_record_id": "PFV2-REC-000095",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000096",
@@ -2824,7 +2827,8 @@
         "2"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000096"
+      "source_record_id": "PFV2-REC-000096",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000097",
@@ -2837,7 +2841,8 @@
         "5"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000097"
+      "source_record_id": "PFV2-REC-000097",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000098",
@@ -2850,7 +2855,8 @@
         "1.25"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000098"
+      "source_record_id": "PFV2-REC-000098",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000099",
@@ -2863,7 +2869,8 @@
         "15"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000099"
+      "source_record_id": "PFV2-REC-000099",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000100",
@@ -2876,7 +2883,8 @@
         "1"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000100"
+      "source_record_id": "PFV2-REC-000100",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000101",
@@ -2889,7 +2897,8 @@
         "0.4"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000101"
+      "source_record_id": "PFV2-REC-000101",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000102",
@@ -2902,7 +2911,8 @@
         "0.23"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000102"
+      "source_record_id": "PFV2-REC-000102",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000103",
@@ -2915,7 +2925,8 @@
         "0.4"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000103"
+      "source_record_id": "PFV2-REC-000103",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000104",
@@ -2945,7 +2956,8 @@
         "C"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000104"
+      "source_record_id": "PFV2-REC-000104",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000105",
@@ -2975,7 +2987,8 @@
         "D"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000105"
+      "source_record_id": "PFV2-REC-000105",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000106",
@@ -3005,7 +3018,8 @@
         "C"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000106"
+      "source_record_id": "PFV2-REC-000106",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000107",
@@ -3035,7 +3049,8 @@
         "B"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000107"
+      "source_record_id": "PFV2-REC-000107",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000108",
@@ -3065,7 +3080,8 @@
         "D"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000108"
+      "source_record_id": "PFV2-REC-000108",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000109",
@@ -3095,7 +3111,8 @@
         "B"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000109"
+      "source_record_id": "PFV2-REC-000109",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000110",
@@ -3125,7 +3142,8 @@
         "B"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000110"
+      "source_record_id": "PFV2-REC-000110",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000111",
@@ -3155,7 +3173,8 @@
         "C"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000111"
+      "source_record_id": "PFV2-REC-000111",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000112",
@@ -3185,7 +3204,8 @@
         "D"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000112"
+      "source_record_id": "PFV2-REC-000112",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000113",
@@ -3245,7 +3265,8 @@
         "D"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000114"
+      "source_record_id": "PFV2-REC-000114",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000115",
@@ -3275,7 +3296,8 @@
         "C"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000115"
+      "source_record_id": "PFV2-REC-000115",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000116",
@@ -3305,7 +3327,8 @@
         "B"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000116"
+      "source_record_id": "PFV2-REC-000116",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000117",
@@ -3335,7 +3358,8 @@
         "A"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000117"
+      "source_record_id": "PFV2-REC-000117",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000118",
@@ -3365,7 +3389,8 @@
         "A"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000118"
+      "source_record_id": "PFV2-REC-000118",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000119",
@@ -3395,7 +3420,8 @@
         "D"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000119"
+      "source_record_id": "PFV2-REC-000119",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000120",
@@ -3425,7 +3451,8 @@
         "B"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000120"
+      "source_record_id": "PFV2-REC-000120",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000121",
@@ -3455,7 +3482,8 @@
         "C"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000121"
+      "source_record_id": "PFV2-REC-000121",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000122",
@@ -3485,7 +3513,8 @@
         "A"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000122"
+      "source_record_id": "PFV2-REC-000122",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000123",
@@ -3515,7 +3544,8 @@
         "C"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000123"
+      "source_record_id": "PFV2-REC-000123",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000124",
@@ -3528,7 +3558,8 @@
         "6"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000124"
+      "source_record_id": "PFV2-REC-000124",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000125",
@@ -3541,7 +3572,8 @@
         "9.4"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000125"
+      "source_record_id": "PFV2-REC-000125",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000126",
@@ -3554,7 +3586,8 @@
         "1"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000126"
+      "source_record_id": "PFV2-REC-000126",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000127",
@@ -3567,7 +3600,8 @@
         "0.6"
       ],
       "rationale": "",
-      "source_record_id": "PFV2-REC-000127"
+      "source_record_id": "PFV2-REC-000127",
+      "rationale_source_status": "not_provided"
     },
     {
       "id": "PFQ-pharmacy-000000128",
@@ -6729,7 +6763,7 @@
       "id": "PFQ-pharmacy-000000240",
       "chapter": 6,
       "chapter_title": "Antiinfectives: Antibacterial Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "A Patient Is Being Discharged Home On Antibacterial Drug Therapy. What Instructions Should You Teach The Patient About Allergic Reactions? (Select All That Apply)",
       "choices": [
         {
@@ -6768,7 +6802,7 @@
       "id": "PFQ-pharmacy-000000241",
       "chapter": 6,
       "chapter_title": "Antiinfectives: Antibacterial Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "A Patient Is Prescribed Azithromycin (Zithromax) 500 Mg On The First Day And 250 Mg For Days 2 Through 5. Which Side Effects Will You Watch For After The Patient Starts Taking This Drug? (Select All That Apply)",
       "choices": [
         {
@@ -6808,7 +6842,7 @@
       "id": "PFQ-pharmacy-000000242",
       "chapter": 6,
       "chapter_title": "Antiinfectives: Antibacterial Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "A Patient Is Prescribed Ciprofloxacin (Cipro) 500 Mg Every 8 Hours. Which Are Common Side Effects Of This Drug? (Select All That Apply)",
       "choices": [
         {
@@ -8348,7 +8382,7 @@
       "id": "PFQ-pharmacy-000000293",
       "chapter": 7,
       "chapter_title": "Antiinfectives: Antiviral Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Antiretroviral Drugs Have Greater Effectiveness When Administered With Ritonavir? (Select All That Apply)",
       "choices": [
         {
@@ -8393,7 +8427,7 @@
       "id": "PFQ-pharmacy-000000294",
       "chapter": 7,
       "chapter_title": "Antiinfectives: Antiviral Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Patient Outcomes Are Major Goals Of Antiretroviral Therapy? (Select All That Apply)",
       "choices": [
         {
@@ -9583,7 +9617,7 @@
       "id": "PFQ-pharmacy-000000335",
       "chapter": 8,
       "chapter_title": "Antiinfectives: Antitubercular and Antifungal Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Changes Are Intended Responses Of First-Line Antituberculosis Drugs? (Select All That Apply)",
       "choices": [
         {
@@ -9623,7 +9657,7 @@
       "id": "PFQ-pharmacy-000000336",
       "chapter": 8,
       "chapter_title": "Antiinfectives: Antitubercular and Antifungal Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "A Pregnant Patient Is Taking All Four First-Line Drugs For Tuberculosis (Tb). Which Additional Health Care Actions Are Needed For This Patient? (Select All That Apply)",
       "choices": [
         {
@@ -9663,7 +9697,7 @@
       "id": "PFQ-pharmacy-000000337",
       "chapter": 8,
       "chapter_title": "Antiinfectives: Antitubercular and Antifungal Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Precautions Are Important To Teach A Woman Using A Vaginal Cream Form Of An Antifungal Drug? (Select All That Apply)",
       "choices": [
         {
@@ -9707,7 +9741,7 @@
       "id": "PFQ-pharmacy-000000338",
       "chapter": 8,
       "chapter_title": "Antiinfectives: Antitubercular and Antifungal Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "A Patient Is Receiving Iv Caspofungin (Cancidas). Which Assessments Are Most Important To Perform Daily? (Select All That Apply)",
       "choices": [
         {
@@ -9752,7 +9786,7 @@
       "id": "PFQ-pharmacy-000000339",
       "chapter": 8,
       "chapter_title": "Antiinfectives: Antitubercular and Antifungal Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "An Older Adult Patient Is Prescribed Systemic Antifungal Therapy For 1 Month. Which Precautions Are Important To Teach This Patient? (Select All That Apply)",
       "choices": [
         {
@@ -10992,7 +11026,7 @@
       "id": "PFQ-pharmacy-000000381",
       "chapter": 9,
       "chapter_title": "Drugs for Pain Control, Migraines, and Skeletal Muscle Spasms",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Side Effects Are Commonly Associated With Most Nonsteroidal Anti- Inflammatory Drugs (Nsaids)? (Select All That Apply.)",
       "choices": [
         {
@@ -12262,7 +12296,7 @@
       "id": "PFQ-pharmacy-000000424",
       "chapter": 10,
       "chapter_title": "General Antiinflammatory Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Symptoms Of Inflammation Are Caused By Leakage Of Blood Plasma Into The Tissues At The Site Of Injury Or Invasion? (Select All That Apply)",
       "choices": [
         {
@@ -12293,7 +12327,7 @@
       "id": "PFQ-pharmacy-000000425",
       "chapter": 10,
       "chapter_title": "General Antiinflammatory Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Factors Determine The Size And Severity Of The Inflammatory Response? (Select All That Apply)",
       "choices": [
         {
@@ -12334,7 +12368,7 @@
       "id": "PFQ-pharmacy-000000426",
       "chapter": 10,
       "chapter_title": "General Antiinflammatory Drugs",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Main Signs And Symptoms Should You Teach A Patient To Recognize As Inflammation? (Select All That Apply)",
       "choices": [
         {
@@ -15350,7 +15384,7 @@
       "id": "PFQ-pharmacy-000000526",
       "chapter": 12,
       "chapter_title": "Drugs That Affect Urine Output",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Are Common Signs And Symptoms When A Patient Is Dehydrated? (Select All That Apply.)",
       "choices": [
         {
@@ -15390,7 +15424,7 @@
       "id": "PFQ-pharmacy-000000527",
       "chapter": 12,
       "chapter_title": "Drugs That Affect Urine Output",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Are Intended Responses Of Antispasmodic Drugs Used To Treat Overactive Bladder? (Select All That Apply.)",
       "choices": [
         {
@@ -16926,7 +16960,7 @@
       "id": "PFQ-pharmacy-000000579",
       "chapter": 13,
       "chapter_title": "Drug Therapy for Hypertension",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Statements Are True About Blood Pressure? (Select All That Apply)",
       "choices": [
         {
@@ -16967,7 +17001,7 @@
       "id": "PFQ-pharmacy-000000580",
       "chapter": 13,
       "chapter_title": "Drug Therapy for Hypertension",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Conditions Or Drugs Can Cause Secondary Hypertension? (Select All That Apply)",
       "choices": [
         {
@@ -18393,7 +18427,7 @@
       "id": "PFQ-pharmacy-000000629",
       "chapter": 14,
       "chapter_title": "Drug Therapy for Heart Failure",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Are Sympathetic Nervous System Compensatory Mechanisms Of The Body For Heart Failure? (Select All That Apply)",
       "choices": [
         {
@@ -18433,7 +18467,7 @@
       "id": "PFQ-pharmacy-000000630",
       "chapter": 14,
       "chapter_title": "Drug Therapy for Heart Failure",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Lifestyle Changes Should You Suggest To A Patient With Heart Failure? (Select All That Apply)",
       "choices": [
         {
@@ -18469,7 +18503,7 @@
       "id": "PFQ-pharmacy-000000631",
       "chapter": 14,
       "chapter_title": "Drug Therapy for Heart Failure",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "A Patient Has Been Prescribed Sublingual Nitroglycerin. Which Key Points Will You Teach The Patient About This Drug? (Select All That Apply)",
       "choices": [
         {
@@ -18506,7 +18540,7 @@
       "id": "PFQ-pharmacy-000000632",
       "chapter": 14,
       "chapter_title": "Drug Therapy for Heart Failure",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "A Patient Is To Receive Nesiritide (Natrecor). Which Patient Assessments Must Be Checked Before Giving This Drug? (Select All That Apply)",
       "choices": [
         {
@@ -19871,7 +19905,7 @@
       "id": "PFQ-pharmacy-000000679",
       "chapter": 15,
       "chapter_title": "Drug Therapy for Dysrhythmias",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Antidysrhythmic Drugs May Be Given By The Endotracheal Tube Route? (Select All That Apply)",
       "choices": [
         {
@@ -19907,7 +19941,7 @@
       "id": "PFQ-pharmacy-000000680",
       "chapter": 15,
       "chapter_title": "Drug Therapy for Dysrhythmias",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Foods Should You Teach Patients Are Good Sources Of Magnesium? (Select All That Apply)",
       "choices": [
         {
@@ -21151,7 +21185,7 @@
       "id": "PFQ-pharmacy-000000723",
       "chapter": 16,
       "chapter_title": "Drug Therapy for High Blood Lipids",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Health Problems Should You Teach A Patient Can Be Caused By Chronic Hyperlipidemia? (Select All That Apply)",
       "choices": [
         {
@@ -21187,7 +21221,7 @@
       "id": "PFQ-pharmacy-000000724",
       "chapter": 16,
       "chapter_title": "Drug Therapy for High Blood Lipids",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Teaching Points Should You Include For A Patient Prescribed Any Antihyperlipidemic Drug? (Select All That Apply)",
       "choices": [
         {
@@ -21223,7 +21257,7 @@
       "id": "PFQ-pharmacy-000000725",
       "chapter": 16,
       "chapter_title": "Drug Therapy for High Blood Lipids",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "What Are The Symptoms Of Late Liver Disease? (Select All That Apply)",
       "choices": [
         {
@@ -21263,7 +21297,7 @@
       "id": "PFQ-pharmacy-000000726",
       "chapter": 16,
       "chapter_title": "Drug Therapy for High Blood Lipids",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Actions Are Important When A Patient Is Prescribed A Bile Acid Sequestrant Drug And Is Also Prescribed Warfarin (Coumadin)? (Select All That Apply)",
       "choices": [
         {
@@ -21304,7 +21338,7 @@
       "id": "PFQ-pharmacy-000000727",
       "chapter": 16,
       "chapter_title": "Drug Therapy for High Blood Lipids",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "What Are The Expected And Intended Responses For Nicotinic Acid Agents? (Select All That Apply)",
       "choices": [
         {
@@ -21340,7 +21374,7 @@
       "id": "PFQ-pharmacy-000000728",
       "chapter": 16,
       "chapter_title": "Drug Therapy for High Blood Lipids",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "What Are The Common Side Effects Of Gemfibrozil (Lopid)? (Select All That Apply)",
       "choices": [
         {
@@ -22654,7 +22688,7 @@
       "id": "PFQ-pharmacy-000000772",
       "chapter": 17,
       "chapter_title": "Drugs That Affect Blood Clotting",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Techniques Should You Perform To Prevent Excessive Bleeding When Administering An Intramuscular Injection To A Patient Who Is On Anticoagulation Therapy? (Select All That Apply)",
       "choices": [
         {
@@ -22693,7 +22727,7 @@
       "id": "PFQ-pharmacy-000000773",
       "chapter": 17,
       "chapter_title": "Drugs That Affect Blood Clotting",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "What Actions Are Performed When Giving A Subcutaneous Injection Of Low- Molecular- Weight Heparin? (Select All That Apply)",
       "choices": [
         {
@@ -22728,7 +22762,7 @@
       "id": "PFQ-pharmacy-000000774",
       "chapter": 17,
       "chapter_title": "Drugs That Affect Blood Clotting",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Factors Are Absolute Contraindications For Thrombolytic Therapy? (Select All That Apply)",
       "choices": [
         {
@@ -24067,7 +24101,7 @@
       "id": "PFQ-pharmacy-000000820",
       "chapter": 18,
       "chapter_title": "Drug Therapy for Asthma and Other Respiratory Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Responses Are Possible Side Effects Of Inhaled Beta2-Adrenergic Agonists? (Select All That Apply)",
       "choices": [
         {
@@ -24107,7 +24141,7 @@
       "id": "PFQ-pharmacy-000000821",
       "chapter": 18,
       "chapter_title": "Drug Therapy for Asthma and Other Respiratory Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Drugs Are Useful In The Management Of Pulmonary Artery Hypertension (Pah)? (Select All That Apply)",
       "choices": [
         {
@@ -24151,7 +24185,7 @@
       "id": "PFQ-pharmacy-000000822",
       "chapter": 18,
       "chapter_title": "Drug Therapy for Asthma and Other Respiratory Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Side Effects Should You Monitor For After A Patient Receives Ipratropium (Atrovent)? (Select All That Apply)",
       "choices": [
         {
@@ -26867,7 +26901,7 @@
       "id": "PFQ-pharmacy-000000912",
       "chapter": 20,
       "chapter_title": "Drug Therapy for Gastric Ulcers, Reflux, and Inflammatory Bowel Disease",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Foods, Activities, And Drugs Should You Teach The Patient With Peptic Ulcer Disease To Avoid? (Select All That Apply)",
       "choices": [
         {
@@ -26913,7 +26947,7 @@
       "id": "PFQ-pharmacy-000000913",
       "chapter": 20,
       "chapter_title": "Drug Therapy for Gastric Ulcers, Reflux, and Inflammatory Bowel Disease",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "What Should You Teach A Patient About Smoking And Peptic Ulcer Disease? (Select All That Apply)",
       "choices": [
         {
@@ -26954,7 +26988,7 @@
       "id": "PFQ-pharmacy-000000914",
       "chapter": 20,
       "chapter_title": "Drug Therapy for Gastric Ulcers, Reflux, and Inflammatory Bowel Disease",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Are Risk Factors For An Individual To Develop Gerd? (Select All That Apply)",
       "choices": [
         {
@@ -26999,7 +27033,7 @@
       "id": "PFQ-pharmacy-000000915",
       "chapter": 20,
       "chapter_title": "Drug Therapy for Gastric Ulcers, Reflux, and Inflammatory Bowel Disease",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Are Intended Responses For Histamine (H2) Blockers? (Select All That Apply)",
       "choices": [
         {
@@ -27039,7 +27073,7 @@
       "id": "PFQ-pharmacy-000000916",
       "chapter": 20,
       "chapter_title": "Drug Therapy for Gastric Ulcers, Reflux, and Inflammatory Bowel Disease",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "For Which Occurrences Should You Teach A Patient Taking Drugs For Pud Or Gerd To Notify The Prescriber? (Select All That Apply)",
       "choices": [
         {
@@ -29930,7 +29964,7 @@
       "id": "PFQ-pharmacy-000001013",
       "chapter": 22,
       "chapter_title": "Drug Therapy for Thyroid and Adrenal Gland Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Are Intended Responses Of Thyroid Hormone Agonist Drugs? (Select All That Apply)",
       "choices": [
         {
@@ -31300,7 +31334,7 @@
       "id": "PFQ-pharmacy-000001060",
       "chapter": 23,
       "chapter_title": "Drug Therapy for Seizures",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Factors Are Among The Most Common Causes Of Seizures In Adults? (Select All That Apply)",
       "choices": [
         {
@@ -33826,7 +33860,7 @@
       "id": "PFQ-pharmacy-000001144",
       "chapter": 25,
       "chapter_title": "Drug Therapy for Psychiatric Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Are Common Treatment Methods For Depression? (Select All That Apply)",
       "choices": [
         {
@@ -33865,7 +33899,7 @@
       "id": "PFQ-pharmacy-000001145",
       "chapter": 25,
       "chapter_title": "Drug Therapy for Psychiatric Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "A Patient Has Been Prescribed Amitriptyline (Elavil). What Should You Plan Teach This Patient? (Select All That Apply)",
       "choices": [
         {
@@ -33906,7 +33940,7 @@
       "id": "PFQ-pharmacy-000001146",
       "chapter": 25,
       "chapter_title": "Drug Therapy for Psychiatric Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "What Are Common Anxiety Disorders? (Select All That Apply)",
       "choices": [
         {
@@ -33946,7 +33980,7 @@
       "id": "PFQ-pharmacy-000001147",
       "chapter": 25,
       "chapter_title": "Drug Therapy for Psychiatric Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "A Patient With Anxiety Is Prescribed Oxazepam (Serax). What Safety Measures Must You Teach A Patient Taking This Drug? (Select All That Apply)",
       "choices": [
         {
@@ -33986,7 +34020,7 @@
       "id": "PFQ-pharmacy-000001148",
       "chapter": 25,
       "chapter_title": "Drug Therapy for Psychiatric Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "An Older Adult Prescribed Clozapine (Clozaril) Tells You That His Last Bowel Movement Was 5 Days Ago. Which Instructions Would You Share With This Patient? (Select All That Apply)",
       "choices": [
         {
@@ -34447,7 +34481,7 @@
       "id": "PFQ-pharmacy-000001163",
       "chapter": 32,
       "chapter_title": "Drug Therapy For Female Reproductive Issues",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Statements About Perimenopausal Hormone Replacement Therapy (Hrt) Are True? (Select All That Apply)",
       "choices": [
         {
@@ -34491,7 +34525,7 @@
       "id": "PFQ-pharmacy-000001164",
       "chapter": 32,
       "chapter_title": "Drug Therapy For Female Reproductive Issues",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Precautions Are Important To Teach A Patient Who Is Taking Hormone Replacement Therapy (Hrt) To Reduce Menopausal Discomfort? (Select All That Apply)",
       "choices": [
         {
@@ -37664,7 +37698,7 @@
       "id": "PFQ-pharmacy-000001270",
       "chapter": 28,
       "chapter_title": "Drug Therapy For Male Reproductive Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Symptoms Are Expected In Orchitis? (Select All That Apply.)",
       "choices": [
         {
@@ -37705,7 +37739,7 @@
       "id": "PFQ-pharmacy-000001271",
       "chapter": 28,
       "chapter_title": "Drug Therapy For Male Reproductive Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "A Client Has Returned To The Nursing Unit After A Prostatectomy. Which Activities Does The Nurse Delegate To The Unlicensed Assistive Personnel (UAP)? (Select All That Apply.)",
       "choices": [
         {
@@ -38423,7 +38457,7 @@
       "correct_answers": [
         "C"
       ],
-      "rationale": "",
+      "rationale": "When The Glandular Cells Of The Ovary Shrink, They No Longer Produce Normal Levels Of Estrogen. The Decreased Blood Levels Of Estrogen Trigger The Brain To Secrete Gnrh, Which Then Triggers The Pituitary Gland To Secrete Follicle Stimulating Hormone (Fsh). Before Menopause The Fsh Acts On The Ovary And Causes Ovarian Cells To Secrete Estrogen, Which Then Inhibits The Pathway Through Negative Feedback. With Nonfunctional Ovarian Cells Unable To Respond To Fsh By Increasing Estrogen Secretion, This Pathway Is Disrupted For A Time. The Continued Low Blood Levels Of Estrogen Constantly Stimulate The Brain To Secrete Gonadotrophin Releasing Hormone (Gnrh) In Large Amounts, Resulting In The Secretion Of Very Large Amounts Of Fsh. This Extra Fsh Is Useless Because The Ovary Cannot Respond To It And It Has Effects On Other Body Tissues. The Estrogen Taken At This Time Suppressed Gnrh And Prevents Excessive Secretion Of Fsh, Thereby Reducing Unpleasant Symptoms.",
       "source_record_id": "PFV2-REC-001294"
     },
     {
@@ -38520,7 +38554,7 @@
       "id": "PFQ-pharmacy-000001298",
       "chapter": 29,
       "chapter_title": "Drug Therapy For Female Reproductive Problems",
-      "type": "multiple_choice",
+      "type": "multiple_response",
       "stem": "Which Statements About Perimenopausal Hormone Replacement Therapy (HRT) Are True? (Select All That Apply)",
       "choices": [
         {
@@ -38597,6 +38631,48 @@
       ],
       "rationale": "HRT With Estrogens Increases The Risk For Clot Formation That Could Cause Venous Thromboembolism, Stroke, And Heart Attack. The Risk Is Higher If The Patient Also Smokes. Patients Taking HRT Should Avoid Cigarette Smoking And Should Seek Medical Help Immediately If Chest Pain Or Symptoms Of A Stroke Occur. Hormones Like Estrogen Can Make Breast Cancers Grow Faster. The Patient Should Perform Monthly Breast Self-Examinations To Determine The Presence Of Any Lumps That Could Be Cancerous. Although A Yearly Influenza Vaccination Is A Good Health Promotion Practice, HRT Does Not Increase The Risk For Influenza. Oral Contraceptives Should Not Be Used With HRT. There Is No Contraindication For Drinking Alcohol (In Moderation) While Taking HRT.",
       "source_record_id": "PFV2-REC-001299"
+    },
+    {
+      "chapter": 1,
+      "chapter_title": "Drug Therapy: Roles, Regulations, Actions, and Responses",
+      "choices": [
+        {
+          "label": "A",
+          "text": "zdfbef"
+        },
+        {
+          "label": "B",
+          "text": "rthynmhnf"
+        }
+      ],
+      "correct_answers": [
+        "B"
+      ],
+      "id": "PFQ-pharmacy-000001300",
+      "rationale": "sdojvnsdovjndwov",
+      "stem": "adsfqef",
+      "type": "mc"
+    },
+    {
+      "chapter": 1,
+      "chapter_title": "Drug Therapy: Roles, Regulations, Actions, and Responses",
+      "choices": [
+        {
+          "label": "A",
+          "text": "gnmgn"
+        },
+        {
+          "label": "B",
+          "text": "gn g gn"
+        }
+      ],
+      "correct_answers": [
+        "B"
+      ],
+      "id": "PFQ-pharmacy-000001301",
+      "rationale": "gkgkgkgkgfifoj",
+      "stem": "hjmhjmj",
+      "type": "mc"
     }
   ]
 }
