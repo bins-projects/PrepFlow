@@ -31,7 +31,7 @@
       "id": "pharmacy",
       "title": "Pharm",
       "path": "../packs/pharmacy.prepflow.json",
-      "question_count": 1297,
+      "question_count": 1296,
       "chapter_count": 30,
       "theme": "pharm",
       "art": "images/quiz-builder/books/pharm-closed.png?v=20260727-pharm-2"
