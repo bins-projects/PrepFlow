@@ -11,4 +11,4 @@ PUBLIC_ORIGINS = "https://bins-projects.github.io"
 [[d1_databases]]
 binding = "DB"
 database_name = "prepflow-question-review"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "992a26c5-6cd3-4a53-94e9-2eb4a366982a"
