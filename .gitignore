@@ -6,3 +6,4 @@ scratch/
 build/
 dist/
 *.spec
+review-service/.wrangler/
