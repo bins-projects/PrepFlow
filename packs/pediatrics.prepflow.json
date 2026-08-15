@@ -10335,11 +10335,8 @@
       "source_record_id": "PFV2-REC-000334"
     },
     {
-      "id": "PFQ-pediatrics-000000335",
       "chapter": 11,
       "chapter_title": "The Nurse’s Role in Women’s Health Care",
-      "type": "multiple_response",
-      "stem": "A woman is prescribed to take alendronate (Fosamax) for osteoporosis postmenopause. What information will the nurse provide when educating this patient on alendronate (Fosamax)? (Select all that apply.)",
       "choices": [
         {
           "label": "A",
@@ -10359,10 +10356,15 @@
         }
       ],
       "correct_answers": [
-        "A"
+        "A",
+        "B",
+        "D"
       ],
+      "id": "PFQ-pediatrics-000000335",
       "rationale": "Alendronate (Fosamax) may be prescribed. Esophageal and gastric irritation are common side effects of alendronate, and the woman should be instructed to drink 8 ounces of plain water and sit upright for 30 minutes after taking the drug and before eating a meal. Weight-bearing exercises such as walking, hiking, stair climbing, and dancing are advisable. High-impact exercises should be avoided.",
-      "source_record_id": "PFV2-REC-000335"
+      "source_record_id": "PFV2-REC-000335",
+      "stem": "A woman is prescribed to take alendronate (Fosamax) for osteoporosis postmenopause. What information will the nurse provide when educating this patient on alendronate (Fosamax)? (Select all that apply.)",
+      "type": "multiple_response"
     },
     {
       "id": "PFQ-pediatrics-000000336",
@@ -31586,6 +31588,35 @@
       ],
       "rationale": "Osteopaths combine manipulative therapy including pressure point therapy with traditional (allopathic) medicine.",
       "source_record_id": "PFV2-REC-001026"
+    },
+    {
+      "chapter": 1,
+      "chapter_title": "The Past, Present, and Future",
+      "choices": [
+        {
+          "label": "A",
+          "text": "Bitch"
+        },
+        {
+          "label": "B",
+          "text": "Big bitch"
+        },
+        {
+          "label": "C",
+          "text": "Big fat bitch"
+        },
+        {
+          "label": "D",
+          "text": "Big fat fucking bitch"
+        }
+      ],
+      "correct_answers": [
+        "D"
+      ],
+      "id": "PFQ-pediatrics-000001028",
+      "rationale": "Obviously, if you know her, the answer is big fat fucking bitch, duh",
+      "stem": "A nurse just completed an assessment on her patient, Kaiya. Knowing what you do about her, what do you think the nurses assessment revealed? That she is a____?",
+      "type": "mc"
     }
   ]
 }
