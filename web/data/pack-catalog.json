@@ -27,7 +27,7 @@
       "question_count": 1027,
       "chapter_count": 34,
       "theme": "pediatrics",
-      "art": "images/quiz-builder/books/pediatrics-closed.png?v=20260817-mobile-hotfix-1"
+      "art": "images/quiz-builder/books/pediatrics-closed.png"
     },
     {
       "id": "pharmacy",
@@ -36,7 +36,7 @@
       "question_count": 1295,
       "chapter_count": 30,
       "theme": "pharm",
-      "art": "images/quiz-builder/books/pharm-closed.png?v=20260727-pharm-2"
+      "art": "images/quiz-builder/books/pharm-closed.png"
     }
   ]
 }
