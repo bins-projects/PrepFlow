@@ -11,6 +11,7 @@ const APP_FILES = [
   "./generic-pack-catalog.css",
   "./canonical-question-types.css",
   "./quiz-builder-screen.css",
+  "./quiz-builder-hit-area-hotfix.css",
   "./quiz-reading-screen.css",
   "./data/pack-catalog.json",
   "./drug-reference.css",
