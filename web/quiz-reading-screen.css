@@ -1,0 +1,4782 @@
+
+/* ============================================================
+   PrepFlow desktop quiz — reading-book presentation
+   Presentation only. Existing quiz/session behavior remains live.
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  body:has(#quiz-screen:not([hidden])) {
+    overflow: hidden;
+  }
+
+  #quiz-screen.quiz-screen:not([hidden]) {
+    position: fixed !important;
+    z-index: 100 !important;
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    overflow: hidden !important;
+
+    background:
+      linear-gradient(
+        rgba(3, 8, 20, .16),
+        rgba(3, 8, 20, .28)
+      ),
+      url("images/quiz-builder/prepflow-nursing-station-quiz-builder.png?v=20260727-2")
+      center / cover no-repeat !important;
+  }
+
+  /* ----------------------------------------------------------
+     Physical book
+     ---------------------------------------------------------- */
+
+  #quiz-screen .quiz-book {
+    position: relative !important;
+    z-index: 2 !important;
+
+    width: min(92vw, 1420px) !important;
+    height: min(92dvh, 850px) !important;
+    aspect-ratio: 1.72 / 1 !important;
+
+    margin: 0 !important;
+    padding:
+      clamp(94px, 10.8vh, 116px)
+      clamp(92px, 7.3vw, 132px)
+      clamp(82px, 9vh, 104px) !important;
+
+    box-sizing: border-box !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    column-gap: clamp(54px, 4.2vw, 78px) !important;
+
+    background:
+      url("images/quiz-builder/books/quizbook-transparent.png?v=20260728-clean-preview-1")
+      center / 100% 100% no-repeat !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow:
+      0 28px 70px rgba(0, 0, 0, .44),
+      0 4px 16px rgba(0, 0, 0, .24) !important;
+
+    overflow: visible !important;
+  }
+
+  #quiz-screen .quiz-page {
+    position: relative !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    color: #17233c !important;
+    background: transparent !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+
+    overflow: hidden !important;
+  }
+
+  /* ----------------------------------------------------------
+     Save / quit — physical book tab
+     ---------------------------------------------------------- */
+
+  #quiz-screen .quiz-header {
+    position: absolute !important;
+    z-index: 12 !important;
+
+    left: calc(50% - min(46vw, 710px) + 20px) !important;
+    top: calc(50% - min(46dvh, 425px) + 54px) !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+  #quiz-screen #exit-quiz {
+    min-width: 126px !important;
+    min-height: 42px !important;
+
+    padding: 10px 18px !important;
+
+    color: #fff1bd !important;
+    background:
+      linear-gradient(#18385e, #0c2445) !important;
+
+    border: 1px solid #bd8b38 !important;
+    border-radius: 2px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    letter-spacing: .035em !important;
+    text-transform: uppercase !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.18),
+      0 3px 8px rgba(0,0,0,.28) !important;
+  }
+
+  #quiz-screen #exit-quiz:hover {
+    color: #fff9dc !important;
+    border-color: #e3bd67 !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.2),
+      0 3px 8px rgba(0,0,0,.28),
+      0 0 14px rgba(220,174,73,.3) !important;
+
+    transform: none !important;
+  }
+
+  #quiz-screen #quiz-progress {
+    display: none !important;
+  }
+
+  #quiz-screen .mobile-quiz-scene {
+    display: none !important;
+  }
+
+  /* ----------------------------------------------------------
+     Left page — source, progress, question
+     ---------------------------------------------------------- */
+
+  #quiz-screen .quiz-page-meta {
+    flex: 0 0 auto !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 14px !important;
+    align-items: end !important;
+
+    padding: 0 0 12px !important;
+    margin: 0 0 12px !important;
+
+    border-bottom: 1px solid rgba(140, 104, 45, .34) !important;
+  }
+
+  #quiz-screen #quiz-subject {
+    min-width: 0 !important;
+
+    color: #152d55 !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(22px, 1.65vw, 28px) !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    letter-spacing: .01em !important;
+    text-transform: none !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.72),
+      0 1px 2px rgba(68,49,23,.12) !important;
+  }
+
+  #quiz-screen #quiz-position {
+    color: #73551f !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    line-height: 1.2 !important;
+    letter-spacing: .035em !important;
+    text-transform: uppercase !important;
+    text-align: right !important;
+  }
+
+  #quiz-screen .quiz-reference-bar {
+    flex: 0 0 auto !important;
+
+    min-height: 31px !important;
+    margin: 0 0 15px !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+  #quiz-screen .quiz-question-id {
+    margin-right: auto !important;
+
+    color: #68604f !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    letter-spacing: .02em !important;
+  }
+
+  #quiz-screen .quiz-reference-actions {
+    display: flex !important;
+    gap: 7px !important;
+    align-items: center !important;
+  }
+
+  #quiz-screen .quiz-reference-action,
+  #quiz-screen #skip-question {
+    min-height: 28px !important;
+    padding: 4px 9px !important;
+
+    color: #30415d !important;
+    background: rgba(248, 242, 218, .34) !important;
+
+    border: 1px solid rgba(61, 77, 104, .32) !important;
+    border-radius: 2px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+
+    box-shadow: none !important;
+
+    transform: none !important;
+  }
+
+  #quiz-screen .quiz-reference-action:hover,
+  #quiz-screen #skip-question:hover {
+    color: #16335e !important;
+    background: rgba(244, 225, 170, .42) !important;
+    border-color: rgba(166, 116, 31, .62) !important;
+  }
+
+  #quiz-screen .question-copy-status {
+    width: 100% !important;
+
+    color: #776331 !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 10px !important;
+  }
+
+  #quiz-screen .quiz-page-label {
+    flex: 0 0 auto !important;
+
+    margin: 0 0 14px !important;
+    padding: 0 0 7px !important;
+
+    color: #9a6c20 !important;
+    background: transparent !important;
+
+    border: 0 !important;
+    border-bottom: 1px solid rgba(170, 123, 47, .28) !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .15em !important;
+    text-transform: uppercase !important;
+    text-align: left !important;
+
+    text-shadow: none !important;
+  }
+
+  #quiz-screen .question-page .quiz-page-label::before {
+    content: "QUESTION";
+  }
+
+  #quiz-screen .question-page .quiz-page-label {
+    font-size: 0 !important;
+  }
+
+  #quiz-screen .question-page .quiz-page-label::before {
+    font-size: 11px !important;
+  }
+
+  /* The question is a reading surface, not a fixed card. */
+  #quiz-screen .quiz-page-scroll {
+    flex: 1 1 auto !important;
+
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 12px 24px 0 !important;
+
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    scrollbar-width: thin !important;
+    scrollbar-color:
+      rgba(135, 96, 34, .32)
+      transparent !important;
+  }
+
+  #quiz-screen .quiz-page-scroll::-webkit-scrollbar,
+  #quiz-screen .quiz-response-scroll::-webkit-scrollbar {
+    width: 5px !important;
+  }
+
+  #quiz-screen .quiz-page-scroll::-webkit-scrollbar-track,
+  #quiz-screen .quiz-response-scroll::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+
+  #quiz-screen .quiz-page-scroll::-webkit-scrollbar-thumb,
+  #quiz-screen .quiz-response-scroll::-webkit-scrollbar-thumb {
+    background: rgba(135, 96, 34, .28) !important;
+    border-radius: 99px !important;
+  }
+
+  #quiz-screen #question-stem {
+    margin: 0 !important;
+
+    color: #17223a !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(21px, 1.5vw, 27px) !important;
+    font-weight: 700 !important;
+    line-height: 1.43 !important;
+    letter-spacing: 0 !important;
+
+    text-wrap: pretty !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.72),
+      0 1px 2px rgba(53,43,29,.08) !important;
+  }
+
+  #quiz-screen .mobile-question-instruction,
+  #quiz-screen .mobile-question-actions {
+    display: none !important;
+  }
+
+  /* ----------------------------------------------------------
+     Right page — answer choices / rationale
+     ---------------------------------------------------------- */
+
+  #quiz-screen .response-page {
+    padding-top: 0 !important;
+  }
+
+  #quiz-screen #response-page-label {
+    flex: 0 0 auto !important;
+
+    margin-top: 0 !important;
+    margin-bottom: 14px !important;
+
+    color: #9a6c20 !important;
+  }
+
+  #quiz-screen .quiz-response-scroll {
+    flex: 1 1 auto !important;
+
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 12px 26px 0 !important;
+
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+  }
+
+  #quiz-screen .answer-choices {
+    display: grid !important;
+    gap: 10px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #quiz-screen .answer-choice,
+  #quiz-screen .answer-choices label {
+    position: relative !important;
+
+    min-height: 50px !important;
+
+    margin: 0 !important;
+    padding: 12px 14px !important;
+
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+
+    color: #17243e !important;
+    background: transparent !important;
+
+    border: 0 !important;
+    border-bottom: 1px solid rgba(107, 91, 62, .22) !important;
+    border-radius: 0 !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(16px, 1.05vw, 19px) !important;
+    font-weight: 600 !important;
+    line-height: 1.32 !important;
+
+    box-shadow: none !important;
+
+    transition:
+      color 120ms ease,
+      background-color 120ms ease,
+      text-shadow 120ms ease !important;
+  }
+
+  #quiz-screen .answer-choice:hover,
+  #quiz-screen .answer-choices label:hover {
+    color: #102e5d !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(224, 186, 99, .18),
+        rgba(224, 186, 99, .035) 74%,
+        transparent
+      ) !important;
+
+    text-shadow:
+      0 0 7px rgba(220, 170, 60, .26) !important;
+
+    transform: none !important;
+  }
+
+  #quiz-screen .answer-choice:has(input:checked),
+  #quiz-screen .answer-choices label:has(input:checked) {
+    color: #102c59 !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(231, 191, 93, .27),
+        rgba(231, 191, 93, .06) 78%,
+        transparent
+      ) !important;
+
+    border-bottom-color: rgba(162, 111, 26, .48) !important;
+
+    text-shadow:
+      0 0 8px rgba(226, 181, 71, .34) !important;
+  }
+
+  #quiz-screen .answer-choice input,
+  #quiz-screen .answer-choices label input {
+    flex: 0 0 auto !important;
+
+    width: 18px !important;
+    height: 18px !important;
+
+    margin: 2px 0 0 !important;
+
+    accent-color: #9a6b20 !important;
+  }
+
+  /* ----------------------------------------------------------
+     Feedback becomes part of the page, not a popup/card.
+     ---------------------------------------------------------- */
+
+  #quiz-screen .feedback {
+    margin: 22px 0 0 !important;
+    padding: 18px 0 0 !important;
+
+    color: #17243c !important;
+    background: transparent !important;
+
+    border: 0 !important;
+    border-top: 1px solid rgba(152, 109, 40, .42) !important;
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+  }
+
+  #quiz-screen .feedback[hidden] {
+    display: none !important;
+  }
+
+  #quiz-screen #feedback-result {
+    margin: 0 0 14px !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(22px, 1.45vw, 26px) !important;
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+  }
+
+  #quiz-screen .feedback h4 {
+    margin: 18px 0 8px !important;
+
+    color: #8b621f !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .14em !important;
+    text-transform: uppercase !important;
+  }
+
+  #quiz-screen #feedback-rationale {
+    margin: 0 !important;
+
+    color: #253047 !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(16px, 1.03vw, 19px) !important;
+    font-weight: 600 !important;
+    line-height: 1.48 !important;
+
+    text-wrap: pretty !important;
+  }
+
+  #quiz-screen .mobile-answer-review {
+    display: none !important;
+  }
+
+  /* ----------------------------------------------------------
+     Bottom action — page furniture instead of giant terminal button
+     ---------------------------------------------------------- */
+
+  #quiz-screen .quiz-footer {
+    flex: 0 0 auto !important;
+
+    min-height: 56px !important;
+
+    margin: 12px 0 0 !important;
+    padding: 12px 0 0 !important;
+
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 10px !important;
+
+    background: transparent !important;
+
+    border: 0 !important;
+    border-top: 1px solid rgba(140, 104, 45, .28) !important;
+  }
+
+  #quiz-screen #submit-answer,
+  #quiz-screen #continue-button {
+    min-width: 156px !important;
+    min-height: 42px !important;
+
+    margin: 0 !important;
+    padding: 9px 18px !important;
+
+    color: #fff0be !important;
+    background:
+      linear-gradient(#1b3d65, #0d2749) !important;
+
+    border: 1px solid #a97828 !important;
+    border-radius: 2px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .06em !important;
+    text-transform: uppercase !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.16),
+      0 2px 5px rgba(0,0,0,.18) !important;
+
+    transform: none !important;
+  }
+
+  #quiz-screen #submit-answer:not(:disabled):hover,
+  #quiz-screen #continue-button:hover {
+    color: #fff9dc !important;
+    border-color: #dfb95c !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.2),
+      0 2px 5px rgba(0,0,0,.18),
+      0 0 13px rgba(221, 175, 67, .32) !important;
+  }
+
+  #quiz-screen #submit-answer:disabled {
+    color: rgba(56, 63, 73, .62) !important;
+    background: rgba(106, 104, 95, .22) !important;
+    border-color: rgba(86, 80, 68, .22) !important;
+    box-shadow: none !important;
+  }
+
+  #quiz-screen #quiz-score,
+  #quiz-screen #mobile-back-question,
+  #quiz-screen #mobile-view-question {
+    display: none !important;
+  }
+
+  /* ----------------------------------------------------------
+     Narrow desktop safety
+     ---------------------------------------------------------- */
+
+  @media (max-height: 760px) {
+    #quiz-screen .quiz-book {
+      height: 96dvh !important;
+
+      padding-top: 82px !important;
+      padding-bottom: 72px !important;
+    }
+
+    #quiz-screen #question-stem {
+      font-size: 20px !important;
+    }
+  }
+}
+
+/* ============================================================
+   PrepFlow quiz reading book — refinement pass 2
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /* Remove inherited synthetic-book furniture. */
+  #quiz-screen.quiz-screen::before,
+  #quiz-screen.quiz-screen::after,
+  #quiz-screen .quiz-book::before,
+  #quiz-screen .quiz-book::after,
+  #quiz-screen .quiz-page::before,
+  #quiz-screen .quiz-page::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  #quiz-screen.quiz-screen:not([hidden]) {
+    background:
+      linear-gradient(
+        rgba(3, 8, 20, .28),
+        rgba(3, 8, 20, .38)
+      ),
+      url("images/quiz-builder/prepflow-nursing-station-quiz-builder.png?v=20260727-2")
+      center / cover no-repeat !important;
+  }
+
+  /* Give the physical book breathing room around all four edges. */
+  #quiz-screen .quiz-book {
+    width: min(88vw, 1340px) !important;
+    height: min(86dvh, 800px) !important;
+    aspect-ratio: 1.72 / 1 !important;
+
+    padding:
+      clamp(82px, 9vh, 102px)
+      clamp(92px, 7vw, 122px)
+      clamp(78px, 8.5vh, 96px) !important;
+
+    column-gap: clamp(58px, 4.5vw, 76px) !important;
+
+    border: 0 !important;
+    box-shadow:
+      0 30px 72px rgba(0, 0, 0, .48),
+      0 5px 18px rgba(0, 0, 0, .26) !important;
+  }
+
+  #quiz-screen .quiz-page {
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Save & Quit becomes quiet book furniture. */
+  #quiz-screen .quiz-header {
+    position: absolute !important;
+    z-index: 20 !important;
+
+    left: 50% !important;
+    top: 50% !important;
+
+    width: min(88vw, 1340px) !important;
+    height: min(86dvh, 800px) !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    pointer-events: none !important;
+  }
+
+  #quiz-screen #exit-quiz {
+    position: absolute !important;
+    top: 58px !important;
+    left: 54px !important;
+
+    min-width: 0 !important;
+    min-height: 34px !important;
+
+    padding: 8px 12px !important;
+
+    color: #f4dfa4 !important;
+    background: rgba(10, 29, 55, .95) !important;
+
+    border: 1px solid rgba(180, 133, 51, .82) !important;
+    border-radius: 2px !important;
+
+    font-size: 11px !important;
+    letter-spacing: .05em !important;
+
+    box-shadow:
+      0 2px 5px rgba(0, 0, 0, .24),
+      inset 0 1px rgba(255, 255, 255, .12) !important;
+
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+
+  /* ----------------------------------------------------------
+     Left page
+     ---------------------------------------------------------- */
+
+  #quiz-screen .quiz-page-meta {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: baseline !important;
+    gap: 18px !important;
+
+    margin: 0 0 7px !important;
+    padding: 0 0 10px !important;
+
+    border: 0 !important;
+    border-bottom: 1px solid rgba(126, 91, 35, .34) !important;
+
+    text-align: left !important;
+  }
+
+  #quiz-screen .quiz-page-meta #quiz-subject {
+    overflow: visible !important;
+
+    color: #172d52 !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(23px, 1.65vw, 29px) !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    white-space: normal !important;
+  }
+
+  #quiz-screen .quiz-page-meta #quiz-position {
+    color: #78591e !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    line-height: 1.2 !important;
+    letter-spacing: .04em !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+  }
+
+  #quiz-screen .quiz-reference-bar {
+    width: 100% !important;
+    box-sizing: border-box !important;
+
+    margin: 0 0 22px !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas:
+      "reference actions"
+      "status status" !important;
+    gap: 7px 12px !important;
+
+    overflow: visible !important;
+  }
+
+  #quiz-screen #quiz-question-id {
+    grid-area: reference !important;
+
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 7px 0 !important;
+
+    overflow: visible !important;
+
+    color: #686050 !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    letter-spacing: .015em !important;
+    white-space: normal !important;
+  }
+
+  #quiz-screen .quiz-reference-actions {
+    grid-area: actions !important;
+
+    display: flex !important;
+    gap: 6px !important;
+  }
+
+  #quiz-screen .question-copy-status {
+    grid-area: status !important;
+    width: auto !important;
+  }
+
+  #quiz-screen .quiz-reference-action,
+  #quiz-screen #skip-question {
+    min-height: 27px !important;
+    padding: 5px 8px !important;
+
+    color: #44516a !important;
+    background: transparent !important;
+
+    border: 1px solid rgba(58, 72, 96, .3) !important;
+    border-radius: 2px !important;
+
+    font-size: 10px !important;
+    font-weight: 800 !important;
+
+    box-shadow: none !important;
+  }
+
+  #quiz-screen .quiz-reference-action:hover,
+  #quiz-screen #skip-question:hover {
+    color: #193967 !important;
+    background: rgba(215, 178, 87, .11) !important;
+    border-color: rgba(156, 108, 31, .62) !important;
+  }
+
+  #quiz-screen .question-page .quiz-page-label {
+    margin: 0 0 16px !important;
+    padding: 0 0 8px !important;
+
+    border: 0 !important;
+    border-bottom: 1px solid rgba(151, 107, 39, .28) !important;
+
+    color: #96691e !important;
+    text-align: left !important;
+    text-shadow: none !important;
+  }
+
+  #quiz-screen .quiz-page-label::before,
+  #quiz-screen .quiz-page-label::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  #quiz-screen .question-page .quiz-page-label::before {
+    display: inline !important;
+    content: "QUESTION" !important;
+
+    color: #96691e !important;
+    font-size: 11px !important;
+  }
+
+  #quiz-screen .quiz-page-scroll {
+    padding: 0 16px 24px 0 !important;
+  }
+
+  #quiz-screen #question-stem {
+    max-width: 94% !important;
+
+    color: #17233a !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(22px, 1.55vw, 28px) !important;
+    font-weight: 700 !important;
+    line-height: 1.46 !important;
+  }
+
+  /* ----------------------------------------------------------
+     Right page
+     ---------------------------------------------------------- */
+
+  #quiz-screen #response-page-label {
+    margin: 0 0 17px !important;
+    padding: 0 0 9px !important;
+
+    color: #96691e !important;
+
+    border: 0 !important;
+    border-bottom: 1px solid rgba(151, 107, 39, .28) !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    letter-spacing: .14em !important;
+    text-align: left !important;
+    text-shadow: none !important;
+  }
+
+  #quiz-screen .quiz-response-scroll {
+    padding: 0 16px 24px 0 !important;
+  }
+
+  #quiz-screen .answer-choices {
+    gap: 3px !important;
+  }
+
+  #quiz-screen .answer-choice {
+    min-height: 58px !important;
+
+    margin: 0 !important;
+    padding: 14px 8px !important;
+
+    align-items: flex-start !important;
+    gap: 12px !important;
+
+    color: #1b2942 !important;
+    background: transparent !important;
+
+    border: 0 !important;
+    border-bottom: 1px solid rgba(96, 84, 61, .2) !important;
+    border-radius: 0 !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(18px, 1.12vw, 21px) !important;
+    font-weight: 600 !important;
+    line-height: 1.32 !important;
+
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  #quiz-screen .answer-choice:hover,
+  #quiz-screen .answer-choice:focus-within {
+    color: #102f5d !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(223, 180, 76, .18),
+        rgba(223, 180, 76, .04) 75%,
+        transparent
+      ) !important;
+
+    border-bottom-color: rgba(158, 111, 34, .42) !important;
+
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  #quiz-screen .answer-choice:has(input:checked) {
+    color: #0c2e60 !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(230, 189, 83, .3),
+        rgba(230, 189, 83, .08) 77%,
+        transparent
+      ) !important;
+
+    border-bottom-color: rgba(153, 104, 25, .52) !important;
+
+    box-shadow: none !important;
+    transform: none !important;
+
+    text-shadow:
+      0 0 8px rgba(217, 162, 48, .24) !important;
+  }
+
+  #quiz-screen .answer-choice:has(input:checked)::after {
+    content: "✓" !important;
+
+    margin-left: auto !important;
+
+    color: #9a6a1d !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0 !important;
+
+    text-shadow:
+      0 0 7px rgba(220, 171, 65, .42) !important;
+  }
+
+  #quiz-screen .answer-choice input {
+    width: 18px !important;
+    height: 18px !important;
+
+    margin-top: 3px !important;
+
+    accent-color: #9a6a1d !important;
+  }
+
+  /* ----------------------------------------------------------
+     Feedback
+     ---------------------------------------------------------- */
+
+  #quiz-screen .feedback {
+    margin-top: 22px !important;
+    padding-top: 20px !important;
+
+    border-top: 1px solid rgba(150, 105, 36, .42) !important;
+  }
+
+  #quiz-screen #feedback-result {
+    margin: 0 0 14px !important;
+    padding: 0 !important;
+
+    color: #17335f !important;
+    background: transparent !important;
+
+    border: 0 !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(24px, 1.5vw, 28px) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0 !important;
+    text-align: left !important;
+    text-transform: none !important;
+
+    box-shadow: none !important;
+  }
+
+  #quiz-screen .feedback h4 {
+    margin: 18px 0 9px !important;
+    padding: 0 0 7px !important;
+
+    color: #91651e !important;
+
+    border: 0 !important;
+    border-bottom: 1px solid rgba(145, 101, 30, .26) !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    letter-spacing: .14em !important;
+  }
+
+  #quiz-screen #feedback-rationale {
+    color: #28344b !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(17px, 1.08vw, 20px) !important;
+    font-weight: 600 !important;
+    line-height: 1.52 !important;
+  }
+
+  /* ----------------------------------------------------------
+     Primary action
+     ---------------------------------------------------------- */
+
+  #quiz-screen .quiz-footer {
+    min-height: 54px !important;
+
+    margin: 10px 0 0 !important;
+    padding: 11px 0 0 !important;
+
+    border: 0 !important;
+    border-top: 1px solid rgba(142, 100, 35, .26) !important;
+
+    background: transparent !important;
+  }
+
+  #quiz-screen .quiz-footer .start-button,
+  #quiz-screen #submit-answer,
+  #quiz-screen #continue-button {
+    width: auto !important;
+
+    min-width: 158px !important;
+    min-height: 40px !important;
+
+    padding: 9px 17px !important;
+
+    color: #f8e5ad !important;
+    background:
+      linear-gradient(#18395f, #0e294b) !important;
+
+    border: 1px solid #9e7025 !important;
+    border-radius: 2px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    letter-spacing: .06em !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.14),
+      0 2px 4px rgba(0,0,0,.16) !important;
+
+    transform: none !important;
+  }
+
+  #quiz-screen .quiz-footer .start-button:not(:disabled):hover,
+  #quiz-screen #submit-answer:not(:disabled):hover,
+  #quiz-screen #continue-button:hover {
+    color: #fff8d8 !important;
+    border-color: #d4aa50 !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.18),
+      0 2px 4px rgba(0,0,0,.16),
+      0 0 11px rgba(213, 164, 59, .3) !important;
+
+    transform: none !important;
+  }
+
+  #quiz-screen #submit-answer:disabled {
+    color: rgba(67, 67, 62, .42) !important;
+    background: rgba(91, 90, 81, .12) !important;
+    border-color: rgba(88, 81, 67, .18) !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+  }
+
+  @media (max-height: 760px) {
+    #quiz-screen .quiz-book {
+      height: 91dvh !important;
+
+      padding-top: 76px !important;
+      padding-bottom: 70px !important;
+    }
+
+    #quiz-screen .quiz-header {
+      height: 91dvh !important;
+    }
+
+    #quiz-screen #exit-quiz {
+      top: 48px !important;
+    }
+  }
+}
+
+/* ============================================================
+   PrepFlow quiz reading book — refinement pass 3
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #quiz-screen .quiz-book {
+    width: min(86vw, 1300px) !important;
+    height: min(84dvh, 780px) !important;
+
+    padding:
+      clamp(78px, 8.5vh, 96px)
+      clamp(86px, 6.7vw, 116px)
+      clamp(82px, 9vh, 100px) !important;
+
+    column-gap: clamp(62px, 4.7vw, 80px) !important;
+  }
+
+  #quiz-screen .quiz-header {
+    width: min(86vw, 1300px) !important;
+    height: min(84dvh, 780px) !important;
+  }
+
+  #quiz-screen #exit-quiz {
+    top: 50px !important;
+    left: 48px !important;
+  }
+
+  #quiz-screen .question-page {
+    padding-left: 4px !important;
+    padding-right: 10px !important;
+  }
+
+  #quiz-screen .response-page {
+    padding-left: 10px !important;
+    padding-right: 4px !important;
+  }
+
+  #quiz-screen .quiz-reference-bar {
+    margin-bottom: 18px !important;
+  }
+
+  #quiz-screen #quiz-question-id {
+    color: #746b58 !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+  }
+
+  #quiz-screen .quiz-reference-action,
+  #quiz-screen #skip-question {
+    padding: 5px 9px !important;
+
+    color: #3e4d65 !important;
+    background: rgba(248, 240, 212, .18) !important;
+
+    border-color: rgba(67, 79, 99, .26) !important;
+  }
+
+  #quiz-screen .quiz-page-scroll {
+    padding-top: 2px !important;
+    padding-right: 18px !important;
+  }
+
+  #quiz-screen #question-stem {
+    max-width: 96% !important;
+
+    font-size: clamp(23px, 1.58vw, 29px) !important;
+    line-height: 1.48 !important;
+  }
+
+  #quiz-screen .quiz-response-scroll {
+    padding-top: 2px !important;
+    padding-right: 18px !important;
+  }
+
+  #quiz-screen .answer-choice {
+    min-height: 62px !important;
+    padding: 15px 10px !important;
+
+    font-size: clamp(18px, 1.15vw, 21px) !important;
+  }
+
+  #quiz-screen .answer-choice:hover,
+  #quiz-screen .answer-choice:focus-within {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(227, 188, 91, .22),
+        rgba(227, 188, 91, .07) 72%,
+        transparent
+      ) !important;
+
+    text-shadow:
+      0 0 7px rgba(206, 151, 41, .25) !important;
+  }
+
+  #quiz-screen .answer-choice:has(input:checked) {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(230, 189, 83, .34),
+        rgba(230, 189, 83, .1) 75%,
+        transparent
+      ) !important;
+
+    text-shadow:
+      0 0 8px rgba(210, 154, 39, .3) !important;
+  }
+
+  #quiz-screen .quiz-footer {
+    position: relative !important;
+    inset: auto !important;
+
+    width: 100% !important;
+    min-height: 58px !important;
+
+    margin: 10px 0 0 !important;
+    padding: 12px 0 2px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  #quiz-screen #submit-answer,
+  #quiz-screen #continue-button {
+    position: relative !important;
+    inset: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+
+    width: auto !important;
+    min-width: 166px !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+  }
+
+  #quiz-screen #submit-answer:disabled {
+    color: rgba(53, 54, 51, .48) !important;
+    background: rgba(118, 111, 91, .13) !important;
+    border-color: rgba(105, 92, 67, .25) !important;
+  }
+
+  #quiz-screen .feedback {
+    padding-bottom: 8px !important;
+  }
+
+  #quiz-screen #feedback-rationale {
+    padding-bottom: 8px !important;
+  }
+
+  @media (max-height: 760px) {
+    #quiz-screen .quiz-book {
+      width: min(84vw, 1260px) !important;
+      height: 89dvh !important;
+
+      padding-top: 72px !important;
+      padding-bottom: 76px !important;
+    }
+
+    #quiz-screen .quiz-header {
+      width: min(84vw, 1260px) !important;
+      height: 89dvh !important;
+    }
+
+    #quiz-screen #exit-quiz {
+      top: 44px !important;
+    }
+  }
+}
+/* ============================================================
+   PrepFlow quiz reading book — refinement pass 4
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /* Calm the utility row so the question owns the left page. */
+  #quiz-screen .quiz-reference-bar {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+
+    margin: 0 0 14px !important;
+    padding: 0 0 10px !important;
+
+    border-bottom: 1px dotted rgba(117, 96, 61, .2) !important;
+  }
+
+  #quiz-screen #quiz-question-id {
+    padding: 5px 0 !important;
+
+    color: #776d5a !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: 11px !important;
+    font-style: italic !important;
+    font-weight: 600 !important;
+  }
+
+  #quiz-screen .quiz-reference-actions {
+    gap: 8px !important;
+  }
+
+  #quiz-screen .quiz-reference-action,
+  #quiz-screen #skip-question {
+    min-height: 25px !important;
+
+    padding: 4px 8px !important;
+
+    color: #606777 !important;
+    background: transparent !important;
+
+    border: 0 !important;
+    border-bottom: 1px solid rgba(87, 93, 105, .28) !important;
+    border-radius: 0 !important;
+
+    font-size: 10px !important;
+    font-weight: 700 !important;
+
+    box-shadow: none !important;
+  }
+
+  #quiz-screen .quiz-reference-action:hover,
+  #quiz-screen #skip-question:hover {
+    color: #143764 !important;
+    background: transparent !important;
+
+    border-bottom-color: #a67220 !important;
+
+    text-shadow:
+      0 0 7px rgba(209, 158, 50, .26) !important;
+  }
+
+  /* Printed section headings. */
+  #quiz-screen .question-page .quiz-page-label,
+  #quiz-screen #response-page-label {
+    color: #8b601a !important;
+
+    font-size: 10px !important;
+    letter-spacing: .17em !important;
+
+    border-bottom-color: rgba(139, 96, 26, .28) !important;
+  }
+
+  /* Let the question read like the main text of the book. */
+  #quiz-screen #question-stem {
+    max-width: 93% !important;
+
+    color: #142846 !important;
+
+    font-size: clamp(23px, 1.62vw, 30px) !important;
+    line-height: 1.5 !important;
+
+    text-shadow:
+      0 1px rgba(255, 255, 255, .82),
+      0 1px 2px rgba(58, 42, 19, .1) !important;
+  }
+
+  /* Answer rows become illuminated lines rather than controls. */
+  #quiz-screen .answer-choice {
+    min-height: 64px !important;
+
+    padding: 16px 10px !important;
+
+    border-bottom:
+      1px solid rgba(103, 86, 54, .22) !important;
+
+    transition:
+      color 130ms ease,
+      background-color 130ms ease,
+      border-color 130ms ease,
+      text-shadow 130ms ease !important;
+  }
+
+  #quiz-screen .answer-choice:hover,
+  #quiz-screen .answer-choice:focus-within {
+    color: #092e63 !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(236, 199, 105, .28),
+        rgba(236, 199, 105, .11) 68%,
+        transparent 96%
+      ) !important;
+
+    border-bottom-color: rgba(165, 112, 25, .56) !important;
+
+    text-shadow:
+      0 0 5px rgba(255, 230, 159, .82),
+      0 0 12px rgba(204, 147, 35, .34) !important;
+  }
+
+  #quiz-screen .answer-choice:has(input:checked) {
+    color: #082c5d !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(232, 190, 83, .38),
+        rgba(232, 190, 83, .15) 70%,
+        transparent 96%
+      ) !important;
+
+    border-bottom-color: rgba(153, 99, 19, .7) !important;
+
+    text-shadow:
+      0 0 6px rgba(255, 230, 155, .94),
+      0 0 14px rgba(194, 132, 24, .42) !important;
+  }
+
+  #quiz-screen .answer-choice input {
+    appearance: none !important;
+
+    width: 17px !important;
+    height: 17px !important;
+
+    margin-top: 4px !important;
+
+    border: 1.5px solid #697386 !important;
+    border-radius: 50% !important;
+
+    background: rgba(255,255,255,.48) !important;
+
+    box-shadow:
+      inset 0 0 0 3px rgba(255,255,255,.65) !important;
+  }
+
+  #quiz-screen .answer-choice input:checked {
+    border-color: #9e6c1c !important;
+
+    background: #bd8730 !important;
+
+    box-shadow:
+      inset 0 0 0 4px #f6edd2,
+      0 0 7px rgba(207, 152, 45, .38) !important;
+  }
+
+  /* Make the inactive action deliberately quiet, the live one obvious. */
+  #quiz-screen #submit-answer,
+  #quiz-screen #continue-button {
+    min-width: 176px !important;
+    min-height: 42px !important;
+
+    padding: 10px 20px !important;
+
+    border-width: 1px !important;
+
+    letter-spacing: .07em !important;
+  }
+
+  #quiz-screen #submit-answer:disabled {
+    color: rgba(76, 72, 61, .38) !important;
+
+    background:
+      rgba(113, 104, 82, .08) !important;
+
+    border-color:
+      rgba(102, 88, 62, .18) !important;
+  }
+
+  #quiz-screen #submit-answer:not(:disabled),
+  #quiz-screen #continue-button:not([hidden]) {
+    color: #fff0bd !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #21486f,
+        #102d50
+      ) !important;
+
+    border-color: #b98027 !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.17),
+      0 2px 5px rgba(0,0,0,.18),
+      0 0 12px rgba(207, 154, 47, .18) !important;
+  }
+
+  /* Feedback reads as the next section of the same page. */
+  #quiz-screen #feedback-result {
+    color: #14335e !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.72) !important;
+  }
+
+  #quiz-screen .feedback h4 {
+    color: #8b601a !important;
+  }
+
+  #quiz-screen #feedback-rationale {
+    max-width: 96% !important;
+
+    color: #26344c !important;
+
+    line-height: 1.55 !important;
+  }
+
+  /* Almost invisible scrollbars until the page actually needs them. */
+  #quiz-screen .quiz-page-scroll,
+  #quiz-screen .quiz-response-scroll {
+    scrollbar-color:
+      rgba(133, 94, 32, .22)
+      transparent !important;
+  }
+
+  #quiz-screen .quiz-page-scroll:hover,
+  #quiz-screen .quiz-response-scroll:hover {
+    scrollbar-color:
+      rgba(133, 94, 32, .42)
+      transparent !important;
+  }
+}
+/* ============================================================
+   PrepFlow quiz reading book — refinement pass 5
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /* Use the real label only; remove the duplicate generated heading. */
+  #quiz-screen .question-page .quiz-page-label {
+    font-size: 10px !important;
+  }
+
+  #quiz-screen .question-page .quiz-page-label::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  /* More deliberate page composition. */
+  #quiz-screen .quiz-page-meta {
+    padding-bottom: 11px !important;
+    margin-bottom: 8px !important;
+  }
+
+  #quiz-screen #quiz-subject {
+    color: #16325b !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.8),
+      0 1px 2px rgba(52,39,19,.11) !important;
+  }
+
+  #quiz-screen #quiz-position {
+    color: #7d591d !important;
+  }
+
+  #quiz-screen .quiz-reference-bar {
+    margin-bottom: 17px !important;
+  }
+
+  #quiz-screen .question-page .quiz-page-label,
+  #quiz-screen #response-page-label {
+    padding-bottom: 10px !important;
+    margin-bottom: 17px !important;
+
+    font-weight: 900 !important;
+  }
+
+  /* Let long questions and rationales scroll naturally within the paper. */
+  #quiz-screen .quiz-page-scroll,
+  #quiz-screen .quiz-response-scroll {
+    scroll-behavior: smooth !important;
+
+    mask-image:
+      linear-gradient(
+        to bottom,
+        transparent 0,
+        black 7px,
+        black calc(100% - 12px),
+        transparent 100%
+      ) !important;
+  }
+
+  /* Keep answer typography strong but slightly calmer than the question. */
+  #quiz-screen .answer-choice {
+    color: #1a2c49 !important;
+
+    font-size: clamp(18px, 1.12vw, 20px) !important;
+    font-weight: 700 !important;
+  }
+
+  /* A selected answer reads as a marked line in the book. */
+  #quiz-screen .answer-choice:has(input:checked) {
+    position: relative !important;
+  }
+
+  #quiz-screen .answer-choice:has(input:checked)::before {
+    content: "" !important;
+
+    position: absolute !important;
+    left: 0 !important;
+    top: 17% !important;
+    bottom: 17% !important;
+
+    width: 2px !important;
+
+    background: #b77d1f !important;
+
+    box-shadow:
+      0 0 5px rgba(255, 221, 132, .92),
+      0 0 11px rgba(202, 139, 28, .48) !important;
+  }
+
+  #quiz-screen .answer-choice:has(input:checked)::after {
+    content: "✓" !important;
+
+    margin-left: auto !important;
+    align-self: center !important;
+
+    color: #9c6918 !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+
+    text-shadow:
+      0 0 5px rgba(255, 226, 146, .9),
+      0 0 10px rgba(201, 141, 31, .46) !important;
+  }
+
+  /* Keep submit visually tied to the answer page instead of the frame edge. */
+  #quiz-screen .quiz-footer {
+    padding-right: 4px !important;
+    padding-bottom: 3px !important;
+  }
+
+  #quiz-screen #submit-answer,
+  #quiz-screen #continue-button {
+    min-width: 170px !important;
+  }
+
+  /* Feedback hierarchy. */
+  #quiz-screen .feedback {
+    margin-top: 24px !important;
+    padding-top: 19px !important;
+  }
+
+  #quiz-screen #feedback-result {
+    margin-bottom: 16px !important;
+  }
+
+  #quiz-screen .feedback h4 {
+    padding-bottom: 8px !important;
+    margin-bottom: 10px !important;
+  }
+
+  #quiz-screen #feedback-rationale {
+    font-size: clamp(17px, 1.05vw, 19px) !important;
+    line-height: 1.58 !important;
+  }
+}
+/* ============================================================
+   PrepFlow quiz reading book — left-page containment fix
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /* Keep every piece of left-page text safely on the paper. */
+  #quiz-screen .question-page {
+    box-sizing: border-box !important;
+
+    padding-left: 34px !important;
+    padding-right: 12px !important;
+  }
+
+  #quiz-screen .quiz-page-meta,
+  #quiz-screen .quiz-reference-bar,
+  #quiz-screen .question-page .quiz-page-label,
+  #quiz-screen .quiz-page-scroll {
+    box-sizing: border-box !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    transform: none !important;
+  }
+
+  #quiz-screen #quiz-subject,
+  #quiz-screen #quiz-position,
+  #quiz-screen #quiz-question-id,
+  #quiz-screen #question-stem {
+    margin-left: 0 !important;
+    transform: none !important;
+  }
+
+  #quiz-screen #question-stem {
+    max-width: 100% !important;
+  }
+}
+/* ============================================================
+   PrepFlow quiz reading book — left-page margin refinement
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #quiz-screen .question-page {
+    padding-left: 54px !important;
+    padding-right: 24px !important;
+  }
+
+  #quiz-screen .quiz-page-meta,
+  #quiz-screen .quiz-reference-bar,
+  #quiz-screen .question-page .quiz-page-label,
+  #quiz-screen .quiz-page-scroll {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  #quiz-screen #question-stem {
+    max-width: 96% !important;
+  }
+}
+/* ============================================================
+   PrepFlow quiz reading book — completion-field refinement
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #quiz-screen .response-page input[type="text"],
+  #quiz-screen .response-page input[type="number"],
+  #quiz-screen .response-page textarea {
+    width: calc(100% - 42px) !important;
+    max-width: calc(100% - 42px) !important;
+
+    margin-left: 20px !important;
+    margin-right: 22px !important;
+
+    box-sizing: border-box !important;
+
+    padding: 13px 16px !important;
+
+    color: #172946 !important;
+    background: rgba(255, 252, 240, .58) !important;
+
+    border: 1px solid rgba(83, 94, 111, .34) !important;
+    border-bottom-color: rgba(145, 99, 28, .5) !important;
+    border-radius: 3px !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(17px, 1.05vw, 19px) !important;
+    font-weight: 600 !important;
+
+    box-shadow:
+      inset 0 1px 3px rgba(50, 42, 29, .06),
+      0 1px rgba(255,255,255,.5) !important;
+  }
+
+  #quiz-screen .response-page input[type="text"]:focus,
+  #quiz-screen .response-page input[type="number"]:focus,
+  #quiz-screen .response-page textarea:focus {
+    outline: none !important;
+
+    border-color: #a87320 !important;
+
+    box-shadow:
+      inset 0 1px 3px rgba(50, 42, 29, .06),
+      0 0 0 2px rgba(201, 154, 58, .13),
+      0 0 10px rgba(202, 151, 45, .18) !important;
+  }
+
+  #quiz-screen .response-page input::placeholder,
+  #quiz-screen .response-page textarea::placeholder {
+    color: #77756d !important;
+    opacity: .86 !important;
+  }
+}
+/* ============================================================
+   PrepFlow quiz reading book — depth pass
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /* Save & Quit becomes a physical bookmark/tab attached to the cover. */
+  #quiz-screen #exit-quiz {
+    top: 46px !important;
+    left: 26px !important;
+
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 118px !important;
+    min-height: 118px !important;
+
+    padding: 10px 6px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    color: #f2d995 !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        #0b203c 0%,
+        #17375d 42%,
+        #0b203c 100%
+      ) !important;
+
+    border: 1px solid #9c6f27 !important;
+    border-left-width: 2px !important;
+    border-radius: 0 2px 2px 0 !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    line-height: 1.05 !important;
+    letter-spacing: .08em !important;
+    writing-mode: vertical-rl !important;
+    text-orientation: mixed !important;
+
+    box-shadow:
+      inset 1px 0 rgba(255,255,255,.12),
+      inset -2px 0 4px rgba(0,0,0,.24),
+      5px 7px 10px rgba(0,0,0,.34),
+      0 0 0 1px rgba(227,190,101,.08) !important;
+
+    transform: none !important;
+  }
+
+  #quiz-screen #exit-quiz::after {
+    content: "" !important;
+
+    position: absolute !important;
+    left: 5px !important;
+    right: 5px !important;
+    bottom: -10px !important;
+
+    height: 12px !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        transparent 0 48%,
+        #102b4b 49% 100%
+      ) left,
+      linear-gradient(
+        225deg,
+        transparent 0 48%,
+        #102b4b 49% 100%
+      ) right !important;
+
+    background-size: 50% 100% !important;
+    background-repeat: no-repeat !important;
+
+    filter: drop-shadow(0 3px 2px rgba(0,0,0,.2)) !important;
+  }
+
+  #quiz-screen #exit-quiz:hover {
+    color: #fff1bd !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        #102b4b 0%,
+        #21476f 45%,
+        #102b4b 100%
+      ) !important;
+
+    border-color: #c59841 !important;
+
+    box-shadow:
+      inset 1px 0 rgba(255,255,255,.15),
+      inset -2px 0 4px rgba(0,0,0,.24),
+      6px 8px 12px rgba(0,0,0,.36),
+      0 0 12px rgba(209,157,52,.22) !important;
+  }
+
+  /* Give the bottom console area physical depth. */
+  #quiz-screen.quiz-screen:not([hidden])::after {
+    display: block !important;
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: 1 !important;
+
+    left: 8% !important;
+    right: 8% !important;
+    bottom: 2.5% !important;
+
+    height: 8.5% !important;
+
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(11, 35, 63, .96),
+        rgba(7, 24, 45, .98)
+      ) !important;
+
+    border-top: 1px solid rgba(197,145,56,.82) !important;
+    border-bottom: 1px solid rgba(0,0,0,.45) !important;
+
+    box-shadow:
+      inset 0 2px 5px rgba(255,255,255,.05),
+      inset 0 -5px 10px rgba(0,0,0,.28),
+      0 -3px 8px rgba(0,0,0,.18),
+      0 4px 12px rgba(0,0,0,.34) !important;
+
+    pointer-events: none !important;
+  }
+
+  #quiz-screen.quiz-screen:not([hidden])::before {
+    display: block !important;
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: 2 !important;
+
+    left: 10% !important;
+    right: 10% !important;
+    bottom: 4.1% !important;
+
+    height: 4.5% !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255,255,255,.025),
+        rgba(255,255,255,.055) 50%,
+        rgba(255,255,255,.025)
+      ) !important;
+
+    border: 1px solid rgba(191,143,59,.2) !important;
+
+    box-shadow:
+      inset 0 1px 2px rgba(255,255,255,.06),
+      inset 0 -2px 4px rgba(0,0,0,.18) !important;
+
+    pointer-events: none !important;
+  }
+}
+
+/* ============================================================
+   PrepFlow quiz reading book — final bookmark design
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /*
+    A real top bookmark:
+    - anchored to the straight upper edge of the left page
+    - lower section visually disappears beneath the page stack
+    - broad enough to read without becoming a major control
+  */
+
+  #quiz-screen .quiz-header {
+    position: absolute !important;
+    z-index: 6 !important;
+
+    left: 50% !important;
+    top: 50% !important;
+
+    width: min(86vw, 1300px) !important;
+    height: min(84dvh, 780px) !important;
+
+    overflow: visible !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    pointer-events: none !important;
+  }
+
+  #quiz-screen .quiz-book {
+    position: relative !important;
+    z-index: 5 !important;
+  }
+
+  #quiz-screen #exit-quiz {
+    position: absolute !important;
+    z-index: 8 !important;
+
+    /*
+      This lands on the long straight section of the upper-left
+      cover rather than the stepped outer corner.
+    */
+    top: -26px !important;
+    left: 14.5% !important;
+
+    width: 138px !important;
+    min-width: 138px !important;
+
+    height: 54px !important;
+    min-height: 54px !important;
+
+    margin: 0 !important;
+    padding: 9px 14px 18px !important;
+
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    color: #f5dfa0 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #234b70 0%,
+        #17395e 32%,
+        #0c2747 100%
+      ) !important;
+
+    border: 1px solid #b48431 !important;
+    border-bottom: 0 !important;
+    border-radius: 4px 4px 0 0 !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .055em !important;
+
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+
+    text-shadow:
+      0 1px 1px rgba(0,0,0,.5) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.18),
+      inset 1px 0 0 rgba(255,255,255,.07),
+      inset -2px 0 4px rgba(0,0,0,.22),
+      0 -3px 7px rgba(0,0,0,.18),
+      3px 3px 8px rgba(0,0,0,.3) !important;
+
+    transform: none !important;
+
+    pointer-events: auto !important;
+  }
+
+  /*
+    Dark continuation underneath the visible tongue.
+    This is what makes the tab look inserted rather than perched.
+  */
+  #quiz-screen #exit-quiz::before {
+    display: block !important;
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: -1 !important;
+
+    left: 8px !important;
+    right: 8px !important;
+    top: 37px !important;
+
+    height: 23px !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #0c2747,
+        #071c35
+      ) !important;
+
+    border-left: 1px solid rgba(180,132,49,.6) !important;
+    border-right: 1px solid rgba(180,132,49,.6) !important;
+
+    box-shadow:
+      inset 0 -5px 7px rgba(0,0,0,.3) !important;
+  }
+
+  /*
+    Paper lip in front of the bookmark.
+    This creates the visual cue that the bookmark is actually
+    trapped between the paper and the cover.
+  */
+  #quiz-screen #exit-quiz::after {
+    display: block !important;
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: 10 !important;
+
+    left: -3px !important;
+    right: -3px !important;
+    bottom: -9px !important;
+
+    height: 13px !important;
+
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(246,236,208,.98),
+        rgba(221,204,168,.96)
+      ) !important;
+
+    border-top: 1px solid rgba(125,92,43,.2) !important;
+
+    box-shadow:
+      0 -1px 2px rgba(255,255,255,.45),
+      0 2px 3px rgba(54,40,20,.16) !important;
+
+    clip-path:
+      polygon(
+        0 15%,
+        16% 8%,
+        34% 16%,
+        51% 7%,
+        71% 14%,
+        87% 6%,
+        100% 13%,
+        100% 100%,
+        0 100%
+      ) !important;
+
+    pointer-events: none !important;
+  }
+
+  #quiz-screen #exit-quiz:hover,
+  #quiz-screen #exit-quiz:focus-visible {
+    color: #fff3bc !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #2c587f 0%,
+        #1c466d 34%,
+        #103052 100%
+      ) !important;
+
+    border-color: #d0a34d !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.22),
+      inset 1px 0 0 rgba(255,255,255,.09),
+      inset -2px 0 4px rgba(0,0,0,.2),
+      0 -3px 7px rgba(0,0,0,.2),
+      3px 3px 8px rgba(0,0,0,.3),
+      0 0 11px rgba(205,155,51,.18) !important;
+
+    transform: none !important;
+  }
+}
+/* ============================================================
+   PrepFlow quiz reading book — bookmark insertion fix
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /*
+    Replace the paper-colored lip with the same bookmark material
+    so it reads as the ribbon continuing down into the book.
+  */
+  #quiz-screen #exit-quiz::after {
+    display: block !important;
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: -1 !important;
+
+    left: 8px !important;
+    right: 8px !important;
+    bottom: -14px !important;
+
+    height: 20px !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #17395e 0%,
+        #102f50 52%,
+        #081f3a 100%
+      ) !important;
+
+    border-left: 1px solid rgba(180,132,49,.48) !important;
+    border-right: 1px solid rgba(180,132,49,.48) !important;
+    border-top: 0 !important;
+
+    box-shadow:
+      inset 2px 0 3px rgba(255,255,255,.035),
+      inset -2px 0 4px rgba(0,0,0,.22),
+      inset 0 -7px 8px rgba(0,0,0,.26) !important;
+
+    clip-path: none !important;
+
+    pointer-events: none !important;
+  }
+}
+/* ============================================================
+   PrepFlow quiz reading book — bookmark shape refinement
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #quiz-screen #exit-quiz {
+    border-radius: 4px 4px 2px 2px !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #234b70 0%,
+        #1b4067 36%,
+        #14365a 68%,
+        #0d2b4b 100%
+      ) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.18),
+      inset 1px 0 0 rgba(255,255,255,.06),
+      inset -1px 0 3px rgba(0,0,0,.18),
+      0 -3px 7px rgba(0,0,0,.18),
+      3px 3px 8px rgba(0,0,0,.28) !important;
+  }
+
+  #quiz-screen #exit-quiz::before {
+    display: block !important;
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: -1 !important;
+
+    left: 0 !important;
+    right: 0 !important;
+    top: calc(100% - 8px) !important;
+
+    height: 22px !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #0d2b4b 0%,
+        #0b2745 52%,
+        #081f39 100%
+      ) !important;
+
+    border: 0 !important;
+    border-radius: 0 0 5px 5px !important;
+
+    box-shadow:
+      inset 1px 0 0 rgba(255,255,255,.035),
+      inset -1px 0 3px rgba(0,0,0,.18),
+      inset 0 -5px 7px rgba(0,0,0,.22) !important;
+  }
+
+  #quiz-screen #exit-quiz::after {
+    display: none !important;
+    content: none !important;
+  }
+}
+/* ============================================================
+   PrepFlow quiz reading book — standalone save control
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #quiz-screen .quiz-header {
+    z-index: 8 !important;
+    overflow: visible !important;
+    pointer-events: none !important;
+  }
+
+  #quiz-screen #exit-quiz {
+    position: absolute !important;
+    z-index: 10 !important;
+
+    top: -52px !important;
+    left: 50% !important;
+
+    width: auto !important;
+    min-width: 156px !important;
+
+    height: 44px !important;
+    min-height: 44px !important;
+
+    margin: 0 !important;
+    padding: 9px 22px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    color: #f5dfa3 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #244a70 0%,
+        #19395e 48%,
+        #0d2848 100%
+      ) !important;
+
+    border: 1px solid #ad7c2b !important;
+    border-radius: 3px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .065em !important;
+
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+
+    text-shadow:
+      0 1px 1px rgba(0,0,0,.5) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.18),
+      inset 0 -2px 4px rgba(0,0,0,.22),
+      0 4px 8px rgba(0,0,0,.3),
+      0 0 0 1px rgba(239,203,121,.05) !important;
+
+    transform: translateX(-50%) !important;
+
+    pointer-events: auto !important;
+  }
+
+  #quiz-screen #exit-quiz::before,
+  #quiz-screen #exit-quiz::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  #quiz-screen #exit-quiz:hover,
+  #quiz-screen #exit-quiz:focus-visible {
+    color: #fff4c0 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #2d587f 0%,
+        #20466d 48%,
+        #123052 100%
+      ) !important;
+
+    border-color: #d0a04a !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.22),
+      inset 0 -2px 4px rgba(0,0,0,.2),
+      0 5px 10px rgba(0,0,0,.32),
+      0 0 12px rgba(209,158,54,.22) !important;
+
+    transform: translateX(-50%) !important;
+  }
+}
+/* ============================================================
+   PrepFlow block summary — finished study ledger
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #block-summary.block-summary:not([hidden]) {
+    position: fixed !important;
+    z-index: 110 !important;
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto auto auto !important;
+    place-content: center !important;
+    justify-items: center !important;
+
+    overflow: hidden !important;
+
+    color: #172743 !important;
+
+    background:
+      linear-gradient(
+        rgba(3, 8, 20, .35),
+        rgba(3, 8, 20, .48)
+      ),
+      url("images/quiz-builder/prepflow-nursing-station-quiz-builder.png?v=20260727-2")
+      center / cover no-repeat !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /*
+    Cream study sheet mounted in a dimensional navy/brass frame.
+    The sheet is intentionally calmer than the quiz pages because
+    this is a pause between blocks rather than another task screen.
+  */
+  #block-summary.block-summary:not([hidden])::before {
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: -1 !important;
+
+    left: 50% !important;
+    top: 50% !important;
+
+    width: min(650px, 68vw) !important;
+    height: min(430px, 64dvh) !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    background:
+      linear-gradient(
+        100deg,
+        rgba(255,255,255,.14),
+        transparent 18% 82%,
+        rgba(78,55,24,.045)
+      ),
+      #f4ecd7 !important;
+
+    border: 10px solid #102e4d !important;
+    outline: 2px solid #b38233 !important;
+    outline-offset: -5px !important;
+
+    border-radius: 4px !important;
+
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.7),
+      inset 0 0 28px rgba(79,59,31,.08),
+      0 5px 0 #091e35,
+      0 10px 0 rgba(5,15,28,.58),
+      0 24px 48px rgba(0,0,0,.42) !important;
+  }
+
+  /*
+    Quiet printed inner rule.
+  */
+  #block-summary.block-summary:not([hidden])::after {
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: -1 !important;
+
+    left: 50% !important;
+    top: 50% !important;
+
+    width: min(600px, calc(68vw - 50px)) !important;
+    height: min(380px, calc(64dvh - 50px)) !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    border:
+      1px solid rgba(155,111,38,.34) !important;
+
+    box-shadow:
+      inset 0 0 0 4px rgba(255,255,255,.18) !important;
+
+    pointer-events: none !important;
+  }
+
+  #block-summary #summary-title,
+  #block-summary #summary-score,
+  #block-summary #summary-message,
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  #block-summary #summary-title {
+    width: min(520px, 56vw) !important;
+
+    margin: 0 0 12px !important;
+    padding: 0 0 18px !important;
+
+    color: #17345d !important;
+
+    border-bottom:
+      1px solid rgba(160,113,37,.42) !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(34px, 3.2vw, 48px) !important;
+    font-weight: 800 !important;
+    line-height: 1.05 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    text-transform: none !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.84),
+      0 2px 3px rgba(63,44,19,.12) !important;
+  }
+
+  #block-summary #summary-score {
+    width: min(500px, 54vw) !important;
+
+    margin: 0 !important;
+    padding: 7px 0 13px !important;
+
+    color: #8c621d !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: clamp(17px, 1.5vw, 21px) !important;
+    font-weight: 900 !important;
+    line-height: 1.25 !important;
+    letter-spacing: .035em !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+  }
+
+  #block-summary #summary-message {
+    width: min(470px, 50vw) !important;
+    min-height: 52px !important;
+
+    margin: 0 0 24px !important;
+    padding: 14px 0 0 !important;
+
+    color: #3b4657 !important;
+
+    border-top:
+      1px solid rgba(113,94,62,.2) !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(16px, 1.25vw, 19px) !important;
+    font-weight: 600 !important;
+    line-height: 1.45 !important;
+    text-align: center !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.66) !important;
+  }
+
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    position: absolute !important;
+
+    top: calc(50% + 125px) !important;
+
+    min-width: 190px !important;
+    min-height: 46px !important;
+
+    margin: 0 !important;
+    padding: 10px 20px !important;
+
+    border-radius: 3px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .055em !important;
+    text-transform: uppercase !important;
+
+    transform: none !important;
+
+    transition:
+      border-color 140ms ease,
+      color 140ms ease,
+      box-shadow 140ms ease,
+      background 140ms ease !important;
+  }
+
+  #block-summary #summary-action {
+    left: calc(50% - 202px) !important;
+
+    color: #f7e4aa !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #244b70,
+        #16395e 52%,
+        #0e2949
+      ) !important;
+
+    border: 1px solid #aa7826 !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.17),
+      inset 0 -2px 4px rgba(0,0,0,.2),
+      0 3px 6px rgba(0,0,0,.2) !important;
+  }
+
+  #block-summary #summary-exit {
+    left: calc(50% + 12px) !important;
+
+    color: #31405a !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,251,235,.72),
+        rgba(226,216,191,.7)
+      ) !important;
+
+    border: 1px solid rgba(61,75,98,.46) !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.72),
+      0 2px 4px rgba(0,0,0,.12) !important;
+  }
+
+  #block-summary #summary-action:hover,
+  #block-summary #summary-action:focus-visible {
+    color: #fff5c9 !important;
+    border-color: #d2a34a !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.2),
+      inset 0 -2px 4px rgba(0,0,0,.18),
+      0 4px 7px rgba(0,0,0,.22),
+      0 0 13px rgba(209,158,54,.26) !important;
+  }
+
+  #block-summary #summary-exit:hover,
+  #block-summary #summary-exit:focus-visible {
+    color: #14335f !important;
+    border-color: #a87524 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,250,229,.9),
+        rgba(234,220,186,.86)
+      ) !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.78),
+      0 3px 5px rgba(0,0,0,.14),
+      0 0 9px rgba(184,130,37,.14) !important;
+  }
+
+  @media (max-height: 720px) {
+    #block-summary.block-summary:not([hidden])::before {
+      height: 72dvh !important;
+    }
+
+    #block-summary.block-summary:not([hidden])::after {
+      height: calc(72dvh - 50px) !important;
+    }
+
+    #block-summary #summary-action,
+    #block-summary #summary-exit {
+      top: calc(50% + 112px) !important;
+    }
+  }
+}
+/* ============================================================
+   PrepFlow block summary — study ledger
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #block-summary.block-summary:not([hidden]) {
+    position: fixed !important;
+    z-index: 120 !important;
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    color: #172743 !important;
+
+    background:
+      linear-gradient(
+        rgba(3, 8, 20, .34),
+        rgba(3, 8, 20, .48)
+      ),
+      url("images/quiz-builder/prepflow-nursing-station-quiz-builder.png?v=20260727-2")
+      center / cover no-repeat !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+
+    overflow: hidden !important;
+  }
+
+  /* Physical framed report sheet. */
+  #block-summary.block-summary:not([hidden])::before {
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: 0 !important;
+
+    left: 50% !important;
+    top: 50% !important;
+
+    width: min(650px, 68vw) !important;
+    height: min(440px, 66dvh) !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    background:
+      linear-gradient(
+        100deg,
+        rgba(255,255,255,.18),
+        transparent 18% 82%,
+        rgba(77,54,25,.05)
+      ),
+      #f3ead4 !important;
+
+    border: 10px solid #102d4c !important;
+    outline: 2px solid #b78331 !important;
+    outline-offset: -5px !important;
+
+    border-radius: 4px !important;
+
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.7),
+      inset 0 0 30px rgba(75,56,31,.08),
+      0 5px 0 #091d33,
+      0 10px 0 rgba(5,14,27,.55),
+      0 26px 52px rgba(0,0,0,.45) !important;
+  }
+
+  /* Inner printed rule. */
+  #block-summary.block-summary:not([hidden])::after {
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: 1 !important;
+
+    left: 50% !important;
+    top: 50% !important;
+
+    width: min(594px, calc(68vw - 56px)) !important;
+    height: min(384px, calc(66dvh - 56px)) !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    border: 1px solid rgba(157,111,37,.32) !important;
+
+    box-shadow:
+      inset 0 0 0 4px rgba(255,255,255,.18) !important;
+
+    pointer-events: none !important;
+  }
+
+  #block-summary #summary-title,
+  #block-summary #summary-score,
+  #block-summary #summary-message,
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    position: relative !important;
+    z-index: 3 !important;
+  }
+
+  #block-summary #summary-title {
+    width: min(520px, 56vw) !important;
+
+    margin: 0 0 12px !important;
+    padding: 0 0 18px !important;
+
+    color: #17365f !important;
+
+    border-bottom:
+      1px solid rgba(158,111,38,.42) !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(36px, 3.2vw, 48px) !important;
+    font-weight: 800 !important;
+    line-height: 1.05 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    text-transform: none !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.82),
+      0 2px 3px rgba(59,43,22,.12) !important;
+  }
+
+  #block-summary #summary-score {
+    width: min(500px, 54vw) !important;
+
+    margin: 0 !important;
+    padding: 7px 0 14px !important;
+
+    color: #8d621d !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: clamp(17px, 1.5vw, 21px) !important;
+    font-weight: 900 !important;
+    line-height: 1.25 !important;
+    letter-spacing: .035em !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+  }
+
+  #block-summary #summary-message {
+    width: min(470px, 50vw) !important;
+
+    margin: 0 0 28px !important;
+    padding: 15px 0 0 !important;
+
+    color: #3a4658 !important;
+
+    border-top:
+      1px solid rgba(111,93,62,.2) !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(16px, 1.25vw, 19px) !important;
+    font-weight: 600 !important;
+    line-height: 1.45 !important;
+    text-align: center !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.65) !important;
+  }
+
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    min-width: 190px !important;
+    min-height: 46px !important;
+
+    margin: 0 5px !important;
+    padding: 10px 20px !important;
+
+    border-radius: 3px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .055em !important;
+    text-transform: uppercase !important;
+
+    transform: none !important;
+  }
+
+  #block-summary #summary-action {
+    color: #f7e5ad !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #244c72,
+        #173a5f 52%,
+        #0e2949
+      ) !important;
+
+    border: 1px solid #aa7826 !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.17),
+      inset 0 -2px 4px rgba(0,0,0,.2),
+      0 3px 6px rgba(0,0,0,.2) !important;
+  }
+
+  #block-summary #summary-exit {
+    color: #33425b !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,251,236,.74),
+        rgba(228,217,191,.72)
+      ) !important;
+
+    border: 1px solid rgba(61,75,98,.46) !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.72),
+      0 2px 4px rgba(0,0,0,.12) !important;
+  }
+
+  #block-summary #summary-action:hover,
+  #block-summary #summary-action:focus-visible {
+    color: #fff6ca !important;
+    border-color: #d3a34a !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.2),
+      inset 0 -2px 4px rgba(0,0,0,.18),
+      0 4px 7px rgba(0,0,0,.22),
+      0 0 13px rgba(210,158,53,.26) !important;
+  }
+
+  #block-summary #summary-exit:hover,
+  #block-summary #summary-exit:focus-visible {
+    color: #14345f !important;
+    border-color: #a87524 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,250,230,.92),
+        rgba(235,221,187,.88)
+      ) !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.78),
+      0 3px 5px rgba(0,0,0,.14),
+      0 0 9px rgba(184,130,37,.14) !important;
+  }
+}
+/* ============================================================
+   PrepFlow quiz book — responsive desktop scaling
+   Scale with the physical book instead of holding desktop type
+   sizes while the pages become narrow.
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #quiz-screen .quiz-book {
+    container-type: inline-size !important;
+    container-name: prepflow-quiz-book !important;
+  }
+
+  /*
+    Typography now tracks the actual book width.
+    The minimums are intentionally lower than the original desktop
+    clamps so the layout can shrink cleanly before landscape/mobile.
+  */
+
+  #quiz-screen .quiz-page-meta #quiz-subject {
+    font-size: clamp(18px, 2.15cqw, 29px) !important;
+  }
+
+  #quiz-screen .quiz-page-meta #quiz-position {
+    font-size: clamp(9px, .9cqw, 12px) !important;
+  }
+
+  #quiz-screen #quiz-question-id {
+    font-size: clamp(9px, .82cqw, 11px) !important;
+  }
+
+  #quiz-screen .question-page .quiz-page-label,
+  #quiz-screen #response-page-label {
+    font-size: clamp(9px, .78cqw, 11px) !important;
+  }
+
+  #quiz-screen #question-stem {
+    font-size: clamp(17px, 2.05cqw, 29px) !important;
+    line-height: 1.45 !important;
+  }
+
+  #quiz-screen .answer-choice {
+    font-size: clamp(15px, 1.55cqw, 20px) !important;
+    line-height: 1.32 !important;
+  }
+
+  #quiz-screen #feedback-result {
+    font-size: clamp(20px, 2cqw, 28px) !important;
+  }
+
+  #quiz-screen #feedback-rationale {
+    font-size: clamp(15px, 1.5cqw, 19px) !important;
+  }
+}
+
+/*
+  Mid-width desktop / split-screen mode.
+
+  Instead of squeezing the full desktop header into a tiny page,
+  give the left page a denser but still readable composition.
+*/
+@media (min-width: 821px) and (max-width: 1180px) {
+
+  #quiz-screen .quiz-book {
+    width: min(94vw, 1120px) !important;
+
+    padding-left: clamp(58px, 6vw, 82px) !important;
+    padding-right: clamp(58px, 6vw, 82px) !important;
+
+    column-gap: clamp(42px, 4vw, 60px) !important;
+  }
+
+  #quiz-screen .quiz-header {
+    width: min(94vw, 1120px) !important;
+  }
+
+  #quiz-screen .question-page {
+    padding-left: 28px !important;
+    padding-right: 12px !important;
+  }
+
+  #quiz-screen .response-page {
+    padding-left: 12px !important;
+    padding-right: 16px !important;
+  }
+
+  /*
+    Subject and progress no longer fight for the same horizontal line.
+  */
+  #quiz-screen .quiz-page-meta {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 5px !important;
+    align-items: start !important;
+  }
+
+  #quiz-screen .quiz-page-meta #quiz-position {
+    text-align: left !important;
+    white-space: normal !important;
+  }
+
+  /*
+    Reference and review controls stack gracefully rather than
+    crushing the reference text into a vertical strip.
+  */
+  #quiz-screen .quiz-reference-bar {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "reference"
+      "actions"
+      "status" !important;
+
+    gap: 5px !important;
+  }
+
+  #quiz-screen #quiz-question-id {
+    width: 100% !important;
+
+    white-space: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  #quiz-screen .quiz-reference-actions {
+    justify-content: flex-start !important;
+    flex-wrap: wrap !important;
+  }
+
+  #quiz-screen #question-stem {
+    max-width: 100% !important;
+  }
+
+  #quiz-screen .answer-choice {
+    min-height: 54px !important;
+    padding: 12px 8px !important;
+  }
+
+  #quiz-screen #exit-quiz {
+    min-width: 138px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+
+    font-size: 12px !important;
+  }
+}
+
+/*
+  Last desktop step before we eventually hand the quiz over to
+  the dedicated landscape-mobile layout.
+*/
+@media (min-width: 821px) and (max-width: 980px) {
+
+  #quiz-screen .quiz-book {
+    padding-left: 48px !important;
+    padding-right: 48px !important;
+
+    column-gap: 36px !important;
+  }
+
+  #quiz-screen .question-page {
+    padding-left: 22px !important;
+  }
+
+  #quiz-screen #question-stem {
+    font-size: clamp(16px, 2cqw, 22px) !important;
+  }
+
+  #quiz-screen .answer-choice {
+    font-size: clamp(14px, 1.55cqw, 17px) !important;
+  }
+}
+/* ============================================================
+   PrepFlow quiz book — smooth responsive interpolation
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #quiz-screen .quiz-book {
+    width: min(94vw, 1300px) !important;
+
+    padding-left: clamp(48px, 7vw, 116px) !important;
+    padding-right: clamp(48px, 7vw, 116px) !important;
+
+    column-gap: clamp(36px, 4.7vw, 80px) !important;
+  }
+
+  #quiz-screen .quiz-header {
+    width: min(94vw, 1300px) !important;
+  }
+
+  #quiz-screen .question-page {
+    padding-left: clamp(22px, 3.2vw, 54px) !important;
+    padding-right: clamp(12px, 1.7vw, 24px) !important;
+  }
+
+  #quiz-screen .response-page {
+    padding-left: clamp(12px, 1.7vw, 24px) !important;
+    padding-right: clamp(12px, 1.7vw, 24px) !important;
+  }
+
+  #quiz-screen .quiz-page-meta {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(110px, auto) !important;
+
+    gap: clamp(8px, 1.3vw, 18px) !important;
+  }
+
+  #quiz-screen .quiz-page-meta #quiz-position {
+    text-align: right !important;
+    white-space: normal !important;
+  }
+
+  #quiz-screen .quiz-reference-bar {
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto !important;
+
+    grid-template-areas:
+      "reference actions"
+      "status status" !important;
+
+    gap: 6px clamp(8px, 1vw, 12px) !important;
+  }
+
+  #quiz-screen #quiz-question-id {
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+  }
+
+  #quiz-screen .quiz-reference-actions {
+    justify-content: flex-end !important;
+    flex-wrap: wrap !important;
+  }
+
+  #quiz-screen #question-stem {
+    max-width: 100% !important;
+  }
+}
+
+/*
+  Only stack the left-page header when we truly run out of width.
+  This is deliberately much later than the old 1180px jump.
+*/
+@media (min-width: 821px) and (max-width: 940px) {
+
+  #quiz-screen .quiz-page-meta {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 4px !important;
+  }
+
+  #quiz-screen .quiz-page-meta #quiz-position {
+    text-align: left !important;
+  }
+
+  #quiz-screen .quiz-reference-bar {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "reference"
+      "actions"
+      "status" !important;
+  }
+
+  #quiz-screen .quiz-reference-actions {
+    justify-content: flex-start !important;
+  }
+}
+/* ============================================================
+   PrepFlow quiz book — narrow-mode paper margin
+   ============================================================ */
+
+@media (min-width: 821px) and (max-width: 940px) {
+
+  /*
+    Once the metadata stacks, preserve a proper printed margin
+    instead of letting the whole left column hug the paper edge.
+  */
+  #quiz-screen .question-page {
+    padding-left: 34px !important;
+    padding-right: 16px !important;
+  }
+
+  #quiz-screen .response-page {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  #quiz-screen .quiz-page-meta,
+  #quiz-screen .quiz-reference-bar,
+  #quiz-screen .question-page .quiz-page-label,
+  #quiz-screen .quiz-page-scroll {
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  #quiz-screen #question-stem {
+    max-width: 96% !important;
+  }
+}
+/* ============================================================
+   PrepFlow block summary — open-book intermission
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #block-summary.block-summary:not([hidden]) {
+    position: fixed !important;
+    z-index: 120 !important;
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-rows: 1fr !important;
+
+    align-items: center !important;
+    justify-items: stretch !important;
+
+    overflow: hidden !important;
+
+    background:
+      linear-gradient(
+        rgba(3, 8, 20, .28),
+        rgba(3, 8, 20, .4)
+      ),
+      url("images/quiz-builder/prepflow-nursing-station-quiz-builder.png?v=20260727-2")
+      center / cover no-repeat !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+
+    color: #172743 !important;
+  }
+
+  /*
+    The same physical book used during the quiz.
+  */
+  #block-summary.block-summary:not([hidden])::before {
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: 0 !important;
+
+    left: 50% !important;
+    top: 50% !important;
+
+    width: min(86vw, 1300px) !important;
+    height: min(84dvh, 780px) !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    background:
+      url("images/quiz-builder/books/quizbook-transparent.png?v=20260728-clean-preview-1")
+      center / 100% 100% no-repeat !important;
+
+    filter:
+      drop-shadow(0 28px 40px rgba(0,0,0,.42)) !important;
+
+    pointer-events: none !important;
+  }
+
+  /* Remove the old framed-sheet inner border. */
+  #block-summary.block-summary:not([hidden])::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  /*
+    Left-page result group.
+  */
+  #block-summary #summary-title {
+    position: absolute !important;
+    z-index: 2 !important;
+
+    left: calc(50% - min(43vw, 650px) + clamp(95px, 8vw, 132px)) !important;
+    top: calc(50% - min(42dvh, 390px) + clamp(100px, 11vh, 125px)) !important;
+
+    width: calc(min(43vw, 650px) - clamp(125px, 10vw, 165px)) !important;
+
+    margin: 0 !important;
+    padding: 0 0 17px !important;
+
+    color: #17365f !important;
+
+    border: 0 !important;
+    border-bottom:
+      1px solid rgba(153,108,35,.4) !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(30px, 3vw, 46px) !important;
+    font-weight: 800 !important;
+    line-height: 1.08 !important;
+    letter-spacing: 0 !important;
+    text-align: left !important;
+    text-transform: none !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.8),
+      0 2px 3px rgba(58,42,20,.12) !important;
+  }
+
+  #block-summary #summary-score {
+    position: absolute !important;
+    z-index: 2 !important;
+
+    left: calc(50% - min(43vw, 650px) + clamp(95px, 8vw, 132px)) !important;
+    top: calc(50% - min(42dvh, 390px) + clamp(205px, 24vh, 250px)) !important;
+
+    width: calc(min(43vw, 650px) - clamp(125px, 10vw, 165px)) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    color: #8b601b !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: clamp(17px, 1.55vw, 22px) !important;
+    font-weight: 900 !important;
+    line-height: 1.35 !important;
+    letter-spacing: .035em !important;
+    text-align: left !important;
+    text-transform: uppercase !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.72) !important;
+  }
+
+  /*
+    Right-page explanation.
+  */
+  #block-summary #summary-message {
+    position: absolute !important;
+    z-index: 2 !important;
+
+    left: calc(50% + clamp(72px, 5.5vw, 94px)) !important;
+    top: calc(50% - min(42dvh, 390px) + clamp(112px, 12vh, 138px)) !important;
+
+    width: calc(min(43vw, 650px) - clamp(145px, 11vw, 184px)) !important;
+    min-height: 120px !important;
+
+    margin: 0 !important;
+    padding: 18px 0 0 !important;
+
+    color: #26344c !important;
+
+    border: 0 !important;
+    border-top:
+      1px solid rgba(151,106,37,.38) !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(18px, 1.45vw, 22px) !important;
+    font-weight: 600 !important;
+    line-height: 1.55 !important;
+    text-align: left !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.7) !important;
+  }
+
+  #block-summary #summary-message::before {
+    content: "BLOCK SUMMARY" !important;
+
+    display: block !important;
+
+    margin: 0 0 14px !important;
+
+    color: #8d621d !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .16em !important;
+  }
+
+  /*
+    Actions belong to the lower right page.
+  */
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    position: absolute !important;
+    z-index: 3 !important;
+
+    top: auto !important;
+    bottom: calc(50% - min(42dvh, 390px) + clamp(98px, 10vh, 118px)) !important;
+
+    min-width: 178px !important;
+    min-height: 44px !important;
+
+    margin: 0 !important;
+    padding: 10px 18px !important;
+
+    border-radius: 3px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .06em !important;
+    text-transform: uppercase !important;
+
+    transform: none !important;
+  }
+
+  #block-summary #summary-action {
+    left: calc(50% + clamp(72px, 5.5vw, 94px)) !important;
+
+    color: #f6e4ad !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #244c72,
+        #173b60 52%,
+        #0e2949
+      ) !important;
+
+    border: 1px solid #a97726 !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.17),
+      inset 0 -2px 4px rgba(0,0,0,.2),
+      0 3px 6px rgba(0,0,0,.18) !important;
+  }
+
+  #block-summary #summary-exit {
+    left: calc(50% + clamp(260px, 20vw, 300px)) !important;
+
+    color: #32415a !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,251,235,.78),
+        rgba(229,217,190,.76)
+      ) !important;
+
+    border:
+      1px solid rgba(63,76,98,.43) !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.72),
+      0 2px 4px rgba(0,0,0,.11) !important;
+  }
+
+  #block-summary #summary-action:hover,
+  #block-summary #summary-action:focus-visible {
+    color: #fff6ca !important;
+
+    border-color: #d0a149 !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.2),
+      inset 0 -2px 4px rgba(0,0,0,.18),
+      0 4px 7px rgba(0,0,0,.2),
+      0 0 12px rgba(208,157,52,.25) !important;
+  }
+
+  #block-summary #summary-exit:hover,
+  #block-summary #summary-exit:focus-visible {
+    color: #15345e !important;
+
+    border-color: #a87524 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,250,229,.93),
+        rgba(236,221,187,.9)
+      ) !important;
+  }
+}
+
+/*
+  Keep the intermission book usable while the browser narrows,
+  using the same breakpoint philosophy as the quiz itself.
+*/
+@media (min-width: 821px) and (max-width: 1050px) {
+
+  #block-summary #summary-title {
+    font-size: clamp(25px, 3vw, 35px) !important;
+  }
+
+  #block-summary #summary-score {
+    font-size: clamp(14px, 1.55vw, 18px) !important;
+  }
+
+  #block-summary #summary-message {
+    font-size: clamp(15px, 1.45vw, 18px) !important;
+  }
+
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    min-width: 145px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  #block-summary #summary-exit {
+    left: calc(50% + clamp(225px, 22vw, 260px)) !important;
+  }
+}
+/* ============================================================
+   PrepFlow block summary — anchored book layout
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /*
+    The summary now owns one responsive book rectangle.
+    All content is positioned relative to that same rectangle,
+    not relative to viewport edges.
+  */
+  #block-summary.block-summary:not([hidden]) {
+    --summary-book-width: min(94vw, 1300px);
+    --summary-book-height: min(84dvh, 780px);
+
+    position: fixed !important;
+    z-index: 120 !important;
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100dvh !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    overflow: hidden !important;
+
+    background:
+      linear-gradient(
+        rgba(3,8,20,.28),
+        rgba(3,8,20,.40)
+      ),
+      url("images/quiz-builder/prepflow-nursing-station-quiz-builder.png?v=20260727-2")
+      center / cover no-repeat !important;
+
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  #block-summary.block-summary:not([hidden])::before {
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: 0 !important;
+
+    left: 50% !important;
+    top: 50% !important;
+
+    width: var(--summary-book-width) !important;
+    height: var(--summary-book-height) !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    background:
+      url("images/quiz-builder/books/quizbook-transparent.png?v=20260728-clean-preview-1")
+      center / 100% 100% no-repeat !important;
+
+    filter:
+      drop-shadow(0 26px 40px rgba(0,0,0,.42)) !important;
+
+    pointer-events: none !important;
+  }
+
+  #block-summary.block-summary:not([hidden])::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  /*
+    Hard kill of legacy summary decoration.
+  */
+  #block-summary #summary-title::before,
+  #block-summary #summary-title::after,
+  #block-summary #summary-score::before,
+  #block-summary #summary-score::after,
+  #block-summary #summary-message::before,
+  #block-summary #summary-message::after {
+    box-shadow: none !important;
+  }
+
+  #block-summary #summary-score {
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+    background: transparent !important;
+  }
+
+  /*
+    LEFT PAGE
+    Anchor to the left half of the physical book.
+  */
+  #block-summary #summary-title,
+  #block-summary #summary-score {
+    position: absolute !important;
+    z-index: 2 !important;
+
+    left: calc(
+      50%
+      - (var(--summary-book-width) / 2)
+      + (var(--summary-book-width) * .105)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .355) !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+  #block-summary #summary-title {
+    top: calc(
+      50%
+      - (var(--summary-book-height) / 2)
+      + (var(--summary-book-height) * .155)
+    ) !important;
+
+    padding: 0 0 16px !important;
+
+    color: #17365f !important;
+
+    border: 0 !important;
+    border-bottom:
+      1px solid rgba(153,108,35,.38) !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(28px, 3.2cqw, 46px) !important;
+    font-weight: 800 !important;
+    line-height: 1.08 !important;
+    letter-spacing: 0 !important;
+    text-align: left !important;
+    text-transform: none !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.82),
+      0 2px 3px rgba(58,42,20,.12) !important;
+  }
+
+  #block-summary #summary-score {
+    top: calc(
+      50%
+      - (var(--summary-book-height) / 2)
+      + (var(--summary-book-height) * .34)
+    ) !important;
+
+    padding: 0 !important;
+
+    color: #8b601b !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: clamp(15px, 1.55cqw, 21px) !important;
+    font-weight: 900 !important;
+    line-height: 1.35 !important;
+    letter-spacing: .035em !important;
+    text-align: left !important;
+    text-transform: uppercase !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.7) !important;
+  }
+
+  /*
+    RIGHT PAGE
+  */
+  #block-summary #summary-message {
+    position: absolute !important;
+    z-index: 2 !important;
+
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .055)
+    ) !important;
+
+    top: calc(
+      50%
+      - (var(--summary-book-height) / 2)
+      + (var(--summary-book-height) * .18)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .33) !important;
+
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 38px 0 0 !important;
+
+    box-sizing: border-box !important;
+
+    color: #26344c !important;
+
+    border: 0 !important;
+    border-top:
+      1px solid rgba(151,106,37,.36) !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(16px, 1.55cqw, 22px) !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    text-align: left !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.7) !important;
+  }
+
+  #block-summary #summary-message::before {
+    content: "BLOCK SUMMARY" !important;
+
+    display: block !important;
+
+    position: absolute !important;
+    left: 0 !important;
+    top: 12px !important;
+
+    margin: 0 !important;
+
+    color: #8d621d !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: clamp(9px, .85cqw, 11px) !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .16em !important;
+
+    background: transparent !important;
+  }
+
+  /*
+    Buttons centered as a pair on the right page.
+  */
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    position: absolute !important;
+    z-index: 3 !important;
+
+    top: auto !important;
+
+    bottom: calc(
+      50%
+      - (var(--summary-book-height) / 2)
+      + (var(--summary-book-height) * .12)
+    ) !important;
+
+    min-width: 170px !important;
+    min-height: 44px !important;
+
+    margin: 0 !important;
+    padding: 10px 16px !important;
+
+    border-radius: 3px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: clamp(10px, .95cqw, 12px) !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .055em !important;
+    text-transform: uppercase !important;
+
+    transform: none !important;
+  }
+
+  #block-summary #summary-action {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .075)
+    ) !important;
+
+    color: #f6e4ad !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #244c72,
+        #173b60 52%,
+        #0e2949
+      ) !important;
+
+    border: 1px solid #a97726 !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.17),
+      inset 0 -2px 4px rgba(0,0,0,.2),
+      0 3px 6px rgba(0,0,0,.18) !important;
+  }
+
+  #block-summary #summary-exit {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .245)
+    ) !important;
+
+    color: #32415a !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,251,235,.78),
+        rgba(229,217,190,.76)
+      ) !important;
+
+    border:
+      1px solid rgba(63,76,98,.43) !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.72),
+      0 2px 4px rgba(0,0,0,.11) !important;
+  }
+}
+
+/*
+  Narrow desktop summary:
+  keep the SAME book presentation.
+  Do not fall back to the legacy neon panel.
+*/
+@media (min-width: 821px) and (max-width: 1050px) {
+
+  #block-summary.block-summary:not([hidden]) {
+    --summary-book-width: min(96vw, 1000px);
+    --summary-book-height: min(82dvh, 680px);
+  }
+
+  #block-summary #summary-title,
+  #block-summary #summary-score {
+    left: calc(
+      50%
+      - (var(--summary-book-width) / 2)
+      + (var(--summary-book-width) * .115)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .34) !important;
+  }
+
+  #block-summary #summary-message {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .06)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .32) !important;
+  }
+
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    min-width: 138px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  #block-summary #summary-action {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .065)
+    ) !important;
+  }
+
+  #block-summary #summary-exit {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .235)
+    ) !important;
+  }
+}
+/* ============================================================
+   PrepFlow block summary — final alignment polish
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /* Move the left-page content farther onto the actual paper. */
+  #block-summary #summary-title,
+  #block-summary #summary-score {
+    left: calc(
+      50%
+      - (var(--summary-book-width) / 2)
+      + (var(--summary-book-width) * .125)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .335) !important;
+  }
+
+  /*
+    Keep the right-page buttons clearly on the page instead of
+    hanging into the lower cover/frame.
+  */
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    bottom: calc(
+      50%
+      - (var(--summary-book-height) / 2)
+      + (var(--summary-book-height) * .175)
+    ) !important;
+
+    min-width: 172px !important;
+    min-height: 43px !important;
+
+    padding: 9px 18px !important;
+
+    border-radius: 3px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: clamp(10px, .95cqw, 12px) !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .06em !important;
+    text-transform: uppercase !important;
+
+    transform: none !important;
+  }
+
+  #block-summary #summary-action {
+    color: #f6e3a9 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #285176 0%,
+        #193d62 48%,
+        #0d2a4b 100%
+      ) !important;
+
+    border: 1px solid #ad7b2b !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.18),
+      inset 0 -2px 4px rgba(0,0,0,.2),
+      0 3px 6px rgba(0,0,0,.2) !important;
+
+    text-shadow:
+      0 1px 1px rgba(0,0,0,.42) !important;
+  }
+
+  #block-summary #summary-action:hover,
+  #block-summary #summary-action:focus-visible {
+    color: #fff4bf !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #315d83 0%,
+        #22496f 48%,
+        #123252 100%
+      ) !important;
+
+    border-color: #d1a24b !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.21),
+      inset 0 -2px 4px rgba(0,0,0,.18),
+      0 4px 7px rgba(0,0,0,.22),
+      0 0 12px rgba(209,158,54,.23) !important;
+  }
+
+  #block-summary #summary-exit {
+    color: #f2dfaa !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #183654 0%,
+        #102a47 52%,
+        #091e36 100%
+      ) !important;
+
+    border: 1px solid rgba(172,124,43,.78) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.12),
+      inset 0 -2px 4px rgba(0,0,0,.22),
+      0 3px 6px rgba(0,0,0,.18) !important;
+
+    text-shadow:
+      0 1px 1px rgba(0,0,0,.4) !important;
+  }
+
+  #block-summary #summary-exit:hover,
+  #block-summary #summary-exit:focus-visible {
+    color: #fff2bd !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #224567 0%,
+        #173653 52%,
+        #0d2742 100%
+      ) !important;
+
+    border-color: #c8963f !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.15),
+      inset 0 -2px 4px rgba(0,0,0,.2),
+      0 4px 7px rgba(0,0,0,.2),
+      0 0 10px rgba(202,151,48,.18) !important;
+  }
+}
+
+@media (min-width: 821px) and (max-width: 1050px) {
+
+  #block-summary #summary-title,
+  #block-summary #summary-score {
+    left: calc(
+      50%
+      - (var(--summary-book-width) / 2)
+      + (var(--summary-book-width) * .13)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .325) !important;
+  }
+
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    bottom: calc(
+      50%
+      - (var(--summary-book-height) / 2)
+      + (var(--summary-book-height) * .18)
+    ) !important;
+  }
+}
+/* ============================================================
+   PrepFlow final summary — open-book completion
+   Same physical spread as the between-block summary.
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /*
+    Final result remains on the left page.
+  */
+  #block-summary[data-summary-state="final"] #summary-title {
+    left: calc(
+      50%
+      - (var(--summary-book-width) / 2)
+      + (var(--summary-book-width) * .125)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .335) !important;
+  }
+
+  #block-summary[data-summary-state="final"] #summary-score {
+    left: calc(
+      50%
+      - (var(--summary-book-width) / 2)
+      + (var(--summary-book-width) * .125)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .335) !important;
+  }
+
+  /*
+    Right page becomes the overall quiz summary.
+  */
+  #block-summary[data-summary-state="final"] #summary-message::before {
+    content: "QUIZ SUMMARY" !important;
+  }
+
+  /*
+    There is only one final action, so center it naturally
+    on the lower portion of the right page.
+  */
+  #block-summary[data-summary-state="final"] #summary-action {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .165)
+    ) !important;
+
+    min-width: 190px !important;
+
+    transform: translateX(-50%) !important;
+  }
+
+  #block-summary[data-summary-state="final"] #summary-exit {
+    display: none !important;
+  }
+}
+
+@media (min-width: 821px) and (max-width: 1050px) {
+
+  #block-summary[data-summary-state="final"] #summary-title,
+  #block-summary[data-summary-state="final"] #summary-score {
+    left: calc(
+      50%
+      - (var(--summary-book-width) / 2)
+      + (var(--summary-book-width) * .13)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .325) !important;
+  }
+
+  #block-summary[data-summary-state="final"] #summary-action {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .165)
+    ) !important;
+  }
+}
+/* ============================================================
+   PrepFlow summary actions — responsive scaling
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /*
+    Treat both controls as a centered pair on the right page.
+    Their size now follows the book instead of staying desktop-fixed.
+  */
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    width: clamp(
+      118px,
+      calc(var(--summary-book-width) * .145),
+      178px
+    ) !important;
+
+    min-width: 0 !important;
+
+    height: clamp(36px, 4.8cqw, 44px) !important;
+    min-height: 0 !important;
+
+    padding:
+      clamp(6px, .75cqw, 10px)
+      clamp(8px, 1.2cqw, 16px) !important;
+
+    font-size: clamp(9px, .92cqw, 12px) !important;
+
+    white-space: nowrap !important;
+  }
+
+  /*
+    Center the pair around a single right-page midpoint.
+    This preserves a real gap as the book shrinks.
+  */
+  #block-summary #summary-action {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .205)
+      - clamp(124px, calc(var(--summary-book-width) * .155), 190px)
+    ) !important;
+  }
+
+  #block-summary #summary-exit {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .205)
+      + clamp(8px, 1.1cqw, 14px)
+    ) !important;
+  }
+
+  /*
+    Final screen has one button, so keep it centered on the page.
+  */
+  #block-summary[data-summary-state="final"] #summary-action {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .205)
+    ) !important;
+
+    width: clamp(
+      132px,
+      calc(var(--summary-book-width) * .16),
+      190px
+    ) !important;
+
+    transform: translateX(-50%) !important;
+  }
+}
+
+/*
+  Narrow desktop: shrink more aggressively, but keep the same layout.
+*/
+@media (min-width: 821px) and (max-width: 980px) {
+
+  #block-summary #summary-action,
+  #block-summary #summary-exit {
+    width: clamp(
+      104px,
+      calc(var(--summary-book-width) * .14),
+      138px
+    ) !important;
+
+    height: 36px !important;
+
+    padding: 6px 8px !important;
+
+    font-size: clamp(8px, .9cqw, 10px) !important;
+    letter-spacing: .04em !important;
+  }
+
+  #block-summary #summary-action {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .205)
+      - clamp(108px, calc(var(--summary-book-width) * .148), 150px)
+    ) !important;
+  }
+
+  #block-summary #summary-exit {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .205)
+      + 7px
+    ) !important;
+  }
+
+  #block-summary[data-summary-state="final"] #summary-action {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .205)
+    ) !important;
+
+    width: clamp(
+      118px,
+      calc(var(--summary-book-width) * .155),
+      150px
+    ) !important;
+
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* ============================================================
+   PrepFlow quiz book — feedback state restoration
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /* The response page always owns either answers OR feedback. */
+  #quiz-screen .quiz-response-scroll {
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Respect the actual hidden state for answer choices. */
+  #quiz-screen #answer-choices[hidden] {
+    display: none !important;
+  }
+
+  /*
+    Once grading unhides feedback, make it a normal readable
+    section on the right-hand page.
+  */
+  #quiz-screen #feedback:not([hidden]) {
+    display: block !important;
+    position: static !important;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 8px 10px 28px 0 !important;
+
+    overflow: visible !important;
+
+    color: #172743 !important;
+    background: transparent !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transform: none !important;
+  }
+
+  #quiz-screen #feedback-result {
+    display: block !important;
+
+    margin: 0 0 18px !important;
+    padding: 0 0 13px !important;
+
+    color: #17365f !important;
+
+    border: 0 !important;
+    border-bottom: 1px solid rgba(157, 111, 37, .38) !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(23px, 2.2cqw, 31px) !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+
+    text-shadow:
+      0 1px rgba(255,255,255,.72) !important;
+  }
+
+  #quiz-screen #feedback h4 {
+    display: block !important;
+
+    margin: 0 0 9px !important;
+    padding: 0 !important;
+
+    color: #936719 !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: clamp(10px, .9cqw, 12px) !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: .14em !important;
+    text-transform: uppercase !important;
+  }
+
+  #quiz-screen #feedback-rationale {
+    display: block !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    color: #26344c !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(16px, 1.5cqw, 20px) !important;
+    font-weight: 600 !important;
+    line-height: 1.55 !important;
+
+    white-space: normal !important;
+  }
+
+  /*
+    Continue occupies the same intentional lower-page action
+    position that Submit used.
+  */
+  #quiz-screen #continue-button:not([hidden]) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    min-width: clamp(140px, 14cqw, 190px) !important;
+    min-height: 42px !important;
+
+    color: #f6e3a9 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #285176 0%,
+        #193d62 48%,
+        #0d2a4b 100%
+      ) !important;
+
+    border: 1px solid #ad7b2b !important;
+    border-radius: 3px !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.18),
+      inset 0 -2px 4px rgba(0,0,0,.2),
+      0 3px 6px rgba(0,0,0,.2) !important;
+  }
+
+  #quiz-screen #submit-answer[hidden] {
+    display: none !important;
+  }
+}
+
+
+/* ============================================================
+   PrepFlow feedback continue — page inset polish
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #quiz-screen #continue-button:not([hidden]) {
+    position: relative !important;
+
+    right: 14px !important;
+    bottom: 8px !important;
+
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+
+/* ============================================================
+   PrepFlow submit answer — page inset polish
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  #quiz-screen #submit-answer:not([hidden]) {
+    position: relative !important;
+
+    right: 14px !important;
+    bottom: 8px !important;
+
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+
+/* ============================================================
+   PrepFlow final results — completed quiz spread
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /* LEFT PAGE — completion + final score */
+  #block-summary[data-summary-state="final"] #summary-title,
+  #block-summary[data-summary-state="final"] #summary-score {
+    left: calc(
+      50%
+      - (var(--summary-book-width) / 2)
+      + (var(--summary-book-width) * .125)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .335) !important;
+  }
+
+  #block-summary[data-summary-state="final"] #summary-title {
+    top: calc(
+      50%
+      - (var(--summary-book-height) / 2)
+      + (var(--summary-book-height) * .165)
+    ) !important;
+
+    color: #17365f !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(30px, 3.25cqw, 48px) !important;
+    font-weight: 800 !important;
+    line-height: 1.08 !important;
+
+    border-bottom:
+      1px solid rgba(153,108,35,.38) !important;
+  }
+
+  #block-summary[data-summary-state="final"] #summary-score {
+    top: calc(
+      50%
+      - (var(--summary-book-height) / 2)
+      + (var(--summary-book-height) * .35)
+    ) !important;
+
+    color: #8b601b !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: clamp(20px, 2cqw, 28px) !important;
+    font-weight: 900 !important;
+    line-height: 1.25 !important;
+    letter-spacing: .035em !important;
+    text-transform: uppercase !important;
+  }
+
+  /* RIGHT PAGE — overall result */
+  #block-summary[data-summary-state="final"] #summary-message {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .065)
+    ) !important;
+
+    top: calc(
+      50%
+      - (var(--summary-book-height) / 2)
+      + (var(--summary-book-height) * .20)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .31) !important;
+
+    padding-top: 40px !important;
+
+    color: #26344c !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(18px, 1.65cqw, 23px) !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+
+    border-top:
+      1px solid rgba(151,106,37,.36) !important;
+  }
+
+  #block-summary[data-summary-state="final"] #summary-message::before {
+    content: "QUIZ SUMMARY" !important;
+
+    position: absolute !important;
+    top: 12px !important;
+    left: 0 !important;
+
+    color: #8d621d !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: clamp(9px, .85cqw, 11px) !important;
+    font-weight: 900 !important;
+    letter-spacing: .16em !important;
+  }
+
+  /* Single final action centered on the lower right page. */
+  #block-summary[data-summary-state="final"] #summary-action {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .225)
+    ) !important;
+
+    bottom: calc(
+      50%
+      - (var(--summary-book-height) / 2)
+      + (var(--summary-book-height) * .18)
+    ) !important;
+
+    width: clamp(
+      145px,
+      calc(var(--summary-book-width) * .155),
+      190px
+    ) !important;
+
+    min-width: 0 !important;
+    min-height: 43px !important;
+
+    transform: translateX(-50%) !important;
+
+    color: #f6e3a9 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #285176 0%,
+        #193d62 48%,
+        #0d2a4b 100%
+      ) !important;
+
+    border: 1px solid #ad7b2b !important;
+    border-radius: 3px !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.18),
+      inset 0 -2px 4px rgba(0,0,0,.2),
+      0 3px 6px rgba(0,0,0,.2) !important;
+  }
+
+  #block-summary[data-summary-state="final"] #summary-action:hover,
+  #block-summary[data-summary-state="final"] #summary-action:focus-visible {
+    color: #fff4bf !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #315d83 0%,
+        #22496f 48%,
+        #123252 100%
+      ) !important;
+
+    border-color: #d1a24b !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.21),
+      inset 0 -2px 4px rgba(0,0,0,.18),
+      0 4px 7px rgba(0,0,0,.22),
+      0 0 12px rgba(209,158,54,.23) !important;
+  }
+
+  #block-summary[data-summary-state="final"] #summary-exit {
+    display: none !important;
+  }
+}
+
+@media (min-width: 821px) and (max-width: 1050px) {
+
+  #block-summary[data-summary-state="final"] #summary-title,
+  #block-summary[data-summary-state="final"] #summary-score {
+    left: calc(
+      50%
+      - (var(--summary-book-width) / 2)
+      + (var(--summary-book-width) * .13)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .325) !important;
+  }
+
+  #block-summary[data-summary-state="final"] #summary-message {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .07)
+    ) !important;
+
+    width: calc(var(--summary-book-width) * .30) !important;
+  }
+
+  #block-summary[data-summary-state="final"] #summary-action {
+    left: calc(
+      50%
+      + (var(--summary-book-width) * .225)
+    ) !important;
+
+    width: clamp(
+      125px,
+      calc(var(--summary-book-width) * .15),
+      155px
+    ) !important;
+  }
+}
+
+/* ============================================================
+   PrepFlow ordered response — book presentation
+   ============================================================ */
+
+@media (min-width: 821px) {
+
+  /*
+    Ordered items should read like a reorderable list printed on
+    the right page, not a collection of large unrelated buttons.
+  */
+  #quiz-screen .ordered-answer {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    align-items: center !important;
+
+    gap: clamp(7px, .8cqw, 11px) !important;
+
+    width: 100% !important;
+    min-height: 62px !important;
+
+    margin: 0 !important;
+    padding:
+      clamp(8px, .9cqw, 12px)
+      clamp(7px, .8cqw, 11px) !important;
+
+    border: 0 !important;
+    border-bottom:
+      1px solid rgba(98, 82, 54, .20) !important;
+    border-radius: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    color: #172743 !important;
+  }
+
+  #quiz-screen .ordered-answer > span {
+    min-width: 0 !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(15px, 1.45cqw, 19px) !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+  }
+
+  #quiz-screen .ordered-answer .ordered-move {
+    width: clamp(64px, 6.2cqw, 82px) !important;
+    min-width: 0 !important;
+
+    height: clamp(34px, 3.8cqw, 42px) !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 5px 7px !important;
+
+    color: #f3dfa9 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #244b70,
+        #17395d 52%,
+        #0d2948
+      ) !important;
+
+    border: 1px solid #9f742d !important;
+    border-radius: 3px !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: clamp(9px, .78cqw, 11px) !important;
+    font-weight: 900 !important;
+    line-height: 1.05 !important;
+    letter-spacing: .035em !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.14),
+      inset 0 -2px 3px rgba(0,0,0,.18),
+      0 2px 4px rgba(0,0,0,.13) !important;
+  }
+
+  #quiz-screen .ordered-answer .ordered-move:hover:not(:disabled),
+  #quiz-screen .ordered-answer .ordered-move:focus-visible:not(:disabled) {
+    color: #fff3be !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #2d587f,
+        #20466d 52%,
+        #123052
+      ) !important;
+
+    border-color: #cca049 !important;
+  }
+
+  #quiz-screen .ordered-answer .ordered-move:disabled {
+    color: rgba(54, 62, 76, .48) !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(231,224,205,.72),
+        rgba(205,197,180,.68)
+      ) !important;
+
+    border-color: rgba(85, 77, 63, .25) !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.48) !important;
+
+    opacity: 1 !important;
+  }
+}
+
+/* Keep the controls compact as the book narrows. */
+@media (min-width: 821px) and (max-width: 1050px) {
+
+  #quiz-screen .ordered-answer {
+    grid-template-columns: minmax(0, 1fr) 58px 58px !important;
+    gap: 6px !important;
+  }
+
+  #quiz-screen .ordered-answer .ordered-move {
+    width: 58px !important;
+    height: 34px !important;
+
+    padding: 4px !important;
+
+    font-size: 8px !important;
+  }
+}
