@@ -1,1 +1,1 @@
-self.PREPFLOW_PACK_PRECACHE = {"version": "touch-capture-start-quiz-20260817-2", "urls": ["../packs/fundamentals.prepflow.json", "../packs/medical_surgical.prepflow.json", "../packs/pediatrics.prepflow.json", "../packs/pharmacy.prepflow.json"]};
+self.PREPFLOW_PACK_PRECACHE = {"version": "landscape-reading-book-20260817-1", "urls": ["../packs/fundamentals.prepflow.json", "../packs/medical_surgical.prepflow.json", "../packs/pediatrics.prepflow.json", "../packs/pharmacy.prepflow.json"]};
