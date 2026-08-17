@@ -3,6 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function () {
+      const forceDesktop = new URLSearchParams(window.location.search).get("desktop") === "1";
+      if (!forceDesktop) return;
+
+      const viewport = document.querySelector('meta[name="viewport"]');
+      if (viewport) {
+        viewport.setAttribute("content", "width=1200");
+      }
+      document.documentElement.dataset.forceDesktop = "true";
+    }());
+  </script>
   <title>PrepFlow</title>
   <meta name="theme-color" content="#090a2a">
   <script src="mobile-portrait.js"></script>
