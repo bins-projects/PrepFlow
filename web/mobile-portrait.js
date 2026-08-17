@@ -12,6 +12,39 @@
 }());
 
 (function () {
+  const scrollTest = new URLSearchParams(window.location.search).get("scrolltest") === "1";
+  const phoneLike = navigator.maxTouchPoints > 0
+    && Math.min(window.screen.width, window.screen.height) <= 820;
+
+  if (!scrollTest || !phoneLike) return;
+
+  function resetPhoneViewport() {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollLeft = 0;
+    document.documentElement.scrollTop = 0;
+    document.body.scrollLeft = 0;
+    document.body.scrollTop = 0;
+  }
+
+  function settleViewport() {
+    resetPhoneViewport();
+    window.setTimeout(resetPhoneViewport, 80);
+    window.setTimeout(resetPhoneViewport, 180);
+    window.setTimeout(resetPhoneViewport, 360);
+  }
+
+  window.addEventListener("orientationchange", settleViewport);
+  window.addEventListener("resize", settleViewport);
+  window.visualViewport?.addEventListener("resize", settleViewport);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", settleViewport, { once: true });
+  } else {
+    settleViewport();
+  }
+}());
+
+(function () {
   const portraitQuery = window.matchMedia(
     "(max-width: 760px) and (orientation: portrait)"
   );
