@@ -8,11 +8,85 @@
       const forceDesktop = new URLSearchParams(window.location.search).get("desktop") === "1";
       if (!forceDesktop) return;
 
-      const viewport = document.querySelector('meta[name="viewport"]');
-      if (viewport) {
-        viewport.setAttribute("content", "width=1200");
-      }
+      const phoneLike = navigator.maxTouchPoints > 0
+        && Math.min(window.screen.width, window.screen.height) <= 820;
+      const loadedInPortrait = window.matchMedia("(orientation: portrait)").matches;
+
       document.documentElement.dataset.forceDesktop = "true";
+
+      if (phoneLike && loadedInPortrait) {
+        document.documentElement.dataset.desktopPortraitGate = "true";
+
+        const style = document.createElement("style");
+        style.textContent = `
+          html[data-desktop-portrait-gate="true"],
+          html[data-desktop-portrait-gate="true"] body {
+            width: 100% !important;
+            height: 100% !important;
+            margin: 0 !important;
+            overflow: hidden !important;
+            background: #090a2a !important;
+          }
+
+          #desktop-portrait-gate {
+            position: fixed;
+            z-index: 1000000;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            box-sizing: border-box;
+            padding: 32px;
+            color: #fff1bd;
+            background: #090a2a;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+          }
+
+          #desktop-portrait-gate .rotate-icon {
+            font-size: 58px;
+            line-height: 1;
+            transform: rotate(90deg);
+          }
+
+          #desktop-portrait-gate strong {
+            font-size: 26px;
+            line-height: 1.1;
+          }
+
+          #desktop-portrait-gate span {
+            max-width: 320px;
+            color: #d9deef;
+            font-size: 16px;
+            line-height: 1.4;
+          }
+        `;
+        document.head.appendChild(style);
+
+        document.addEventListener("DOMContentLoaded", () => {
+          const gate = document.createElement("div");
+          gate.id = "desktop-portrait-gate";
+          gate.innerHTML = `
+            <div class="rotate-icon" aria-hidden="true">▯</div>
+            <strong>Rotate to landscape</strong>
+            <span>PrepFlow uses the full two-page study view on phones.</span>
+          `;
+          document.body.appendChild(gate);
+        }, { once: true });
+      } else {
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+          viewport.setAttribute("content", "width=1200");
+        }
+      }
+
+      if (phoneLike) {
+        window.addEventListener("orientationchange", () => {
+          window.setTimeout(() => window.location.reload(), 180);
+        });
+      }
     }());
   </script>
   <title>PrepFlow</title>
