@@ -142,6 +142,35 @@
     void loadReviewConfig(button);
   }
 
+  function installTouchSafeStartQuiz() {
+    const startButton = document.querySelector("#build-quiz");
+    if (!startButton) return;
+
+    let lastActivation = 0;
+
+    document.addEventListener("pointerup", (event) => {
+      if (event.pointerType !== "touch" && event.pointerType !== "pen") return;
+      if (startButton.disabled || startButton.hidden) return;
+
+      const rect = startButton.getBoundingClientRect();
+      const inside =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+
+      if (!inside) return;
+
+      const now = performance.now();
+      if (now - lastActivation < 700) return;
+      lastActivation = now;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      startButton.click();
+    }, true);
+  }
+
   window.PrepFlowQuestionReferenceRules = {
     reportText,
     stableReference,
@@ -149,8 +178,12 @@
   };
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", installReviewButton, { once: true });
+    document.addEventListener("DOMContentLoaded", () => {
+      installReviewButton();
+      installTouchSafeStartQuiz();
+    }, { once: true });
   } else {
     installReviewButton();
+    installTouchSafeStartQuiz();
   }
 }());
