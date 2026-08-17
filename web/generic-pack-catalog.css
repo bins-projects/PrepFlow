@@ -25,3 +25,32 @@
 @media (max-width: 900px) {
   .subjects:has(.generic-book) { grid-template-columns: repeat(auto-fit, minmax(180px, 256px)) !important; }
 }
+
+/* 2026-08-17 mobile regression hotfix.
+   Keep the rebuilt chapter UI, but guarantee the actual chapter labels own taps.
+   Pagination itself must not create a transparent hit layer over the list. */
+html.mobile-portrait body.real-book-chapters .chapter-book-hit-area {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+html.mobile-portrait body.real-book-chapters .chapter-screen,
+html.mobile-portrait body.real-book-chapters .chapter-list,
+html.mobile-portrait body.real-book-chapters .chapter-option {
+  pointer-events: auto !important;
+}
+
+html.mobile-portrait body.real-book-chapters .chapter-option {
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: rgba(49, 95, 168, .16);
+}
+
+html.mobile-portrait body.real-book-chapters .chapter-pagination {
+  pointer-events: none !important;
+}
+
+html.mobile-portrait body.real-book-chapters .chapter-pagination button,
+html.mobile-portrait body.real-book-chapters .chapter-page-numbers,
+html.mobile-portrait body.real-book-chapters .chapter-page-numbers button {
+  pointer-events: auto !important;
+}
