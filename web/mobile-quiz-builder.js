@@ -365,3 +365,40 @@
   document.addEventListener("prepflow:catalog-ready", initialize, { once: true });
   initialize();
 }());
+
+/* iOS/touch compatibility: explicitly activate Start Quiz on touch pointer release.
+   The following synthesized click is suppressed so startQuiz only runs once. */
+(function () {
+  const buildQuizButton = document.querySelector("#build-quiz");
+  if (!buildQuizButton || typeof window.startQuiz !== "function") return;
+
+  let touchStartInProgress = false;
+  let suppressClickUntil = 0;
+
+  buildQuizButton.addEventListener("pointerup", (event) => {
+    if (
+      event.pointerType !== "touch"
+      || buildQuizButton.disabled
+      || touchStartInProgress
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    suppressClickUntil = performance.now() + 750;
+    touchStartInProgress = true;
+
+    Promise.resolve(window.startQuiz()).finally(() => {
+      window.setTimeout(() => {
+        touchStartInProgress = false;
+      }, 250);
+    });
+  });
+
+  buildQuizButton.addEventListener("click", (event) => {
+    if (performance.now() < suppressClickUntil) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }, true);
+}());
