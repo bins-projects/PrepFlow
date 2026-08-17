@@ -25,7 +25,9 @@
       "title": "Pediatrics",
       "path": "../packs/pediatrics.prepflow.json",
       "question_count": 1027,
-      "chapter_count": 34
+      "chapter_count": 34,
+      "theme": "pediatrics",
+      "art": "images/quiz-builder/books/pediatrics-closed.png?v=20260817-mobile-hotfix-1"
     },
     {
       "id": "pharmacy",
