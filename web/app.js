@@ -1,5 +1,5 @@
 const SAVE_KEY = "prepflow.savedSession.v1";
-const PACK_CATALOG_PATH = "./data/pack-catalog.json";
+const PACK_CATALOG_PATH = "./data/pack-catalog.json?v=20260813-pediatrics-shelf-1";
 
 const hero = document.querySelector(".hero");
 const subjects = document.querySelector(".subjects");
@@ -10,6 +10,7 @@ const openQuizBuilderButton = document.querySelector("#open-quiz-builder");
 const closeQuizBuilderButton = document.querySelector("#close-quiz-builder");
 const doneChaptersButton = document.querySelector("#done-chapters");
 const quizBuilderOpenBook = document.querySelector("#quiz-builder-openbook");
+const shelfPlaques = document.querySelector(".quiz-builder-shelf-plaques");
 
 const resumePanel = document.querySelector("#resume-panel");
 const resumeDescription = document.querySelector("#resume-description");
@@ -19,9 +20,6 @@ const discardSessionButton = document.querySelector("#discard-session");
 const chapterScreen = document.querySelector("#chapter-screen");
 const chapterTitle = document.querySelector("#chapter-title");
 const chapterList = document.querySelector("#chapter-list");
-const chapterPreviousButton = document.querySelector("#chapter-previous");
-const chapterNextButton = document.querySelector("#chapter-next");
-const chapterPageNumbers = document.querySelector("#chapter-page-numbers");
 const selectionCount = document.querySelector("#selection-count");
 const selectedChapterSummary = document.querySelector("#selected-chapter-summary");
 const selectedQuestionSummary = document.querySelector("#selected-question-summary");
@@ -75,25 +73,6 @@ let packCatalogPromise = null;
 let sessionQuestions = [];
 let sessionBlockSize = 15;
 let sessionShuffleQuestions = true;
-
-let currentChapterEntries = [];
-let currentChapterSpread = 0;
-let chaptersPerSpread = 10;
-let chapterRowsPerPage = 5;
-
-function chapterSpreadLayout(theme) {
-  const layouts = {
-    "med-surg": { chaptersPerSpread: 12, rowsPerPage: 6 },
-    fundamentals: { chaptersPerSpread: 12, rowsPerPage: 6 },
-    pediatrics: { chaptersPerSpread: 10, rowsPerPage: 5 },
-    pharm: { chaptersPerSpread: 8, rowsPerPage: 4 },
-  };
-
-  return layouts[theme] || {
-    chaptersPerSpread: 10,
-    rowsPerPage: 5,
-  };
-}
 
 let blockStart = 0;
 let blockEnd = 0;
@@ -204,10 +183,10 @@ function updateSelectionStatus() {
 
   const currentBookSelected = currentBookSelections.length;
 
-  const totalSelectedQuestions = allSelections.reduce(
-    (total, selection) => total + (selection.questionCount || 0),
-    0
+  const selectedPackPaths = new Set(
+    allSelections.map((selection) => selection.packPath)
   );
+  const selectedBooks = selectedPackPaths.size;
 
   const totalChapterSelectionText =
     PrepFlowSelectionRules.chapterSelectionText(totalSelected);
@@ -248,11 +227,10 @@ function updateSelectionStatus() {
   builderSelectionCount.textContent =
     totalChapterSelectionText;
   builderBookCount.textContent =
-    totalSelected === 0
-      ? "Open a book to choose chapters"
-      : `${totalSelectedQuestions.toLocaleString()} ${
-          totalSelectedQuestions === 1 ? "question" : "questions"
-        } total`;
+    PrepFlowSelectionRules.bookSelectionText(
+      totalSelected,
+      selectedBooks
+    );
 
   startButton.disabled = totalSelected === 0;
   buildQuizButton.disabled = totalSelected === 0;
@@ -276,6 +254,7 @@ function updateSelectionStatus() {
 
     book.classList.toggle("has-selections", count > 0);
   });
+
 }
 
 function showSubjects() {
@@ -348,9 +327,17 @@ function bookButton(book) {
   return button;
 }
 
+function shelfPlaque(book) {
+  const plaque = document.createElement("div");
+  plaque.className = `quiz-builder-shelf-plaque ${book.theme}-plaque`;
+  plaque.textContent = book.shelf_label || book.title;
+  return plaque;
+}
+
 function renderBookCatalog(catalog) {
   packCatalog = catalog.books;
   subjects.replaceChildren(...packCatalog.map(bookButton));
+  shelfPlaques.replaceChildren(...packCatalog.filter((book) => book.art).map(shelfPlaque));
   document.dispatchEvent(new CustomEvent("prepflow:catalog-ready"));
   updateSelectionStatus();
 }
@@ -393,130 +380,6 @@ async function loadPack(packPath) {
   return pack;
 }
 
-function renderChapterSpread() {
-  const totalSpreads = Math.max(
-    1,
-    Math.ceil(currentChapterEntries.length / chaptersPerSpread)
-  );
-
-  currentChapterSpread = Math.min(
-    Math.max(currentChapterSpread, 0),
-    totalSpreads - 1
-  );
-
-  const startIndex = currentChapterSpread * chaptersPerSpread;
-  const visibleChapters = currentChapterEntries.slice(
-    startIndex,
-    startIndex + chaptersPerSpread
-  );
-
-  chapterList.replaceChildren();
-
-  visibleChapters.forEach(({ key, chapter }) => {
-    const label = document.createElement("label");
-    label.className = "chapter-option";
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.value = key;
-    checkbox.dataset.questionCount = chapter.count;
-
-    const selectionKey = `${currentPackPath}|${key}`;
-    checkbox.checked = selectedChapters.has(selectionKey);
-
-    checkbox.addEventListener("change", () => {
-      if (checkbox.checked) {
-        selectedChapters.set(selectionKey, {
-          packPath: currentPackPath,
-          subject: currentSubject,
-          chapterKey: key,
-          questionCount: chapter.count,
-        });
-      } else {
-        selectedChapters.delete(selectionKey);
-      }
-
-      updateSelectionStatus();
-    });
-
-    const text = document.createElement("span");
-    text.className = "chapter-option-text";
-
-    const name = document.createElement("span");
-    name.className = "chapter-name";
-    name.textContent = `Chapter ${chapter.number}: ${chapter.title}`;
-
-    const count = document.createElement("span");
-    count.className = "chapter-count";
-    count.textContent = `${chapter.count.toLocaleString()} questions`;
-
-    text.append(name, count);
-    label.append(checkbox, text);
-    chapterList.append(label);
-  });
-
-  const leftPageNumbers = document.createElement("div");
-  leftPageNumbers.className =
-    "chapter-page-number-group chapter-page-number-group-left";
-
-  const rightPageNumbers = document.createElement("div");
-  rightPageNumbers.className =
-    "chapter-page-number-group chapter-page-number-group-right";
-
-  const splitIndex = Math.ceil(totalSpreads / 2);
-
-  for (let index = 0; index < totalSpreads; index += 1) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "chapter-page-number";
-    button.textContent = String(index + 1);
-    button.dataset.chapterSpread = String(index);
-    button.setAttribute(
-      "aria-label",
-      `Show chapter spread ${index + 1} of ${totalSpreads}`
-    );
-
-    if (index === currentChapterSpread) {
-      button.classList.add("active");
-      button.setAttribute("aria-current", "page");
-    }
-
-    if (index < splitIndex) {
-      leftPageNumbers.append(button);
-    } else {
-      rightPageNumbers.append(button);
-    }
-  }
-
-  chapterPageNumbers.replaceChildren(
-    leftPageNumbers,
-    rightPageNumbers
-  );
-
-  chapterPreviousButton.hidden = currentChapterSpread === 0;
-  chapterNextButton.hidden = currentChapterSpread >= totalSpreads - 1;
-
-  chapterPreviousButton.setAttribute(
-    "aria-label",
-    `Previous chapter spread`
-  );
-  chapterNextButton.setAttribute(
-    "aria-label",
-    `Next chapter spread`
-  );
-
-  chapterList.scrollTop = 0;
-}
-
-function showChapterSpread(index) {
-  if (!Number.isInteger(index)) {
-    return;
-  }
-
-  currentChapterSpread = index;
-  renderChapterSpread();
-}
-
 async function showChapters(button) {
   status.textContent = "Loading chapters…";
 
@@ -542,26 +405,52 @@ async function showChapters(button) {
       }
     });
 
-    currentChapterEntries = [...chapters.entries()].map(
-      ([key, chapter]) => ({ key, chapter })
-    );
+    chapterList.replaceChildren();
 
-    const spreadLayout = chapterSpreadLayout(
-      button.dataset.theme || "generic"
-    );
-    chaptersPerSpread = spreadLayout.chaptersPerSpread;
-    chapterRowsPerPage = spreadLayout.rowsPerPage;
-    currentChapterSpread = 0;
+    chapters.forEach((chapter, key) => {
+      const label = document.createElement("label");
+      label.className = "chapter-option";
 
-    chapterScreen.style.setProperty(
-      "--chapter-rows-per-page",
-      String(chapterRowsPerPage)
-    );
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.value = key;
+      checkbox.dataset.questionCount = chapter.count;
 
-    chapterTitle.textContent =
-      button.dataset.theme === "med-surg"
-        ? "Med-Surg"
-        : currentSubject;
+      const selectionKey = `${currentPackPath}|${key}`;
+      checkbox.checked = selectedChapters.has(selectionKey);
+
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+          selectedChapters.set(selectionKey, {
+            packPath: currentPackPath,
+            subject: currentSubject,
+            chapterKey: key,
+            questionCount: chapter.count,
+          });
+        } else {
+          selectedChapters.delete(selectionKey);
+        }
+
+        updateSelectionStatus();
+      });
+
+      const text = document.createElement("span");
+      text.className = "chapter-option-text";
+
+      const name = document.createElement("span");
+      name.className = "chapter-name";
+      name.textContent = `Chapter ${chapter.number}: ${chapter.title}`;
+
+      const count = document.createElement("span");
+      count.className = "chapter-count";
+      count.textContent = `${chapter.count.toLocaleString()} questions`;
+
+      text.append(name, count);
+      label.append(checkbox, text);
+      chapterList.append(label);
+    });
+
+    chapterTitle.textContent = currentSubject;
     chapterScreen.dataset.theme = button.dataset.theme || "generic";
 
     const usesRealOpenBook = true;
@@ -589,8 +478,8 @@ async function showChapters(button) {
     }
 
     status.hidden = true;
+    chapterList.scrollTop = 0;
 
-    renderChapterSpread();
     updateSelectionStatus();
   } catch (error) {
     status.hidden = false;
@@ -707,7 +596,6 @@ function showQuestion() {
     questionPack?.title,
     question.id
   );
-  const questionKind = PrepFlowQuizRules.questionKind(question);
   const isMultipleResponse = PrepFlowQuizRules.isMultipleResponseQuestion(question);
   const blockLength = blockEnd - blockStart;
 
@@ -716,7 +604,7 @@ function showQuestion() {
   hideAllScreens();
   quizScreen.hidden = false;
 
-  quizSubject.textContent = questionPack?.title || "";
+  quizSubject.textContent = currentSubject;
   quizQuestionId.textContent = displayQuestionReference(questionPack?.title, question.id);
   quizQuestionId.title = stableReference.available ? stableReference.fullId : "";
   if (copyQuestionIdButton) {
@@ -761,62 +649,32 @@ function showQuestion() {
   }
 
   questionStem.textContent = question.stem;
-  responsePageLabel.textContent = questionKind === "text"
-    ? "Enter Your Answer"
-    : questionKind === "ordered"
-      ? "Put in Order"
-      : isMultipleResponse ? "Select All That Apply" : "Choose Your Answer";
+  responsePageLabel.textContent = isMultipleResponse
+    ? "Select All That Apply"
+    : "Choose Your Answer";
   answerChoices.hidden = false;
   answerChoices.replaceChildren();
 
-  if (questionKind === "text") {
+  question.choices.forEach((choice) => {
+    const label = document.createElement("label");
+    label.className = "answer-choice";
+
     const input = document.createElement("input");
-    input.type = "text";
-    input.name = "answer-text";
-    input.className = "completion-answer";
-    input.autocomplete = "off";
-    input.placeholder = "Type your answer";
-    input.addEventListener("input", () => { submitAnswer.disabled = !input.value.trim(); });
-    answerChoices.append(input);
-  } else if (questionKind === "ordered") {
-    const ordered = question.choices.map((choice) => ({ ...choice }));
-    const renderOrdered = () => {
-      answerChoices.replaceChildren();
-      ordered.forEach((choice, index) => {
-        const row = document.createElement("div");
-        row.className = "answer-choice ordered-answer";
-        row.dataset.label = choice.label;
-        const text = document.createElement("span");
-        text.textContent = `${choice.label}. ${choice.text}`;
-        const up = document.createElement("button");
-        const down = document.createElement("button");
-        up.type = down.type = "button";
-        up.className = down.className = "secondary-button ordered-move";
-        up.textContent = "Move up"; down.textContent = "Move down";
-        up.disabled = index === 0; down.disabled = index === ordered.length - 1;
-        up.addEventListener("click", () => { [ordered[index - 1], ordered[index]] = [ordered[index], ordered[index - 1]]; renderOrdered(); });
-        down.addEventListener("click", () => { [ordered[index + 1], ordered[index]] = [ordered[index], ordered[index + 1]]; renderOrdered(); });
-        row.append(text, up, down); answerChoices.append(row);
-      });
-      submitAnswer.disabled = ordered.length === 0;
-    };
-    renderOrdered();
-  } else {
-    question.choices.forEach((choice) => {
-      const label = document.createElement("label");
-      label.className = "answer-choice";
-      const input = document.createElement("input");
-      input.type = isMultipleResponse ? "checkbox" : "radio";
-      input.name = "answer";
-      input.value = choice.label;
-      input.addEventListener("change", () => {
-        submitAnswer.disabled = answerChoices.querySelectorAll('input[name="answer"]:checked').length === 0;
-      });
-      const text = document.createElement("span");
-      text.textContent = `${choice.label}. ${choice.text}`;
-      label.append(input, text); answerChoices.append(label);
+    input.type = isMultipleResponse ? "checkbox" : "radio";
+    input.name = "answer";
+    input.value = choice.label;
+
+    input.addEventListener("change", () => {
+      submitAnswer.disabled =
+        answerChoices.querySelectorAll('input[name="answer"]:checked').length === 0;
     });
-  }
+
+    const text = document.createElement("span");
+    text.textContent = `${choice.label}. ${choice.text}`;
+
+    label.append(input, text);
+    answerChoices.append(label);
+  });
 
   feedback.hidden = true;
   submitAnswer.hidden = false;
@@ -861,7 +719,10 @@ function showFinalSummary() {
   blockSummary.hidden = false;
   blockSummary.dataset.summaryState = "final";
 
-  const totalQuestions = sessionQuestions.length;
+  const totalQuestions = Math.max(
+    0,
+    sessionQuestions.length - firstPassSkipped
+  );
   const percentage = PrepFlowSessionRules.firstPassPercentage(
     firstPassCorrect,
     totalQuestions
@@ -1095,28 +956,53 @@ function completeFirstPassBlock() {
 
 async function startQuiz() {
   const selectedQuestions = [];
+  const selectedQuestionKeys = new Set();
+  const supportedTypes = new Set([
+    "mc",
+    "multiple_choice",
+    "multiple_response",
+  ]);
+
+  function addQuestion(packPath, question) {
+    if (!supportedTypes.has(question.type || question.question_type)) {
+      return;
+    }
+
+    const referenceKey = `${packPath}|${question.id}`;
+    if (selectedQuestionKeys.has(referenceKey)) {
+      return;
+    }
+
+    selectedQuestionKeys.add(referenceKey);
+    selectedQuestions.push({
+      packPath,
+      questionId: question.id,
+    });
+  }
 
   try {
     for (const selection of selectedChapters.values()) {
       const pack = await loadPack(selection.packPath);
 
+      if (Array.isArray(selection.questionIds)) {
+        const questionsById = new Map(
+          pack.questions.map((question) => [question.id, question])
+        );
+
+        selection.questionIds.forEach((questionId) => {
+          const question = questionsById.get(questionId);
+          if (!question) {
+            throw new Error(`Question is not available: ${questionId}`);
+          }
+          addQuestion(selection.packPath, question);
+        });
+        continue;
+      }
+
       pack.questions.forEach((question) => {
         const key = `${question.chapter}|${question.chapter_title}`;
-
-        if (
-          key === selection.chapterKey
-          && [
-            "mc",
-            "multiple_choice",
-            "multiple_response",
-            "completion",
-            "ordered_response",
-          ].includes(question.type || question.question_type)
-        ) {
-          selectedQuestions.push({
-            packPath: selection.packPath,
-            questionId: question.id,
-          });
+        if (key === selection.chapterKey) {
+          addQuestion(selection.packPath, question);
         }
       });
     }
@@ -1135,7 +1021,7 @@ async function startQuiz() {
   if (sessionQuestions.length === 0) {
     status.hidden = false;
     status.textContent =
-      "No supported PrepFlow questions were found in that selection.";
+      "No Multiple Choice or Multiple Response questions were found in that selection.";
     return;
   }
 
@@ -1232,15 +1118,11 @@ submitAnswer.addEventListener("click", () => {
     return;
   }
 
-  const question = currentQuestion();
-  const questionKind = PrepFlowQuizRules.questionKind(question);
-  const selectedAnswers = questionKind === "text"
-    ? [answerChoices.querySelector('input[name="answer-text"]')?.value || ""]
-    : questionKind === "ordered"
-      ? [...answerChoices.querySelectorAll(".ordered-answer")].map((row) => row.dataset.label)
-      : [...answerChoices.querySelectorAll('input[name="answer"]:checked')].map((input) => input.value);
+  const selected = answerChoices.querySelectorAll(
+    'input[name="answer"]:checked'
+  );
 
-  if (selectedAnswers.length === 0 || selectedAnswers.every((answer) => !String(answer).trim())) {
+  if (selected.length === 0) {
     return;
   }
 
@@ -1251,6 +1133,8 @@ submitAnswer.addEventListener("click", () => {
   let scoringStarted = false;
 
   try {
+    const question = currentQuestion();
+    const selectedAnswers = Array.from(selected, (input) => input.value);
     const { isCorrect, correctAnswers } =
       PrepFlowQuizRules.evaluateAnswer(question, selectedAnswers);
 
@@ -1297,8 +1181,8 @@ submitAnswer.addEventListener("click", () => {
     answerChoices.hidden = true;
     feedback.hidden = false;
 
-    answerChoices.querySelectorAll("input, button").forEach((control) => {
-      control.disabled = true;
+    answerChoices.querySelectorAll("input").forEach((input) => {
+      input.disabled = true;
     });
 
     quizScore.textContent = PrepFlowDisplayRules.runningScoreText(
@@ -1422,24 +1306,6 @@ closeQuizBuilderButton.addEventListener("click", () => {
 });
 doneChaptersButton.addEventListener("click", showQuizBuilder);
 
-chapterPreviousButton.addEventListener("click", () => {
-  showChapterSpread(currentChapterSpread - 1);
-});
-
-chapterNextButton.addEventListener("click", () => {
-  showChapterSpread(currentChapterSpread + 1);
-});
-
-chapterPageNumbers.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-chapter-spread]");
-
-  if (!button) {
-    return;
-  }
-
-  showChapterSpread(Number(button.dataset.chapterSpread));
-});
-
 const BOOK_LAUNCH_DURATION_MS = 1150;
 const OPEN_BOOK_REVEAL_MS = 760;
 const OPEN_BOOK_TOTAL_MS = 1500;
@@ -1560,18 +1426,6 @@ document.querySelector("#back-button").addEventListener(
   "click",
   closeCurrentBook
 );
-
-chapterScreen.addEventListener("click", (event) => {
-  if (
-    event.target.closest(
-      ".chapter-book-hit-area, .chapter-header, .chapter-list, .chapter-pagination"
-    )
-  ) {
-    return;
-  }
-
-  closeCurrentBook();
-});
 document.querySelector("#exit-quiz").addEventListener("click", showSubjects);
 document.querySelector("#summary-exit").addEventListener("click", showSubjects);
 copyQuestionIdButton?.addEventListener("click", () => {
