@@ -9,6 +9,9 @@ const APP_FILES = [
   "./app.js",
   "./question-reference-rules.js",
   "./generic-pack-catalog.css",
+  "./canonical-question-types.css",
+  "./quiz-builder-screen.css",
+  "./quiz-reading-screen.css",
   "./data/pack-catalog.json",
   "./drug-reference.css",
   "./drug-reference.js",
@@ -21,6 +24,11 @@ const APP_FILES = [
   "./images/home-hospital/prepflow-mobile-home-background.png",
   "./images/quiz-builder/prepflow-mobile-quiz-builder-background.png",
   "./images/quiz-builder/prepflow-mobile-chapter-clipboard.png",
+  "./images/quiz-builder/books/fundamentals-closed.png",
+  "./images/quiz-builder/books/medsurg-closed.png",
+  "./images/quiz-builder/books/pediatrics-closed.png",
+  "./images/quiz-builder/books/pharm-closed.png",
+  "./images/quiz-builder/books/quizbook-transparent.png",
   "./manifest.webmanifest",
   "./icons/prepflow-192.png",
   "./icons/prepflow-512.png",
@@ -69,6 +77,10 @@ self.addEventListener("fetch", (event) => {
 
         return response;
       })
-      .catch(() => caches.match(event.request))
+      .catch(async () => {
+        const exact = await caches.match(event.request);
+        if (exact) return exact;
+        return caches.match(event.request, { ignoreSearch: true });
+      })
   );
 });
