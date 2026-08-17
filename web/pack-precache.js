@@ -1,1 +1,1 @@
-self.PREPFLOW_PACK_PRECACHE = {"version": "start-quiz-hit-area-20260817-1", "urls": ["../packs/fundamentals.prepflow.json", "../packs/medical_surgical.prepflow.json", "../packs/pediatrics.prepflow.json", "../packs/pharmacy.prepflow.json"]};
+self.PREPFLOW_PACK_PRECACHE = {"version": "touch-safe-start-quiz-20260817-1", "urls": ["../packs/fundamentals.prepflow.json", "../packs/medical_surgical.prepflow.json", "../packs/pediatrics.prepflow.json", "../packs/pharmacy.prepflow.json"]};
