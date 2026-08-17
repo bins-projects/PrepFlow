@@ -10,17 +10,18 @@
   <p style="font-family:system-ui;padding:1rem">Loading desktop-only PrepFlow test…</p>
   <script>
     (async function () {
-      const response = await fetch('./index.html?desktop-test-source=20260817-1', { cache: 'no-store' });
+      const response = await fetch('./index.html?desktop-test-source=20260817-2', { cache: 'no-store' });
       let html = await response.text();
+      const closeScript = '<' + '/script>';
 
       const removeExact = [
-        '<script src="mobile-portrait.js"></script>',
+        '<script src="mobile-portrait.js">' + closeScript,
         '<link rel="manifest" href="manifest.webmanifest">',
         '<link rel="preload" as="image" href="images/quiz-builder/prepflow-mobile-chapter-clipboard.png">',
         '<link rel="stylesheet" href="mobile-portrait.css?v=20260731-drug-reference-1">',
         '<link rel="stylesheet" href="quiz-builder-hit-area-hotfix.css?v=20260817-start-quiz-1">',
-        '<script src="mobile-quiz-builder.js?v=20260813-pediatrics-shelf-1"></script>',
-        '<script src="mobile-quiz-flow.js"></script>'
+        '<script src="mobile-quiz-builder.js?v=20260813-pediatrics-shelf-1">' + closeScript,
+        '<script src="mobile-quiz-flow.js">' + closeScript
       ];
 
       for (const fragment of removeExact) {
