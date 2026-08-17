@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PrepFlow Desktop-Only Test</title>
+  <meta name="robots" content="noindex">
+</head>
+<body>
+  <p style="font-family:system-ui;padding:1rem">Loading desktop-only PrepFlow test…</p>
+  <script>
+    (async function () {
+      const response = await fetch('./index.html?desktop-test-source=20260817-1', { cache: 'no-store' });
+      let html = await response.text();
+
+      const removeExact = [
+        '<script src="mobile-portrait.js"></script>',
+        '<link rel="manifest" href="manifest.webmanifest">',
+        '<link rel="preload" as="image" href="images/quiz-builder/prepflow-mobile-chapter-clipboard.png">',
+        '<link rel="stylesheet" href="mobile-portrait.css?v=20260731-drug-reference-1">',
+        '<link rel="stylesheet" href="quiz-builder-hit-area-hotfix.css?v=20260817-start-quiz-1">',
+        '<script src="mobile-quiz-builder.js?v=20260813-pediatrics-shelf-1"></script>',
+        '<script src="mobile-quiz-flow.js"></script>'
+      ];
+
+      for (const fragment of removeExact) {
+        html = html.replace(fragment, '');
+      }
+
+      html = html.replace('<title>PrepFlow</title>', '<title>PrepFlow Desktop-Only Test</title>');
+      html = html.replace('<body>', '<body data-prepflow-desktop-only-test="true">');
+
+      document.open();
+      document.write(html);
+      document.close();
+    }()).catch((error) => {
+      document.body.innerHTML = '<pre style="white-space:pre-wrap;padding:1rem">Desktop-only test failed to load: ' + String(error) + '</pre>';
+    });
+  </script>
+</body>
+</html>
