@@ -1,4 +1,17 @@
 (function () {
+  const phoneLike = navigator.maxTouchPoints > 0
+    && Math.min(window.screen.width, window.screen.height) <= 820;
+
+  if (phoneLike) {
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (viewport) {
+      viewport.setAttribute("content", "width=1200");
+    }
+    document.documentElement.dataset.forceDesktop = "true";
+  }
+}());
+
+(function () {
   const portraitQuery = window.matchMedia(
     "(max-width: 760px) and (orientation: portrait)"
   );
