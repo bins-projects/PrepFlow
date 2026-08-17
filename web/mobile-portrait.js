@@ -12,11 +12,10 @@
 }());
 
 (function () {
-  const scrollTest = new URLSearchParams(window.location.search).get("scrolltest") === "1";
   const phoneLike = navigator.maxTouchPoints > 0
     && Math.min(window.screen.width, window.screen.height) <= 820;
 
-  if (!scrollTest || !phoneLike) return;
+  if (!phoneLike) return;
 
   function resetPhoneViewport() {
     window.scrollTo(0, 0);
