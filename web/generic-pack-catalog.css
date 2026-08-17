@@ -54,3 +54,25 @@ html.mobile-portrait body.real-book-chapters .chapter-page-numbers,
 html.mobile-portrait body.real-book-chapters .chapter-page-numbers button {
   pointer-events: auto !important;
 }
+
+/* Keep the mobile quiz-builder command row above decorative layers.
+   Once chapters are selected, Start Quiz must remain an actual tap target. */
+html.mobile-portrait body.builder-open .builder-controls,
+html.mobile-portrait body.builder-open .builder-actions {
+  position: relative !important;
+  z-index: 40 !important;
+  pointer-events: auto !important;
+}
+
+html.mobile-portrait body.builder-open #build-quiz,
+html.mobile-portrait body.builder-open #clear-selections,
+html.mobile-portrait body.builder-open #close-quiz-builder {
+  position: relative !important;
+  z-index: 41 !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+
+html.mobile-portrait body.builder-open #build-quiz:not(:disabled) {
+  cursor: pointer !important;
+}
