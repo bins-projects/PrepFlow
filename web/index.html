@@ -28,11 +28,9 @@
   <link rel="stylesheet" href="half-width-composition.css?v=20260723-1">
   <link rel="stylesheet" href="approved-book-buttons.css?v=20260724-books-1">
   <link rel="stylesheet" href="hospital-home.css?v=20260726-text-glow-1">
-  <link rel="stylesheet" href="quiz-builder-screen.css?v=20260728-openbook-consolidated-1">
-  <link rel="stylesheet" href="mobile-portrait.css?v=20260731-drug-reference-1">
-  <link rel="stylesheet" href="generic-pack-catalog.css">
-  <link rel="stylesheet" href="canonical-question-types.css">
-  <link rel="stylesheet" href="quiz-reading-screen.css?v=20260816-reading-book-1">
+  <link rel="stylesheet" href="quiz-builder-screen.css?v=20260813-pediatrics-shelf-1">
+  <link rel="stylesheet" href="mobile-portrait.css?v=20260814-question-references-1">
+  <link rel="stylesheet" href="generic-pack-catalog.css?v=20260813-pediatrics-shelf-1">
 </head>
 <body>
   <main class="app-shell">
@@ -96,26 +94,14 @@
         <header class="quiz-builder-header">
           <div>
             <h2>Build Your Quiz</h2>
-            <p>Select the chapters you need from the books above.</p>
+            <p>Choose one or more books, select chapters, then customize your quiz.</p>
           </div>
+          <button id="close-quiz-builder" class="secondary-button">
+              <span class="command-label">Close</span>
+            </button>
         </header>
 
         <section class="subjects" aria-label="Quiz library" aria-live="polite"></section>
-
-        <div class="quiz-builder-shelf-plaques" aria-hidden="true">
-          <div class="quiz-builder-shelf-plaque fundamentals-plaque">
-            FUNDAMENTALS
-          </div>
-          <div class="quiz-builder-shelf-plaque pharm-plaque">
-            PHARM
-          </div>
-          <div class="quiz-builder-shelf-plaque medsurg-plaque">
-            MED-SURG
-          </div>
-          <div class="quiz-builder-shelf-plaque pediatrics-plaque">
-            PEDIATRICS
-          </div>
-        </div>
 
         <div id="mobile-carousel-tools" class="mobile-carousel-tools" hidden>
           <button id="mobile-choose-chapters" class="mobile-choose-chapters">
@@ -137,6 +123,8 @@
           aria-hidden="true"
           hidden
         >
+
+        <div class="quiz-builder-shelf-plaques" aria-hidden="true"></div>
 
 
         <section class="builder-controls" aria-label="Quiz settings">
@@ -165,13 +153,11 @@
 
           <div class="builder-actions">
             <button id="clear-selections" class="secondary-button" disabled>
-              <span class="command-label">Clear<br>Selection</span>
-            </button>
-            <button id="close-quiz-builder" class="secondary-button">
-              <span class="command-label">Back<br>to Home</span>
+              <span class="command-label">Clear Selection</span>
             </button>
             <button id="build-quiz" class="start-button" disabled>
-              <span class="command-label">Start<br>Quiz</span>
+              <span class="command-label">Start Quiz</span>
+              <span class="command-arrow" aria-hidden="true">▶</span>
             </button>
           </div>
         </section>
@@ -185,8 +171,6 @@
       aria-labelledby="chapter-title"
       hidden
     >
-      <div class="chapter-book-hit-area" aria-hidden="true"></div>
-
       <div class="chapter-header">
         <button id="back-button" class="secondary-button">← Back to Quiz Builder</button>
 
@@ -220,27 +204,6 @@
         role="group"
         aria-labelledby="chapter-title"
       ></div>
-
-      <nav class="chapter-pagination" aria-label="Chapter spreads">
-        <button
-          id="chapter-previous"
-          class="chapter-page-arrow"
-          type="button"
-          hidden
-        >←</button>
-
-        <div
-          id="chapter-page-numbers"
-          class="chapter-page-numbers"
-        ></div>
-
-        <button
-          id="chapter-next"
-          class="chapter-page-arrow"
-          type="button"
-        >→</button>
-      </nav>
-
       <button id="done-chapters" class="start-button">Done — Return to Builder</button>
       <button id="start-button" class="start-button" disabled hidden>Start Studying</button>
     </section>

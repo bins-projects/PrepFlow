@@ -5,17 +5,87 @@
   display: none !important;
 }
 
+.quiz-builder-screen {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 4vw, 56px);
+
+  background: rgba(3, 6, 20, .72);
+  overflow: auto;
+}
+
 .quiz-builder-window {
+  width: min(1050px, 96vw);
+  max-height: 92vh;
+  overflow: auto;
+  padding: clamp(18px, 2.5vw, 32px);
+
+  border: 2px solid rgba(238, 193, 104, .7);
+  background: rgba(9, 13, 31, .97);
   color: #f2dfb6;
 }
 
+.quiz-builder-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 22px;
+}
+
+.quiz-builder-header h2,
+.quiz-builder-header p {
+  margin: 0;
+}
+
+.quiz-builder-header p {
+  margin-top: 6px;
+}
+
 .quiz-builder-screen .subjects {
+  position: static !important;
+  width: 100% !important;
+  margin: 0 !important;
+
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: clamp(18px, 4vw, 52px) !important;
+
   transform: none !important;
+}
+
+.quiz-builder-screen .subject-card {
+  position: relative !important;
+  inset: auto !important;
+  margin: 0 auto !important;
+  transform: none;
+}
+
+.builder-controls {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto auto;
+  gap: 16px;
+  align-items: center;
 }
 
 .builder-actions {
   display: flex;
   gap: 10px;
+}
+
+@media (max-width: 850px) {
+  .quiz-builder-screen .subjects {
+    grid-template-columns: 1fr !important;
+  }
+
+  .builder-controls {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Nursing-station Quiz Builder background — placement pass 1 */
@@ -32,6 +102,35 @@
     center / cover no-repeat;
 
   border: 2px solid rgba(238, 193, 104, 0.8);
+}
+
+/* Nursing-station Quiz Builder — book placement pass 1 */
+.quiz-builder-screen .subjects {
+  position: absolute !important;
+  z-index: 3;
+  left: 8% !important;
+  right: 8% !important;
+  top: 35% !important;
+  width: auto !important;
+  height: 42%;
+
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 7% !important;
+  align-items: end;
+  padding: 0 !important;
+}
+
+.quiz-builder-screen .subject-card {
+  width: min(215px, 20vw) !important;
+  height: auto !important;
+  align-self: end;
+}
+
+.quiz-builder-screen .approved-book-art {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
 }
 
 /* Nursing-station Quiz Builder — control-band placement pass 1 */
@@ -62,7 +161,21 @@
   position: static;
 }
 
-/* Nursing-station Quiz Builder — header text treatment */
+/* Nursing-station Quiz Builder — header placement pass 1 */
+.quiz-builder-screen .quiz-builder-header {
+  position: absolute;
+  z-index: 6;
+  top: 3.5%;
+  left: 32%;
+  right: 3%;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+}
+
 .quiz-builder-screen .quiz-builder-header h2,
 .quiz-builder-screen .quiz-builder-header p {
   text-shadow:
@@ -72,6 +185,60 @@
 
 .quiz-builder-screen .quiz-builder-header p {
   max-width: 520px;
+}
+
+/* Nursing-station Quiz Builder — unified lower interface */
+.quiz-builder-screen .quiz-builder-header {
+  position: absolute;
+  z-index: 7;
+  left: 4%;
+  right: 4%;
+  bottom: 13.5%;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.quiz-builder-screen .quiz-builder-header > div {
+  display: contents;
+}
+
+.quiz-builder-screen .quiz-builder-header h2 {
+  margin: 0;
+  white-space: nowrap;
+  font-size: clamp(20px, 2vw, 28px);
+}
+
+.quiz-builder-screen .quiz-builder-header p {
+  margin: 0;
+  min-width: 0;
+  font-size: clamp(13px, 1.15vw, 16px);
+}
+
+.quiz-builder-screen .builder-controls {
+  left: 3%;
+  right: 3%;
+  bottom: 2.5%;
+  height: 10%;
+  min-height: 74px;
+  padding: 10px 18px;
+
+  grid-template-columns:
+    minmax(190px, 1fr)
+    auto
+    auto
+    auto;
+  gap: 16px;
+}
+
+/* Let the artwork remain completely unobstructed above the lower band. */
+.quiz-builder-screen .quiz-builder-header,
+.quiz-builder-screen .builder-controls {
+  background: transparent;
+  border: 0;
 }
 
 /* Nursing-station Quiz Builder — unified lower interface */
@@ -167,6 +334,7 @@
   text-transform: uppercase;
   white-space: nowrap;
 
+  cursor: pointer;
   transition:
     transform 140ms ease,
     box-shadow 140ms ease,
@@ -197,8 +365,17 @@
   transform: translateY(-2px);
 }
 
+.quiz-builder-screen #build-quiz:focus-visible,
+.quiz-builder-screen #clear-selections:focus-visible,
+.quiz-builder-screen #close-quiz-builder:focus-visible {
+  outline: 3px solid #fff2bd;
+  outline-offset: 3px;
+}
+
 .quiz-builder-screen #build-quiz:disabled,
 .quiz-builder-screen #clear-selections:disabled {
+  opacity: .42;
+  cursor: not-allowed;
   box-shadow: none;
 }
 
@@ -266,9 +443,65 @@
 
 .quiz-builder-screen .subject-card {
   position: absolute !important;
+  width: 16.5% !important;
   margin: 0 !important;
   pointer-events: auto;
 }
+
+.quiz-builder-screen .subject-card.fundamentals {
+  left: 12.5% !important;
+  top: 43.5% !important;
+}
+
+.quiz-builder-screen .subject-card.pharm {
+  left: 41.8% !important;
+  top: 44.2% !important;
+}
+
+.quiz-builder-screen .subject-card.med-surg {
+  left: 71.8% !important;
+  top: 43.8% !important;
+}
+
+.quiz-builder-screen .approved-book-art {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Fundamentals seating pass 1 */
+.quiz-builder-screen .subject-card.fundamentals {
+  left: 12.8% !important;
+  top: 43.1% !important;
+  transform-origin: bottom center !important;
+  transform:
+    perspective(900px)
+    rotateZ(2.2deg)
+    rotateX(7deg)
+    skewX(-1.5deg) !important;
+}
+
+/* Fundamentals seating pass 2 */
+.quiz-builder-screen .subject-card.fundamentals {
+  left: 14.1% !important;
+  top: 42.7% !important;
+  transform:
+    perspective(900px)
+    rotateZ(.6deg)
+    rotateX(5deg)
+    skewX(-.5deg) !important;
+}
+
+/* Fundamentals seating pass 3 — measured horizontal correction */
+.quiz-builder-screen .subject-card.fundamentals {
+  left: 20.4% !important;
+  top: 42.7% !important;
+  transform:
+    perspective(900px)
+    rotateZ(.6deg)
+    rotateX(5deg)
+    skewX(-.5deg) !important;
+}
+
 
 /* Quiz Builder true-screen ownership — 2026-07-27 */
 
@@ -319,9 +552,37 @@ body.builder-open .app-shell {
   border: 0;
 }
 
+/* Quiz Builder 16:9 book seating — first measured pass */
+.quiz-builder-screen .subject-card {
+  width: 12.2% !important;
+  height: auto !important;
+  top: 51.5% !important;
+  margin: 0 !important;
+  transform: none !important;
+  transform-origin: bottom center !important;
+}
+
+.quiz-builder-screen .subject-card.fundamentals {
+  left: 22.4% !important;
+}
+
+.quiz-builder-screen .subject-card.pharm {
+  left: 43.9% !important;
+}
+
+.quiz-builder-screen .subject-card.med-surg {
+  left: 69.3% !important;
+}
+
+.quiz-builder-screen .approved-book-art {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
 /* Quiz Builder books — authoritative resting coordinates */
 .quiz-builder-screen .subject-card {
-  width: 12.5% !important;
+  width: 9.6% !important;
 
   top: auto !important;
   bottom: 47.2% !important;
@@ -342,19 +603,19 @@ body.builder-open .app-shell {
 }
 
 .quiz-builder-screen .subject-card.fundamentals {
-  left: calc(var(--fundamentals-station-x) - 6.25%) !important;
+  left: calc(var(--fundamentals-station-x) - 4.8%) !important;
 }
 
 .quiz-builder-screen .subject-card.pharm {
-  left: calc(var(--pharm-station-x) - 6.25%) !important;
+  left: calc(var(--pharm-station-x) - 4.8%) !important;
 }
 
 .quiz-builder-screen .subject-card.med-surg {
-  left: calc(var(--medsurg-station-x) - 6.25%) !important;
+  left: calc(var(--medsurg-station-x) - 4.8%) !important;
 }
 
 .quiz-builder-screen .subject-card.pediatrics {
-  left: calc(var(--pediatrics-station-x) - 6.25%) !important;
+  left: calc(var(--pediatrics-station-x) - 4.8%) !important;
 }
 
 .quiz-builder-screen .approved-book-art {
@@ -383,27 +644,35 @@ body.builder-open .app-shell {
 /* Distances are calculated from each resting book center
    to the shared 50% horizontal preview coordinate. */
 .quiz-builder-screen .subject-card.fundamentals {
-  --book-launch-x: 34.5cqw;
-  --book-center-scale: 1.62;
-  --book-center-pulse-scale: 1.72;
+  --book-launch-x: 24.1cqw;
+  --book-center-scale: 2.11;
+  --book-center-pulse-scale: 2.23;
 }
 
 .quiz-builder-screen .subject-card.pharm {
-  --book-launch-x: 11.5cqw;
-  --book-center-scale: 1.62;
-  --book-center-pulse-scale: 1.72;
+  --book-launch-x: 0.4cqw;
+  --book-center-scale: 2.11;
+  --book-center-pulse-scale: 2.23;
 }
 
 .quiz-builder-screen .subject-card.med-surg {
   --book-launch-x: -11.5cqw;
-  --book-center-scale: 1.62;
-  --book-center-pulse-scale: 1.72;
+  --book-center-scale: 2.11;
+  --book-center-pulse-scale: 2.23;
+}
+
+.quiz-builder-screen .subject-card.fundamentals {
+  --book-launch-x: 34.5cqw;
+}
+
+.quiz-builder-screen .subject-card.pharm {
+  --book-launch-x: 11.5cqw;
 }
 
 .quiz-builder-screen .subject-card.pediatrics {
   --book-launch-x: -34.5cqw;
-  --book-center-scale: 1.62;
-  --book-center-pulse-scale: 1.72;
+  --book-center-scale: 2.11;
+  --book-center-pulse-scale: 2.23;
 }
 
 .quiz-builder-screen .approved-book-art {
@@ -683,7 +952,7 @@ body.book-launching .quiz-builder-screen .subject-card:not(.is-launching) {
   left: var(--pharm-station-x);
 }
 
-.quiz-builder-shelf-plaque.medsurg-plaque {
+.quiz-builder-shelf-plaque.med-surg-plaque {
   left: var(--medsurg-station-x);
 }
 
@@ -753,15 +1022,15 @@ body.book-opening
 /* Shared real open-book chapter state — authoritative interior */
 
 /*
-  The nursing-station scene remains beneath the approved open-book artwork.
-  Chapter selection state and navigation behavior are handled by app.js;
-  this block owns only the finished desktop book interior.
+  The existing chapter controls remain functional HTML. Only their visual
+  shell changes. The nursing-station artwork remains the responsive 16:9
+  coordinate plane beneath this state.
 */
-
 body.real-book-chapters .quiz-builder-screen {
   display: grid !important;
 }
 
+/* Hide the resting builder controls while preserving the scene background. */
 body.real-book-chapters .quiz-builder-header,
 body.real-book-chapters .quiz-builder-screen .subjects,
 body.real-book-chapters .quiz-builder-shelf-plaques,
@@ -769,14 +1038,17 @@ body.real-book-chapters .builder-controls {
   visibility: hidden !important;
 }
 
+/*
+  Replace the synthetic CSS textbook with the approved real open-book artwork.
+  Geometry matches the tested transition preview.
+*/
 body.real-book-chapters .chapter-screen {
   --book-accent: #263d70;
-  --book-brass: #b58c45;
-  --book-ink: #172540;
-  --book-muted: #657087;
+  --book-stage-unit: min(1vw, calc(1dvh * 16 / 9));
 
   position: fixed;
   z-index: 100;
+
   inset: auto;
   left: 50%;
   top: 50%;
@@ -788,47 +1060,49 @@ body.real-book-chapters .chapter-screen {
 
   margin: 0;
   padding: 0;
+
   display: block;
+
   overflow: hidden;
 
   border: 0;
   border-radius: 0;
+
   background:
     url("images/quiz-builder/books/quizbook-transparent.png?v=20260728-clean-preview-1")
     50% 48% / 58% auto no-repeat;
+
   box-shadow: none;
 
-  color: var(--book-ink);
+  color: #111a31;
 
   transform: translate(-50%, -50%);
   animation: none;
 }
 
+/* Remove the old synthetic binding and page texture. */
 body.real-book-chapters .chapter-screen::before,
 body.real-book-chapters .chapter-screen::after {
   content: none;
 }
 
-/* ------------------------------------------------------------
-   Upper book header
-   ------------------------------------------------------------ */
-
+/* Header seated across the upper page area. */
 body.real-book-chapters .chapter-header {
   position: absolute;
-  z-index: 8;
+  z-index: 7;
 
   left: 27%;
-  top: 20.4%;
+  top: 19.8%;
   width: 46%;
-  height: 8.2%;
+  height: 10.6%;
+
+  padding: 0;
 
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 2.4cqw;
   align-items: center;
+  column-gap: 2.4cqw;
 
-  margin: 0;
-  padding: 0;
   border: 0;
 }
 
@@ -838,76 +1112,214 @@ body.real-book-chapters .chapter-header::after {
 
 body.real-book-chapters .chapter-book-heading {
   grid-column: 1;
+
   min-width: 0;
-  padding: .55cqw 1.2cqw 0;
+  padding-top: .25cqw;
+
   text-align: center;
 }
 
 body.real-book-chapters .chapter-header h2 {
   margin: 0;
 
-  color: #182743;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.78cqw;
-  font-weight: 800;
-  line-height: .98;
-  letter-spacing: .01em;
+  color: #132342;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(1.18rem, 1.95cqw, 1.88rem);
+  font-weight: 900;
+  letter-spacing: .025em;
+  line-height: 1;
   text-transform: uppercase;
-  text-shadow:
-    0 .045cqw 0 rgba(255, 255, 255, .72),
-    0 .08cqw .1cqw rgba(55, 43, 25, .18);
 }
 
 body.real-book-chapters .chapter-header p {
-  display: none;
+  margin: .28cqw 0 0;
+
+  color: #536079;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(.52rem, .7cqw, .74rem);
+  font-weight: 800;
+  letter-spacing: .055em;
+  text-transform: uppercase;
 }
 
-/* Large, independent book-exit control. */
 body.real-book-chapters #back-button {
   position: absolute;
-  z-index: 10;
+  left: 0;
+  top: calc(var(--book-stage-unit) * -.4);
 
-  left: .35cqw;
-  top: -1.9cqw;
+  padding:
+    calc(var(--book-stage-unit) * .52)
+    calc(var(--book-stage-unit) * .78);
 
-  min-width: 9.6cqw;
-  min-height: 2.4cqw;
-  margin: 0;
-  padding: .55cqw 1cqw;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border: .1cqw solid #c8aa61;
-  border-radius: .12cqw;
+  border:
+    calc(var(--book-stage-unit) * .12)
+    solid
+    #c8aa61;
+  border-radius: calc(var(--book-stage-unit) * .12);
 
   background:
     linear-gradient(
       to bottom,
-      #1c3156,
-      #0b1831
+      #1b315d,
+      #0b1731
     );
 
   color: #f4dc9d;
 
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .78cqw;
-  font-weight: 850;
-  line-height: 1;
-  letter-spacing: .035em;
-  text-transform: uppercase;
-  white-space: nowrap;
-
   box-shadow:
-    inset 0 .06cqw 0 rgba(255, 255, 255, .14),
-    0 .12cqw .2cqw rgba(0, 0, 0, .32);
+    inset 0 calc(var(--book-stage-unit) * .06) 0
+      rgba(255, 255, 255, .14),
+    0 calc(var(--book-stage-unit) * .12)
+      calc(var(--book-stage-unit) * .2)
+      rgba(0, 0, 0, .32);
 
-  transform: none;
-  animation: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: calc(var(--book-stage-unit) * .62);
+  font-weight: 900;
+  letter-spacing: .035em;
+  line-height: 1;
+  text-transform: uppercase;
+
+  transform-origin: center;
+  animation:
+    prepflow-book-return-pulse
+    2.2s
+    ease-in-out
+    infinite;
+
+  will-change: transform, box-shadow, color;
 }
 
-/* Persistent right-page summary. */
+/* Existing hidden utility controls remain hidden. */
+body.real-book-chapters .chapter-actions {
+  display: contents;
+}
+
+/* Chapters occupy the two usable page surfaces. */
+body.real-book-chapters .chapter-list {
+  position: absolute;
+  z-index: 7;
+
+  left: 27%;
+  right: 27%;
+  top: 29.2%;
+  bottom: 29.7%;
+
+  min-height: 0;
+  padding: 0 .65cqw;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: calc((100% - 2.2cqw) / 5);
+  align-content: start;
+  gap: .55cqw 2.2cqw;
+
+  overflow-y: auto;
+}
+
+body.real-book-chapters .chapter-option {
+  height: 100%;
+  min-height: 0;
+  margin: 0 !important;
+  padding: .5cqw .68cqw;
+
+  display: flex;
+  align-items: center;
+
+  border: .08cqw solid #9a8a68;
+  border-left: .24cqw solid #263d70;
+  border-radius: .08cqw;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 254, 246, .94),
+      rgba(239, 232, 211, .9)
+    );
+
+  box-shadow:
+    inset 0 .05cqw 0 rgba(255, 255, 255, .8),
+    0 .08cqw .12cqw rgba(35, 31, 24, .14);
+
+  color: #16233e;
+
+  transition:
+    transform 120ms ease,
+    border-color 120ms ease,
+    background 120ms ease,
+    box-shadow 120ms ease;
+}
+
+body.real-book-chapters .chapter-option-text {
+  display: block;
+  width: 100%;
+  padding-right: 3.6cqw;
+}
+
+body.real-book-chapters .chapter-name {
+  display: block;
+
+  color: #172540;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .79cqw;
+  font-weight: 850;
+  letter-spacing: .003em;
+  line-height: 1.16;
+}
+
+body.real-book-chapters .chapter-count {
+  display: block;
+  margin-top: .18cqw;
+
+  color: #677187;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .55cqw;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+body.real-book-chapters
+.chapter-option:has(input:checked) {
+  border-color: #b69245;
+  border-left-color: #b69245;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 248, 219, .98),
+      rgba(236, 218, 166, .94)
+    );
+
+  box-shadow:
+    inset 0 0 0 .08cqw rgba(255, 245, 196, .85),
+    0 0 .35cqw rgba(181, 143, 59, .28);
+
+  animation:
+    prepflow-selected-chapter-pulse
+    2.2s
+    ease-in-out
+    infinite;
+
+  will-change: box-shadow, border-color;
+}
+
+body.real-book-chapters
+.chapter-option:has(input:checked)::after {
+  right: .45cqw;
+
+  color: #20365e;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(.34rem, .42cqw, .47rem);
+  font-weight: 900;
+  letter-spacing: .045em;
+}
+
+/* Legacy chapter-screen controls are not used by the real open-book interior. */
+body.real-book-chapters #selection-count,
+body.real-book-chapters #done-chapters {
+  display: none !important;
+}
+
 .chapter-selection-summary {
   display: none;
 }
@@ -916,283 +1328,37 @@ body.real-book-chapters .chapter-selection-summary {
   grid-column: 2;
 
   min-width: 0;
-  padding: 0 1.4cqw;
+  padding-top: 0;
 
   display: grid;
+
+  transform: translateY(-.62cqw);
   justify-items: center;
   align-content: center;
-  gap: .18cqw;
+  gap: .3cqw;
 
   color: #17294c;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
-  text-transform: none;
+  text-transform: uppercase;
 }
 
 body.real-book-chapters .chapter-selection-summary strong {
-  color: #1b2d4e;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.08cqw;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: .01em;
-  text-shadow:
-    0 .04cqw 0 rgba(255, 255, 255, .7),
-    0 .06cqw .08cqw rgba(61, 47, 27, .14);
+  color: #17294c;
+  font-size: clamp(.82rem, 1.12cqw, 1.2rem);
+  font-weight: 900;
+  letter-spacing: .05em;
 }
 
 body.real-book-chapters .chapter-selection-summary span {
   display: block;
+
   color: #263d70;
-  font-size: .72cqw;
+  font-size: clamp(.68rem, .9cqw, .98rem);
   font-weight: 900;
-  line-height: 1.08;
-  letter-spacing: .02em;
+  letter-spacing: .025em;
 }
 
-body.real-book-chapters #selected-chapter-numbers {
-  margin-top: .08cqw;
-  color: #58647c;
-  font-size: .67cqw;
-  font-weight: 800;
-  letter-spacing: .01em;
-  line-height: 1.1;
-  text-transform: none;
-}
-
-/* ------------------------------------------------------------
-   Ten-chapter spread
-   ------------------------------------------------------------ */
-
-body.real-book-chapters .chapter-actions {
-  display: contents;
-}
-
-body.real-book-chapters #selection-count,
-body.real-book-chapters #done-chapters,
-body.real-book-chapters #start-button {
-  display: none !important;
-}
-
-body.real-book-chapters .chapter-list {
-  position: absolute;
-  z-index: 7;
-
-  left: 27.4%;
-  right: 27.4%;
-  top: 29.2%;
-  bottom: 32.4%;
-
-  min-height: 0;
-  margin: 0;
-  padding: 0 .55cqw;
-
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows:
-    repeat(var(--chapter-rows-per-page, 5), minmax(0, 1fr));
-  grid-auto-flow: column;
-  gap: .38cqw 2.15cqw;
-
-  overflow: hidden;
-}
-
-/*
-  Chapter entries are printed into the page instead of rendered as web cards.
-*/
-body.real-book-chapters .chapter-option {
-  position: relative;
-
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-
-  margin: 0 !important;
-  padding: .36cqw .52cqw .34cqw .62cqw;
-
-  display: flex;
-  align-items: center;
-
-  border: 0;
-  border-bottom: .055cqw solid rgba(74, 68, 53, .25);
-  border-radius: 0;
-
-  background: transparent;
-  box-shadow: none;
-
-  color: var(--book-ink);
-  cursor: pointer;
-
-  transition:
-    background-color 120ms ease,
-    color 120ms ease;
-}
-
-body.real-book-chapters .chapter-option input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-body.real-book-chapters .chapter-option-text {
-  display: block;
-  width: 100%;
-  padding: 0 1.2cqw 0 0;
-}
-
-body.real-book-chapters .chapter-name {
-  display: block;
-
-  color: #172540;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: .82cqw;
-  font-weight: 700;
-  line-height: 1.13;
-  letter-spacing: .002em;
-  text-shadow:
-    0 .035cqw 0 rgba(255, 255, 255, .72),
-    0 .055cqw .07cqw rgba(58, 47, 30, .15);
-}
-
-body.real-book-chapters .chapter-count {
-  display: block;
-  margin-top: .12cqw;
-
-  color: #665f53;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .58cqw;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: .01em;
-  text-shadow: 0 .035cqw 0 rgba(255, 255, 255, .62);
-}
-
-body.real-book-chapters .chapter-option:has(input:checked) {
-  background:
-    linear-gradient(
-      to right,
-      rgba(216, 185, 111, .22),
-      rgba(216, 185, 111, .04)
-    );
-
-  box-shadow:
-    inset .16cqw 0 0 var(--book-brass);
-
-  animation: none;
-}
-
-body.real-book-chapters .chapter-option:has(input:checked)::after {
-  content: "✓";
-  position: absolute;
-  right: .36cqw;
-  top: 50%;
-
-  color: #7e5b24;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .8cqw;
-  font-weight: 900;
-  line-height: 1;
-
-  transform: translateY(-50%);
-}
-
-/* ------------------------------------------------------------
-   Spread navigation
-   ------------------------------------------------------------ */
-
-body.real-book-chapters .chapter-pagination {
-  position: absolute;
-  z-index: 9;
-
-  left: 29%;
-  right: 29%;
-  bottom: 25.7%;
-
-  min-height: 2.2cqw;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .45cqw;
-
-  margin: 0;
-  padding: 0;
-
-  background: transparent;
-}
-
-body.real-book-chapters .chapter-page-numbers {
-  flex: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  column-gap: 3.3cqw;
-  align-items: center;
-}
-
-body.real-book-chapters .chapter-page-number-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  min-width: 0;
-}
-
-body.real-book-chapters .chapter-page-number-group-left {
-  grid-column: 1;
-}
-
-body.real-book-chapters .chapter-page-number-group-right {
-  grid-column: 2;
-}
-
-body.real-book-chapters .chapter-page-number,
-body.real-book-chapters .chapter-page-arrow {
-  min-width: 1.5cqw;
-  height: 1.6cqw;
-  margin: 0;
-  padding: 0 .32cqw;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 0;
-  border-radius: 0;
-
-  background: transparent;
-  color: #536079;
-
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .91cqw;
-  font-weight: 900;
-  font-variant-numeric: tabular-nums;
-  text-shadow:
-    0 .035cqw 0 rgba(255, 255, 255, .62),
-    0 .05cqw .07cqw rgba(55, 43, 26, .16);
-  line-height: 1;
-
-  cursor: pointer;
-}
-
-body.real-book-chapters .chapter-page-number.active {
-  color: #15294e;
-  text-decoration: underline;
-  text-decoration-color: #b58c45;
-  text-decoration-thickness: .1cqw;
-  text-underline-offset: .18cqw;
-}
-
-body.real-book-chapters .chapter-page-arrow {
-  color: #704915;
-  font-size: 1.5cqw;
-  font-weight: 900;
-  text-shadow:
-    0 0 .12cqw rgba(225, 181, 84, .38),
-    0 .05cqw .06cqw rgba(55, 41, 21, .2);
-}
-
-body.real-book-chapters .chapter-page-arrow[hidden] {
-  display: none !important;
-}
 
 /* Open-book return interaction — authoritative Back-button behavior. */
 
@@ -1365,666 +1531,205 @@ body.real-book-chapters.book-closing
 }
 
 
-/* Real open-book chapter interaction — finished illuminated treatment. */
+/* Real open-book chapter-card interaction states — authoritative. */
 
-/*
-  Chapters behave like marked entries in a reference book, not raised web
-  buttons. Hover brightens the ink. Selection remains steadily illuminated.
-*/
-
-body.real-book-chapters .chapter-option {
-  transform: none !important;
-}
-
+/* Mouse targeting feedback for an unselected chapter. */
 body.real-book-chapters
 .chapter-option:not(:has(input:checked)):hover {
-  background: transparent;
-  box-shadow: none;
-  transform: none;
-}
+  z-index: 2;
 
-body.real-book-chapters
-.chapter-option:not(:has(input:checked)):hover .chapter-name {
-  color: #102f63;
+  transform:
+    translateY(-.16cqw)
+    scale(1.015);
 
-  text-shadow:
-    0 .035cqw 0 rgba(255, 255, 255, .9),
-    0 0 .08cqw rgba(255, 232, 164, .95),
-    0 0 .2cqw rgba(224, 178, 68, .82),
-    0 0 .38cqw rgba(189, 133, 31, .48);
-}
-
-body.real-book-chapters
-.chapter-option:not(:has(input:checked)):hover .chapter-count {
-  color: #8a641e;
-
-  text-shadow:
-    0 0 .1cqw rgba(255, 224, 137, .75);
-}
-
-body.real-book-chapters
-.chapter-option:not(:has(input:checked)):hover::before {
-  content: "";
-
-  position: absolute;
-  left: .08cqw;
-  top: 23%;
-  bottom: 23%;
-  width: .09cqw;
-
-  border-radius: 999px;
-  background: #b7862e;
-
-  box-shadow:
-    0 0 .1cqw rgba(255, 229, 151, .95),
-    0 0 .24cqw rgba(210, 155, 45, .82);
-}
-
-body.real-book-chapters
-.chapter-option:has(input:checked) {
-  background: transparent;
-  box-shadow: none;
-  transform: none;
-  animation: none;
-}
-
-body.real-book-chapters
-.chapter-option:has(input:checked) .chapter-name {
-  color: #0d2b5d;
-
-  text-shadow:
-    0 .035cqw 0 rgba(255, 255, 255, .95),
-    0 0 .09cqw rgba(255, 236, 177, 1),
-    0 0 .22cqw rgba(230, 181, 67, .9),
-    0 0 .42cqw rgba(187, 129, 27, .58);
-}
-
-body.real-book-chapters
-.chapter-option:has(input:checked) .chapter-count {
-  color: #8d6418;
-
-  text-shadow:
-    0 0 .1cqw rgba(255, 229, 150, .95),
-    0 0 .2cqw rgba(205, 151, 46, .5);
-}
-
-body.real-book-chapters
-.chapter-option:has(input:checked)::before {
-  content: "";
-
-  position: absolute;
-  left: .08cqw;
-  top: 20%;
-  bottom: 20%;
-  width: .1cqw;
-
-  border-radius: 999px;
-  background: #ae7920;
-
-  box-shadow:
-    0 0 .1cqw rgba(255, 236, 178, 1),
-    0 0 .28cqw rgba(219, 161, 46, .95);
-}
-
-body.real-book-chapters
-.chapter-option:has(input:checked)::after {
-  content: "✓";
-
-  position: absolute;
-  right: .38cqw;
-  top: 50%;
-
-  color: #8b641e;
-
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .9cqw;
-  font-weight: 900;
-  line-height: 1;
-
-  text-shadow:
-    0 0 .12cqw rgba(255, 226, 132, .88),
-    0 0 .25cqw rgba(205, 158, 54, .5);
-
-  transform: translateY(-50%);
-}
-
-body.real-book-chapters
-.chapter-option:has(input:focus-visible) {
-  outline: .1cqw solid rgba(38, 61, 112, .78);
-  outline-offset: .08cqw;
-
-  box-shadow:
-    0 0 .22cqw rgba(218, 173, 68, .42);
-}
-
-/* Current spread is emphasized without turning pagination into buttons. */
-body.real-book-chapters .chapter-page-number.active {
-  color: #18315d;
-
-  text-decoration: underline;
-  text-decoration-color: #aa7d32;
-  text-decoration-thickness: .11cqw;
-  text-underline-offset: .2cqw;
-
-  text-shadow:
-    0 0 .12cqw rgba(234, 196, 103, .55),
-    0 .035cqw 0 rgba(255, 255, 255, .7);
-}
-
-body.real-book-chapters
-.chapter-page-number:not(.active):hover,
-body.real-book-chapters .chapter-page-arrow:hover {
-  color: #8b601b;
-  text-shadow:
-    0 0 .15cqw rgba(226, 185, 88, .58);
-}
-
-/* The larger return control remains steady rather than pulsing. */
-body.real-book-chapters #back-button {
-  animation: none;
-}
-
-body.real-book-chapters #back-button:hover,
-body.real-book-chapters #back-button:focus-visible {
-  color: #fff7d3;
-  border-color: #dfc174;
-
-  box-shadow:
-    inset 0 .06cqw 0 rgba(255, 255, 255, .2),
-    0 .14cqw .24cqw rgba(0, 0, 0, .34),
-    0 0 .34cqw rgba(238, 193, 104, .42);
-
-  transform: none;
-}
-
-/* Transparent interaction surface covering only the physical open book. */
-body.real-book-chapters .chapter-book-hit-area {
-  position: absolute;
-  z-index: 5;
-
-  left: 25.5%;
-  right: 25.5%;
-  top: 17%;
-  bottom: 23%;
-
-  background: transparent;
-  pointer-events: auto;
-}
-
-/* ============================================================
-   PrepFlow Quiz Builder — authoritative finished console
-   ============================================================ */
-
-/*
-  Painted console safe area in the responsive 16:9 artwork:
-  approximately y = 82.5% through 97%.
-  Every Builder control below is positioned from that same plane.
-*/
-
-.quiz-builder-screen {
-  --pf-console-navy-top: #1c3156;
-  --pf-console-navy-bottom: #0b1831;
-  --pf-console-brass: #a97c38;
-  --pf-console-brass-bright: #e8c873;
-  --pf-console-cream: #f5dda1;
-}
-
-
-/* ------------------------------------------------------------
-   Console heading
-   ------------------------------------------------------------ */
-
-.quiz-builder-screen .quiz-builder-header {
-  position: absolute !important;
-  z-index: 7 !important;
-
-  left: 5.2% !important;
-  top: 84.25% !important;
-  right: auto !important;
-  bottom: auto !important;
-
-  width: 61% !important;
-  height: 4.2% !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  display: flex !important;
-  align-items: center !important;
-  gap: 1.35cqw !important;
-
-  background: transparent !important;
-  border: 0 !important;
-}
-
-.quiz-builder-screen .quiz-builder-header > div {
-  display: contents !important;
-}
-
-.quiz-builder-screen .quiz-builder-header h2 {
-  margin: 0 !important;
-
-  color: #f6dfa2 !important;
-  font-family: Georgia, "Times New Roman", serif !important;
-  font-size: 2.05cqw !important;
-  font-weight: 800 !important;
-  line-height: 1 !important;
-
-  white-space: nowrap !important;
-
-  text-shadow:
-    0 .08cqw .12cqw rgba(0, 0, 0, .9) !important;
-}
-
-.quiz-builder-screen .quiz-builder-header p {
-  margin: 0 !important;
-
-  color: #f3e1b3 !important;
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: 1.46cqw !important;
-  font-weight: 750 !important;
-  line-height: 1 !important;
-
-  white-space: nowrap !important;
-
-  text-shadow:
-    0 .06cqw .1cqw rgba(0, 0, 0, .85) !important;
-}
-
-
-/* ------------------------------------------------------------
-   Remove wrapper geometry. Children use scene coordinates.
-   ------------------------------------------------------------ */
-
-.quiz-builder-screen .builder-controls {
-  display: contents !important;
-}
-
-.quiz-builder-screen .builder-summary,
-.quiz-builder-screen .builder-block-size,
-.quiz-builder-screen .order-mode-toggle,
-.quiz-builder-screen .builder-actions {
-  position: absolute !important;
-  z-index: 8 !important;
-}
-
-
-/* ------------------------------------------------------------
-   Lower information/settings line
-   ------------------------------------------------------------ */
-
-.quiz-builder-screen .builder-summary {
-  left: 5.8% !important;
-  top: 90.15% !important;
-  right: auto !important;
-  bottom: auto !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.quiz-builder-screen .builder-summary strong {
-  display: block !important;
-  margin: 0 !important;
-
-  color: #f7e1a6 !important;
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: 1.2cqw !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-
-  white-space: nowrap !important;
-}
-
-.quiz-builder-screen #builder-book-count {
-  display: block !important;
-  margin-top: .18cqw;
-
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .82cqw;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: .035em;
-  text-transform: uppercase;
-  color: #f2dfb6;
-}
-
-
-/* Questions per block */
-.quiz-builder-screen .builder-block-size {
-  left: 25.7% !important;
-  top: 89.45% !important;
-  right: auto !important;
-  bottom: auto !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  display: flex !important;
-  align-items: center !important;
-  gap: .5cqw !important;
-
-  color: #f4dda3 !important;
-
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: 1.03cqw !important;
-  font-weight: 900 !important;
-
-  white-space: nowrap !important;
-}
-
-.quiz-builder-screen #global-block-size {
-  width: 3.45cqw !important;
-  min-width: 0 !important;
-  max-width: none !important;
-
-  height: 2.35cqw !important;
-  min-height: 0 !important;
-  max-height: none !important;
-
-  margin: 0 !important;
-  padding: 0 .95cqw 0 .45cqw !important;
-
-  border: .08cqw solid var(--pf-console-brass) !important;
-  border-radius: .2cqw !important;
-
-  background: #10203d !important;
-  color: #fff0bf !important;
-
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: 1.02cqw !important;
-  font-weight: 900 !important;
-
-  box-shadow:
-    inset 0 .08cqw .16cqw rgba(0, 0, 0, .48) !important;
-}
-
-
-/* Source order / Shuffle */
-.quiz-builder-screen .order-mode-toggle {
-  left: 45.2% !important;
-  top: 89.75% !important;
-  right: auto !important;
-  bottom: auto !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  display: flex !important;
-  align-items: center !important;
-  gap: .42cqw !important;
-
-  color: #f4dda3 !important;
-
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: 1.03cqw !important;
-  font-weight: 900 !important;
-
-  white-space: nowrap !important;
-}
-
-.quiz-builder-screen .order-mode-track {
-  position: relative !important;
-
-  width: 3.35cqw !important;
-  height: 1.6cqw !important;
-
-  border: .08cqw solid var(--pf-console-brass) !important;
-  border-radius: 1cqw !important;
-
-  background: #0d1930 !important;
-
-  box-shadow:
-    inset 0 .12cqw .25cqw rgba(0, 0, 0, .58) !important;
-}
-
-.quiz-builder-screen .order-mode-track > span {
-  position: absolute !important;
-  top: .17cqw !important;
-  left: .17cqw !important;
-
-  width: 1.1cqw !important;
-  height: 1.1cqw !important;
-
-  border: .07cqw solid #7e5a29 !important;
-  border-radius: 50% !important;
-
-  background:
-    linear-gradient(to bottom, #e6c975, #a67731) !important;
-
-  transition: transform 140ms ease !important;
-}
-
-.quiz-builder-screen #shuffle-questions:checked + .order-mode-track > span {
-  transform: translateX(1.64cqw) !important;
-}
-
-
-/* ------------------------------------------------------------
-   Three-command bank
-   Explicitly centered inside the painted console safe area.
-   ------------------------------------------------------------ */
-
-.quiz-builder-screen .builder-actions {
-  top: 83.8% !important;
-  right: 4.8% !important;
-  bottom: auto !important;
-  left: auto !important;
-
-  width: 27% !important;
-  height: 11.6% !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  grid-template-rows: 1fr !important;
-  gap: .58cqw !important;
-
-  transform: none !important;
-}
-
-.quiz-builder-screen #clear-selections,
-.quiz-builder-screen #close-quiz-builder,
-.quiz-builder-screen #build-quiz {
-  position: relative !important;
-  inset: auto !important;
-
-  width: 100% !important;
-  height: 100% !important;
-
-  min-width: 0 !important;
-  min-height: 0 !important;
-
-  margin: 0 !important;
-  padding: .5cqw !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  border: .09cqw solid var(--pf-console-brass) !important;
-  border-radius: .24cqw !important;
+  border-color: #b9a16d;
+  border-left-color: #35548d;
 
   background:
     linear-gradient(
       to bottom,
-      var(--pf-console-navy-top),
-      var(--pf-console-navy-bottom)
-    ) !important;
-
-  color: #f3dda2 !important;
+      rgba(255, 255, 250, .98),
+      rgba(243, 236, 214, .96)
+    );
 
   box-shadow:
-    inset 0 .08cqw 0 rgba(255, 246, 211, .13),
-    inset 0 -.12cqw 0 rgba(0, 0, 0, .26),
-    0 .12cqw .22cqw rgba(0, 0, 0, .38) !important;
-
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: 1.12cqw !important;
-  font-weight: 900 !important;
-  line-height: 1.05 !important;
-  letter-spacing: .025em !important;
-  text-align: center !important;
-  text-transform: uppercase !important;
-
-  transform: none !important;
+    inset 0 .05cqw 0 rgba(255, 255, 255, .92),
+    0 .12cqw .22cqw rgba(35, 31, 24, .22),
+    0 0 .22cqw rgba(74, 105, 161, .18);
 }
 
-.quiz-builder-screen #build-quiz {
-  font-size: 1.5cqw !important;
-}
+/* Hovering a selected chapter pauses the pulse at its brightest state. */
+body.real-book-chapters
+.chapter-option:has(input:checked):hover {
+  z-index: 2;
 
-.quiz-builder-screen #clear-selections .command-label,
-.quiz-builder-screen #close-quiz-builder .command-label,
-.quiz-builder-screen #build-quiz .command-label {
-  width: 100% !important;
-  margin: 0 !important;
+  transform:
+    translateY(-.16cqw)
+    scale(1.015);
+  animation: none;
 
-  color: inherit !important;
-  font: inherit !important;
-  line-height: inherit !important;
-  text-align: center !important;
-
-  animation: none !important;
-}
-
-
-/* Secondary controls never animate. */
-.quiz-builder-screen #clear-selections,
-.quiz-builder-screen #close-quiz-builder {
-  animation: none !important;
-}
-
-
-/* Disabled states stay quiet. */
-.quiz-builder-screen #clear-selections:disabled,
-.quiz-builder-screen #build-quiz:disabled {
-  opacity: .52 !important;
-
-  color: #a79d82 !important;
-  border-color: #685b45 !important;
-
-  background:
-    linear-gradient(to bottom, #202735, #151b25) !important;
+  border-color: #c9a84f;
+  border-left-color: #c9a84f;
 
   box-shadow:
-    inset 0 .06cqw 0 rgba(255, 255, 255, .05) !important;
-
-  animation: none !important;
-  transform: none !important;
+    inset 0 0 0 .08cqw rgba(255, 249, 215, .96),
+    0 .12cqw .22cqw rgba(54, 40, 12, .24),
+    0 0 .34cqw rgba(204, 159, 54, .72),
+    0 0 .66cqw rgba(238, 193, 104, .42);
 }
 
+/*
+  The real checkbox remains keyboard-operable. This outline appears when
+  keyboard navigation places focus inside the chapter card.
+*/
+body.real-book-chapters
+.chapter-option:has(input:focus-visible) {
+  z-index: 3;
 
-/* Enabled Start Quiz = obvious "ready" cue. */
-.quiz-builder-screen #build-quiz:not(:disabled) {
-  opacity: 1 !important;
-  transform-origin: center !important;
+  outline:
+    max(2px, .1cqw)
+    solid
+    #1f3f78;
+  outline-offset: max(2px, .1cqw);
 
-  animation:
-    prepflow-builder-start-ready
-    .78s
-    ease-in-out
-    infinite !important;
+  box-shadow:
+    0 0 0 max(3px, .16cqw) rgba(239, 199, 105, .9),
+    0 0 .48cqw rgba(38, 61, 112, .48);
 }
 
-@keyframes prepflow-builder-start-ready {
-  0%, 100% {
-    transform: scale(1) !important;
-
-    color: #fff0b8 !important;
-    border-color: #c99843 !important;
-
-    background:
-      linear-gradient(to bottom, #294977, #132a4d) !important;
+@keyframes prepflow-selected-chapter-pulse {
+  0%,
+  100% {
+    border-color: #b69245;
+    border-left-color: #b69245;
 
     box-shadow:
-      inset 0 .08cqw 0 rgba(255, 247, 210, .2),
-      0 .12cqw .24cqw rgba(0, 0, 0, .42) !important;
+      inset 0 0 0 .08cqw rgba(255, 245, 196, .82),
+      0 0 .2cqw rgba(181, 143, 59, .24);
   }
 
-  50% {
-    transform: scale(1.085) !important;
-
-    color: #fffbe4 !important;
-    border-color: #ffe49a !important;
-
-    background:
-      linear-gradient(to bottom, #628fc0, #315c8b) !important;
+  45% {
+    border-color: #bea052;
+    border-left-color: #bea052;
 
     box-shadow:
-      inset 0 .08cqw 0 rgba(255, 255, 235, .5),
-      0 0 .5cqw rgba(255, 229, 148, 1),
-      0 0 1.25cqw rgba(231, 190, 91, .9),
-      0 .18cqw .35cqw rgba(0, 0, 0, .48) !important;
+      inset 0 0 0 .08cqw rgba(255, 247, 204, .9),
+      0 0 .3cqw rgba(198, 154, 50, .44);
+  }
+
+  58% {
+    border-color: #d0af58;
+    border-left-color: #d0af58;
+
+    box-shadow:
+      inset 0 0 0 .08cqw rgba(255, 252, 226, .98),
+      0 0 .4cqw rgba(219, 174, 63, .72),
+      0 0 .72cqw rgba(238, 193, 104, .42);
+  }
+
+  74% {
+    border-color: #c09e4c;
+    border-left-color: #c09e4c;
+
+    box-shadow:
+      inset 0 0 0 .08cqw rgba(255, 247, 204, .9),
+      0 0 .3cqw rgba(198, 154, 50, .42);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.real-book-chapters
+  .chapter-option:has(input:checked) {
+    animation: none;
+
+    border-color: #c5a34d;
+    border-left-color: #c5a34d;
+
+    box-shadow:
+      inset 0 0 0 .08cqw rgba(255, 248, 210, .92),
+      0 0 .34cqw rgba(198, 154, 50, .48);
   }
 }
 
 
-/* Focus / secondary interaction */
-.quiz-builder-screen #clear-selections:not(:disabled):hover,
-.quiz-builder-screen #close-quiz-builder:hover {
-  border-color: var(--pf-console-brass-bright) !important;
-  color: #fff1bf !important;
+body.real-book-chapters #selected-chapter-numbers {
+  margin-top: .08cqw;
+
+  color: #58647c;
+  font-size: clamp(.68rem, .9cqw, .98rem);
+  font-weight: 800;
+  letter-spacing: .015em;
+  line-height: 1.15;
+  text-transform: none;
 }
 
-.quiz-builder-screen #clear-selections:focus-visible,
-.quiz-builder-screen #close-quiz-builder:focus-visible,
-.quiz-builder-screen #build-quiz:focus-visible,
-.quiz-builder-screen #global-block-size:focus-visible {
-  outline: .16cqw solid #fff0b8 !important;
-  outline-offset: .18cqw !important;
+
+body.real-book-chapters #back-button:hover,
+body.real-book-chapters #back-button:focus-visible {
+  animation: none;
+
+  color: #fff8d6;
+  transform: scale(1.045);
+
+  border-color: #dfc174;
+
+  box-shadow:
+    inset 0 calc(var(--book-stage-unit) * .06) 0
+      rgba(255, 255, 255, .2),
+    0 calc(var(--book-stage-unit) * .14)
+      calc(var(--book-stage-unit) * .24)
+      rgba(0, 0, 0, .34),
+    0 0 calc(var(--book-stage-unit) * .34)
+      rgba(255, 229, 157, .9),
+    0 0 calc(var(--book-stage-unit) * .68)
+      rgba(238, 193, 104, .58);
 }
 
-/* Builder settings typography parity. */
-.quiz-builder-screen .order-mode-toggle {
-  font-size: 1.03cqw !important;
-}
+@keyframes prepflow-book-return-pulse {
+  0%,
+  100% {
+    color: #f0d38c;
+    transform: scale(1);
 
-/* Start Quiz ready cue.
-   Use filter so existing !important layout/paint rules cannot suppress it. */
-.quiz-builder-screen #build-quiz:not(:disabled) {
-  animation: prepflow-start-attention .72s ease-in-out infinite !important;
-  transform: none !important;
-}
-
-@keyframes prepflow-start-attention {
-  0%, 100% {
-    filter:
-      brightness(1)
-      drop-shadow(0 0 0 rgba(255, 223, 133, 0));
+    box-shadow:
+      inset 0 calc(var(--book-stage-unit) * .06) 0
+        rgba(255, 255, 255, .14),
+      0 calc(var(--book-stage-unit) * .12)
+        calc(var(--book-stage-unit) * .2)
+        rgba(0, 0, 0, .32),
+      0 0 calc(var(--book-stage-unit) * .1)
+        rgba(238, 193, 104, .2);
   }
 
-  50% {
-    filter:
-      brightness(1.65)
-      drop-shadow(0 0 .55cqw rgba(255, 225, 137, .95))
-      drop-shadow(0 0 1.15cqw rgba(218, 169, 61, .8));
+  45% {
+    color: #f6dfa3;
+    transform: scale(1.012);
+  }
+
+  58% {
+    color: #fff9dc;
+    transform: scale(1.045);
+
+    box-shadow:
+      inset 0 calc(var(--book-stage-unit) * .06) 0
+        rgba(255, 255, 255, .2),
+      0 calc(var(--book-stage-unit) * .14)
+        calc(var(--book-stage-unit) * .24)
+        rgba(0, 0, 0, .34),
+      0 0 calc(var(--book-stage-unit) * .32)
+        rgba(255, 232, 168, .96),
+      0 0 calc(var(--book-stage-unit) * .66)
+        rgba(238, 193, 104, .56);
+  }
+
+  74% {
+    color: #f5dda0;
+    transform: scale(1.014);
   }
 }
 
-.quiz-builder-screen #build-quiz:disabled {
-  animation: none !important;
-  filter: none !important;
-}
-
-/* Match both settings groups exactly. */
-.quiz-builder-screen .builder-block-size,
-.quiz-builder-screen .order-mode-toggle,
-.quiz-builder-screen .order-mode-toggle > span:not(.order-mode-track) {
-  color: #f4dda3 !important;
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: 1.03cqw !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: 0 !important;
-}
-
-
-/* Optical typography balance:
-   title-case toggle labels need slightly more size than uppercase setting labels. */
-.quiz-builder-screen .order-mode-toggle,
-.quiz-builder-screen .order-mode-toggle > span:not(.order-mode-track) {
-  font-size: 1.18cqw !important;
+@media (prefers-reduced-motion: reduce) {
+  body.real-book-chapters #back-button {
+    animation: none;
+  }
 }
