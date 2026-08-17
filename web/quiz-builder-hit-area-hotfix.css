@@ -1,14 +1,16 @@
-/* Public deployment compatibility fix: keep interactive quiz-builder controls above decorative/header layers. */
+/* Public deployment compatibility fix: keep interactive quiz-builder controls above decorative/header layers without changing their layout positioning. */
 .quiz-builder-screen .quiz-builder-header {
   pointer-events: none !important;
 }
 
-.quiz-builder-screen .builder-controls,
+.quiz-builder-screen .builder-controls {
+  z-index: 20 !important;
+  pointer-events: auto !important;
+}
+
 .quiz-builder-screen .builder-actions,
 .quiz-builder-screen #build-quiz,
 .quiz-builder-screen #clear-selections,
 .quiz-builder-screen #close-quiz-builder {
-  position: relative !important;
-  z-index: 20 !important;
   pointer-events: auto !important;
 }
