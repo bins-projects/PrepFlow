@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="generic-pack-catalog.css">
   <link rel="stylesheet" href="canonical-question-types.css">
   <link rel="stylesheet" href="quiz-reading-screen.css?v=20260816-reading-book-1">
+  <link rel="stylesheet" href="quiz-builder-hit-area-hotfix.css?v=20260817-start-quiz-1">
 </head>
 <body>
   <main class="app-shell">
@@ -103,41 +104,18 @@
         <section class="subjects" aria-label="Quiz library" aria-live="polite"></section>
 
         <div class="quiz-builder-shelf-plaques" aria-hidden="true">
-          <div class="quiz-builder-shelf-plaque fundamentals-plaque">
-            FUNDAMENTALS
-          </div>
-          <div class="quiz-builder-shelf-plaque pharm-plaque">
-            PHARM
-          </div>
-          <div class="quiz-builder-shelf-plaque medsurg-plaque">
-            MED-SURG
-          </div>
-          <div class="quiz-builder-shelf-plaque pediatrics-plaque">
-            PEDIATRICS
-          </div>
+          <div class="quiz-builder-shelf-plaque fundamentals-plaque">FUNDAMENTALS</div>
+          <div class="quiz-builder-shelf-plaque pharm-plaque">PHARM</div>
+          <div class="quiz-builder-shelf-plaque medsurg-plaque">MED-SURG</div>
+          <div class="quiz-builder-shelf-plaque pediatrics-plaque">PEDIATRICS</div>
         </div>
 
         <div id="mobile-carousel-tools" class="mobile-carousel-tools" hidden>
-          <button id="mobile-choose-chapters" class="mobile-choose-chapters">
-            Choose Chapters
-          </button>
-          <p
-            id="mobile-carousel-status"
-            class="sr-only"
-            aria-live="polite"
-            aria-atomic="true"
-          ></p>
+          <button id="mobile-choose-chapters" class="mobile-choose-chapters">Choose Chapters</button>
+          <p id="mobile-carousel-status" class="sr-only" aria-live="polite" aria-atomic="true"></p>
         </div>
 
-        <img
-          id="quiz-builder-openbook"
-          class="quiz-builder-openbook"
-          src="images/quiz-builder/books/quizbook-transparent.png?v=20260728-clean-preview-1"
-          alt=""
-          aria-hidden="true"
-          hidden
-        >
-
+        <img id="quiz-builder-openbook" class="quiz-builder-openbook" src="images/quiz-builder/books/quizbook-transparent.png?v=20260728-clean-preview-1" alt="" aria-hidden="true" hidden>
 
         <section class="builder-controls" aria-label="Quiz settings">
           <div class="builder-summary">
@@ -164,37 +142,19 @@
           </label>
 
           <div class="builder-actions">
-            <button id="clear-selections" class="secondary-button" disabled>
-              <span class="command-label">Clear<br>Selection</span>
-            </button>
-            <button id="close-quiz-builder" class="secondary-button">
-              <span class="command-label">Back<br>to Home</span>
-            </button>
-            <button id="build-quiz" class="start-button" disabled>
-              <span class="command-label">Start<br>Quiz</span>
-            </button>
+            <button id="clear-selections" class="secondary-button" disabled><span class="command-label">Clear<br>Selection</span></button>
+            <button id="close-quiz-builder" class="secondary-button"><span class="command-label">Back<br>to Home</span></button>
+            <button id="build-quiz" class="start-button" disabled><span class="command-label">Start<br>Quiz</span></button>
           </div>
         </section>
       </div>
     </section>
 
-    <section
-      id="chapter-screen"
-      class="chapter-screen"
-      role="region"
-      aria-labelledby="chapter-title"
-      hidden
-    >
+    <section id="chapter-screen" class="chapter-screen" role="region" aria-labelledby="chapter-title" hidden>
       <div class="chapter-book-hit-area" aria-hidden="true"></div>
-
       <div class="chapter-header">
         <button id="back-button" class="secondary-button">← Back to Quiz Builder</button>
-
-        <div class="chapter-book-heading">
-          <h2 id="chapter-title"></h2>
-          <p>Choose one or more chapters</p>
-        </div>
-
+        <div class="chapter-book-heading"><h2 id="chapter-title"></h2><p>Choose one or more chapters</p></div>
         <div class="chapter-selection-summary" aria-live="polite">
           <strong>Selection Summary</strong>
           <span id="selected-chapter-summary">0 chapters selected</span>
@@ -202,45 +162,21 @@
           <span id="selected-chapter-numbers">Selected: none</span>
         </div>
       </div>
-
       <div class="chapter-actions">
         <button id="select-all" class="secondary-button">Select All</button>
         <button id="clear-all" class="secondary-button">Clear All</button>
         <label class="block-size-control">
           <span><strong>Questions per block</strong><small>Default is 15. Choose a smaller block for quicker study sessions.</small></span>
-          <select id="block-size">
-            <option value="1">1</option><option value="3">3</option><option value="5">5</option><option value="10">10</option><option value="15" selected>15</option>
-          </select>
+          <select id="block-size"><option value="1">1</option><option value="3">3</option><option value="5">5</option><option value="10">10</option><option value="15" selected>15</option></select>
         </label>
         <span id="selection-count">0 chapters selected</span>
       </div>
-      <div
-        id="chapter-list"
-        class="chapter-list"
-        role="group"
-        aria-labelledby="chapter-title"
-      ></div>
-
+      <div id="chapter-list" class="chapter-list" role="group" aria-labelledby="chapter-title"></div>
       <nav class="chapter-pagination" aria-label="Chapter spreads">
-        <button
-          id="chapter-previous"
-          class="chapter-page-arrow"
-          type="button"
-          hidden
-        >←</button>
-
-        <div
-          id="chapter-page-numbers"
-          class="chapter-page-numbers"
-        ></div>
-
-        <button
-          id="chapter-next"
-          class="chapter-page-arrow"
-          type="button"
-        >→</button>
+        <button id="chapter-previous" class="chapter-page-arrow" type="button" hidden>←</button>
+        <div id="chapter-page-numbers" class="chapter-page-numbers"></div>
+        <button id="chapter-next" class="chapter-page-arrow" type="button">→</button>
       </nav>
-
       <button id="done-chapters" class="start-button">Done — Return to Builder</button>
       <button id="start-button" class="start-button" disabled hidden>Start Studying</button>
     </section>
@@ -250,7 +186,6 @@
         <button id="close-drug-reference" class="secondary-button drug-reference-home" type="button">← Home</button>
         <div><h2>Drug Reference</h2><p>One master entry per medication, with routes and dosage forms grouped together.</p></div>
       </header>
-
       <nav class="drug-reference-tabs" aria-label="Drug reference views">
         <button data-reference-tab="search" class="active" type="button" aria-pressed="true">Search</button>
         <button data-reference-tab="az" type="button" aria-pressed="false">A–Z</button>
@@ -258,12 +193,10 @@
         <button data-reference-tab="system" type="button" aria-pressed="false">Body System</button>
         <button data-reference-tab="route" type="button" aria-pressed="false">Route</button>
       </nav>
-
       <div class="drug-reference-tools">
         <label><span class="sr-only">Search medications</span><input id="drug-reference-search" type="search" placeholder="Search drug, brand, IV, cream, pill, inhaler…"></label>
         <select id="drug-reference-filter" aria-label="Filter medication reference"><option value="">All medications</option></select>
       </div>
-
       <div class="drug-reference-layout">
         <aside id="drug-reference-results" class="drug-reference-results" aria-label="Medication results" aria-live="polite"></aside>
         <article id="drug-reference-detail" class="drug-reference-detail">
