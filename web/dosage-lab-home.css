@@ -1,0 +1,90 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: #1b130e; }
+body { min-height: 100svh; }
+.home-shell { min-height: 100svh; display: grid; place-items: center; overflow: hidden; background: #1b130e; }
+.home-stage { position: relative; width: min(100vw, 177.78svh); aspect-ratio: 16 / 9; background: url("images/dosage-lab/home-screen.png?v=20260818-8") center/cover no-repeat; overflow: hidden; }
+.home-actions { position: absolute; left: 7.8%; top: 27%; width: 27%; display: grid; gap: clamp(10px, 1.15vw, 19px); }
+.home-action { display: block; width: max-content; max-width: 100%; color: #4b2d18; text-decoration: none; font: 700 clamp(18px, 1.8vw, 32px)/1.1 "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive; text-shadow: 0 1px rgba(255,255,255,.5); transform: rotate(-1deg); }
+.home-action::after { content: ""; display: block; height: 2px; margin-top: .12em; background: rgba(75,45,24,.58); transform: rotate(.5deg); }
+.home-action.primary { font-size: clamp(24px, 2.45vw, 44px); }
+.home-action.guide { color: #7a3017; text-shadow: 0 1px rgba(255,255,255,.8), 0 0 5px rgba(255,236,150,.95), 0 0 12px rgba(255,215,95,.72); }
+.home-action.guide::after { height: 3px; background: rgba(122,48,23,.72); box-shadow: 0 0 6px rgba(255,215,95,.55); }
+.home-action:hover, .home-action:focus-visible { color: #2c1a0e; outline: none; transform: rotate(-1deg) translateY(-1px); }
+
+.portrait-home { display: none; }
+
+@keyframes guideGlow {
+  0%, 100% { text-shadow: 0 1px rgba(255,255,255,.8), 0 0 4px rgba(255,236,150,.75), 0 0 9px rgba(255,215,95,.5); }
+  50% { text-shadow: 0 1px rgba(255,255,255,.95), 0 0 7px rgba(255,242,174,1), 0 0 15px rgba(255,215,95,.85), 0 0 22px rgba(255,193,70,.42); }
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .home-shell { display: block; overflow: hidden; background: #1b130e; }
+  .home-stage { display: none; }
+  .portrait-home {
+    position: relative;
+    display: block;
+    width: 100vw;
+    min-height: 100svh;
+    overflow: hidden;
+    background: url("images/dosage-lab/home-screen-mobile.webp?v=20260820-1") center top / cover no-repeat;
+  }
+  .portrait-actions {
+    position: absolute;
+    z-index: 3;
+    left: 15%;
+    top: 31.5%;
+    width: 56%;
+    display: grid;
+    gap: clamp(10px, 1.55svh, 16px);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .portrait-action {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    color: #4b2d18;
+    text-decoration: none;
+    font: 700 clamp(18px, 5.2vw, 26px)/1.12 "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+    text-shadow: 0 1px rgba(255,255,255,.62);
+    transform: rotate(-1deg);
+  }
+  .portrait-action::after {
+    content: "";
+    display: block;
+    height: 2px;
+    margin-top: .08em;
+    background: rgba(75,45,24,.5);
+    transform: rotate(.4deg);
+  }
+  .portrait-action.primary { font-size: clamp(24px, 6.5vw, 32px); }
+  .portrait-action.guide {
+    color: #7a3017;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    animation: guideGlow 2.6s ease-in-out infinite;
+  }
+  .portrait-action.guide::after { background: rgba(122,48,23,.72); box-shadow: 0 0 6px rgba(255,215,95,.6); }
+  .new-here {
+    display: block;
+    margin-bottom: 2px;
+    font: 800 clamp(10px, 2.7vw, 13px)/1 system-ui, -apple-system, "Segoe UI", sans-serif;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: #7a3017;
+  }
+}
+
+@media (max-aspect-ratio: 3/4) {
+  .portrait-actions { left: 15%; top: 31.5%; width: 57%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait-action.guide { animation: none; }
+}

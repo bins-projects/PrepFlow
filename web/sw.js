@@ -1,6 +1,6 @@
 importScripts("./pack-precache.js");
 
-const CACHE_NAME = `prepflow-pwa-v10-review-skip-${self.PREPFLOW_PACK_PRECACHE.version}`;
+const CACHE_NAME = `prepflow-pwa-v11-dosage-lab-${self.PREPFLOW_PACK_PRECACHE.version}`;
 
 const APP_FILES = [
   "./",
@@ -10,6 +10,22 @@ const APP_FILES = [
   "./question-reference-rules.js",
   "./generic-pack-catalog.css",
   "./canonical-question-types.css",
+  "./dosage-home-link.css",
+  "./dosage-lab-prototype.html",
+  "./dosage-lab-home.css",
+  "./dosage-lab-run.html",
+  "./dosage-lab.css",
+  "./dosage-lab.js",
+  "./dosage-how-to.html",
+  "./dosage-engine.js",
+  "./dosage-engine-clinical-pools.js",
+  "./dosage-engine-expanded-clinical.js",
+  "./dosage-engine-rate-expansion.js",
+  "./dosage-families.js",
+  "./images/dosage-lab/dosage-lab-classroom.png",
+  "./images/dosage-lab/home-screen.png",
+  "./images/dosage-lab/home-screen-mobile.webp",
+  "./images/dosage-lab/home-screen-portrait.svg",
   "./quiz-builder-screen.css",
   "./quiz-builder-hit-area-hotfix.css",
   "./quiz-reading-screen.css",

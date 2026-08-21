@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Use · Dr. Reid's Dosage Calc Pro</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      min-height: 100svh;
+      background: #1b130e;
+      color: #352719;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+    .shell {
+      min-height: 100svh;
+      padding: 18px 14px 40px;
+      background:
+        linear-gradient(rgba(27,19,14,.34), rgba(27,19,14,.58)),
+        url("assets/dosage-lab-classroom.png?v=20260819-1") center/cover fixed no-repeat;
+    }
+    .page { width: min(760px, 100%); margin: 0 auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .home-link {
+      color: #fff8e9;
+      text-decoration: none;
+      font: 700 17px/1.2 "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+      text-shadow: 0 2px 5px rgba(0,0,0,.65);
+    }
+    .paper {
+      background: rgba(255,250,235,.96);
+      border: 1px solid rgba(84,55,30,.28);
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.32);
+      overflow: hidden;
+    }
+    .hero { padding: 24px 20px 18px; border-bottom: 1px solid rgba(84,55,30,.16); }
+    h1, h2, summary {
+      font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+      color: #4b2d18;
+    }
+    h1 { margin: 0 0 8px; font-size: clamp(30px, 8vw, 46px); line-height: 1.05; }
+    .lead { margin: 0 0 18px; font-size: 17px; line-height: 1.55; }
+    .start {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: #4b2d18;
+      color: #fff8e9;
+      text-decoration: none;
+      font: 700 18px/1.1 "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+    }
+    .quick { display: grid; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+    .quick li { display: flex; gap: 10px; align-items: flex-start; line-height: 1.4; }
+    .num {
+      flex: 0 0 26px; height: 26px; display: grid; place-items: center;
+      border-radius: 50%; background: #eadfc8; color: #4b2d18; font-weight: 800;
+    }
+    .sections { padding: 8px 14px 14px; }
+    details { border-bottom: 1px solid rgba(84,55,30,.16); }
+    details:last-of-type { border-bottom: 0; }
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 17px 4px;
+      font-weight: 800;
+      font-size: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; font: 800 25px/1 system-ui, sans-serif; color: #765136; }
+    details[open] summary::after { content: "−"; }
+    .content { padding: 0 4px 18px; font-size: 16px; line-height: 1.55; }
+    .content p { margin: 8px 0 12px; }
+    .content ul { margin: 8px 0 12px; padding-left: 22px; }
+    .content li { margin: 5px 0; }
+    .label { font-weight: 800; color: #4b2d18; }
+    .example {
+      margin: 9px 0;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #f2ead8;
+      font: 700 17px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .notice {
+      margin: 14px;
+      padding: 16px;
+      border-radius: 14px;
+      background: #efe3c8;
+      border: 1px solid rgba(84,55,30,.2);
+      line-height: 1.5;
+    }
+    .notice h2 { margin: 0 0 6px; font-size: 20px; }
+    .bottom { text-align: center; padding: 6px 14px 22px; }
+    @media (min-width: 700px) {
+      .shell { padding-top: 34px; }
+      .hero { padding: 30px 30px 22px; }
+      .sections { padding-left: 24px; padding-right: 24px; }
+      .notice { margin-left: 24px; margin-right: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="page">
+      <div class="topbar"><a class="home-link" href="dosage-lab-prototype.html">← Home</a></div>
+      <article class="paper">
+        <header class="hero">
+          <h1>How to Use</h1>
+          <p class="lead">Practice nursing dosage calculations at your own pace. No account is needed.</p>
+          <a class="start" href="dosage-lab-run.html">Start Session</a>
+          <ol class="quick" aria-label="Quick start">
+            <li><span class="num">1</span><span>Choose <strong>Practice</strong> or <strong>Quiz</strong>.</span></li>
+            <li><span class="num">2</span><span>Choose your difficulty and what you want to practice.</span></li>
+            <li><span class="num">3</span><span>Choose 5, 10, 15, 20, or 25 questions.</span></li>
+            <li><span class="num">4</span><span>Enter your answer, submit it, and review the worked solution.</span></li>
+          </ol>
+        </header>
+
+        <section class="sections">
+          <details open>
+            <summary>Start Practice</summary>
+            <div class="content">
+              <p><span class="label">Practice</span> is best while you are learning. While working a question, you can tap <strong>See Formula</strong> to view the formula before answering.</p>
+              <p><span class="label">Quiz</span> is best when you want to test yourself without seeing the formula before you answer.</p>
+              <p>Both modes tell you whether your answer is correct and show the worked solution after you submit it.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Build Your Session</summary>
+            <div class="content">
+              <p><span class="label">Difficulty:</span> Easy, Standard, or Challenge. Difficulty changes how convenient the numbers are, not the nursing logic.</p>
+              <p><span class="label">Choose what to practice:</span></p>
+              <ul>
+                <li><strong>Medication Dosing</strong> — medication amounts, reconstitution, and electrolyte volumes</li>
+                <li><strong>Pediatric Dosing</strong> — weight-based dosing, safe-dose ranges, and divided doses</li>
+                <li><strong>Infusion Rates</strong> — pump rates, gravity rates, mL/hr, gtt/min, and other infusion-rate calculations</li>
+                <li><strong>IV Time &amp; Volume</strong> — infusion duration and completion time</li>
+              </ul>
+              <p>Choose a whole family for variety, choose one subtype to drill a specific skill, or use <strong>Random Mix — All Families</strong>.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Answering Questions</summary>
+            <div class="content">
+              <p>For most questions, enter the <strong>number and unit</strong>.</p>
+              <div class="example">4.7 mL</div>
+              <div class="example">125 mL/hr</div>
+              <p>The unit matters. A correct number with the wrong unit is not a complete dosage-calculation answer.</p>
+              <p>For IV completion-time questions, enter 24-hour time:</p>
+              <div class="example">16:30</div>
+              <p>For pediatric safe-dose questions, you may first choose <strong>Safe</strong>, <strong>Too Low</strong>, or <strong>Too High</strong>. If the dose is safe, you may then calculate the amount to administer.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary>After You Answer</summary>
+            <div class="content">
+              <p>The program shows whether your answer is <strong>Correct</strong> or <strong>Incorrect</strong>, followed by the correct answer, formula, and worked calculation.</p>
+              <p>Choose <strong>Next Question</strong> to continue. At the end, you will see your score and percentage.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Formula Review</summary>
+            <div class="content">
+              <p>Choose <strong>Formula Review</strong> from the home page when you want to study the dosage calculation formulas without starting a practice session.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Instructor Quizzes</summary>
+            <div class="content">
+              <p>Choose <strong>Instructor Quizzes</strong> to see quizzes that have been prepared and published by your instructor.</p>
+              <p>Select the assigned quiz and work through it one question at a time. Your score and percentage are shown when the quiz is complete.</p>
+              <p>If no quizzes are currently published, the page will tell you.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Helpful Reminders</summary>
+            <div class="content">
+              <ul>
+                <li>Read the entire question before calculating.</li>
+                <li>Pay close attention to units.</li>
+                <li>Convert units when necessary before solving.</li>
+                <li>Follow any rounding directions in the question.</li>
+                <li>Enter the requested unit with your answer.</li>
+                <li>If you miss a question, review the worked solution before moving on.</li>
+              </ul>
+            </div>
+          </details>
+        </section>
+
+        <aside class="notice">
+          <h2>Practice Only</h2>
+          This program is for education and dosage-calculation practice only. Do not use it to determine or verify medication doses for actual patient care. Always follow your instructor's directions and your clinical facility's medication-administration policies.
+        </aside>
+
+        <div class="bottom"><a class="start" href="dosage-lab-run.html">Start Session</a></div>
+      </article>
+    </div>
+  </main>
+</body>
+</html>
